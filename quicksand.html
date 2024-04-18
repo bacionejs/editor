@@ -210,9 +210,9 @@ let a=element("a");
 a.hidden=true;
 let s;
 if(flagide){
-  s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();function ide(){"+T.V+"}"+gameprograms+"}<\/script>";
+  s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();function ide(){"+T.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
 }else{
-  s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"function gameprograms(){"+T.V+"}}<\/script>";
+  s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>";
 }
 a.href=URL.createObjectURL(new File([s],"",{type:"text/html"}));
 a.download=timestamp()+"quicksand.html";
@@ -769,7 +769,9 @@ if(!p) return document.body.appendChild(document.createElement(e));
 else   return             p.appendChild(document.createElement(e));
 }
 
-}function gameprograms(){
+}//end ide
+
+function gameprograms(){
 
 
 
