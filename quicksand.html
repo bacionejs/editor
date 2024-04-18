@@ -777,33 +777,6 @@ function gameprograms(){
 
 
 
-function smash(){
-addEventListener("click",move);
-let rows=3,p=floor(W/rows),i={x:0,y:0};
-let c=L.canvas(p*0.7);
-let min=700,decay=200/10,scale=decay*200,interval;
-interval=scale/decay++;
-animate();
-
-function animate(){
-i.x=L.rnd(rows);let t=L.rnd(rows-1);i.y=t+(t>=i.y);
-c.white();c.icon(127875,i.x*p+(p/2),i.y*p+(p/2));
-L.debug(floor(min+interval),c);
-setTimeout(animate,(min+interval));
-}
-
-function move({pageX:x,pageY:y}){
-if(!(floor(x/p)==i.x && floor(y/p)==i.y))return;
-interval=scale/decay++;
-c.icon(128165,i.x*p+(p/2),i.y*p+(p/2));
-}
-
-}//end smash
-
-
-
-
-
 function ski(){
 let hit,speed=W/FPS/3,os=[],snow=L.canvas();snow.white();
 snow.fillStyle=L.gradient(snow,W,0,[[.2,"blue"],[.8,"skyblue"]]);snow.fill(L.shape([[0,0,W,W,W,0]]));
@@ -832,6 +805,33 @@ return{move(){if(i==1 || i==reset){jump();}else if(i==cool){i=0;}i&&i++;},
 (function animation(){os.forEach(o=>o.move());requestAnimationFrame(animation);})();
 
 }//end ski
+
+
+
+
+
+function smash(){
+addEventListener("click",move);
+let rows=3,p=floor(W/rows),i={x:0,y:0};
+let c=L.canvas(p*0.7);
+let min=700,decay=200/10,scale=decay*200,interval;
+interval=scale/decay++;
+animate();
+
+function animate(){
+i.x=L.rnd(rows);let t=L.rnd(rows-1);i.y=t+(t>=i.y);
+c.white();c.icon(127875,i.x*p+(p/2),i.y*p+(p/2));
+L.debug(floor(min+interval),c);
+setTimeout(animate,(min+interval));
+}
+
+function move({pageX:x,pageY:y}){
+if(!(floor(x/p)==i.x && floor(y/p)==i.y))return;
+interval=scale/decay++;
+c.icon(128165,i.x*p+(p/2),i.y*p+(p/2));
+}
+
+}//end smash
 
 
 
