@@ -253,10 +253,14 @@ T.R(found.slice(wordlength),T.S,T.S,"end");
 function comment(){
 let bl=T.V.lastIndexOf("\n",T.S-1)+1;
 let el=T.V.indexOf("\n",T.S)+1;
-let s=pastetext=T.V.slice(bl,el);
-pastetoggle("set");
-if(s.startsWith("//")){T.R("",  bl,bl+2);T.S=T.E=el-2;}
-else                  {T.R("//",bl,bl);  T.S=T.E=el+2;}
+let s=T.V.slice(bl,el);
+if(s.startsWith("//")){
+  T.R("",  bl,bl+2);T.S=T.E=el-2;
+}else{
+  pastetext=s;
+  pastetoggle("set");
+  T.R("//",bl,bl);  T.S=T.E=el+2;
+}
 }
 
 function paste(){
