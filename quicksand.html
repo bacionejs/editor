@@ -35,7 +35,6 @@ let colorkeyforeground="white";
 let colorkeybackground="#38393D";//gray
 let colorkeybackgroundclick="lime";
 let colorkeyboardopacity=0.5;
-let marginkeyboard=5;
 let style;
 
 let floor=Math.floor;
@@ -648,7 +647,7 @@ let keys=[
 
 keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
 keys.rows=keys.reduce((a,k)=>(a>k.r)?a:k.r,0)+1;
-keys.keyboardwidth=floor((innerWidth<(screen.width*0.9))?(innerWidth-(marginkeyboard*2)):Math.min((innerWidth-(marginkeyboard*2)),((innerHeight-innerWidth-(marginkeyboard*2))*keys.cols/keys.rows)));
+keys.keyboardwidth=floor((innerWidth<(screen.width*0.9))?(innerWidth):Math.min((innerWidth),((innerHeight-innerWidth)*keys.cols/keys.rows)));
 keys.keyboardfontsize=floor(keys.keyboardwidth/(keys.cols/fontscale));
 let scale=keys.keyboardwidth/keys.cols;
 let b=scale*iconscale;
@@ -700,8 +699,8 @@ style.position="fixed";
 style.display="grid";
 style.gap="2%";
 style.zIndex=2;
-style.bottom=marginkeyboard;
-style.right=marginkeyboard;
+style.bottom=0;
+style.right=0;
 style.fontFamily="monospace";
 style.fontSize=keys.keyboardfontsize;
 style.width=keys.keyboardwidth;
