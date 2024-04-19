@@ -1,12 +1,10 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'/><script>onload=()=>{ ide();function ide(){
 
-/*
- * 
- * The Quicksand Javascript Editor is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
- * License: GPL
- * Github: github.com/quicksandjavascript
- *
- */
+function about(){
+return `The Quicksand Javascript Editor is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
+License: GPL
+Github: github.com/quicksandjavascript`;
+}
 
 element("style").innerText=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
@@ -450,23 +448,18 @@ popup.toggle(f);
 e.style.cssText="font-family:monospace;height:100%;width:100%;background-color:white;position:fixed;overflow-y:scroll;touch-action:pan-x pan-y;padding:2ch;white-space:pre-wrap;";
 e.addEventListener("click",()=>popup.toggle(f));
 element("div",e).insertAdjacentHTML("beforeend",`
-The <b>Quicksand Javascript Editor</b> is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
-<p>
-<b>License</b>
-GPL
-</p><p>
-<b>Github</b>
-github.com/quicksandjavascript
-</p><p>
-<b>Run</b>
-Runs the game which contains the cursor.
-Stop game with Run or Enter.
+<p><b>About</b>
+${about()}
 </p><p>
 <b>Hello World</b>
 At the top of the editor, create this code and click Run:
 function helloworld(){
   L.canvas(W/2).icon(127759,W/2,W/2);
 }
+</p><p>
+<b>Run</b>
+Runs the game which contains the cursor.
+Stop game with Run or Enter.
 </p><p>
 <b>Save</b>
 Saves to a timestamped file.
@@ -905,6 +898,7 @@ board.run((y,x)=>{cf.icon(board[y][x],x*p+(p*0.5),y*p+(p*0.6));});
 }
 
 }//end chess
+
 
 
 
