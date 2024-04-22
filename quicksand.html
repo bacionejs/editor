@@ -64,7 +64,7 @@ if(e.className){
   e.style.zIndex=0;
 }else{
   popup.title=document.title;
-  document.title=alt||f;
+  document.title=alt || f;
   e.classList.add("unhide");
   T.blur();
   setTimeout(()=>{e.style.zIndex=9;},50);
@@ -112,7 +112,7 @@ return {name:name,ftop:ftop,fend:i,body:s.slice(ftop,i)};
 }
 
 function superselect(){
-let s=T.V,i=T.E,e={"(":")","{":"}","[":"]",'"':'"'};
+let s=T.V,i=T.E,blockpairs={"(":")","{":"}","[":"]",'"':'"'};
 function end(a,b){let cnt=1;while(++i<s.length && (cnt+=s[i]===b?-1:s[i]===a?1:0));}
 if(/\w/.test(s[i])){//Word
   if(T.S===T.E){
@@ -132,9 +132,9 @@ if(/\w/.test(s[i])){//Word
   T.E++;
   while(--i>0 && !/\n/.test(s[i]));
   T.S=i+1;
-}else if(s[i] in e){//Block
+}else if(s[i] in blockpairs){//Block
   let i2=i;
-  end(s[i],e[s[i]]);
+  end(s[i],blockpairs[s[i]]);
   if(s.slice(i2,i).includes("\n")){
     T.S=1+s.lastIndexOf("\n",T.S-1);
     i=1+s.indexOf("\n",i);
@@ -354,7 +354,7 @@ function pretty(){
 let f="Pretty",e=popup[f],body,name;
 if(!e){
   e=popup[f]=element("div");
-  e.style.cssText="font-family:monospace;height:100%;width:100%;background-color:white;position:fixed;overflow-y:scroll;touch-action:pan-x pan-y;padding:2ch;white-space:pre;";
+  e.style.cssText="font-family:monospace;height:100%;width:100%;background-color:white;touch-action:pan-x pan-y;padding:2ch;white-space:pre;overflow-y:scroll;position:fixed;";
   e.addEventListener("click",()=>popup.toggle(f));
 }
 if(flagide){
@@ -368,15 +368,17 @@ popup.toggle(f,name);
 let s=body;
 s=s.trim().replace(/</g,'&lt;');
 s=s.replace(/^\/\/.*\n/gm,"");
-s=c(s,"red",'(,|:|((?<!(lt));)|((\\?+|&&|\\|\\|)=*))');
+s=c(s,"red",'([&|?]{2,}=?|[,?:])');
 s=c(s,"olive",'([0-9]+|".*?")');//literals
+s=c(s,"green",'\\b('+Array.from(s.matchAll(/((?<fn>\w+)={)/g),v=>v.groups.fn).join('|')+')\\b');//objects
 s=c(s,"purple",'([(){}[\\]])');//pairs
-s=c(s,"blue",'\\b('+Array.from(s.matchAll(/(?<=unction +)(?<fn>[0-9a-z_]+)/gi),v=>v.groups.fn).join('|')+')\\b');//your functions
+s=c(s,"blue",'\\b('+Array.from(s.matchAll(/(unction +(?<fn>\w+))/g),v=>v.groups.fn).join('|')+')\\b');//your functions
 s=c(s,"teal",'(?<!")\\b('+s.match(/[a-z]*/g).filter((v,i,a)=>a.indexOf(v)==i).filter(v=>{try{eval('let '+v+'=1')}catch{return true}}).join("|")+'|undefined)\\b(?!")'); //keywords
 s=c(s,"brown",'(//.*)');//comments
 let i=0;let mw=s.match(/\n/g).length.toString().length; s=s.replace(/^/gm,()=>String(++i).padStart(mw," ")+" ");//line numbers
 e.innerHTML=s;
-function c(s,color,match){return s.replace(RegExp(match,'g'),`<span style=color:${color}>$1</span>`);}
+setTimeout(function(){e.querySelectorAll('span span').forEach(function(s){s.style.color='inherit';});},0);
+function c(s,color,match){if(match.replace(/[()]|\\b/g,"")==="")return s; return s.replace(RegExp(`${match}`,'g'),`<span style=color:${color}>$1</span>`);}
 }//end pretty
 
 function misc(){
@@ -808,178 +810,12 @@ let s=floor(W/20),x=W/4,c=L.canvas(s),i=1,tgl=1,time=floor(s/speed),reset=3*time
 c.fillStyle="red";c.scale(-1,1);c.translate(-x,x);
 hit=function(t){return((x-s)<t && t<(x+s) && !(0<i && i<reset));}
 let jump=()=>{c.clearRect(-s,-s,s*2,s*2);c.translate((tgl*=-1)*(s),tgl*(s/4));c.icon(9975);}
-return{move(){if(i==1 || i==reset){jump();}else if(i==cool){i=0;}i&&i++;},
+return{move(){if(i==1 || i==reset){jump();}else if(i==cool){i=0;}i && i++;},
 };})());
 
 (function animation(){os.forEach(o=>o.move());requestAnimationFrame(animation);})();
 
 }//end ski
-
-
-
-
-
-function smash(){
-addEventListener("click",move);
-let rows=3,p=floor(W/rows),i={x:0,y:0};
-let c=L.canvas(p*0.7);
-let min=700,decay=200/10,scale=decay*200,interval;
-interval=scale/decay++;
-animate();
-
-function animate(){
-i.x=L.rnd(rows);let t=L.rnd(rows-1);i.y=t+(t>=i.y);
-c.white();c.icon(127875,i.x*p+(p/2),i.y*p+(p/2));
-L.debug(floor(min+interval),c);
-setTimeout(animate,(min+interval));
-}
-
-function move({pageX:x,pageY:y}){
-if(!(floor(x/p)==i.x && floor(y/p)==i.y))return;
-interval=scale/decay++;
-c.icon(128165,i.x*p+(p/2),i.y*p+(p/2));
-}
-
-}//end smash
-
-
-
-
-
-function monkeymaze(){
-addEventListener("click",move,false);
-let rows=12,qty=3,p=floor(W/rows);
-let cb=L.canvas(p*0.7),cf=L.canvas(p*0.7);
-let t=Array.from({length:rows}),rna=L.RandomArray(qty,rows);
-let banana={x:0,y:0,icon:127820};
-let monkey={x:0,y:0,icon:128018};
-init();
-
-function init(){
-cb.white();
-cf.clearRect(0,0,W,W);
-t.forEach((_,i,a)=>a[i]=rna.next().sort());
-t.forEach((y,iy)=>y.forEach(x=>draw(cb,{x:x,y:iy,icon:127796})));
-draw(cb,rnd(banana));
-draw(cf,rnd(monkey));
-}
-
-function move({pageX,pageY}){
-let dx=pageX-(W/2),dy=pageY-(W/2),{x,y}=monkey;
-if(dx>dy) if(-dx>dy){while(t[y+=-1]?.every(e=>e!=x));}else{x=t[y][t[y].indexOf(x)+1];}
-else      if(-dx<dy){while(t[y+= 1]?.every(e=>e!=x));}else{x=t[y][t[y].indexOf(x)-1];}
-y=t[y]&&y;if(x==undefined || y==undefined)return;
-monkey.x=x;monkey.y=y;
-cf.clearRect(0,0,W,W);draw(cf,monkey);
-if(monkey.x==banana.x && monkey.y==banana.y){setTimeout(init,1000);return;}
-}
-
-function rnd(o){o.y=L.rnd(rows);o.x=t[o.y][L.rnd(qty)];return o;}
-function draw(cn,{x,y,icon}){cn.icon(icon,x*p+(p/2),y*p+(p/2));}
-
-}//end monkeymaze
-
-
-
-
-
-function chess(){
-addEventListener("pointerdown",({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
-timeout=setTimeout(()=>{interval=setInterval(()=>{let a=board[y][x];board[y][x]=a===""?0:a+1==12?"":a+1;move();},500);},1000);
-},false);
-addEventListener("pointerup"  ,({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
-clearTimeout(timeout);if(interval){clearInterval(interval);interval=undefined;return;}
-move(x,y);
-},false);
-
-let board=[
-[ 8,10, 9, 7, 6, 9,10, 8,],
-[11,11,11,11,11,11,11,11,],
-["","","","","","","","",],
-["","","","","","","","",],
-["","","","","","","","",],
-["","","","","","","","",],
-[ 5, 5, 5, 5, 5, 5, 5, 5,],
-[ 2, 4, 3, 1, 0, 3, 4, 2,],
-];
-board.run=function(func){this.forEach((y,iy)=>y.forEach((_,ix)=>func(iy,ix)));}
-
-let timeout,interval,p=W/board.length,cb=L.canvas(),cf=L.canvas(p,9812),tgl=1,prev;
-board.run((y,x)=>{cb.fillStyle=(y+x)%2?"green":"white";cb.fillRect(y*p,x*p,p,p);});
-move();
-
-function move(x,y){
-if(x&&!(tgl && board[y][x]==="")){(board[y][x]=(tgl^=1)?prev:((prev=board[y][x]),""));}
-cf.clearRect(0,0,W,W);
-board.run((y,x)=>{cf.icon(board[y][x],x*p+(p*0.5),y*p+(p*0.6));});
-}
-
-}//end chess
-
-
-
-
-
-function pairs(){
-addEventListener("click",({pageX:x,pageY:y})=>move(floor(x/p)+floor(y/p)*rows),false);
-let rows=4,p=floor(W/rows),m,found,pair,misses=0;
-let rna=L.RandomArray((rows*rows/2),66);
-let cb=L.canvas(),cf=L.canvas(p*0.4,127789);
-cb.white();
-for(let i=0;i<(rows*rows);i++){cb.strokeRect(i%rows*p,floor(i/rows)*p,p,p);}
-init();
-
-function init(){
-found=[];pair=[];cf.clearRect(0,0,W,W);misses=0;
-m=rna.next();m=[...m,...m];
-let r,i=m.length;
-while(i--&&((r=L.rnd(i)),([m[r],m[i]]=[m[i],m[r]])));
-}
-
-function move(i){
-if(found.length==m.length-2){alert("Misses: "+misses);init();return; }
-if(pair.includes(i) || found.includes(i)){return;}
-if(pair.length==2){
-  if(m[pair[0]]==m[pair[1]]){found.push(...pair);}
-  else{pair.forEach(v=>cf.clearRect(v%rows*p,floor(v/rows)*p,p,p));misses++;}
-  pair=[];
-}
-pair.push(i);
-cf.icon(m[i],i%rows*p+p*0.5,floor(i/rows)*p+p*0.6);
-}
-
-}//end pairs
-
-
-
-
-
-function snake(){
-addEventListener("click",move,false);
-let cb=L.canvas();
-let r=10,p=floor(W/r),m=r*r,head=m-r,food=head+3,snake=[head];
-let du=()=>-r+m*(head<r);
-let dd=()=>+r-m*(head>=(m-r));
-let dl=()=>-1+r*(head%r==0);
-let dr=()=>+1-r*(head%r==(r-1));
-let d=dr;
-cb.white();
-setInterval(animation,500);
-
-function animation(){
-head+=d();
-if(snake.includes(head)){cb.white();snake=[head];}
-snake.push(head);
-draw(head,"blue");
-if(head==food){food=L.rnd(m);}
-else{draw(snake.shift(),"white");}
-draw(food,"red");
-}
-
-function move({pageX,pageY}){d=(d==du || d==dd)?pageX<(W/2)?dl:dr:pageY<(W/2)?du:dd;}
-function draw(i,color){cb.fillStyle=color;cb.fillRect((i%r)*p,floor(i/r)*p,p,p);}
-
-}//end snake
 
 
 
@@ -1070,6 +906,172 @@ setTimeout(()=>         ship=rocketnone,200);
 
 
 
+function monkeymaze(){
+addEventListener("click",move,false);
+let rows=12,qty=3,p=floor(W/rows);
+let cb=L.canvas(p*0.7),cf=L.canvas(p*0.7);
+let t=Array.from({length:rows}),rna=L.RandomArray(qty,rows);
+let banana={x:0,y:0,icon:127820};
+let monkey={x:0,y:0,icon:128018};
+init();
+
+function init(){
+cb.white();
+cf.clearRect(0,0,W,W);
+t.forEach((_,i,a)=>a[i]=rna.next().sort());
+t.forEach((y,iy)=>y.forEach(x=>draw(cb,{x:x,y:iy,icon:127796})));
+draw(cb,rnd(banana));
+draw(cf,rnd(monkey));
+}
+
+function move({pageX,pageY}){
+let dx=pageX-(W/2),dy=pageY-(W/2),{x,y}=monkey;
+if(dx>dy) if(-dx>dy){while(t[y+=-1]?.every(e=>e!=x));}else{x=t[y][t[y].indexOf(x)+1];}
+else      if(-dx<dy){while(t[y+= 1]?.every(e=>e!=x));}else{x=t[y][t[y].indexOf(x)-1];}
+y=t[y] && y;if(x==undefined || y==undefined)return;
+monkey.x=x;monkey.y=y;
+cf.clearRect(0,0,W,W);draw(cf,monkey);
+if(monkey.x==banana.x && monkey.y==banana.y){setTimeout(init,1000);return;}
+}
+
+function rnd(o){o.y=L.rnd(rows);o.x=t[o.y][L.rnd(qty)];return o;}
+function draw(cn,{x,y,icon}){cn.icon(icon,x*p+(p/2),y*p+(p/2));}
+
+}//end monkeymaze
+
+
+
+
+
+function snake(){
+addEventListener("click",move,false);
+let cb=L.canvas();
+let r=10,p=floor(W/r),m=r*r,head=m-r,food=head+3,snake=[head];
+let du=()=>-r+m*(head<r);
+let dd=()=>+r-m*(head>=(m-r));
+let dl=()=>-1+r*(head%r==0);
+let dr=()=>+1-r*(head%r==(r-1));
+let d=dr;
+cb.white();
+setInterval(animation,500);
+
+function animation(){
+head+=d();
+if(snake.includes(head)){cb.white();snake=[head];}
+snake.push(head);
+draw(head,"blue");
+if(head==food){food=L.rnd(m);}
+else{draw(snake.shift(),"white");}
+draw(food,"red");
+}
+
+function move({pageX,pageY}){d=(d==du || d==dd)?pageX<(W/2)?dl:dr:pageY<(W/2)?du:dd;}
+function draw(i,color){cb.fillStyle=color;cb.fillRect((i%r)*p,floor(i/r)*p,p,p);}
+
+}//end snake
+
+
+
+
+
+function chess(){
+addEventListener("pointerdown",({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
+timeout=setTimeout(()=>{interval=setInterval(()=>{let a=board[y][x];board[y][x]=a===""?0:a+1==12?"":a+1;move();},500);},1000);
+},false);
+addEventListener("pointerup"  ,({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
+clearTimeout(timeout);if(interval){clearInterval(interval);interval=undefined;return;}
+move(x,y);
+},false);
+
+let board=[
+[ 8,10, 9, 7, 6, 9,10, 8,],
+[11,11,11,11,11,11,11,11,],
+["","","","","","","","",],
+["","","","","","","","",],
+["","","","","","","","",],
+["","","","","","","","",],
+[ 5, 5, 5, 5, 5, 5, 5, 5,],
+[ 2, 4, 3, 1, 0, 3, 4, 2,],
+];
+board.run=function(func){this.forEach((y,iy)=>y.forEach((_,ix)=>func(iy,ix)));}
+
+let timeout,interval,p=W/board.length,cb=L.canvas(),cf=L.canvas(p,9812),tgl=1,prev;
+board.run((y,x)=>{cb.fillStyle=(y+x)%2?"green":"white";cb.fillRect(y*p,x*p,p,p);});
+move();
+
+function move(x,y){
+if(x && !(tgl && board[y][x]==="")){(board[y][x]=(tgl^=1)?prev:((prev=board[y][x]),""));}
+cf.clearRect(0,0,W,W);
+board.run((y,x)=>{cf.icon(board[y][x],x*p+(p*0.5),y*p+(p*0.6));});
+}
+
+}//end chess
+
+
+
+
+
+function pairs(){
+addEventListener("click",({pageX:x,pageY:y})=>move(floor(x/p)+floor(y/p)*rows),false);
+let rows=4,p=floor(W/rows),m,found,pair,misses=0;
+let rna=L.RandomArray((rows*rows/2),66);
+let cb=L.canvas(),cf=L.canvas(p*0.4,127789);
+cb.white();
+for(let i=0;i<(rows*rows);i++){cb.strokeRect(i%rows*p,floor(i/rows)*p,p,p);}
+init();
+
+function init(){
+found=[];pair=[];cf.clearRect(0,0,W,W);misses=0;
+m=rna.next();m=[...m,...m];
+let r,i=m.length;
+while(i-- && ((r=L.rnd(i)),([m[r],m[i]]=[m[i],m[r]])));
+}
+
+function move(i){
+if(found.length==m.length-2){alert("Misses: "+misses);init();return; }
+if(pair.includes(i) || found.includes(i)){return;}
+if(pair.length==2){
+  if(m[pair[0]]==m[pair[1]]){found.push(...pair);}
+  else{pair.forEach(v=>cf.clearRect(v%rows*p,floor(v/rows)*p,p,p));misses++;}
+  pair=[];
+}
+pair.push(i);
+cf.icon(m[i],i%rows*p+p*0.5,floor(i/rows)*p+p*0.6);
+}
+
+}//end pairs
+
+
+
+
+
+function smash(){
+addEventListener("click",move);
+let rows=3,p=floor(W/rows),icon={x:0,y:0};
+let c=L.canvas(p*0.7);
+let min=700,decay=200/10,scale=decay*200,interval;
+interval=scale/decay++;
+animation();
+
+function animation(){
+icon.x=L.rnd(rows);let t=L.rnd(rows-1);icon.y=t+(t>=icon.y);
+c.white();c.icon(127875,icon.x*p+(p/2),icon.y*p+(p/2));
+L.debug(floor(min+interval),c);
+setTimeout(animation,(min+interval));
+}
+
+function move({pageX:x,pageY:y}){
+if(!(floor(x/p)==icon.x && floor(y/p)==icon.y))return;
+interval=scale/decay++;
+c.icon(128165,icon.x*p+(p/2),icon.y*p+(p/2));
+}
+
+}//end smash
+
+
+
+
+
 
 
 
@@ -1111,7 +1113,7 @@ cn.textAlign="center";
 cn.textBaseline="middle";
 if(font){cn.font=font+'px monospace';}
 if(iconstart)cn.iconstart=iconstart;
-cn.icon=function(n,x=0,y=0){this.fillText((n==="")?"":String.fromCodePoint((this.iconstart??0)+n),x,y);}
+cn.icon=function(n,x=0,y=0){this.fillText((n==="")?"":String.fromCodePoint((this.iconstart ?? 0)+n),x,y);}
 cn.white=function(){
 let s=this.fillStyle;
 this.fillStyle="white";this.fillRect(0,0,this.canvas.width,this.canvas.height);
