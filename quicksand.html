@@ -303,7 +303,7 @@ T.S=T.E=historyarray[historycurr].us;
 function arrow(d){
 let i=T.E;
 if(find!=""){T.S=T.E;return;}
-i+=(d=="l")?-1:1;
+i+=d;
 if(T.S==T.E){
   T.S=T.E=i;
 }else{
@@ -586,8 +586,8 @@ let keys=[
 {r:0,c:4, f:()=>help(),           h:0,  s:"Help",          d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
 {r:0,c:5, f:()=>misc(),           h:0,  s:"Misc",          d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
 {r:0,c:6, f:()=>zoom(),           h:0,  s:"Zoom",          d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
-{r:1,c:3, f:()=>arrow("l"),       h:0,  s:"Left",          d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
-{r:1,c:4, f:()=>arrow("r"),       h:0,  s:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
+{r:1,c:3, f:()=>arrow(-1),        h:0,  s:"Left",          d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
+{r:1,c:4, f:()=>arrow(1),         h:0,  s:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
 {r:1,c:8, f:()=>unredo(-1),       h:0,  s:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
 {r:1,c:9, f:()=>unredo(1),        h:0,  s:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
 {r:6,c:9, f:()=>shift(),          h:0,  s:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
