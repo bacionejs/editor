@@ -57,15 +57,15 @@ unredo(); T.blur(); T.focus();
 
 new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
 
-let popup={toggle(f,alt){
-let e=popup[f];
+let view={toggle(f,alt){
+let e=view[f];
 if(e.className){
-  document.title=popup.title;
+  document.title=view.title;
   e.classList.remove("unhide");
   T.focus();
   e.style.zIndex=0;
 }else{
-  popup.title=document.title;
+  view.title=document.title;
   document.title=alt || f;
   e.classList.add("unhide");
   T.blur();
@@ -74,13 +74,13 @@ if(e.className){
 }}}
 
 window.addEventListener("error",(ev)=>{
-let f="Error",e=popup[f];
+let f="Error",e=view[f];
 if(!e){
-  e=popup[f]=element("div");
+  e=view[f]=element("div");
   e.style.cssText="font-family:monospace;width:100%;background-color:white;position:fixed;overflow-y:scroll;touch-action:pan-x pan-y;padding:2ch;white-space:pre-wrap;color:red;font-size:10;";
-  e.addEventListener("click",()=>popup.toggle(f));
+  e.addEventListener("click",()=>view.toggle(f));
 }
-popup.toggle(f);
+view.toggle(f);
 let s="";
 s+=`
 ${ev.message}
@@ -353,11 +353,11 @@ function shift(){
 function space(){chars(" ");}
 
 function pretty(){
-let f="Pretty",e=popup[f],body,name;
+let f="Pretty",e=view[f],body,name;
 if(!e){
-  e=popup[f]=element("div");
+  e=view[f]=element("div");
   e.style.cssText="font-family:monospace;height:100%;width:100%;background-color:white;touch-action:pan-x pan-y;padding:2ch;white-space:pre;overflow-y:scroll;position:fixed;";
-  e.addEventListener("click",()=>popup.toggle(f));
+  e.addEventListener("click",()=>view.toggle(f));
 }
 if(flagide){
   name="IDE";body=T.V;
@@ -366,8 +366,9 @@ if(flagide){
   if(c===undefined)return;
   ({name,body}=c);
 }
-popup.toggle(f,name);
+view.toggle(f,name);
 let s=body;
+
 s=s.trim().replace(/</g,'&lt;');
 s=s.replace(/^\/\/.*\n/gm,"");
 s=c(s,"red",'((([&]{2})|([?]{2}))=?|[,?:])');
@@ -378,21 +379,23 @@ s=c(s,"blue",'\\b('+Array.from(s.matchAll(/(unction +(?<fn>\w+))/g),v=>v.groups.
 s=c(s,"teal",'(?<!")\\b('+s.match(/[a-z]*/g).filter((v,i,a)=>a.indexOf(v)==i).filter(v=>{try{eval('let '+v+'=1')}catch{return true}}).join("|")+'|undefined)\\b(?!")'); //keywords
 s=c(s,"brown",'(//.*)');//comments
 let i=0;let mw=s.match(/\n/g).length.toString().length; s=s.replace(/^/gm,()=>String(++i).padStart(mw," ")+" ");//line numbers
+
 e.innerHTML=s;
 setTimeout(function(){e.querySelectorAll('span span').forEach(function(s){s.style.color='inherit';});},0);
 function c(s,color,match){if(match.replace(/[()]|\\b/g,"")==="")return s; return s.replace(RegExp(`${match}`,'g'),`<span style=color:${color}>$1</span>`);}
+
 }//end pretty
 
 function misc(){
-let f="Misc",e=popup[f];
-if(e){popup.toggle(f);return;}
-e=popup[f]=element("div");
-popup.toggle(f);
+let f="Misc",e=view[f];
+if(e){view.toggle(f);return;}
+e=view[f]=element("div");
+view.toggle(f);
 
 e.style.cssText="font-family:monospace;height:100%;width:100%;background-color:white;position:fixed;overflow-wrap:anywhere;overflow-y:scroll;touch-action:pan-x pan-y;display:flex;flex-direction:column;row-gap:5%;padding:2ch;z-index:9;white-space:pre-wrap;";
 let con,c;
 c=element("button",e);c.textContent="Close";c.style.cssText="position:fixed;top:5;right:5;";
-c.addEventListener("click",()=>popup.toggle(f));
+c.addEventListener("click",()=>view.toggle(f));
 
 let measure=element("span"); measure.style.visibility="hidden";
 con=element("details",e);
@@ -448,13 +451,13 @@ function range(r){
 }//end misc
 
 function help(){
-let f="Help",e=popup[f];
-if(e){popup.toggle(f);return;}
-e=popup[f]=element("div");
-popup.toggle(f);
+let f="Help",e=view[f];
+if(e){view.toggle(f);return;}
+e=view[f]=element("div");
+view.toggle(f);
 
 e.style.cssText="font-family:monospace;height:100%;width:100%;background-color:white;position:fixed;overflow-y:scroll;touch-action:pan-x pan-y;padding:2ch;white-space:pre-wrap;";
-e.addEventListener("click",()=>popup.toggle(f));
+e.addEventListener("click",()=>view.toggle(f));
 element("div",e).insertAdjacentHTML("beforeend",
 `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="50" height="50">
   <circle cx="15" cy="15" r="15" fill="black" />
