@@ -1,8 +1,10 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'/><script>onload=()=>{ ide();function ide(){
 
-document.title="Bacione Javascript Editor";
+let title="Bacione Javascript Editor";
+let file="bacione.html";
+document.title=title;
 function about(){
-return `${document.title} is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
+return `${title} is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
 License: GPL
 Github: github.com/bacionejs`;
 }
@@ -212,7 +214,7 @@ if(flagide){
   s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>";
 }
 a.href=URL.createObjectURL(new File([s],"",{type:"text/html"}));
-a.download=timestamp()+"bacione.html";
+a.download=timestamp()+file;
 a.click();
 URL.revokeObjectURL(a.href);
 a.remove();
