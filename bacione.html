@@ -371,7 +371,7 @@ let s=body;
 
 s=s.trim().replace(/</g,'&lt;');
 s=s.replace(/^\/\/.*\n/gm,"");
-s=c(s,"red",'((([&]{2})|([?]{2}))=?|[,?:])');
+s=c(s,"red",'((([&]{2})|([|]{2})|([?]{2}))=?|[,?:!])');
 s=c(s,"olive",'([0-9]+|".*?")');//literals
 s=c(s,"green",'\\b('+Array.from(s.matchAll(/((?<fn>\w+)={)/g),v=>v.groups.fn).join('|')+')\\b');//objects
 s=c(s,"purple",'([(){}[\\]])');//pairs
