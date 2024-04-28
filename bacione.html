@@ -455,9 +455,9 @@ let f="Help",e=view[f];
 if(e){view.toggle(f);return;}
 e=view[f]=element("div");
 view.toggle(f);
-
 e.style.cssText="font-family:monospace;height:100%;width:100%;background-color:white;position:fixed;overflow-y:scroll;touch-action:pan-x pan-y;padding:2ch;white-space:pre-wrap;";
 e.addEventListener("click",()=>view.toggle(f));
+
 element("div",e).insertAdjacentHTML("beforeend",
 `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="50" height="50">
   <circle cx="15" cy="15" r="15" fill="black" />
@@ -569,21 +569,30 @@ canvas.fill(L.shape([[x,y,...],...],scale))
 canvas.fill(L.shape(L.vertices(pixels)))
 </p><p>
 <b>Features</b>
-designed for phones and tablets
-no setup required
-one file
-offline
-vanilla javascript
-no dependencies
-one click run
-context aware logic helps reduce task steps
-less work to refactor your code
-easy to modify editor
-the editor source code is editable in the editor
-editor is less than 500 lines of significant code
-fully programmable keyboard, including creating you own button icons and functions
-easy to share the editor
-supports swipe, double-click, hold-repeat
+Designed for phones and tablets.
+No setup required.
+One file.
+Easy to share.
+Offline.
+Vanilla javascript.
+No dependencies.
+One click run.
+Context aware logic helps reduce task steps.
+Less work to refactor your code.
+Easy to modify editor.
+Edit the editor in the editor.
+Editor is less than 500 lines of significant code.
+Fully programmable keyboard, including creating you own button icons and functions.
+Supports swipe, doubleclick, longpress.
+</p><p>
+<b>Game Controls</b>
+Ski - Click anywhere.
+Pairs - Click in squares.
+Smash - Click the pumpkin.
+Monkeymaze - Click quadrants.
+Snake - Click verticle half if snake is horzontal, etc.
+Chess - Click piece and destination. Longpress to change piece.
+Marslander - Click on right or left of canvas. To disable sound, comment snd.rocket().
 </p>
 `);
 
@@ -748,7 +757,7 @@ let k=keys.clicked(ev);
 keys.prev=k;
 if(k==undefined)return;
 if(k.f && k.f.toString().includes("save"))return;//prevent save loop
-timeout=setTimeout(()=>{interval=setInterval(()=>{
+timeout=setTimeout(()=>{interval=setInterval(()=>{//longpress
   if(k.f){k.f();}else{chars(k.e.innerText);}
   T.focus();
 },repeatinterval);},repeattimeout);
@@ -758,7 +767,7 @@ keyboard.addEventListener("pointerup",(ev)=>{
 clearTimeout(timeout);if(interval){clearInterval(interval);interval=undefined;return;}
 let k=keys.clicked(ev);
 if(k==undefined)return;
-if(!(keys.prev.r==k.r && keys.prev.c==k.c)){//swipeup caps
+if(!(keys.prev.r==k.r && keys.prev.c==k.c)){//swipeup uppercase
   if(keys.prev.shift===undefined)return;
   k=keys.prev;
   chars(k.shift);
@@ -997,7 +1006,7 @@ function draw(i,color){cb.fillStyle=color;cb.fillRect((i%r)*p,floor(i/r)*p,p,p);
 
 
 function chess(){
-addEventListener("pointerdown",({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
+addEventListener("pointerdown",({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);//longpress
 timeout=setTimeout(()=>{interval=setInterval(()=>{let a=board[y][x];board[y][x]=a===""?0:a+1==12?"":a+1;move();},500);},1000);
 },false);
 addEventListener("pointerup"  ,({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
