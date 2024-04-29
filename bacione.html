@@ -384,16 +384,16 @@ let s=body;
 s=s.trim().replace(/</g,'&lt;');
 s=s.replace(/^\/\/.*\n/gm,"");
 s=c(s,"red",'((([&]{2})|([|]{2})|([?]{2}))=?|[,?:!])');
-s=c(s,"olive",'([0-9]+|".*?")');//literals
 s=c(s,"green",'\\b('+Array.from(s.matchAll(/((?<fn>\w+)={)/g),v=>v.groups.fn).join('|')+')\\b');//objects
-s=c(s,"purple",'([(){}[\\]])');//pairs
 s=c(s,"blue",'\\b('+Array.from(s.matchAll(/(unction +(?<fn>\w+))/g),v=>v.groups.fn).join('|')+')\\b');//your functions
 s=c(s,"teal",'(?<!")\\b('+s.match(/[a-z]*/g).filter((v,i,a)=>a.indexOf(v)==i).filter(v=>{try{eval('let '+v+'=1')}catch{return true}}).join("|")+'|undefined)\\b(?!")'); //keywords
 s=c(s,"brown",'(//.*)');//comments
+s=c(s,"olive",'([0-9]+|".*?")');//literals
+s=c(s,"purple",'([(){}[\\]])');//pairs
 let i=0;let mw=s.match(/\n/g).length.toString().length; s=s.replace(/^/gm,()=>String(++i).padStart(mw," ")+" ");//line numbers
 
 e.innerHTML=s;
-setTimeout(function(){e.querySelectorAll('span span').forEach(function(s){s.style.color='inherit';});},0);
+setTimeout(()=>e.querySelectorAll('span span').forEach(s=>s.style.color='inherit'),0);
 function c(s,color,match){if(match.replace(/[()]|\\b/g,"")==="")return s; return s.replace(RegExp(`${match}`,'g'),`<span style=color:${color}>$1</span>`);}
 
 }//end pretty
@@ -1009,7 +1009,7 @@ function draw(i,color){cb.fillStyle=color;cb.fillRect((i%r)*p,floor(i/r)*p,p,p);
 
 
 function chess(){
-addEventListener("pointerdown",({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);//longpress
+addEventListener("pointerdown",({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
 timeout=setTimeout(()=>{interval=setInterval(()=>{let a=board[y][x];board[y][x]=a===""?0:a+1==12?"":a+1;move();},500);},1000);
 },false);
 addEventListener("pointerup"  ,({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
