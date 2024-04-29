@@ -11,13 +11,25 @@ Github: github.com/bacionejs`;
 
 element("style").innerText=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
-pre{white-space:pre !important;}
 body{background-color:red;}
 ::selection{color:red;background:yellow;}
+
+.view{
+padding:2ch;
+touch-action:pan-x pan-y;
+font-family:monospace;
+width:100%;
+height:100%;
+background-color:white;
+position:fixed;
+white-space:pre-wrap;
+overflow-y:scroll;
+}
+
 @media print{
-  div,p{break-inside:avoid;}
-  body{visibility:hidden;height:99%;}
-  .unhide{visibility:visible;white-space:pre-wrap !important;position:static !important;overflow:visible !important;}
+div,p{break-inside:avoid;}
+body{visibility:hidden;height:99%;}
+.unhide{visibility:visible;white-space:pre-wrap !important;position:static !important;overflow:visible !important;}
 }
 `;
 
@@ -56,48 +68,6 @@ T.S=T.E=T.V.indexOf("{")+1;
 unredo(); T.blur(); T.focus();
 
 new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
-
-let view={toggle(f,alt){
-let e=view[f];
-if(e.className){
-  document.title=view.title;
-  e.classList.remove("unhide");
-  T.focus();
-  e.style.zIndex=0;
-}else{
-  view.title=document.title;
-  document.title=alt || f;
-  e.classList.add("unhide");
-  T.blur();
-  setTimeout(()=>{e.style.zIndex=9;},50);
-  e.style.fontSize=T.style.fontSize;
-}}}
-
-window.addEventListener("error",(ev)=>{
-let f="Error",e=view[f];
-if(!e){
-  e=view[f]=element("div");
-  e.style.cssText="font-family:monospace;width:100%;background-color:white;position:fixed;overflow-y:scroll;touch-action:pan-x pan-y;padding:2ch;white-space:pre-wrap;color:red;font-size:10;";
-  e.addEventListener("click",()=>view.toggle(f));
-}
-view.toggle(f);
-let s="";
-s+=`
-${ev.message}
-line:${ev.lineno}
-column:${ev.colno}
-`;
-if(running==true){
-  running=false;ifra.remove();ifra=undefined;
-  if(!(T.V.replace(/\/\/.*\n/g,"").match(/[(){}\[\]]/g).length%2==0)){
-    s+="\nMatching [](){}: failed";
-  }
-  T.S=T.E=T.V.split("\n",ev.lineno-1).join("\n").length+ev.colno;
-  T.blur();
-  T.focus();
-}
-e.innerText=s;
-},false);
 
 function currentgame(){
 let i=0,s=T.V,ftop,name;
@@ -222,7 +192,7 @@ a=undefined;
 }
 
 function zoom(){
-clickcnt++;if(clickcnt>1)return;
+if(++clickcnt>1)return;
 setTimeout(()=>{
 if(clickcnt==2){//Doubleclick for fullscreen
   if(document.fullscreenElement){
@@ -352,21 +322,63 @@ function shift(){
 
 function space(){chars(" ");}
 
-function pretty(){
-let f="Pretty",e=view[f],body,name;
-if(!e){
+let view={
+toggle(f,alt){
+let e=view[f];
+if(e){
+  e.exists=true;
+}else{
   e=view[f]=element("div");
-  e.style.cssText="font-family:monospace;height:100%;width:100%;background-color:white;touch-action:pan-x pan-y;padding:2ch;white-space:pre;overflow-y:scroll;position:fixed;";
+  e.className="view";
   e.addEventListener("click",()=>view.toggle(f));
 }
+e.classList.toggle("unhide");
+if(e.classList.contains("unhide")){
+  view.title=document.title;
+  document.title=alt || f;
+  T.blur();
+  setTimeout(()=>{e.style.zIndex=9;},50);
+  e.style.fontSize=T.style.fontSize;
+}else{
+  document.title=view.title;
+  T.focus();
+  e.style.zIndex=0;
+}
+return e;
+}
+}
+
+window.addEventListener("error",(ev)=>{
+let e=view.toggle("Error");
+let s="";
+s+=`
+${ev.message}
+line:${ev.lineno}
+column:${ev.colno}
+`;
+if(running==true){
+  running=false;ifra.remove();ifra=undefined;
+  if(!(T.V.replace(/\/\/.*\n/g,"").match(/[(){}\[\]]/g).length%2==0)){
+    s+="\nMatching [](){}: failed";
+  }
+  T.S=T.E=T.V.split("\n",ev.lineno-1).join("\n").length+ev.colno;
+  T.blur();
+  T.focus();
+}
+e.innerText=s;
+},false);
+
+function pretty(){
+let body,name;
 if(flagide){
   name="IDE";body=T.V;
 }else{
   let c=currentgame();
-  if(c===undefined)return;
+  if(c==undefined)return;
   ({name,body}=c);
 }
-view.toggle(f,name);
+let e=view.toggle("Pretty",name);
+e.style.whiteSpace="pre";
 let s=body;
 
 s=s.trim().replace(/</g,'&lt;');
@@ -387,32 +399,12 @@ function c(s,color,match){if(match.replace(/[()]|\\b/g,"")==="")return s; return
 }//end pretty
 
 function misc(){
-let f="Misc",e=view[f];
-if(e){view.toggle(f);return;}
-e=view[f]=element("div");
-view.toggle(f);
-
-e.style.cssText="font-family:monospace;height:100%;width:100%;background-color:white;position:fixed;overflow-wrap:anywhere;overflow-y:scroll;touch-action:pan-x pan-y;display:flex;flex-direction:column;row-gap:5%;padding:2ch;z-index:9;white-space:pre-wrap;";
+let e=view.toggle("Misc"); if(e.exists)return;
+e.style.overflowWrap="anywhere";
 let con,c;
-c=element("button",e);c.textContent="Close";c.style.cssText="position:fixed;top:5;right:5;";
-c.addEventListener("click",()=>view.toggle(f));
-
-let measure=element("span"); measure.style.visibility="hidden";
-con=element("details",e);
-con.insertAdjacentHTML("beforeend", `<summary>Icon Picker</summary>`);
-c=element("div",con);
-c.style.fontSize=30;
-c.insertAdjacentHTML("beforeend",range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<span>"+String.fromCodePoint(v)+"</span>",""));
-c.addEventListener("click",(e)=>{pastetext=e.target.innerText.codePointAt(0);pastetoggle("set");},false);
-measure.remove();
 
 con=element("div",e);
-con.insertAdjacentHTML("beforeend","<label>Color Picker  </label>");
-c=element("input",con);c.type="color";
-c.addEventListener("change",(e)=>{pastetext=e.target.value;pastetoggle("set");},false);
-
-con=element("div",e);
-con.insertAdjacentHTML("beforeend","<label>Edit the Editor  </label>");
+con.insertAdjacentHTML("beforeend","<br><label>Edit the Editor  </label>");
 c=element("button",con);c.textContent="off"
 c.addEventListener("click",e=>{
   if(flagide){
@@ -442,6 +434,20 @@ Unlike editing games, once the editor is broken, the broken editor cannot fix it
   }
 });
 
+con=element("div",e);
+con.insertAdjacentHTML("beforeend","<br><label>Color Picker  </label>");
+c=element("input",con);c.type="color";
+c.addEventListener("change",(e)=>{pastetext=e.target.value;pastetoggle("set");},false);
+
+let measure=element("span"); measure.style.visibility="hidden";
+con=element("div",e);
+con.insertAdjacentHTML("beforeend","<br>Icon Picker<br>");
+c=element("div",con);
+c.style.fontSize=30;
+c.insertAdjacentHTML("beforeend",range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<span>"+String.fromCodePoint(v)+"</span>",""));
+c.addEventListener("click",(e)=>{pastetext=e.target.innerText.codePointAt(0);pastetoggle("set");},false);
+measure.remove();
+
 function range(r){
   let a=[];
   r.forEach(v=>a.push(Array.from({length:(v[1]-v[0])+1},(_,i)=>v[0]+i)));
@@ -451,12 +457,7 @@ function range(r){
 }//end misc
 
 function help(){
-let f="Help",e=view[f];
-if(e){view.toggle(f);return;}
-e=view[f]=element("div");
-view.toggle(f);
-e.style.cssText="font-family:monospace;height:100%;width:100%;background-color:white;position:fixed;overflow-y:scroll;touch-action:pan-x pan-y;padding:2ch;white-space:pre-wrap;";
-e.addEventListener("click",()=>view.toggle(f));
+let e=view.toggle("Help"); if(e.exists)return;
 
 element("div",e).insertAdjacentHTML("beforeend",
 `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="50" height="50">
@@ -733,6 +734,8 @@ for(let k of keys){
   style.color=colorkeyforeground;
   style.gridColumn=k.c+1;
   style.gridRow=   k.r+1;
+  style.height="auto";
+  style.width="auto";
 }
 style=keyboard.style;
 style.backgroundColor=`rgb(0 0 0 / ${colorkeyboardopacity*100}%)`;
@@ -768,7 +771,7 @@ clearTimeout(timeout);if(interval){clearInterval(interval);interval=undefined;re
 let k=keys.clicked(ev);
 if(k==undefined)return;
 if(!(keys.prev.r==k.r && keys.prev.c==k.c)){//swipeup uppercase
-  if(keys.prev.shift===undefined)return;
+  if(keys.prev.shift==undefined)return;
   k=keys.prev;
   chars(k.shift);
 }else{
