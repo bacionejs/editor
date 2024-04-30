@@ -13,48 +13,50 @@ Tested on: Android 13, Chrome 121, tablet and phone`;
 element("style").innerText=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
 body{background-color:red;}
-::selection{color:red;background:yellow;}
-
+::selection{background:yellow;color:red;}
 .view{
-padding:2ch;
-touch-action:pan-x pan-y;
-font-family:monospace;
-width:100%;
-height:100%;
-background-color:white;
-position:fixed;
-white-space:pre-wrap;
-overflow-y:scroll;
+  width:100%;
+  height:100%;
+  background-color:white;
+  font-family:monospace;
+  padding:2ch;
+  touch-action:pan-x pan-y;
+  position:fixed;
+  white-space:pre-wrap;
+  overflow-y:scroll;
 }
-
 @media print{
-div,p{break-inside:avoid;}
-body{visibility:hidden;height:99%;}
-.unhide{visibility:visible;white-space:pre-wrap !important;position:static !important;overflow:visible !important;}
+  div,p{break-inside:avoid;}
+  body{visibility:hidden;height:99%;}
+  .unhide{
+    visibility:visible;
+    white-space:pre-wrap !important;
+    position:static !important;
+    overflow:visible !important;
+  }
 }
-`;
+`;//end style
 
-let fontsizesmall=10;
-let fontsizebig=15;
-let repeattimeout=500;
-let repeatinterval=100;
-let dblclickdelay=300;
-let historymax=50;
-let iconscale=0.4;
-let fontscale=0.5;
 let colortextareaforeground="lime";
 let colortextareabackground="black";
 let colorkeyforeground="white";
 let colorkeybackground="#38393D";//gray
 let colorkeybackgroundclick="lime";
 let colorkeyboardopacity=0.5;
-let style;
+let fontsizesmall=10;
+let fontsizebig=15;
+let repeattimeout=500;
+let repeatinterval=100;
+let dblclickdelay=300;
+let iconscale=0.4;
+let fontscale=0.5;
+let restoremax=50;
 
+let style;
 let floor=Math.floor;
 let FPS;
 let timeout,interval;
 let ifra,running=false;
-let historyarray=[],historycurr=-1;
 let clickcnt=0;
 let pastetext="";
 let find="",curr=0;
@@ -63,12 +65,191 @@ let originalide,flagide=false;
 let keys=createkeys();
 let T=createtextarea();
 let originalgame=T.V;
+let restore=restoreinit();
 
 T.V=gameprograms.toString().replace(/^.*|.*$/g,"");
 T.S=T.E=T.V.indexOf("{")+1;
-unredo(); T.blur(); T.focus();
+restore.set(); T.blur(); T.focus();
 
 new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
+
+function run(){
+if(flagide)return;
+if(running){
+  running=false;ifra.remove();ifra=undefined;
+  T.focus();
+}else{
+  let n=currentgame()?.name;
+  if(n==undefined)return;
+  running=true;
+  ifra=element("iframe");
+  style=ifra.style;
+  style.border=0;
+  style.width=innerWidth;
+  style.height=innerWidth;
+  style.position="fixed";
+  style.backgroundColor="pink";
+  ifra.contentWindow.eval("let FPS="+FPS+";"+T.V+n+"()");
+  T.blur();
+  setTimeout(()=>{ style.zIndex=9;},50);
+}
+}
+
+function save(){
+function timestamp(){
+let time=new Date();
+return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month"?1:0)).toString().padStart(2,"0")),"");
+}
+let a=element("a");
+a.hidden=true;
+let s;
+if(flagide){
+  s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();function ide(){"+T.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
+}else{
+  s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>";
+}
+a.href=URL.createObjectURL(new File([s],"",{type:"text/html"}));
+a.download=timestamp()+file;
+a.click();
+URL.revokeObjectURL(a.href);
+a.remove();
+a=undefined;
+}
+
+function zoom(){
+if(++clickcnt>1)return;
+setTimeout(()=>{
+if(clickcnt==2){//Doubleclick for fullscreen
+  if(document.fullscreenElement){
+    document.exitFullscreen();
+  }else{
+    document.documentElement.requestFullscreen({navigationUI:"show"});
+  }
+}else{//Change font size
+  style=T.style;
+  style.fontSize=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
+  T.blur();T.focus();
+}
+clickcnt=0;
+},dblclickdelay);
+}
+
+function complete(){
+let word,wordlength,ftop,found,first=0,last=-1,i=T.S;
+while((--i>=0) && /[a-zA-Z0-9.]/.test(T.V[i]));
+word=T.V.slice(i+1,T.S),wordlength=word.length;if(wordlength==0)return;
+ftop=flagide?1:currentgame()?.ftop;
+let find=(s,e,a)=>[...(T.V.slice(s,e).replaceAll(/"([^"]*)"|\/\/.*$/gm,"").matchAll("\\b"+word+"\\w*"))].at(a)?.[0];
+for(let f of [[ftop,T.S-wordlength-1,last],[T.S,Infinity,first],[0,ftop,last]]){
+  if((found=find(...f))!=undefined)break;
+}
+if(found==undefined)return;
+T.R(found.slice(wordlength),T.S,T.S,"end");
+}
+
+function comment(){
+let bl=T.V.lastIndexOf("\n",T.S-1)+1;
+let el=T.V.indexOf("\n",T.S)+1;
+let s=T.V.slice(bl,el);
+if(s.startsWith("//")){
+  T.R("",  bl,bl+2);T.S=T.E=el-2;
+}else{
+  pastetoggle(s);
+  T.R("//",bl,bl);  T.S=T.E=el+2;
+}
+}
+
+function paste(){
+if(find!==""){//rename is active
+  if(T.V.slice(T.S,T.E)===find){
+    T.R(pastetext,T.S,T.E,"end");
+  }
+  let f=((/^\w/.test(find))?`\\b${find}\\b`:find);
+  let i=T.V.slice(T.E,currentgame()?.fend).search(f);
+  if(i<0)return;
+  T.S=T.E+i;
+  T.blur();T.focus();
+  T.E=T.S+find.length;
+}else if(pastetext==="" || T.S!=T.E){
+  superselect();
+}else{
+  T.R(pastetext,T.S,T.E,"end");
+}
+}
+
+function restoreinit(){//undo/redo
+let a=[],curr=-1;
+function set(direction){
+if(direction===0){
+  a.splice(0,Infinity,{uv:T.V,us:T.S});
+  return;
+}
+if(pastetext!=="" && direction==-1){
+  if(T.S!=T.E){
+    T.E=T.S;
+  }
+  pastetoggle();
+  return;
+}
+if(direction==undefined){
+  if(a.length==restoremax){a.shift();}else{curr++;}
+  a.splice(curr,Infinity,{uv:T.V,us:T.S});
+  return;
+}
+if((direction==-1 && curr==0) || (direction==1 && curr==a.length-1))return;
+curr+=direction;
+T.V=a[curr].uv;
+T.S=T.E=a[curr].us;
+}
+return {set};
+}
+
+function arrow(direction){
+let i=T.E;
+if(find!==""){T.S=T.E;return;}
+i+=direction;
+if(T.S==T.E){
+  T.S=T.E=i;
+}else{
+  T.E=i;
+}
+if(T.S!=T.E){
+  pastetext=T.V.slice(T.S,T.E);
+}
+}
+
+function enter(){
+if(running){run();return;}
+if(find!==""){pastetext+="\n";T.R("\n",T.S,T.E,"end");curr=T.S;return;}//for unjoin
+if(T.S!=T.E){T.S=T.E;return;}
+let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/g);
+if(i==-1)i=0;
+//if(T.V[T.S-1]=="{")i+=indent;//indent after open-brace
+T.R("\n"+" ".repeat(i),T.S,T.S,"end");
+}
+
+function backspace(){
+if(find!==""){
+  pastetext=pastetext.slice(0,-1);
+  curr--;
+}
+if(T.S==T.E){
+  T.S>0 && T.R("",T.S-1,T.E);
+}else{
+  if(/\n/.test(T.V.slice(T.S,T.E))){//was a line cut
+    T.R("",T.S,T.E);
+    T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
+  }else{
+    T.R("",T.S,T.E);
+  }
+}
+}
+
+function shift(){
+  for(let k of keys){ if(k.shift){k.e.innerText=(k.e.innerText==k.d)?k.shift:k.d;}}
+}
+
+function space(){chars(" ");}
 
 function pastetoggle(p){
 let color;
@@ -80,7 +261,7 @@ if(p){
   pastetext="";
   find="";
 }
-["paste","unredo"].forEach(v=>keys.find(k=>k.f?.toString().includes(v)).e.firstChild.firstChild.style.stroke=color);
+["Paste","Undo"].forEach(v=>keys.find(k=>k.s?.includes(v)).e.firstChild.firstChild.style.stroke=color);
 }
 
 function currentgame(){
@@ -141,7 +322,7 @@ if(T.S!=T.E){
   find=T.V.slice(T.S,T.E);
   pastetext=c;
 }else{
-  if(find!="" && T.S==curr){
+  if(find!=="" && T.S==curr){
     pastetext+=c;
   }else{
     find="";
@@ -150,176 +331,6 @@ if(T.S!=T.E){
 T.R(c,T.S,T.E,"end");
 curr=T.S;
 }
-
-function run(){
-if(flagide)return;
-if(running){
-  running=false;ifra.remove();ifra=undefined;
-  T.focus();
-}else{
-  let n=currentgame()?.name;
-  if(n==undefined)return;
-  running=true;
-  ifra=element("iframe");
-  style=ifra.style;
-  style.border=0;
-  style.width=innerWidth;
-  style.height=innerWidth;
-  style.position="fixed";
-  style.backgroundColor="pink";
-  ifra.contentWindow.eval("let FPS="+FPS+";"+T.V+n+"()");
-  T.blur();
-  setTimeout(()=>{ style.zIndex=9;},50);
-}
-}
-
-function save(){
-function timestamp(){
-let time=new Date();
-return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month"?1:0)).toString().padStart(2,"0")),"");
-}
-let a=element("a");
-a.hidden=true;
-let s;
-if(flagide){
-  s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();function ide(){"+T.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
-}else{
-  s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>";
-}
-a.href=URL.createObjectURL(new File([s],"",{type:"text/html"}));
-a.download=timestamp()+file;
-a.click();
-URL.revokeObjectURL(a.href);
-a.remove();
-a=undefined;
-}
-
-function zoom(){
-if(++clickcnt>1)return;
-setTimeout(()=>{
-if(clickcnt==2){//Doubleclick for fullscreen
-  if(document.fullscreenElement){
-    document.exitFullscreen();
-  }else{
-    document.documentElement.requestFullscreen({navigationUI:"show"});
-  }
-}else{//Change font size
-  style=T.style;
-  style.fontSize=style.fontSize==fontsizesmall+"px"?fontsizebig:fontsizesmall;
-  T.blur();T.focus();
-}
-clickcnt=0;
-},dblclickdelay);
-}
-
-function complete(){
-let word,wordlength,ftop,found,first=0,last=-1,i=T.S;
-while((--i>=0) && /[a-zA-Z0-9.]/.test(T.V[i]));
-word=T.V.slice(i+1,T.S),wordlength=word.length;if(wordlength==0)return;
-ftop=flagide?1:currentgame().ftop;
-let find=(s,e,a)=>[...(T.V.slice(s,e).replaceAll(/"([^"]*)"|\/\/.*$/gm,"").matchAll("\\b"+word+"\\w*"))].at(a)?.[0];
-for(let f of [[ftop,T.S-wordlength-1,last],[T.S,Infinity,first],[0,ftop,last]]){
-  if((found=find(...f))!=undefined)break;
-}
-if(found==undefined)return;
-T.R(found.slice(wordlength),T.S,T.S,"end");
-}
-
-function comment(){
-let bl=T.V.lastIndexOf("\n",T.S-1)+1;
-let el=T.V.indexOf("\n",T.S)+1;
-let s=T.V.slice(bl,el);
-if(s.startsWith("//")){
-  T.R("",  bl,bl+2);T.S=T.E=el-2;
-}else{
-  pastetoggle(s);
-  T.R("//",bl,bl);  T.S=T.E=el+2;
-}
-}
-
-function paste(){
-if(find!==""){//rename is active
-  if(T.V.slice(T.S,T.E)==find){
-    T.R(pastetext,T.S,T.E,"end");
-  }
-  let f=((/^\w/.test(find))?`\\b${find}\\b`:find);
-  let i=T.V.slice(T.E,currentgame().fend).search(f);
-  if(i<0)return;
-  T.S=T.E+i;
-  T.blur();T.focus();
-  T.E=T.S+find.length;
-}else if(pastetext==="" || T.S!=T.E){
-  superselect();
-}else{
-  T.R(pastetext,T.S,T.E,"end");
-}
-}
-
-function unredo(direction){
-if(pastetext!=="" && direction==-1){
-  if(T.S!=T.E){
-    T.E=T.S;
-  }
-  pastetoggle();
-  return;
-}
-if(direction==undefined){
-  if(historyarray.length==historymax){historyarray.shift();}else{historycurr++;}
-  historyarray.splice(historycurr,Infinity,{uv:T.V,us:T.S});
-  return;
-}
-if((direction==-1 && historycurr==0) || (direction==1 && historycurr==historyarray.length-1))return;
-historycurr+=direction;
-T.V=historyarray[historycurr].uv;
-T.S=T.E=historyarray[historycurr].us;
-}
-
-function arrow(d){
-let i=T.E;
-if(find!=""){T.S=T.E;return;}
-i+=d;
-if(T.S==T.E){
-  T.S=T.E=i;
-}else{
-  T.E=i;
-}
-if(T.S!=T.E){
-  pastetext=T.V.slice(T.S,T.E);
-}
-}
-
-function enter(){
-if(running){run();return;}
-if(find!=""){pastetext+="\n";T.R("\n",T.S,T.E,"end");curr=T.S;return;}//for unjoin
-if(T.S!=T.E){T.S=T.E;return;}
-let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/g);
-if(i==-1)i=0;
-//if(T.V[T.S-1]=="{")i+=indent;//indent after open-brace
-T.R("\n"+" ".repeat(i),T.S,T.S,"end");
-}
-
-function backspace(){
-if(find!=""){
-  pastetext=pastetext.slice(0,-1);
-  curr--;
-}
-if(T.S==T.E){
-  T.S>0 && T.R("",T.S-1,T.E);
-}else{
-  if(/\n/.test(T.V.slice(T.S,T.E))){//was a line cut
-    T.R("",T.S,T.E);
-    T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
-  }else{
-    T.R("",T.S,T.E);
-  }
-}
-}
-
-function shift(){
-  for(let k of keys){ if(k.shift){k.e.innerText=(k.e.innerText==k.d)?k.shift:k.d;}}
-}
-
-function space(){chars(" ");}
 
 let view={
 toggle(f,alt){
@@ -365,7 +376,7 @@ if(running==true){
   T.focus();
 }
 e.innerText=s;
-},false);
+},false);//end error
 
 function pretty(){
 let body,name;
@@ -419,7 +430,7 @@ Unlike editing games, once the editor is broken, the broken editor cannot fix it
     T.V=gameprograms.toString().replace(/^.*|.*$/g,"");
     T.S=T.E=T.V.indexOf("{")+1;T.blur();T.focus();
     flagide=false;
-    historyarray.splice(0,Infinity,{uv:T.V,us:T.S});
+    restore.set(0);
   }else{
     if(originalgame!==T.V){
       if(!confirm("Unsaved game data will be lost"))return;
@@ -429,7 +440,7 @@ Unlike editing games, once the editor is broken, the broken editor cannot fix it
     T.V=ide.toString().replace(/^.*|.*$/g,"");
     T.S=T.E=T.V.indexOf("{")+1;T.blur();T.focus();
     originalide=T.V;
-    historyarray.splice(0,Infinity,{uv:T.V,us:T.S});
+    restore.set(0);
   }
 });
 
@@ -623,8 +634,8 @@ let keys=[
 {r:0,c:6, f:()=>zoom(),           h:0,  s:"Zoom",          d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
 {r:1,c:3, f:()=>arrow(-1),        h:0,  s:"Left",          d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
 {r:1,c:4, f:()=>arrow(1),         h:0,  s:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
-{r:1,c:8, f:()=>unredo(-1),       h:0,  s:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
-{r:1,c:9, f:()=>unredo(1),        h:0,  s:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
+{r:1,c:8, f:()=>restore.set(-1),  h:0,  s:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
+{r:1,c:9, f:()=>restore.set(1),   h:0,  s:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
 {r:6,c:9, f:()=>shift(),          h:0,  s:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
 {r:1,c:6, f:()=>comment(),              s:"Comment",       d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
 {r:1,c:5, f:()=>complete(),             s:"Complete",      d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
@@ -780,7 +791,7 @@ if(!(keys.prev.r==k.r && keys.prev.c==k.c)){//swipeup uppercase
 }
 k.e.style.backgroundColor=colorkeybackgroundclick;
 setTimeout(()=>k.e.style.backgroundColor=colorkeybackground,100);
-if(k.h==undefined)unredo();
+if(k.h==undefined)restore.set();
 },false);
 
 return keys;
