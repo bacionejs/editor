@@ -6,7 +6,8 @@ document.title=title;
 function about(){
 return `${title} is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
 License: GPL
-Github: github.com/bacionejs`;
+Github: github.com/bacionejs
+Tested on: Android 13, Chrome 121, tablet and phone`;
 }
 
 element("style").innerText=`
@@ -69,6 +70,19 @@ unredo(); T.blur(); T.focus();
 
 new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
 
+function pastetoggle(p){
+let color;
+if(p){
+  color=colorkeybackgroundclick;
+  pastetext=p;
+}else{
+  color=colorkeyforeground;
+  pastetext="";
+  find="";
+}
+["paste","unredo"].forEach(v=>keys.find(k=>k.f?.toString().includes(v)).e.firstChild.firstChild.style.stroke=color);
+}
+
 function currentgame(){
 let i=0,s=T.V,ftop,name;
 s=s.replace(/\n\/\/\S*/g,"");
@@ -119,8 +133,7 @@ if(/\w/.test(s[i])){//Word
   T.E++;
 }
 find="";
-pastetext=T.V.slice(T.S,T.E);
-pastetoggle("set");
+pastetoggle(T.V.slice(T.S,T.E));
 }
 
 function chars(c){
@@ -136,16 +149,6 @@ if(T.S!=T.E){
 }
 T.R(c,T.S,T.E,"end");
 curr=T.S;
-}
-
-function pastetoggle(toggle){
-let color=colorkeybackgroundclick;
-if(toggle=="unset"){
-  color=colorkeyforeground;
-  pastetext="";
-  find="";
-}
-["paste","unredo"].forEach(v=>keys.find(k=>k.f?.toString().includes(v)).e.firstChild.firstChild.style.stroke=color);
 }
 
 function run(){
@@ -229,8 +232,7 @@ let s=T.V.slice(bl,el);
 if(s.startsWith("//")){
   T.R("",  bl,bl+2);T.S=T.E=el-2;
 }else{
-  pastetext=s;
-  pastetoggle("set");
+  pastetoggle(s);
   T.R("//",bl,bl);  T.S=T.E=el+2;
 }
 }
@@ -258,7 +260,7 @@ if(pastetext!=="" && direction==-1){
   if(T.S!=T.E){
     T.E=T.S;
   }
-  pastetoggle("unset");
+  pastetoggle();
   return;
 }
 if(direction==undefined){
@@ -300,9 +302,6 @@ function backspace(){
 if(find!=""){
   pastetext=pastetext.slice(0,-1);
   curr--;
-  if(pastetext.length<1){
-    pastetoggle("unset");
-  }
 }
 if(T.S==T.E){
   T.S>0 && T.R("",T.S-1,T.E);
@@ -437,7 +436,7 @@ Unlike editing games, once the editor is broken, the broken editor cannot fix it
 con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br><label>Color Picker  </label>");
 c=element("input",con);c.type="color";
-c.addEventListener("change",(e)=>{pastetext=e.target.value;pastetoggle("set");},false);
+c.addEventListener("change",(e)=>pastetoggle(e.target.value),false);
 
 let measure=element("span"); measure.style.visibility="hidden";
 con=element("div",e);
@@ -445,7 +444,7 @@ con.insertAdjacentHTML("beforeend","<br>Icon Picker<br>");
 c=element("div",con);
 c.style.fontSize=30;
 c.insertAdjacentHTML("beforeend",range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<span>"+String.fromCodePoint(v)+"</span>",""));
-c.addEventListener("click",(e)=>{pastetext=e.target.innerText.codePointAt(0);pastetoggle("set");},false);
+c.addEventListener("click",(e)=>pastetoggle(e.target.innerText.codePointAt(0)),false);
 measure.remove();
 
 function range(r){
@@ -475,6 +474,10 @@ element("div",e).insertAdjacentHTML("beforeend",
 
 <p><b>About</b>
 ${about()}
+</p><p>
+<b>Download</b>
+At the github link, click editor, click ${file}, click download.
+The editor is one file including the games.
 </p><p>
 <b>Hello World</b>
 At the top of the editor, create this code and click Run:
