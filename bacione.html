@@ -323,34 +323,34 @@ T.R(c,T.S,T.E,"end");
 curr=T.S;
 }
 
-let view={
-toggle(f,alt){
-let e=view[f];
+let view=function(){
+let a=[],title;
+return function(f,alt){
+let e=a[f];
 if(e){
   e.exists=true;
 }else{
-  e=view[f]=element("div");
+  e=a[f]=element("div");
   e.className="view";
-  e.addEventListener("click",()=>view.toggle(f));
+  e.addEventListener("click",()=>view(f));
 }
 e.classList.toggle("unhide");
 if(e.classList.contains("unhide")){
-  view.title=document.title;
+  title=document.title;
   document.title=alt || f;
   T.blur();
   setTimeout(()=>{e.style.zIndex=9;},50);
   e.style.fontSize=T.style.fontSize;
 }else{
-  document.title=view.title;
+  document.title=title;
   T.focus();
   e.style.zIndex=0;
 }
 return e;
-}
-}
+}}();
 
 window.addEventListener("error",(ev)=>{
-let e=view.toggle("Error");
+let e=view("Error");
 let s="";
 s+=`
 ${ev.message}
@@ -378,7 +378,7 @@ if(flagide){
   if(c==undefined)return;
   ({name,body}=c);
 }
-let e=view.toggle("Pretty",name);
+let e=view("Pretty",name);
 e.style.whiteSpace="pre";
 let s=body;
 
@@ -400,7 +400,7 @@ function c(s,color,match){if(match.replace(/[()]|\\b/g,"")==="")return s; return
 }//end pretty
 
 function misc(){
-let e=view.toggle("Misc"); if(e.exists)return;
+let e=view("Misc"); if(e.exists)return;
 e.style.overflowWrap="anywhere";
 let con,c;
 
@@ -458,7 +458,7 @@ function range(r){
 }//end misc
 
 function help(){
-let e=view.toggle("Help"); if(e.exists)return;
+let e=view("Help"); if(e.exists)return;
 
 element("div",e).insertAdjacentHTML("beforeend",
 `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="50" height="50">
