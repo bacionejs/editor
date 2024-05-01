@@ -69,6 +69,12 @@ T.blur(); T.focus();
 
 new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
 
+function shift(){
+  for(let k of keys){ if(k.shift){k.e.innerText=(k.e.innerText==k.d)?k.shift:k.d;}}
+}
+
+function space(){chars(" ");}
+
 function run(){
 if(T.editing)return;
 if(running){
@@ -155,24 +161,6 @@ if(s.startsWith("//")){
 }
 }
 
-function paste(){
-if(find.value!==""){//rename is active
-  if(T.V.slice(T.S,T.E)===find.value){
-    T.R(pastetext,T.S,T.E,"end");
-  }
-  let b=(/^\w/.test(find.value))?"\\b":"";
-  let i=T.V.slice(T.E,currentgame()?.fend).search(b+find.value+b);
-  if(i<0)return;
-  T.S=T.E+i;
-  T.blur();T.focus();
-  T.E=T.S+find.value.length;
-}else if(pastetext==="" || T.S!=T.E){
-  superselect();
-}else{
-  T.R(pastetext,T.S,T.E,"end");
-}
-}
-
 let restore=function(){//undo/redo
 let a=[],curr=0; a.push({value:T.V,position:T.S});
 return function(direction){
@@ -195,7 +183,7 @@ if(direction===0){//reset
 
 function arrow(direction){
 let i=T.E;
-if(find.value!==""){T.S=T.E;return;}
+if(find.value!==""){T.S=T.E;return;}//rename skip
 i+=direction;
 if(T.S==T.E){
   T.S=T.E=i;
@@ -234,61 +222,43 @@ if(T.S==T.E){
 }
 }
 
-function shift(){
-  for(let k of keys){ if(k.shift){k.e.innerText=(k.e.innerText==k.d)?k.shift:k.d;}}
+function paste(){
+if(find.value!==""){//rename is active
+  if(T.V.slice(T.S,T.E)===find.value){
+    T.R(pastetext,T.S,T.E,"end");//replace
+  }
+  let i=T.V.slice(T.E,currentgame()?.fend).search(find.value.replace(/(^\w+$)/,"\\b$1\\b"));//find
+  if(i<0)return;
+  T.S=T.E+i;
+  T.blur();T.focus();
+  T.E=T.S+find.value.length;
+  return;
 }
-
-function space(){chars(" ");}
-
-function pastetoggle(p){
-let color;
-if(p){
-  color=colorkeybackgroundclick;
-  pastetext=p;
-}else{
-  color=colorkeyforeground;
-  pastetext="";
-  find.value="";
+if(!(pastetext==="" || T.S!=T.E)){//paste
+  T.R(pastetext,T.S,T.E,"end");
+  return;
 }
-["Paste","Undo"].forEach(v=>keys.find(k=>k.s?.includes(v)).e.firstChild.firstChild.style.stroke=color);
-}
-
-function currentgame(){
-let i=0,s=T.V,ftop,name;
-s=s.replace(/\n\/\/\S*/g,"");
-function end(){let cnt=1;while(++i<s.length && (cnt+=s[i]=="{"?1:s[i]=="}"?-1:0));}
-while(i<s.length){
-  ftop=i=s.indexOf("{",i)+1;
-  name=s.slice(s.lastIndexOf(" ",i)+1,s.lastIndexOf("(",i));
-  end();
-  if(i>=T.S)break;
-}
-if(name=="" || name=="Library" || /\W/.test(name))return undefined;
-return {name:name,ftop:ftop,fend:i,body:s.slice(ftop,i)};
-}
-
-function superselect(){
 let s=T.V,i=T.E,blockpairs={"(":")","{":"}","[":"]",'"':'"'};
 function end(a,b){let cnt=1;while(++i<s.length && (cnt+=s[i]===b?-1:s[i]===a?1:0));}
-if(/\w/.test(s[i])){//Word
+if(/\w/.test(s[i])){//select word
   if(T.S===T.E){
     while(--i>=0 && /\w/.test(s[i]));
     T.S=i+1;
   }
   while(++i<s.length && /\w/.test(s[i]));
   T.E=i;
-}else if(s[i]==" "){//Spaces
+}else if(s[i]==" "){//spaces
   while(++i<s.length && / /.test(s[i]));
   T.E=i;
-}else if(s[i-1]=="\n" && s[i]=="\n"){//Paragraph
+}else if(s[i-1]=="\n" && s[i]=="\n"){//paragraph
   T.S++;
   while(++i<s.length && !/\n{2}/.test(s[i]+""+s[i+1]));
   T.E=i+2;
-}else if(s[i]=="\n" && T.S==T.E){//Line
+}else if(s[i]=="\n" && T.S==T.E){//line
   T.E++;
   while(--i>0 && !/\n/.test(s[i]));
   T.S=i+1;
-}else if(s[i] in blockpairs){//Block
+}else if(s[i] in blockpairs){//block
   let i2=i;
   end(s[i],blockpairs[s[i]]);
   if(s.slice(i2,i).includes("\n")){
@@ -303,7 +273,21 @@ if(/\w/.test(s[i])){//Word
   T.E++;
 }
 find.value="";
-pastetoggle(T.V.slice(T.S,T.E));
+pastetoggle(T.V.slice(T.S,T.E));//pastetext=selection
+}//end paste
+
+
+function pastetoggle(p){
+let color;
+if(p){
+  color=colorkeybackgroundclick;
+  pastetext=p;
+}else{
+  color=colorkeyforeground;
+  pastetext="";
+  find.value="";
+}
+["Paste","Undo"].forEach(v=>keys.find(k=>k.s?.includes(v)).e.firstChild.firstChild.style.stroke=color);
 }
 
 function chars(c){
@@ -319,6 +303,20 @@ if(T.S!=T.E){
 }
 T.R(c,T.S,T.E,"end");
 find.position=T.S;
+}
+
+function currentgame(){
+let i=0,s=T.V,ftop,name;
+s=s.replace(/\n\/\/\S*/g,"");
+function end(){let cnt=1;while(++i<s.length && (cnt+=s[i]=="{"?1:s[i]=="}"?-1:0));}
+while(i<s.length){
+  ftop=i=s.indexOf("{",i)+1;
+  name=s.slice(s.lastIndexOf(" ",i)+1,s.lastIndexOf("(",i));
+  end();
+  if(i>=T.S)break;
+}
+if(name=="" || name=="Library" || /\W/.test(name))return undefined;
+return {name:name,ftop:ftop,fend:i,body:s.slice(ftop,i)};
 }
 
 let view=function(){
