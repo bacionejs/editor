@@ -176,32 +176,24 @@ if(find!==""){//rename is active
 }
 
 let restore=function(){//undo/redo
-let a=[],curr=-1;
-function set(direction){
-if(direction===0){
+let a=[],curr=0; a.push({uv:T.V,us:T.S});
+return function(direction){
+if(direction===0){//reset
   a.splice(0,Infinity,{uv:T.V,us:T.S});
-  return;
-}
-if(pastetext!=="" && direction==-1){
-  if(T.S!=T.E){
-    T.E=T.S;
-  }
+}else if(pastetext!=="" && direction==-1){//reset paste
+  if(T.S!=T.E){T.E=T.S;}
   pastetoggle();
-  return;
-}
-if(direction==undefined){
+}else if(direction==undefined){//add
+  if(T.V===a.at(-1)?.uv)return;
   if(a.length==50){a.shift();}else{curr++;}
   a.splice(curr,Infinity,{uv:T.V,us:T.S});
-  return;
+}else{//restore
+  if((direction==-1 && curr==0) || (direction==1 && curr==a.length-1))return;
+  curr+=direction;
+  T.V=a[curr].uv;
+  T.S=T.E=a[curr].us;
 }
-if((direction==-1 && curr==0) || (direction==1 && curr==a.length-1))return;
-curr+=direction;
-T.V=a[curr].uv;
-T.S=T.E=a[curr].us;
-}
-set();
-return set;
-}();
+}}();
 
 function arrow(direction){
 let i=T.E;
