@@ -170,7 +170,6 @@ if(T.S!=T.E){
 }
 
 function enter(){
-if(running){run();return;}
 if(find.value!==""){pastetext+="\n";T.R("\n",T.S,T.E,"end");find.position=T.S;return;}//for unjoin
 if(T.S!=T.E){T.S=T.E;return;}
 let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/g);
@@ -196,7 +195,10 @@ if(T.S==T.E){
 }
 }
 
-function space(){chars(" ");}
+function space(){
+if(running){run();return;}
+chars(" ");
+}
 
 function shift(){for(let k of keys){ if(k.shift){k.e.innerText=(k.e.innerText==k.d)?k.shift:k.d;}}}
 
@@ -483,7 +485,7 @@ function helloworld(){
 </p><p>
 <b>Run</b>
 Runs the game which contains the cursor.
-Stop game with Run or Enter.
+Also stops the game.
 </p><p>
 <b>Save</b>
 Saves to a timestamped file.
@@ -617,29 +619,29 @@ let keys=[
 {r:0,c:4, f:()=>help(),           h:0,  s:"Help",          d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
 {r:0,c:5, f:()=>misc(),           h:0,  s:"Misc",          d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
 {r:0,c:6, f:()=>zoom(),           h:0,  s:"Zoom",          d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
-{r:1,c:3, f:()=>arrow(-1),        h:0,  s:"Left",          d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
-{r:1,c:4, f:()=>arrow(1),         h:0,  s:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
-{r:1,c:8, f:()=>restore(-1),      h:0,  s:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
-{r:1,c:9, f:()=>restore(1),       h:0,  s:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
+{r:1,c:1, f:()=>arrow(-1),        h:0,  s:"Left",          d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
+{r:1,c:2, f:()=>arrow(1),         h:0,  s:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
+{r:1,c:6, f:()=>restore(-1),      h:0,  s:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
+{r:1,c:7, f:()=>restore(1),       h:0,  s:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
 {r:6,c:9, f:()=>shift(),          h:0,  s:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
-{r:1,c:6, f:()=>comment(),              s:"Comment",       d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
-{r:1,c:5, f:()=>complete(),             s:"Complete",      d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
-{r:1,c:7, f:()=>paste(),                s:"Paste",         d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
-{r:7,c:9, f:()=>enter(),                s:"Enter",         d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
-{r:7,c:8, f:()=>backspace(),            s:"Backspace",     d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
-{r:7,c:7, f:()=>space(),                                   d:""},
-{r:1,c:1, d:"?"},
-{r:1,c:2, d:"\""},
-{r:2,c:0, d:"("},
-{r:2,c:1, d:")"},
-{r:2,c:2, d:"{"},
-{r:2,c:3, d:"}"},
-{r:2,c:4, d:"["},
-{r:2,c:5, d:"]"},
-{r:2,c:6, d:","},
-{r:2,c:7, d:";"},
-{r:2,c:8, d:"."},
-{r:2,c:9, d:":"},
+{r:1,c:4, f:()=>comment(),              s:"Comment",       d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
+{r:1,c:3, f:()=>complete(),             s:"Complete",      d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
+{r:1,c:5, f:()=>paste(),                s:"Paste",         d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
+{r:1,c:9, f:()=>enter(),                s:"Enter",         d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
+{r:1,c:8, f:()=>backspace(),            s:"Backspace",     d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
+{r:7,c:9, f:()=>space(),                                   d:""},
+{r:1,c:0, d:"?"},
+{r:7,c:8, d:"\""},
+{r:2,c:4, d:"("},
+{r:2,c:5, d:")"},
+{r:2,c:6, d:"{"},
+{r:2,c:7, d:"}"},
+{r:2,c:8, d:"["},
+{r:2,c:9, d:"]"},
+{r:2,c:3, d:","},
+{r:2,c:2, d:";"},
+{r:2,c:1, d:"."},
+{r:2,c:0, d:":"},
 {r:3,c:0, d:"&"},
 {r:3,c:1, d:"|"},
 {r:3,c:2, d:"+"},
