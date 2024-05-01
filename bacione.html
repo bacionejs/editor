@@ -50,7 +50,6 @@ let repeatinterval=100;
 let dblclickdelay=300;
 let iconscale=0.4;
 let fontscale=0.5;
-let restoremax=50;
 
 let style;
 let floor=Math.floor;
@@ -65,11 +64,10 @@ let originalide,flagide=false;
 let keys=createkeys();
 let T=createtextarea();
 let originalgame=T.V;
-let restore=restoreinit();
 
 T.V=gameprograms.toString().replace(/^.*|.*$/g,"");
 T.S=T.E=T.V.indexOf("{")+1;
-restore.set(); T.blur(); T.focus();
+T.blur(); T.focus();
 
 new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
 
@@ -177,7 +175,7 @@ if(find!==""){//rename is active
 }
 }
 
-function restoreinit(){//undo/redo
+let restore=function(){//undo/redo
 let a=[],curr=-1;
 function set(direction){
 if(direction===0){
@@ -192,7 +190,7 @@ if(pastetext!=="" && direction==-1){
   return;
 }
 if(direction==undefined){
-  if(a.length==restoremax){a.shift();}else{curr++;}
+  if(a.length==50){a.shift();}else{curr++;}
   a.splice(curr,Infinity,{uv:T.V,us:T.S});
   return;
 }
@@ -201,8 +199,9 @@ curr+=direction;
 T.V=a[curr].uv;
 T.S=T.E=a[curr].us;
 }
-return {set};
-}
+set();
+return set;
+}();
 
 function arrow(direction){
 let i=T.E;
@@ -430,7 +429,7 @@ Unlike editing games, once the editor is broken, the broken editor cannot fix it
     T.V=gameprograms.toString().replace(/^.*|.*$/g,"");
     T.S=T.E=T.V.indexOf("{")+1;T.blur();T.focus();
     flagide=false;
-    restore.set(0);
+    restore(0);
   }else{
     if(originalgame!==T.V){
       if(!confirm("Unsaved game data will be lost"))return;
@@ -440,7 +439,7 @@ Unlike editing games, once the editor is broken, the broken editor cannot fix it
     T.V=ide.toString().replace(/^.*|.*$/g,"");
     T.S=T.E=T.V.indexOf("{")+1;T.blur();T.focus();
     originalide=T.V;
-    restore.set(0);
+    restore(0);
   }
 });
 
@@ -634,8 +633,8 @@ let keys=[
 {r:0,c:6, f:()=>zoom(),           h:0,  s:"Zoom",          d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
 {r:1,c:3, f:()=>arrow(-1),        h:0,  s:"Left",          d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
 {r:1,c:4, f:()=>arrow(1),         h:0,  s:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
-{r:1,c:8, f:()=>restore.set(-1),  h:0,  s:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
-{r:1,c:9, f:()=>restore.set(1),   h:0,  s:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
+{r:1,c:8, f:()=>restore(-1),      h:0,  s:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
+{r:1,c:9, f:()=>restore(1),       h:0,  s:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
 {r:6,c:9, f:()=>shift(),          h:0,  s:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
 {r:1,c:6, f:()=>comment(),              s:"Comment",       d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
 {r:1,c:5, f:()=>complete(),             s:"Complete",      d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
@@ -791,7 +790,7 @@ if(!(keys.prev.r==k.r && keys.prev.c==k.c)){//swipeup uppercase
 }
 k.e.style.backgroundColor=colorkeybackgroundclick;
 setTimeout(()=>k.e.style.backgroundColor=colorkeybackground,100);
-if(k.h==undefined)restore.set();
+if(k.h==undefined)restore();
 },false);
 
 return keys;
