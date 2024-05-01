@@ -2,12 +2,10 @@
 
 let file="bacione.html";
 document.title="Bacione Javascript Editor";
-function about(){
-return `${document.title} is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
+let about=`${document.title} is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
 License: GPL
 Github: github.com/bacionejs
 Tested on: Android 13, Chrome 121, tablet and phone`;
-}
 
 element("style").innerText=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
@@ -471,7 +469,7 @@ element("div",e).insertAdjacentHTML("beforeend",
 </svg>
 
 <p><b>About</b>
-${about()}
+${about}
 </p><p>
 <b>Download</b>
 The editor is one file including the games.
