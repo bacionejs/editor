@@ -57,21 +57,20 @@ let timeout,interval;
 let ifra,running=false;
 let clickcnt=0;
 let pastetext="";
-let find="",curr=0;
-let originalide,flagide=false;
+let find={v:"",curr:0};
 
 let keys=createkeys();
 let T=createtextarea();
-let originalgame=T.V;
 
-T.V=gameprograms.toString().replace(/^.*|.*$/g,"");
+T.V=T.game=gameprograms.toString().replace(/^.*|.*$/g,"");
+T.editor=""; T.editing=false;
 T.S=T.E=T.V.indexOf("{")+1;
 T.blur(); T.focus();
 
 new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
 
 function run(){
-if(flagide)return;
+if(T.editing)return;
 if(running){
   running=false;ifra.remove();ifra=undefined;
   T.focus();
@@ -100,7 +99,7 @@ return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((
 let a=element("a");
 a.hidden=true;
 let s;
-if(flagide){
+if(T.editing){
   s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();function ide(){"+T.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
 }else{
   s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>";
@@ -135,7 +134,7 @@ function complete(){
 let word,wordlength,ftop,found,first=0,last=-1,i=T.S;
 while((--i>=0) && /[a-zA-Z0-9.]/.test(T.V[i]));
 word=T.V.slice(i+1,T.S),wordlength=word.length;if(wordlength==0)return;
-ftop=flagide?1:currentgame()?.ftop;
+ftop=T.editing?1:currentgame()?.ftop;
 let find=(s,e,a)=>[...(T.V.slice(s,e).replaceAll(/"([^"]*)"|\/\/.*$/gm,"").matchAll("\\b"+word+"\\w*"))].at(a)?.[0];
 for(let f of [[ftop,T.S-wordlength-1,last],[T.S,Infinity,first],[0,ftop,last]]){
   if((found=find(...f))!=undefined)break;
@@ -157,16 +156,16 @@ if(s.startsWith("//")){
 }
 
 function paste(){
-if(find!==""){//rename is active
-  if(T.V.slice(T.S,T.E)===find){
+if(find.v!==""){//rename is active
+  if(T.V.slice(T.S,T.E)===find.v){
     T.R(pastetext,T.S,T.E,"end");
   }
-  let f=((/^\w/.test(find))?`\\b${find}\\b`:find);
+  let f=((/^\w/.test(find.v))?`\\b${find.v}\\b`:find.v);
   let i=T.V.slice(T.E,currentgame()?.fend).search(f);
   if(i<0)return;
   T.S=T.E+i;
   T.blur();T.focus();
-  T.E=T.S+find.length;
+  T.E=T.S+find.v.length;
 }else if(pastetext==="" || T.S!=T.E){
   superselect();
 }else{
@@ -175,28 +174,28 @@ if(find!==""){//rename is active
 }
 
 let restore=function(){//undo/redo
-let a=[],curr=0; a.push({uv:T.V,us:T.S});
+let a=[],curr=0; a.push({value:T.V,position:T.S});
 return function(direction){
 if(direction===0){//reset
-  a.splice(0,Infinity,{uv:T.V,us:T.S});
+  a.splice(0,Infinity,{value:T.V,position:T.S});
 }else if(pastetext!=="" && direction==-1){//reset paste
   if(T.S!=T.E){T.E=T.S;}
   pastetoggle();
 }else if(direction==undefined){//add
-  if(T.V===a.at(-1)?.uv)return;
+  if(T.V===a.at(-1)?.value)return;
   if(a.length==50){a.shift();}else{curr++;}
-  a.splice(curr,Infinity,{uv:T.V,us:T.S});
+  a.splice(curr,Infinity,{value:T.V,position:T.S});
 }else{//restore
   if((direction==-1 && curr==0) || (direction==1 && curr==a.length-1))return;
   curr+=direction;
-  T.V=a[curr].uv;
-  T.S=T.E=a[curr].us;
+  T.V=a[curr].value;
+  T.S=T.E=a[curr].position;
 }
 }}();
 
 function arrow(direction){
 let i=T.E;
-if(find!==""){T.S=T.E;return;}
+if(find.v!==""){T.S=T.E;return;}
 i+=direction;
 if(T.S==T.E){
   T.S=T.E=i;
@@ -210,7 +209,7 @@ if(T.S!=T.E){
 
 function enter(){
 if(running){run();return;}
-if(find!==""){pastetext+="\n";T.R("\n",T.S,T.E,"end");curr=T.S;return;}//for unjoin
+if(find.v!==""){pastetext+="\n";T.R("\n",T.S,T.E,"end");find.curr=T.S;return;}//for unjoin
 if(T.S!=T.E){T.S=T.E;return;}
 let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/g);
 if(i==-1)i=0;
@@ -219,9 +218,9 @@ T.R("\n"+" ".repeat(i),T.S,T.S,"end");
 }
 
 function backspace(){
-if(find!==""){
+if(find.v!==""){
   pastetext=pastetext.slice(0,-1);
-  curr--;
+  find.curr--;
 }
 if(T.S==T.E){
   T.S>0 && T.R("",T.S-1,T.E);
@@ -249,7 +248,7 @@ if(p){
 }else{
   color=colorkeyforeground;
   pastetext="";
-  find="";
+  find.v="";
 }
 ["Paste","Undo"].forEach(v=>keys.find(k=>k.s?.includes(v)).e.firstChild.firstChild.style.stroke=color);
 }
@@ -303,23 +302,23 @@ if(/\w/.test(s[i])){//Word
 }else{
   T.E++;
 }
-find="";
+find.v="";
 pastetoggle(T.V.slice(T.S,T.E));
 }
 
 function chars(c){
 if(T.S!=T.E){
-  find=T.V.slice(T.S,T.E);
+  find.v=T.V.slice(T.S,T.E);
   pastetext=c;
 }else{
-  if(find!=="" && T.S==curr){
+  if(find.v!=="" && T.S==find.curr){
     pastetext+=c;
   }else{
-    find="";
+    find.v="";
   }
 }
 T.R(c,T.S,T.E,"end");
-curr=T.S;
+find.curr=T.S;
 }
 
 let view=function(){
@@ -370,7 +369,7 @@ e.innerText=s;
 
 function pretty(){
 let body,name;
-if(flagide){
+if(T.editing){
   name="IDE";body=T.V;
 }else{
   let c=currentgame();
@@ -407,9 +406,9 @@ con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br><label>Edit the Editor  </label>");
 c=element("button",con);c.textContent="off"
 c.addEventListener("click",e=>{
-  if(flagide){
+  if(T.editing){
     e.target.textContent="off";
-    if(originalide!==T.V){
+    if(T.editor!==T.V){
     alert(`
 Saving changes to IDE...
 To see changes, open the new timestamped IDE html file.
@@ -419,17 +418,17 @@ Unlike editing games, once the editor is broken, the broken editor cannot fix it
     }
     T.V=gameprograms.toString().replace(/^.*|.*$/g,"");
     T.S=T.E=T.V.indexOf("{")+1;T.blur();T.focus();
-    flagide=false;
+    T.editing=false;
     restore(0);
   }else{
-    if(originalgame!==T.V){
+    if(T.game!==T.V){
       if(!confirm("Unsaved game data will be lost"))return;
     }
     e.target.textContent="on";
-    flagide=true;
+    T.editing=true;
     T.V=ide.toString().replace(/^.*|.*$/g,"");
     T.S=T.E=T.V.indexOf("{")+1;T.blur();T.focus();
-    originalide=T.V;
+    T.editor=T.V;
     restore(0);
   }
 });
