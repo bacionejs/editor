@@ -69,12 +69,6 @@ T.blur(); T.focus();
 
 new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
 
-function shift(){
-  for(let k of keys){ if(k.shift){k.e.innerText=(k.e.innerText==k.d)?k.shift:k.d;}}
-}
-
-function space(){chars(" ");}
-
 function run(){
 if(T.editing)return;
 if(running){
@@ -161,26 +155,6 @@ if(s.startsWith("//")){
 }
 }
 
-let restore=function(){//undo/redo
-let a=[],curr=0; a.push({value:T.V,position:T.S});
-return function(direction){
-if(direction===0){//reset
-  a.splice(0,Infinity,{value:T.V,position:T.S});
-}else if(pastetext!=="" && direction==-1){//reset paste
-  if(T.S!=T.E){T.E=T.S;}
-  pastetoggle();
-}else if(direction==undefined){//add
-  if(T.V===a.at(-1)?.value)return;
-  if(a.length==50){a.shift();}else{curr++;}
-  a.splice(curr,Infinity,{value:T.V,position:T.S});
-}else{//restore
-  if((direction==-1 && curr==0) || (direction==1 && curr==a.length-1))return;
-  curr+=direction;
-  T.V=a[curr].value;
-  T.S=T.E=a[curr].position;
-}
-}}();
-
 function arrow(direction){
 let i=T.E;
 if(find.value!==""){T.S=T.E;return;}//rename skip
@@ -221,6 +195,30 @@ if(T.S==T.E){
   }
 }
 }
+
+function space(){chars(" ");}
+
+function shift(){for(let k of keys){ if(k.shift){k.e.innerText=(k.e.innerText==k.d)?k.shift:k.d;}}}
+
+let restore=function(){//undo/redo
+let a=[],curr=0; a.push({value:T.V,position:T.S});
+return function(direction){
+if(direction===0){//reset
+  a.splice(0,Infinity,{value:T.V,position:T.S});
+}else if(pastetext!=="" && direction==-1){//reset paste
+  if(T.S!=T.E){T.E=T.S;}
+  pastetoggle();
+}else if(direction==undefined){//add
+  if(T.V===a.at(-1)?.value)return;
+  if(a.length==50){a.shift();}else{curr++;}
+  a.splice(curr,Infinity,{value:T.V,position:T.S});
+}else{//restore
+  if((direction==-1 && curr==0) || (direction==1 && curr==a.length-1))return;
+  curr+=direction;
+  T.V=a[curr].value;
+  T.S=T.E=a[curr].position;
+}
+}}();
 
 function paste(){
 if(find.value!==""){//rename is active
@@ -330,7 +328,7 @@ if(e){
   e.className="view";
   e.addEventListener("click",()=>view(f));
 }
-e.classList.toggle("unhide");
+e.classList.toggle("unhide");//for print
 if(e.classList.contains("unhide")){
   title=document.title;
   document.title=alt || f;
