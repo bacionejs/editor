@@ -52,17 +52,14 @@ let fontscale=0.5;
 let style;
 let floor=Math.floor;
 let FPS;
-let timeout,interval;
 let ifra,running=false;
-let clickcnt=0;
 let pastetext="";
-let find={value:"",position:0};
 
-let keys=createkeys();
+let keyboard, keys=createkeys();
 let T=createtextarea();
 
 T.V=T.game=gameprograms.toString().replace(/^.*|.*$/g,"");
-T.editor=""; T.editing=false;
+T.editor=""; T.editing=false; T.find={value:"",position:0};
 T.S=T.E=T.V.indexOf("{")+1;
 T.blur(); T.focus();
 
@@ -112,9 +109,9 @@ a=undefined;
 }
 
 function zoom(){
-if(++clickcnt>1)return;
+if(keyboard.clickcnt??=0 && ++keyboard.clickcnt>1)return;
 setTimeout(()=>{
-if(clickcnt==2){//Doubleclick for fullscreen
+if(keyboard.clickcnt==2){//Doubleclick for fullscreen
   if(document.fullscreenElement){
     document.exitFullscreen();
   }else{
@@ -125,7 +122,7 @@ if(clickcnt==2){//Doubleclick for fullscreen
   style.fontSize=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
   T.blur();T.focus();
 }
-clickcnt=0;
+keyboard.clickcnt=0;
 },dblclickdelay);
 }
 
@@ -156,7 +153,7 @@ if(s.startsWith("//")){
 
 function arrow(direction){
 let i=T.E;
-if(find.value!==""){T.S=T.E;return;}//rename skip
+if(T.find.value!==""){T.S=T.E;return;}//rename skip
 i+=direction;
 if(T.S==T.E){
   T.S=T.E=i;
@@ -169,7 +166,7 @@ if(T.S!=T.E){
 }
 
 function enter(){
-if(find.value!==""){pastetext+="\n";T.R("\n",T.S,T.E,"end");find.position=T.S;return;}//for unjoin
+if(T.find.value!==""){pastetext+="\n";T.R("\n",T.S,T.E,"end");T.find.position=T.S;return;}//for unjoin
 if(T.S!=T.E){T.S=T.E;return;}
 let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/g);
 if(i==-1)i=0;
@@ -178,9 +175,9 @@ T.R("\n"+" ".repeat(i),T.S,T.S,"end");
 }
 
 function backspace(){
-if(find.value!==""){
+if(T.find.value!==""){
   pastetext=pastetext.slice(0,-1);
-  find.position--;
+  T.find.position--;
 }
 if(T.S==T.E){
   T.S>0 && T.R("",T.S-1,T.E);
@@ -222,15 +219,15 @@ if(direction===0){//reset
 }}();
 
 function paste(){
-if(find.value!==""){//rename is active
-  if(T.V.slice(T.S,T.E)===find.value){
+if(T.find.value!==""){//rename is active
+  if(T.V.slice(T.S,T.E)===T.find.value){
     T.R(pastetext,T.S,T.E,"end");//replace
   }
-  let i=T.V.slice(T.E,currentgame()?.fend).search(find.value.replace(/(^\w+$)/,"\\b$1\\b"));//find
+  let i=T.V.slice(T.E,currentgame()?.fend).search(T.find.value.replace(/(^\w+$)/,"\\b$1\\b"));//find
   if(i<0)return;
   T.S=T.E+i;
   T.blur();T.focus();
-  T.E=T.S+find.value.length;
+  T.E=T.S+T.find.value.length;
   return;
 }
 if(!(pastetext==="" || T.S!=T.E)){//paste
@@ -271,7 +268,7 @@ if(/\w/.test(s[i])){//select word
 }else{
   T.E++;
 }
-find.value="";
+T.find.value="";
 pastetoggle(T.V.slice(T.S,T.E));//pastetext=selection
 }//end paste
 
@@ -284,24 +281,24 @@ if(p){
 }else{
   color=colorkeyforeground;
   pastetext="";
-  find.value="";
+  T.find.value="";
 }
 ["Paste","Undo"].forEach(v=>keys.find(k=>k.s?.includes(v)).e.firstChild.firstChild.style.stroke=color);
 }
 
 function chars(c){
 if(T.S!=T.E){
-  find.value=T.V.slice(T.S,T.E);
+  T.find.value=T.V.slice(T.S,T.E);
   pastetext=c;
 }else{
-  if(find.value!=="" && T.S==find.position){
+  if(T.find.value!=="" && T.S==T.find.position){
     pastetext+=c;
   }else{
-    find.value="";
+    T.find.value="";
   }
 }
 T.R(c,T.S,T.E,"end");
-find.position=T.S;
+T.find.position=T.S;
 }
 
 function currentgame(){
@@ -718,7 +715,7 @@ p.setAttribute('d',shape);
 return s;
 }
 
-let keyboard=element("div");
+keyboard=element("div");
 for(let k of keys){
   k.e=element("div",keyboard);
   if((typeof k.d=="function")){
@@ -759,14 +756,14 @@ let k=keys.clicked(ev);
 keys.prev=k;
 if(k==undefined)return;
 if(k.f && k.f.toString().includes("save"))return;//prevent save loop
-timeout=setTimeout(()=>{interval=setInterval(()=>{//longpress
+keyboard.timeout=setTimeout(()=>{keyboard.interval=setInterval(()=>{//longpress
   if(k.f){k.f();}else{chars(k.e.innerText);}
   T.focus();
 },repeatinterval);},repeattimeout);
 },false);
 
 keyboard.addEventListener("pointerup",(ev)=>{
-clearTimeout(timeout);if(interval){clearInterval(interval);interval=undefined;return;}
+clearTimeout(keyboard.timeout);if(keyboard.interval){clearInterval(keyboard.interval);keyboard.interval=undefined;return;}
 let k=keys.clicked(ev);
 if(k==undefined)return;
 if(!(keys.prev.r==k.r && keys.prev.c==k.c)){//swipeup uppercase
