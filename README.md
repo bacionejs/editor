@@ -1,1 +1,1 @@
-[Download help](downloadhelp.jpg)
+![Download help](downloadhelp.jpg)
