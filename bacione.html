@@ -109,7 +109,7 @@ a=undefined;
 }
 
 function zoom(){
-if(keyboard.clickcnt??=0 && ++keyboard.clickcnt>1)return;
+if(++keyboard.clickcnt>1)return;
 setTimeout(()=>{
 if(keyboard.clickcnt==2){//Doubleclick for fullscreen
   if(document.fullscreenElement){
