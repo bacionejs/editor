@@ -1,12 +1,15 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'/><script>onload=()=>{ ide();function ide(){
-let tested="Tested on: Android 13, Chrome 121, tablet and phone";
-if(navigator.maxTouchPoints<2){alert(tested);return;}
-let file="bacione.html";
-let link=`<a href=https://github.com/bacionejs/editor/blob/main/${file}>github.com/bacionejs</a>`;
 document.title="Bacione Javascript Editor";
+let tested="Tested on: Android 13, Chrome 121, tablet and phone"; if(navigator.maxTouchPoints<2){alert(tested);return;}
+let url="bacionejs";
+let file="bacione.html";
+let link=`<a href=https://raw.githubusercontent.com/${url}/editor/main/${file}>${file}</a>`;
+let download=`The editor is one file including the games.
+Download ${link}, open your file manager, click ${file} to run in your Chrome browser, click Run to play the Ski game.
+You may have to close and reopen ${file} the first time.`;
 let about=`${document.title} is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
 License: GPL
-Github: ${link} 
+Github: github.com/${url}
 ${tested}`;
 
 element("style").innerText=`
@@ -471,9 +474,7 @@ element("div",e).insertAdjacentHTML("beforeend",
 ${about}
 </p><p>
 <b>Download</b>
-The editor is one file including the games.
-At the github link, click editor, click ${file}, click download, open your file manager, click ${file} to run in your Chrome browser, click Run to play the Ski game.
-You may have to close and reopen ${file} the first time.
+${download}
 </p><p>
 <b>Hello World</b>
 At the top of the editor, create this code and click Run:
