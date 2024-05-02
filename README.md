@@ -1,1 +1,0 @@
-![Download help](downloadhelp.jpg)
