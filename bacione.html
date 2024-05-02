@@ -1,11 +1,12 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'/><script>onload=()=>{ ide();function ide(){
-
+let tested="Tested on: Android 13, Chrome 121, tablet and phone";
+if(navigator.maxTouchPoints<2){alert(tested);return;}
 let file="bacione.html";
 document.title="Bacione Javascript Editor";
 let about=`${document.title} is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
 License: GPL
 Github: github.com/bacionejs
-Tested on: Android 13, Chrome 121, tablet and phone`;
+${tested}`;
 
 element("style").innerText=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
@@ -528,7 +529,7 @@ Color-Picker and Icon-Picker put a code in Paste.
 Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
 </p><p>
 <b>Swipeup</b>
-Insert capital letter, instead of using shift.
+Inserts capital letter, instead of using shift.
 </p><p>
 <b>Errors</b>
 Runtime errors display an error message and automatically jump to the error in code.
