@@ -57,13 +57,12 @@ let style;
 let floor=Math.floor;
 let FPS;
 let ifra,running=false;
-let pastetext="";
 
 let keyboard, keys=createkeys();
 let T=createtextarea();
 
 T.V=T.game=gameprograms.toString().replace(/^.*|.*$/g,"");
-T.editor=""; T.editing=false; T.find={value:"",position:0};
+T.editor=""; T.editing=false; T.find={value:"",position:0}; T.pastetext="";
 T.S=T.E=T.V.indexOf("{")+1;
 T.blur(); T.focus();
 
@@ -165,12 +164,12 @@ if(T.S==T.E){
   T.E=i;
 }
 if(T.S!=T.E){
-  pastetext=T.V.slice(T.S,T.E);
+  T.pastetext=T.V.slice(T.S,T.E);
 }
 }
 
 function enter(){
-if(T.find.value!==""){pastetext+="\n";T.R("\n",T.S,T.E,"end");T.find.position=T.S;return;}//for unjoin
+if(T.find.value!==""){T.pastetext+="\n";T.R("\n",T.S,T.E,"end");T.find.position=T.S;return;}//for unjoin
 if(T.S!=T.E){T.S=T.E;return;}
 let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/g);
 if(i==-1)i=0;
@@ -180,7 +179,7 @@ T.R("\n"+" ".repeat(i),T.S,T.S,"end");
 
 function backspace(){
 if(T.find.value!==""){
-  pastetext=pastetext.slice(0,-1);
+  T.pastetext=T.pastetext.slice(0,-1);
   T.find.position--;
 }
 if(T.S==T.E){
@@ -207,7 +206,7 @@ let a=[],curr=0; a.push({value:T.V,position:T.S});
 return function(direction){
 if(direction===0){//reset
   a.splice(0,Infinity,{value:T.V,position:T.S});
-}else if(pastetext!=="" && direction==-1){//reset paste
+}else if(T.pastetext!=="" && direction==-1){//reset paste
   if(T.S!=T.E){T.E=T.S;}
   pastetoggle();
 }else if(direction==undefined){//add
@@ -225,7 +224,7 @@ if(direction===0){//reset
 function paste(){
 if(T.find.value!==""){//rename is active
   if(T.V.slice(T.S,T.E)===T.find.value){
-    T.R(pastetext,T.S,T.E,"end");//replace
+    T.R(T.pastetext,T.S,T.E,"end");//replace
   }
   let i=T.V.slice(T.E,currentgame()?.fend).search(T.find.value.replace(/(^\w+$)/,"\\b$1\\b"));//find
   if(i<0)return;
@@ -234,8 +233,8 @@ if(T.find.value!==""){//rename is active
   T.E=T.S+T.find.value.length;
   return;
 }
-if(!(pastetext==="" || T.S!=T.E)){//paste
-  T.R(pastetext,T.S,T.E,"end");
+if(!(T.pastetext==="" || T.S!=T.E)){//paste
+  T.R(T.pastetext,T.S,T.E,"end");
   return;
 }
 let s=T.V,i=T.E,blockpairs={"(":")","{":"}","[":"]",'"':'"'};
@@ -281,10 +280,10 @@ function pastetoggle(p){
 let color;
 if(p){
   color=colorkeybackgroundclick;
-  pastetext=p;
+  T.pastetext=p;
 }else{
   color=colorkeyforeground;
-  pastetext="";
+  T.pastetext="";
   T.find.value="";
 }
 ["Paste","Undo"].forEach(v=>keys.find(k=>k.s?.includes(v)).e.firstChild.firstChild.style.stroke=color);
@@ -293,10 +292,10 @@ if(p){
 function chars(c){
 if(T.S!=T.E){
   T.find.value=T.V.slice(T.S,T.E);
-  pastetext=c;
+  T.pastetext=c;
 }else{
   if(T.find.value!=="" && T.S==T.find.position){
-    pastetext+=c;
+    T.pastetext+=c;
   }else{
     T.find.value="";
   }
