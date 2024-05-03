@@ -12,7 +12,7 @@ License: GPL
 Github: github.com/${url}
 ${tested}`;
 
-element("style").innerText=`
+element("style").textContent=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
 body{background-color:red;}
 ::selection{background:yellow;color:red;}
@@ -194,12 +194,14 @@ if(T.S==T.E){
 }
 }
 
-function space(){
+function shift(){
 if(running){run();return;}
-chars(" ");
+for(let k of keys){
+  if(k.shift){
+    k.e.textContent=(k.e.textContent==k.d)?k.shift:k.d;
+  }
 }
-
-function shift(){for(let k of keys){ if(k.shift){k.e.innerText=(k.e.innerText==k.d)?k.shift:k.d;}}}
+}
 
 let restore=function(){//undo/redo
 let a=[],curr=0; a.push({value:T.V,position:T.S});
@@ -361,7 +363,7 @@ if(running==true){
   T.blur();
   T.focus();
 }
-e.innerText=s;
+e.textContent=s;
 },false);//end error
 
 function pretty(){
@@ -441,7 +443,7 @@ con.insertAdjacentHTML("beforeend","<br>Icon Picker<br>");
 c=element("div",con);
 c.style.fontSize=30;
 c.insertAdjacentHTML("beforeend",range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<span>"+String.fromCodePoint(v)+"</span>",""));
-c.addEventListener("click",(e)=>pastetoggle(e.target.innerText.codePointAt(0)),false);
+c.addEventListener("click",(e)=>pastetoggle(e.target.textContent.codePointAt(0)),false);
 measure.remove();
 
 function range(r){
@@ -611,23 +613,23 @@ for(let k of keys){
 
 function createkeys(){
 let keys=[
-{r:0,c:8, f:()=>save(),           h:0,  s:"Save",          d:()=>sv("M5 3 v2 h-10 v-2 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
-{r:0,c:9, f:()=>run(),            h:0,  s:"Run",           d:()=>sv("M5 0 l-9 5 v-10 l9 5")},
-{r:0,c:7, f:()=>pretty(),         h:0,  s:"Pretty",        d:()=>sv("M4 -3 h-2 v-2 l2 2 v8 h-8 v-10 h6")},
-{r:0,c:4, f:()=>help(),           h:0,  s:"Help",          d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
-{r:0,c:5, f:()=>misc(),           h:0,  s:"Misc",          d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
-{r:0,c:6, f:()=>zoom(),           h:0,  s:"Zoom",          d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
-{r:1,c:1, f:()=>arrow(-1),        h:0,  s:"Left",          d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
-{r:1,c:2, f:()=>arrow(1),         h:0,  s:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
-{r:1,c:6, f:()=>restore(-1),      h:0,  s:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
-{r:1,c:7, f:()=>restore(1),       h:0,  s:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
-{r:6,c:9, f:()=>shift(),          h:0,  s:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
-{r:1,c:4, f:()=>comment(),              s:"Comment",       d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
-{r:1,c:3, f:()=>complete(),             s:"Complete",      d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
-{r:1,c:5, f:()=>paste(),                s:"Paste",         d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
-{r:1,c:9, f:()=>enter(),                s:"Enter",         d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
-{r:1,c:8, f:()=>backspace(),            s:"Backspace",     d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
-{r:7,c:9, f:()=>space(),                                   d:""},
+{r:0,c:8, f:()=>save(),           s:"Save",          d:()=>sv("M5 3 v2 h-10 v-2 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
+{r:0,c:9, f:()=>run(),            s:"Run",           d:()=>sv("M5 0 l-9 5 v-10 l9 5")},
+{r:0,c:7, f:()=>pretty(),         s:"Pretty",        d:()=>sv("M4 -3 h-2 v-2 l2 2 v8 h-8 v-10 h6")},
+{r:0,c:4, f:()=>help(),           s:"Help",          d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
+{r:0,c:5, f:()=>misc(),           s:"Misc",          d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
+{r:0,c:6, f:()=>zoom(),           s:"Zoom",          d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
+{r:1,c:1, f:()=>arrow(-1),        s:"Left",          d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
+{r:1,c:2, f:()=>arrow(1),         s:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
+{r:1,c:6, f:()=>restore(-1),      s:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
+{r:1,c:7, f:()=>restore(1),       s:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
+{r:6,c:9, f:()=>shift(),          s:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
+{r:1,c:4, f:()=>comment(),        s:"Comment",       d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
+{r:1,c:3, f:()=>complete(),       s:"Complete",      d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
+{r:1,c:5, f:()=>paste(),          s:"Paste",         d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
+{r:1,c:9, f:()=>enter(),          s:"Enter",         d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
+{r:1,c:8, f:()=>backspace(),      s:"Backspace",     d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
+{r:7,c:9, d:" "},
 {r:7,c:7, d:"?"},
 {r:2,c:0, d:"\""},
 {r:2,c:4, d:"("},
@@ -722,7 +724,7 @@ for(let k of keys){
   if((typeof k.d=="function")){
     k.e.appendChild(k.d());
   }else{
-    k.e.innerText=k.d;
+    k.e.textContent=k.d;
   }
   style=k.e.style;
   style.display="flex";
@@ -756,9 +758,9 @@ ev.preventDefault();
 let k=keys.clicked(ev);
 keys.prev=k;
 if(k==undefined)return;
-if(k.f && k.f.toString().includes("save"))return;//prevent save loop
+if(k.s?.includes("Save"))return;//prevent save loop
 keyboard.timeout=setTimeout(()=>{keyboard.interval=setInterval(()=>{//longpress
-  if(k.f){k.f();}else{chars(k.e.innerText);}
+  if(k.f){k.f();}else{chars(k.e.textContent);}
   T.focus();
 },repeatinterval);},repeattimeout);
 },false);
@@ -772,11 +774,11 @@ if(!(keys.prev.r==k.r && keys.prev.c==k.c)){//swipeup uppercase
   k=keys.prev;
   chars(k.shift);
 }else{
-  if(k.f){k.f();}else{chars(k.e.innerText);}
+  if(k.f){k.f();}else{chars(k.e.textContent);}
 }
 k.e.style.backgroundColor=colorkeybackgroundclick;
 setTimeout(()=>k.e.style.backgroundColor=colorkeybackground,100);
-if(k.h==undefined)restore();
+if(!(/Save|Run|Help|Misc|Zoom|Left|Right|Undo|Redo|Shift/.test(k.s)))restore();
 },false);
 
 return keys;
@@ -1113,7 +1115,7 @@ c.icon(128165,icon.x*p+(p/2),icon.y*p+(p/2));
 
 
 function Library(){
-element("style").innerText=` *{margin:0;padding:0;position:fixed;touch-action:none;user-select:none;box-sizing:border-box;} `;
+element("style").textContent=` *{margin:0;padding:0;position:fixed;touch-action:none;user-select:none;box-sizing:border-box;} `;
 
 function RandomArray(qty,range){
 let a=Array.from({length:range},(_,i)=>i);
