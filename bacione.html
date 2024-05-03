@@ -112,6 +112,7 @@ a=undefined;
 }
 
 function zoom(){
+keyboard.clickcnt??=0;
 if(++keyboard.clickcnt>1)return;
 setTimeout(()=>{
 if(keyboard.clickcnt==2){//Doubleclick for fullscreen
@@ -356,8 +357,8 @@ column:${ev.colno}
 `;
 if(running==true){
   running=false;ifra.remove();ifra=undefined;
-  if(!(T.V.replace(/\/\/.*\n/g,"").match(/[(){}\[\]]/g).length%2==0)){
-    s+="\nMatching [](){}: failed";
+  if(!(T.V.replace(/\/\/.*\n/g,"").match(/[(){}[\]"]/g).length%2==0)){
+    s+=`\nMatching [](){}"": failed`;
   }
   T.S=T.E=T.V.split("\n",ev.lineno-1).join("\n").length+ev.colno;
   T.blur();
@@ -1009,7 +1010,7 @@ function draw(i,color){cb.fillStyle=color;cb.fillRect((i%r)*p,floor(i/r)*p,p,p);
 
 function chess(){
 addEventListener("pointerdown",({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
-timeout=setTimeout(()=>{interval=setInterval(()=>{let a=board[y][x];board[y][x]=a===""?0:a+1==12?"":a+1;move();},500);},1000);
+timeout=setTimeout(()=>{interval=setInterval(()=>{board[y][x]=board[y][x]?board[y][x]-1:12; move();},500);},1000);
 },false);
 addEventListener("pointerup"  ,({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
 clearTimeout(timeout);if(interval){clearInterval(interval);interval=undefined;return;}
@@ -1017,25 +1018,25 @@ move(x,y);
 },false);
 
 let board=[
-[ 8,10, 9, 7, 6, 9,10, 8,],
-[11,11,11,11,11,11,11,11,],
-["","","","","","","","",],
-["","","","","","","","",],
-["","","","","","","","",],
-["","","","","","","","",],
-[ 5, 5, 5, 5, 5, 5, 5, 5,],
-[ 2, 4, 3, 1, 0, 3, 4, 2,],
+[ 9,11,10, 8, 7,10,11, 9,],
+[12,12,12,12,12,12,12,12,],
+[ 0, 0, 0, 0, 0, 0, 0, 0,],
+[ 0, 0, 0, 0, 0, 0, 0, 0,],
+[ 0, 0, 0, 0, 0, 0, 0, 0,],
+[ 0, 0, 0, 0, 0, 0, 0, 0,],
+[ 6, 6, 6, 6, 6, 6, 6, 6,],
+[ 3, 5, 4, 2, 1, 4, 5, 3,],
 ];
 board.run=function(func){this.forEach((y,iy)=>y.forEach((_,ix)=>func(iy,ix)));}
 
-let timeout,interval,p=W/board.length,cb=L.canvas(),cf=L.canvas(p,9812),tgl=1,prev;
+let timeout,interval,p=W/board.length,cb=L.canvas(),cf=L.canvas(p,9811),tgl=1,prev;
 board.run((y,x)=>{cb.fillStyle=(y+x)%2?"green":"white";cb.fillRect(y*p,x*p,p,p);});
 move();
 
 function move(x,y){
-if(x && !(tgl && board[y][x]==="")){(board[y][x]=(tgl^=1)?prev:((prev=board[y][x]),""));}
+if(x && (!tgl || board[y][x])){(board[y][x]=(tgl^=1)?prev:((prev=board[y][x]),0));}
 cf.clearRect(0,0,W,W);
-board.run((y,x)=>{cf.icon(board[y][x],x*p+(p*0.5),y*p+(p*0.6));});
+board.run((y,x)=>{cf.icon(board[y][x]||"",x*p+(p*0.5),y*p+(p*0.6));});
 }
 
 }//end chess
