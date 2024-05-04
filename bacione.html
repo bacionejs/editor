@@ -837,11 +837,8 @@ return function(){ c.clear(); c.lineDashOffset+=speed; c.stroke(); };
 for(let i=0;i<2;i++)
 os.push((function(){        // Tree
 let s=floor(W/10),c=L.canvas(s),x=0;
-return function(){
-c.clear();
-x=x>0?x-speed:L.rnd(W*2,W);
-c.icon(hit?.(x)?128165:127794,x,x);
-};})());
+return function(){ c.clear(); x=x>0?x-speed:L.rnd(W*2,W); c.icon(hit?.(x)?128165:127794,x,x); };
+})());
 
 os.push((function(){        // Skier
 let s=floor(W/20),c=L.canvas(s),x=W/4,tgl=1,i=0,time=floor(s/speed),reset=3*time;
