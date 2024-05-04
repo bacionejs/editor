@@ -45,8 +45,9 @@ let colorkeyforeground="white";
 let colorkeybackground="#38393D";//gray
 let colorkeybackgroundclick="lime";
 let colorkeyboardopacity=0.5;
-let fontsizesmall=10;
+let fontsizesmall=8;
 let fontsizebig=15;
+//let fontsizebig=8;
 let repeattimeout=500;
 let repeatinterval=100;
 let dblclickdelay=300;
@@ -823,34 +824,38 @@ function gameprograms(){
 
 
 function ski(){
-let hit,speed=W/FPS/3,os=[],snow=L.canvas();snow.white();
-snow.fillStyle=L.gradient(snow,W,0,[[.2,"blue"],[.8,"skyblue"]]);snow.fill(L.shape([[0,0,W,W,W,0]]));
+let speed=W/FPS/3,os=[],c=L.canvas(),hit;
+c.white();
+c.fillStyle=L.gradient(c,W,0,[[.2,"blue"],[.8,"skyblue"]]);
+c.fill(L.shape([[0,0,W,W,W,0]]));
 
 os.push((function(){        // Motion Effect
-let s=floor(W/30),      c=L.canvas(),lw=s/5;c.strokeStyle="whitesmoke";c.lineWidth=lw;
-c.setLineDash([s,s]);c.moveTo(0,lw);c.lineTo(W,W+lw);
-return{move(){c.clearRect(0,0,W,W);c.lineDashOffset+=speed;c.stroke();},
-};})());
+let s=floor(W/30),c=L.canvas(),lw=s/5;
+c.strokeStyle="whitesmoke"; c.lineWidth=lw; c.setLineDash([s,s]); c.moveTo(0,lw); c.lineTo(W,W+lw);
+return function(){ c.clear(); c.lineDashOffset+=speed; c.stroke(); };
+})());
 
 for(let i=0;i<2;i++)
 os.push((function(){        // Tree
-let s=floor(W/10),x=-1,c=L.canvas(s);
-return{move(){c.clearRect(0,0,W,W);x=x>0?x-speed:L.rnd(W*2,W);c.icon(hit?.(x)?128165:127794,x,x);},
+let s=floor(W/10),c=L.canvas(s),x=0;
+return function(){
+c.clear();
+x=x>0?x-speed:L.rnd(W*2,W);
+c.icon(hit?.(x)?128165:127794,x,x);
 };})());
 
 os.push((function(){        // Skier
+let s=floor(W/20),c=L.canvas(s),x=W/4,tgl=1,i=0,time=floor(s/speed),reset=3*time;
+c.fillStyle="red"; c.scale(-1,1); c.translate(-x,x); c.icon(9975);
 addEventListener("click",()=>i||=1,false);
-let s=floor(W/20),x=W/4,c=L.canvas(s),i=1,tgl=1,time=floor(s/speed),reset=3*time,cool=4*time;
-c.fillStyle="red";c.scale(-1,1);c.translate(-x,x);
-hit=function(t){return((x-s)<t && t<(x+s) && !(0<i && i<reset));}
-let jump=()=>{c.clearRect(-s,-s,s*2,s*2);c.translate((tgl*=-1)*(s),tgl*(s/4));c.icon(9975);}
-return{move(){if(i==1 || i==reset){jump();}else if(i==cool){i=0;}i && i++;},
-};})());
+hit=function(t){ return((x-s)<t && t<(x+s) && !(0<i && i<reset)); }
+function jump(){ c.clearRect(-s,-s,s*2,s*2); c.translate((tgl*=-1)*(s),0); c.icon(9975); }
+return function(){ if(i==1 || i==reset){ jump(); } if(i==reset){ i=0; } i && i++; };
+})());
 
-(function animation(){os.forEach(o=>o.move());requestAnimationFrame(animation);})();
+(function animation(){ os.forEach(o=>o?.()); requestAnimationFrame(animation); })()
 
 }//end ski
-
 
 
 
@@ -1148,6 +1153,10 @@ cn.textBaseline="middle";
 if(font){cn.font=font+'px monospace';}
 if(iconstart)cn.iconstart=iconstart;
 cn.icon=function(n,x=0,y=0){this.fillText((n==="")?"":String.fromCodePoint((this.iconstart ?? 0)+n),x,y);}
+
+cn.clear=function(){
+this.clearRect(0,0,this.canvas.width,this.canvas.height);
+}
 cn.white=function(){
 let s=this.fillStyle;
 this.fillStyle="white";this.fillRect(0,0,this.canvas.width,this.canvas.height);
