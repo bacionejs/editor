@@ -585,7 +585,7 @@ Less work to refactor your code.
 Easy to modify editor.
 Edit the editor in the editor.
 Editor is less than 500 lines of significant code.
-Fully programmable keyboard, including creating you own button icons and functions.
+Fully programmable keyboard, including creating your own button icons and functions.
 Supports swipe, doubleclick, longpress.
 </p><p>
 <b>Game Controls</b>
@@ -1110,14 +1110,8 @@ c.icon(128165,icon.x*p+(p/2),icon.y*p+(p/2));
 
 
 
-
-
-
-
-
-
 function Library(){
-element("style").textContent=` *{margin:0;padding:0;position:fixed;touch-action:none;user-select:none;box-sizing:border-box;} `;
+element("style").textContent=` *{margin:0;padding:0;position:fixed;box-sizing:border-box;} `;
 
 function RandomArray(qty,range){
 let a=Array.from({length:range},(_,i)=>i);
@@ -1158,6 +1152,11 @@ let s=this.fillStyle;
 this.fillStyle="white";this.fillRect(0,0,this.canvas.width,this.canvas.height);
 this.fillStyle=s;
 }
+cn.black=function(){
+let s=this.fillStyle;
+this.fillStyle="black";this.fillRect(0,0,this.canvas.width,this.canvas.height);
+this.fillStyle=s;
+}
 return cn;
 }
 
@@ -1189,7 +1188,7 @@ for(i of a){
 }
 return p1;
 }
-return {RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug};
+return {RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,element};
 
 };//end library
 
