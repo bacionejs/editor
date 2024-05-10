@@ -91,6 +91,25 @@ if(running){
 }
 
 function save(){
+keyboard.clickcnt??=0;
+if(++keyboard.clickcnt>1)return;
+setTimeout(()=>{
+
+if(keyboard.clickcnt==2){
+
+function diff(a,b,c){
+a=a.replace(/^\/\/.*\n/gm,"").split("\n");
+b=b.replace(/^\/\/.*\n/gm,"").split("\n");
+return b.filter(o=>!a.includes(o))?.map(o=>c+" "+o)?.join("\n")||c+" same";
+}
+let url='https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html';
+let b="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>"
+fetch(url).then(r=>r.text()).then(a=>{
+  view("Diff").textContent="Diff "+url+":\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
+}).catch(error => console.error('Error fetching HTML:', error));
+
+}else{
+
 function timestamp(){
 let time=new Date();
 return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month"?1:0)).toString().padStart(2,"0")),"");
@@ -109,6 +128,11 @@ a.click();
 URL.revokeObjectURL(a.href);
 a.remove();
 a=undefined;
+
+}
+
+keyboard.clickcnt=0;
+},dblclickdelay);
 }
 
 function zoom(){
@@ -560,6 +584,8 @@ sound.rocket()
 <b>Canvas</b>
 canvas=L.canvas(fontsize,iconstart)
 canvas.icon(emoji,x,y)
+canvas.clear()
+canvas.black()
 canvas.white()
 </p><p>
 <b>Color gradient</b>
@@ -1134,15 +1160,15 @@ let rocket=()=>{let s=auc.createBufferSource();s.buffer=aubrocket;s.connect(auc.
 return {rocket};
 }
 
-function canvas(font,iconstart){
+function canvas(font=12,iconstart=0){
 let c=element("canvas");
 c.width=c.height=W;
 let cn=c.getContext("2d")
 cn.textAlign="center";
 cn.textBaseline="middle";
-if(font){cn.font=font+'px monospace';}
-if(iconstart)cn.iconstart=iconstart;
-cn.icon=function(n,x=0,y=0){this.fillText((n==="")?"":String.fromCodePoint((this.iconstart ?? 0)+n),x,y);}
+cn.font=font+'px monospace';
+cn.iconstart=iconstart;
+cn.icon=function(n,x=0,y=0){this.fillText((n==="")?"":String.fromCodePoint(this.iconstart+n),x,y);}
 
 cn.clear=function(){
 this.clearRect(0,0,this.canvas.width,this.canvas.height);
