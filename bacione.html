@@ -1,6 +1,7 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'/><script>onload=()=>{ ide();function ide(){
 document.title="Bacione Javascript Editor";
-let tested="Tested on: Android 13, Chrome 121, tablet and phone"; if(navigator.maxTouchPoints<2){alert(tested);return;}
+let tested="Tested on: Android 13, Chrome 121, tablet and phone";
+if(navigator.maxTouchPoints<2){alert(tested);return;}
 let user="bacionejs";
 let file="bacione.html";
 let url=`https://raw.githubusercontent.com/${user}/editor/main/${file}`;
@@ -86,7 +87,7 @@ if(running){
   style.backgroundColor="pink";
   ifra.contentWindow.eval("let FPS="+FPS+";"+T.V+n+"()");
   T.blur();
-  setTimeout(()=>{ style.zIndex=9;},50);
+  setTimeout(()=>{style.zIndex=9;},50);
 }
 }
 
@@ -94,13 +95,13 @@ function save(){
 keyboard.clickcnt??=0;
 if(++keyboard.clickcnt>1)return;
 setTimeout(()=>{
-if(keyboard.clickcnt==2){
+if(keyboard.clickcnt==2){//doubleclick for diff
 
 let a=T.game;
 let b=T.V;
 view("Diff").textContent="Diff:\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
 
-}else{
+}else{//save
 
 function timestamp(){
 let time=new Date();
@@ -125,19 +126,19 @@ a=undefined;
 
 keyboard.clickcnt=0;
 },dblclickdelay);
-}
+}//end save
 
 function zoom(){
 keyboard.clickcnt??=0;
 if(++keyboard.clickcnt>1)return;
 setTimeout(()=>{
-if(keyboard.clickcnt==2){//Doubleclick for fullscreen
+if(keyboard.clickcnt==2){//doubleclick for fullscreen
   if(document.fullscreenElement){
     document.exitFullscreen();
   }else{
     document.documentElement.requestFullscreen({navigationUI:"show"});
   }
-}else{//Change font size
+}else{//change font size
   style=T.style;
   style.fontSize=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
   T.blur();T.focus();
@@ -407,7 +408,7 @@ s=s.replace(/^\/\/.*\n/gm,"");
 s=c(s,"red",'((([&]{2})|([|]{2})|([?]{2}))=?|[,?:!])');
 s=c(s,"green",'\\b('+Array.from(s.matchAll(/((?<fn>\w+)={)/g),v=>v.groups.fn).join('|')+')\\b');//objects
 s=c(s,"blue",'\\b('+Array.from(s.matchAll(/(unction +(?<fn>\w+))/g),v=>v.groups.fn).join('|')+')\\b');//your functions
-s=c(s,"teal",'(?<!")\\b('+s.match(/[a-z]*/g).filter((v,i,a)=>a.indexOf(v)==i).filter(v=>{try{eval('let '+v+'=1')}catch{return true}}).join("|")+'|undefined)\\b(?!")'); //keywords
+s=c(s,"teal",'(?<!")\\b('+s.match(/[a-z]*/g).filter((v,i,a)=>a.indexOf(v)==i).filter(v=>{try{eval('let '+v+'=1')}catch{return true}}).join("|")+'|undefined)\\b(?!")');//keywords
 s=c(s,"brown",'(//.*)');//comments
 s=c(s,"olive",'([0-9]+|".*?")');//literals
 s=c(s,"purple",'([(){}[\\]])');//pairs
@@ -481,9 +482,8 @@ function help(){
 keyboard.clickcnt??=0;
 if(++keyboard.clickcnt>1)return;
 setTimeout(()=>{
-if(keyboard.clickcnt==2){
+if(keyboard.clickcnt==2){//Doubleclicking on the help button compares your editor with the github source. This should be used less than once a week to check for updates because it uses their resources.
 
-//Doubleclick on help compares your editor with the github source. This should be used less than once a week to check for updates because it uses their resources.
 let b="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>"
 fetch(url).then(r=>r.text()).then(a=>{
   view("Diff").textContent="Diff "+url+":\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
@@ -1104,7 +1104,7 @@ while(i-- && ((r=L.rnd(i)),([m[r],m[i]]=[m[i],m[r]])));
 }
 
 function move(i){
-if(found.length==m.length-2){alert("Misses: "+misses);init();return; }
+if(found.length==m.length-2){alert("Misses: "+misses);init();return;}
 if(pair.includes(i) || found.includes(i)){return;}
 if(pair.length==2){
   if(m[pair[0]]==m[pair[1]]){found.push(...pair);}
@@ -1201,7 +1201,7 @@ this.fillStyle=s;
 return cn;
 }
 
-function gradient(c,b,h,a){let g=c.createLinearGradient(0,b,0,h);a.forEach(e=>g.addColorStop(...e));return g;}
+function gradient(c,b,h,a){let g=c.createLinearGradient(0,b,0,h);a.forEach(e=>g.addColorStop(...e)); return g;}
 function rnd(b,a=0){return floor(Math.random()*(b-a))+a;}
 function element(e){return document.body.appendChild(document.createElement(e));}
 
