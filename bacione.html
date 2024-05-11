@@ -10,7 +10,7 @@ Github: github.com/${user}
 ${tested}`;
 let download=`The editor is one file including the games.
 Download <a href=${url}>${file}</a>, open your file manager, click ${file} to run in your Chrome browser, click Run to play the Ski game.
-You may have to close and reopen ${file} the first time.`;
+You may have to close and reopen the first time.`;
 
 element("style").textContent=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
@@ -94,18 +94,11 @@ function save(){
 keyboard.clickcnt??=0;
 if(++keyboard.clickcnt>1)return;
 setTimeout(()=>{
-
 if(keyboard.clickcnt==2){
 
-function diff(a,b,c){
-a=a.replace(/^\/\/.*\n/gm,"").split("\n");
-b=b.replace(/^\/\/.*\n/gm,"").split("\n");
-return b.filter(o=>!a.includes(o))?.map(o=>c+" "+o)?.join("\n")||c+" no change";
-}
-let b="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>"
-fetch(url).then(r=>r.text()).then(a=>{
-  view("Diff").textContent="Diff "+url+":\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
-}).catch(error=>alert(error));
+let a=T.game;
+let b=T.V;
+view("Diff").textContent="Diff:\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
 
 }else{
 
@@ -180,7 +173,7 @@ if(s.startsWith("//")){
 
 function arrow(direction){
 let i=T.E;
-if(T.find.value!==""){T.S=T.E;return;}//rename skip
+if(T.find.value!==""){T.S=T.E;return;}//skips rename
 i+=direction;
 if(T.S==T.E){
   T.S=T.E=i;
@@ -355,7 +348,7 @@ if(e){
   e.className="view";
   e.addEventListener("click",()=>view(f));
 }
-e.classList.toggle("unhide");//for print
+e.classList.toggle("unhide");
 if(e.classList.contains("unhide")){
   title=document.title;
   document.title=alt || f;
@@ -389,6 +382,12 @@ if(running==true){
 }
 e.textContent=s;
 },false);//end error
+
+function diff(a,b,c){
+a=a.replace(/^\/\/.*\n/gm,"").split("\n");
+b=b.replace(/^\/\/.*\n/gm,"").split("\n");
+return b.filter(o=>!a.includes(o))?.map(o=>c+" "+o)?.join("\n")||c+" no change";
+}
 
 function pretty(){
 let body,name;
@@ -479,6 +478,19 @@ function range(r){
 }//end misc
 
 function help(){
+keyboard.clickcnt??=0;
+if(++keyboard.clickcnt>1)return;
+setTimeout(()=>{
+if(keyboard.clickcnt==2){
+
+//Doubleclick on help compares your editor with the github source. This should be used less than once a week to check for updates because it uses their resources.
+let b="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>"
+fetch(url).then(r=>r.text()).then(a=>{
+  view("Diff").textContent="Diff "+url+":\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
+}).catch(error=>alert(error));
+
+}else{
+
 let e=view("Help"); if(e.exists)return;
 
 element("div",e).insertAdjacentHTML("beforeend",
@@ -514,6 +526,7 @@ Also stops the game.
 <b>Save</b>
 Saves to a timestamped file.
 The file contains your games AND the Editor.
+Doubleclick shows changes you have made.
 </p><p>
 <b>Pretty Print</b>
 Displays a readonly version of code that can be saved as PDF.
@@ -539,7 +552,7 @@ Selects text and puts it in Paste. Once Paste is set, it pastes.
 Backspace deletes selected text.
 Enter moves the cursor to the end of selection and unselects.
 Undo resets Paste.
-Selection looks at the character to the right and then selects for:
+Selection looks at the character to the right and then selects:
   newline: line
   word: left,right
   spaces: right
@@ -635,6 +648,9 @@ for(let k of keys){
   con.insertAdjacentHTML("beforeend"," "+k.s+"<br><br>");
 }
 
+}
+keyboard.clickcnt=0;
+},dblclickdelay);
 }//end help
 
 function createkeys(){
