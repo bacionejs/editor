@@ -1,16 +1,16 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'/><script>onload=()=>{ ide();function ide(){
 document.title="Bacione Javascript Editor";
 let tested="Tested on: Android 13, Chrome 121, tablet and phone"; if(navigator.maxTouchPoints<2){alert(tested);return;}
-let url="bacionejs";
+let user="bacionejs";
 let file="bacione.html";
-let link=`<a href=https://raw.githubusercontent.com/${url}/editor/main/${file}>${file}</a>`;
-let download=`The editor is one file including the games.
-Download ${link}, open your file manager, click ${file} to run in your Chrome browser, click Run to play the Ski game.
-You may have to close and reopen ${file} the first time.`;
+let url=`https://raw.githubusercontent.com/${user}/editor/main/${file}`;
 let about=`${document.title} is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
 License: GPL
-Github: github.com/${url}
+Github: github.com/${user}
 ${tested}`;
+let download=`The editor is one file including the games.
+Download <a href=${url}>${file}</a>, open your file manager, click ${file} to run in your Chrome browser, click Run to play the Ski game.
+You may have to close and reopen ${file} the first time.`;
 
 element("style").textContent=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
@@ -100,13 +100,12 @@ if(keyboard.clickcnt==2){
 function diff(a,b,c){
 a=a.replace(/^\/\/.*\n/gm,"").split("\n");
 b=b.replace(/^\/\/.*\n/gm,"").split("\n");
-return b.filter(o=>!a.includes(o))?.map(o=>c+" "+o)?.join("\n")||c+" same";
+return b.filter(o=>!a.includes(o))?.map(o=>c+" "+o)?.join("\n")||c+" no change";
 }
-let url='https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html';
 let b="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>"
 fetch(url).then(r=>r.text()).then(a=>{
   view("Diff").textContent="Diff "+url+":\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
-}).catch(error => console.error('Error fetching HTML:', error));
+}).catch(error=>alert(error));
 
 }else{
 
@@ -516,26 +515,24 @@ Also stops the game.
 Saves to a timestamped file.
 The file contains your games AND the Editor.
 </p><p>
+<b>Pretty Print</b>
+Displays a readonly version of code that can be saved as PDF.
+</p><p>
 <b>Zoom/Fullscreen</b>
 Toggles font size.
 Doubleclick toggles fullscreen.
 </p><p>
-<b>Pretty Print</b>
-Displays a readonly version of code that can be saved as PDF.
-</p><p>
-<b>Comment</b>
-Toggles comments for the current line.
-Also puts the line in Paste.
+<b>Misc</b>
+Color-Picker and Icon-Picker put a code in Paste.
+Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
 </p><p>
 <b>Complete</b>
 Completes a word.
 Looks for match in current game and then elsewhere.
 </p><p>
-<b>Rename</b> (find/replace)
-To rename, select text, type text, click Paste several times. To skip, click Arrow.
-</p><p>
-<b>Undo/Redo</b>
-Restore up to 50 changes.
+<b>Comment</b>
+Toggles comments for the current line.
+Also puts the line in Paste.
 </p><p>
 <b>Paste</b>
 Selects text and puts it in Paste. Once Paste is set, it pastes.
@@ -549,9 +546,11 @@ Selection looks at the character to the right and then selects for:
   blank line: next blank line
   blocks: (){}[]""
 </p>
-<b>Misc</b>
-Color-Picker and Icon-Picker put a code in Paste.
-Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
+<b>Undo/Redo</b>
+Restore up to 50 changes.
+</p><p>
+<b>Rename</b> (find/replace)
+To rename, select text, type text, click Paste several times. To skip, click Arrow.
 </p><p>
 <b>Swipeup</b>
 Inserts capital letter, instead of using shift.
