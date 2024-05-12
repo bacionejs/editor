@@ -406,11 +406,11 @@ let s=body;
 s=s.trim().replace(/</g,'&lt;');
 s=s.replace(/^\/\/.*\n/gm,"");
 
-s=c(s,"red",'((([&]{2})|([|]{2})|([?]{2}))=?|[,?:!])');//special
+s=c(s,"red",'(([&]{2})|([|]{2})|([?]{2}))=?|[,?:!]');//special
 
-s=c(s,"green",`${Array.from(s.matchAll(/((?<m>\w+)={)/g),v=>v.groups.m)?.join('|')}`);//objects
-s=c(s,"blue", `${Array.from(s.matchAll(/(unction +(?<m>\w+))/g),v=>v.groups.m)?.join('|')}`);//functions
-s=c(s,"teal", `${s.match(/[a-z]*/g)?.filter((v,i,a)=>a.indexOf(v)==i)?.filter(v=>{try{eval('let '+v+'=1')}catch{return true}})?.join('|')}`);//keywords
+s=c(s,"blue",  b(s.match(/(?<=unction +)\w+/g)));//functions
+s=c(s,"green", b(s.match(/\w+(?=={)/g)));//objects
+s=c(s,"teal",  b(s.match(/[a-z]*/g)?.filter((v,i,a)=>a.indexOf(v)==i)?.filter(v=>{try{eval('let '+v+'=1')}catch{return true}})));//keywords
 
 s=c(s,"brown",`//.*`);//comments
 s=c(s,"olive",`[0-9]+|".*?"`);//literals
@@ -420,6 +420,7 @@ let i=0;let mw=s.match(/\n/g).length.toString().length; s=s.replace(/^/gm,()=>St
 
 e.innerHTML=s;
 setTimeout(()=>e.querySelectorAll('span span').forEach(e=>e.style.color='inherit'),0);//outer color wins
+function b(i){ return (i?.join('|')?.replace(/^.+$/,"\\b($&)\\b")) || undefined; }
 function c(s,color,match){return (match && s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`)) || s;}
 
 }//end pretty
