@@ -413,7 +413,7 @@ s=c(s,"red",'(([&]{2})|([|]{2})|([?]{2}))=?|[,?:!]');//special
 s=c(s,"blue",  b(s.match(/(?<=unction +)\w+/g)));//functions
 s=c(s,"green", b(s.match(/\w+(?==func)/g)));//functions with state
 s=c(s,"green", b(s.match(/\w+(?=={)/g)));//objects
-s=c(s,"teal",  b(s.match(/[a-z]*/g)?.filter((v,i,a)=>a.indexOf(v)==i)?.filter(v=>{try{eval('let '+v+'=1')}catch{return true}})));//keywords
+s=c(s,"teal",  b(s.match(/[a-z]*/g).filter(v=>{try{eval('let '+v+'=1')}catch{return true}})));//keywords
 
 s=c(s,"brown",`//.*`);//comments
 s=c(s,"olive",`[0-9]+|".*?"`);//literals
