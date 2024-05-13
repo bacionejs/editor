@@ -62,12 +62,14 @@ let ifra,running=false;
 let keyboard, keys=createkeys();
 let T=createtextarea();
 
-T.V=T.game=gameprograms.toString().replace(/^.*|.*$/g,"");
-T.editor=""; T.editing=false; T.find={value:"",position:0}; T.pastetext="";
+T.V=T.games=gameprograms.toString().replace(/^.*|.*$/g,"");
 T.S=T.E=T.V.indexOf("{")+1;
 T.blur(); T.focus();
 
 new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
+
+let blockpairs={"(":")","{":"}","[":"]",'"':'"'};
+function blockend(i,s,a){let cnt=1,b=blockpairs[a];while(++i<s.length && (cnt+=s[i]===b?-1:s[i]===a?1:0)); return i;}
 
 function run(){
 if(T.editing)return;
@@ -97,7 +99,7 @@ if(++keyboard.clickcnt>1)return;
 setTimeout(()=>{
 if(keyboard.clickcnt==2){//doubleclick for diff
 
-let a=T.game;
+let a=T.games;
 let b=T.V;
 view("Diff").textContent="Diff:\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
 
@@ -152,9 +154,9 @@ let word,wordlength,ftop,found,first=0,last=-1,i=T.S;
 while((--i>=0) && /[a-zA-Z0-9.]/.test(T.V[i]));
 word=T.V.slice(i+1,T.S),wordlength=word.length;if(wordlength==0)return;
 ftop=T.editing?1:currentgame()?.ftop;
-let find=(s,e,a)=>[...(T.V.slice(s,e).replaceAll(/"([^"]*)"|\/\/.*$/gm,"").matchAll("\\b"+word+"\\w*"))].at(a)?.[0];
+let look=(s,e,a)=>[...(T.V.slice(s,e).replaceAll(/"([^"]*)"|\/\/.*$/gm,"").matchAll("\\b"+word+"\\w*"))].at(a)?.[0];
 for(let f of [[ftop,T.S-wordlength-1,last],[T.S,Infinity,first],[0,ftop,last]]){
-  if((found=find(...f))!=undefined)break;
+  if((found=look(...f))!=undefined)break;
 }
 if(found==undefined)return;
 T.R(found.slice(wordlength),T.S,T.S,"end");
@@ -174,7 +176,7 @@ if(s.startsWith("//")){
 
 function arrow(direction){
 let i=T.E;
-if(T.find.value!==""){T.S=T.E;return;}//skips rename
+if(T.F.value!==""){T.S=T.E;return;}//skips rename
 i+=direction;
 if(T.S==T.E){
   T.S=T.E=i;
@@ -182,12 +184,12 @@ if(T.S==T.E){
   T.E=i;
 }
 if(T.S!=T.E){
-  T.pastetext=T.V.slice(T.S,T.E);
+  T.P=T.V.slice(T.S,T.E);
 }
 }
 
 function enter(){
-if(T.find.value!==""){T.pastetext+="\n";T.R("\n",T.S,T.E,"end");T.find.position=T.S;return;}//for unjoin
+if(T.F.value!==""){T.P+="\n";T.R("\n",T.S,T.E,"end");T.F.position=T.S;return;}//for unjoin
 if(T.S!=T.E){T.S=T.E;return;}
 let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/g);
 if(i==-1)i=0;
@@ -196,9 +198,9 @@ T.R("\n"+" ".repeat(i),T.S,T.S,"end");
 }
 
 function backspace(){
-if(T.find.value!==""){
-  T.pastetext=T.pastetext.slice(0,-1);
-  T.find.position--;
+if(T.F.value!==""){
+  T.P=T.P.slice(0,-1);
+  T.F.position--;
 }
 if(T.S==T.E){
   T.S>0 && T.R("",T.S-1,T.E);
@@ -212,11 +214,11 @@ if(T.S==T.E){
 }
 }
 
-function shift(){
+function shifter(){
 if(running){run();return;}
 for(let k of keys){
-  if(k.shift){
-    k.e.textContent=(k.e.textContent==k.d)?k.shift:k.d;
+  if(k.shiftkey){
+    k.e.textContent=(k.e.textContent==k.d)?k.shiftkey:k.d;
   }
 }
 }
@@ -226,7 +228,7 @@ let a=[],curr=0; a.push({value:T.V,position:T.S});
 return function(direction){
 if(direction===0){//reset
   a.splice(0,Infinity,{value:T.V,position:T.S});
-}else if(T.pastetext!=="" && direction==-1){//reset paste
+}else if(T.P!=="" && direction==-1){//reset paste
   if(T.S!=T.E){T.E=T.S;}
   pastetoggle();
 }else if(direction==undefined){//add
@@ -242,23 +244,22 @@ if(direction===0){//reset
 }}();
 
 function paste(){
-if(T.find.value!==""){//rename is active
-  if(T.V.slice(T.S,T.E)===T.find.value){
-    T.R(T.pastetext,T.S,T.E,"end");//replace
+if(T.F.value!==""){//rename is active
+  if(T.V.slice(T.S,T.E)===T.F.value){
+    T.R(T.P,T.S,T.E,"end");//replace
   }
-  let i=T.V.slice(T.E,currentgame()?.fend).search(T.find.value.replace(/(^\w+$)/,"\\b$1\\b"));//find
+  let i=T.V.slice(T.E,currentgame()?.fend).search(T.F.value.replace(/(^\w+$)/,"\\b$1\\b"));//find
   if(i<0)return;
   T.S=T.E+i;
   T.blur();T.focus();
-  T.E=T.S+T.find.value.length;
+  T.E=T.S+T.F.value.length;
   return;
 }
-if(!(T.pastetext==="" || T.S!=T.E)){//paste
-  T.R(T.pastetext,T.S,T.E,"end");
+if(!(T.P==="" || T.S!=T.E)){//paste
+  T.R(T.P,T.S,T.E,"end");
   return;
 }
-let s=T.V,i=T.E,blockpairs={"(":")","{":"}","[":"]",'"':'"'};
-function end(a,b){let cnt=1;while(++i<s.length && (cnt+=s[i]===b?-1:s[i]===a?1:0));}
+let s=T.V,i=T.E;
 if(/\w/.test(s[i])){//select word
   if(T.S===T.E){
     while(--i>=0 && /\w/.test(s[i]));
@@ -279,7 +280,7 @@ if(/\w/.test(s[i])){//select word
   T.S=i+1;
 }else if(s[i] in blockpairs){//block
   let i2=i;
-  end(s[i],blockpairs[s[i]]);
+  i=blockend(i,s,s[i]);
   if(s.slice(i2,i).includes("\n")){
     T.S=1+s.lastIndexOf("\n",T.S-1);
     i=1+s.indexOf("\n",i);
@@ -291,7 +292,7 @@ if(/\w/.test(s[i])){//select word
 }else{
   T.E++;
 }
-T.find.value="";
+T.F.value="";
 pastetoggle(T.V.slice(T.S,T.E));//pastetext=selection
 }//end paste
 
@@ -300,38 +301,37 @@ function pastetoggle(p){
 let color;
 if(p){
   color=colorkeybackgroundclick;
-  T.pastetext=p;
+  T.P=p;
 }else{
   color=colorkeyforeground;
-  T.pastetext="";
-  T.find.value="";
+  T.P="";
+  T.F.value="";
 }
 ["Paste","Undo"].forEach(v=>keys.find(k=>k.s?.includes(v)).e.firstChild.firstChild.style.stroke=color);
 }
 
 function chars(c){
 if(T.S!=T.E){
-  T.find.value=T.V.slice(T.S,T.E);
-  T.pastetext=c;
+  T.F.value=T.V.slice(T.S,T.E);
+  T.P=c;
 }else{
-  if(T.find.value!=="" && T.S==T.find.position){
-    T.pastetext+=c;
+  if(T.F.value!=="" && T.S==T.F.position){
+    T.P+=c;
   }else{
-    T.find.value="";
+    T.F.value="";
   }
 }
 T.R(c,T.S,T.E,"end");
-T.find.position=T.S;
+T.F.position=T.S;
 }
 
 function currentgame(){
 let i=0,s=T.V,ftop,name;
 s=s.replace(/\n\/\/\S*/g,"");
-function end(){let cnt=1;while(++i<s.length && (cnt+=s[i]=="{"?1:s[i]=="}"?-1:0));}
 while(i<s.length){
   ftop=i=s.indexOf("{",i)+1;
   name=s.slice(s.lastIndexOf(" ",i)+1,s.lastIndexOf("(",i));
-  end();
+  i=blockend(i,s,"{");
   if(i>=T.S)break;
 }
 if(name=="" || name=="Library" || /\W/.test(name))return undefined;
@@ -405,10 +405,13 @@ let s=body;
 
 s=s.trim().replace(/</g,'&lt;');
 s=s.replace(/^\/\/.*\n/gm,"");
+let b=(i)=>{ return (i?.join('|')?.replace(/^.+$/,"\\b($&)\\b")) || undefined; }
+let c=(s,color,match)=>{return (match && s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`)) || s;}
 
 s=c(s,"red",'(([&]{2})|([|]{2})|([?]{2}))=?|[,?:!]');//special
 
 s=c(s,"blue",  b(s.match(/(?<=unction +)\w+/g)));//functions
+s=c(s,"green", b(s.match(/\w+(?==func)/g)));//functions with state
 s=c(s,"green", b(s.match(/\w+(?=={)/g)));//objects
 s=c(s,"teal",  b(s.match(/[a-z]*/g)?.filter((v,i,a)=>a.indexOf(v)==i)?.filter(v=>{try{eval('let '+v+'=1')}catch{return true}})));//keywords
 
@@ -420,8 +423,6 @@ let i=0;let mw=s.match(/\n/g).length.toString().length; s=s.replace(/^/gm,()=>St
 
 e.innerHTML=s;
 setTimeout(()=>e.querySelectorAll('span span').forEach(e=>e.style.color='inherit'),0);//outer color wins
-function b(i){ return (i?.join('|')?.replace(/^.+$/,"\\b($&)\\b")) || undefined; }
-function c(s,color,match){return (match && s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`)) || s;}
 
 }//end pretty
 
@@ -440,7 +441,7 @@ c.addEventListener("click",e=>{
     alert(`
 Saving changes to IDE...
 To see changes, open the new timestamped IDE html file.
-Unlike editing games, once the editor is broken, the broken editor cannot fix itself and a prior timestamped IDE html file must be used.
+Unlike editing games, once the editor is broken, the broken editor cannot fix itself and a prior IDE html file must be used.
     `);
       save();
     }
@@ -449,7 +450,7 @@ Unlike editing games, once the editor is broken, the broken editor cannot fix it
     T.editing=false;
     restore(0);
   }else{
-    if(T.game!==T.V){
+    if(T.games!==T.V){
       if(!confirm("Unsaved game data will be lost"))return;
     }
     e.target.textContent="on";
@@ -670,7 +671,7 @@ let keys=[
 {r:1,c:2, f:()=>arrow(1),         s:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
 {r:1,c:6, f:()=>restore(-1),      s:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
 {r:1,c:7, f:()=>restore(1),       s:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
-{r:6,c:9, f:()=>shift(),          s:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
+{r:6,c:9, f:()=>shifter(),        s:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
 {r:1,c:4, f:()=>comment(),        s:"Comment",       d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
 {r:1,c:3, f:()=>complete(),       s:"Complete",      d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
 {r:1,c:5, f:()=>paste(),          s:"Paste",         d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
@@ -699,42 +700,42 @@ let keys=[
 {r:3,c:7, d:">"},
 {r:3,c:8, d:"*"},
 {r:3,c:9, d:"/"},
-{r:4,c:0, d:"1", shift:"\\"},
-{r:4,c:1, d:"2", shift:"`"},
-{r:4,c:2, d:"3", shift:"'"},
-{r:4,c:3, d:"4", shift:"@"},
-{r:4,c:4, d:"5", shift:"#"},
-{r:4,c:5, d:"6", shift:"_"},
-{r:4,c:6, d:"7", shift:"%"},
-{r:4,c:7, d:"8", shift:"~"},
-{r:4,c:8, d:"9", shift:"^"},
-{r:4,c:9, d:"0", shift:"$"},
-{r:5,c:0, d:"q", shift:"Q"},
-{r:5,c:1, d:"w", shift:"W"},
-{r:5,c:2, d:"e", shift:"E"},
-{r:5,c:3, d:"r", shift:"R"},
-{r:5,c:4, d:"t", shift:"T"},
-{r:5,c:5, d:"y", shift:"Y"},
-{r:5,c:6, d:"u", shift:"U"},
-{r:5,c:7, d:"i", shift:"I"},
-{r:5,c:8, d:"o", shift:"O"},
-{r:5,c:9, d:"p", shift:"P"},
-{r:6,c:0, d:"a", shift:"A"},
-{r:6,c:1, d:"s", shift:"S"},
-{r:6,c:2, d:"d", shift:"D"},
-{r:6,c:3, d:"f", shift:"F"},
-{r:6,c:4, d:"g", shift:"G"},
-{r:6,c:5, d:"h", shift:"H"},
-{r:6,c:6, d:"j", shift:"J"},
-{r:6,c:7, d:"k", shift:"K"},
-{r:6,c:8, d:"l", shift:"L"},
-{r:7,c:0, d:"z", shift:"Z"},
-{r:7,c:1, d:"x", shift:"X"},
-{r:7,c:2, d:"c", shift:"C"},
-{r:7,c:3, d:"v", shift:"V"},
-{r:7,c:4, d:"b", shift:"B"},
-{r:7,c:5, d:"n", shift:"N"},
-{r:7,c:6, d:"m", shift:"M"},
+{r:4,c:0, d:"1", shiftkey:"\\"},
+{r:4,c:1, d:"2", shiftkey:"`"},
+{r:4,c:2, d:"3", shiftkey:"'"},
+{r:4,c:3, d:"4", shiftkey:"@"},
+{r:4,c:4, d:"5", shiftkey:"#"},
+{r:4,c:5, d:"6", shiftkey:"_"},
+{r:4,c:6, d:"7", shiftkey:"%"},
+{r:4,c:7, d:"8", shiftkey:"~"},
+{r:4,c:8, d:"9", shiftkey:"^"},
+{r:4,c:9, d:"0", shiftkey:"$"},
+{r:5,c:0, d:"q", shiftkey:"Q"},
+{r:5,c:1, d:"w", shiftkey:"W"},
+{r:5,c:2, d:"e", shiftkey:"E"},
+{r:5,c:3, d:"r", shiftkey:"R"},
+{r:5,c:4, d:"t", shiftkey:"T"},
+{r:5,c:5, d:"y", shiftkey:"Y"},
+{r:5,c:6, d:"u", shiftkey:"U"},
+{r:5,c:7, d:"i", shiftkey:"I"},
+{r:5,c:8, d:"o", shiftkey:"O"},
+{r:5,c:9, d:"p", shiftkey:"P"},
+{r:6,c:0, d:"a", shiftkey:"A"},
+{r:6,c:1, d:"s", shiftkey:"S"},
+{r:6,c:2, d:"d", shiftkey:"D"},
+{r:6,c:3, d:"f", shiftkey:"F"},
+{r:6,c:4, d:"g", shiftkey:"G"},
+{r:6,c:5, d:"h", shiftkey:"H"},
+{r:6,c:6, d:"j", shiftkey:"J"},
+{r:6,c:7, d:"k", shiftkey:"K"},
+{r:6,c:8, d:"l", shiftkey:"L"},
+{r:7,c:0, d:"z", shiftkey:"Z"},
+{r:7,c:1, d:"x", shiftkey:"X"},
+{r:7,c:2, d:"c", shiftkey:"C"},
+{r:7,c:3, d:"v", shiftkey:"V"},
+{r:7,c:4, d:"b", shiftkey:"B"},
+{r:7,c:5, d:"n", shiftkey:"N"},
+{r:7,c:6, d:"m", shiftkey:"M"},
 ];
 
 keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
@@ -817,9 +818,9 @@ clearTimeout(keyboard.timeout);if(keyboard.interval){clearInterval(keyboard.inte
 let k=keys.clicked(ev);
 if(k==undefined)return;
 if(!(keys.prev.r==k.r && keys.prev.c==k.c)){//swipeup uppercase
-  if(keys.prev.shift==undefined)return;
+  if(keys.prev.shiftkey==undefined)return;
   k=keys.prev;
-  chars(k.shift);
+  chars(k.shiftkey);
 }else{
   if(k.f){k.f();}else{chars(k.e.textContent);}
 }
@@ -837,6 +838,8 @@ Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.val
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
 T.R=function(...args){this.setRangeText(...args);}
+T.games=""; T.editor=""; T.editing=false;
+T.F={value:"",position:0}; T.P="";//find, paste
 T.inputMode="none";
 T.spellcheck=false;
 style=T.style;
@@ -1157,7 +1160,7 @@ c.icon(128165,icon.x*p+(p/2),icon.y*p+(p/2));
 
 
 function Library(){
-element("style").textContent=` *{margin:0;padding:0;position:fixed;box-sizing:border-box;} `;
+element("style").textContent=` *{margin:0;padding:0;position:fixed;box-sizing:border-box;touch-action:none;user-select:none;} `;
 
 function RandomArray(qty,range){
 let a=Array.from({length:range},(_,i)=>i);
