@@ -71,6 +71,16 @@ new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=
 let blockpairs={"(":")","{":"}","[":"]",'"':'"'};
 function blockend(i,s,a){let cnt=1,b=blockpairs[a];while(++i<s.length && (cnt+=s[i]===b?-1:s[i]===a?1:0)); return i;}
 
+function filecontent(){
+let s="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
+if(T.editing){
+  s+="<\script>onload=()=>{ ide();function ide(){"+T.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
+}else{
+  s+="<\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>";
+}
+return s;
+}
+
 function run(){
 if(T.editing)return;
 if(running){
@@ -111,12 +121,7 @@ return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((
 }
 let a=element("a");
 a.hidden=true;
-let s;
-if(T.editing){
-  s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();function ide(){"+T.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
-}else{
-  s="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>";
-}
+let s=filecontent();
 a.href=URL.createObjectURL(new File([s],"",{type:"text/html"}));
 a.download=timestamp()+file;
 a.click();
@@ -490,7 +495,7 @@ if(++keyboard.clickcnt>1)return;
 setTimeout(()=>{
 if(keyboard.clickcnt==2){//Doubleclicking on the help button compares your editor with the github source. This should be used less than once a week to check for updates because it uses their resources.
 
-let b="<meta name='viewport' content='width=device-width, initial-scale=1'/><\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>"
+let b=filecontent();
 fetch(url).then(r=>r.text()).then(a=>{
   view("Diff").textContent="Diff "+url+":\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
 }).catch(error=>alert(error));
