@@ -88,7 +88,7 @@ if(running){
   T.focus();
 }else{
   let n=currentgame()?.name;
-  if(n==undefined)return;
+  if(n==undefined || n=="Library")return;
   running=true;
   ifra=element("iframe");
   style=ifra.style;
@@ -121,8 +121,7 @@ return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((
 }
 let a=element("a");
 a.hidden=true;
-let s=filecontent();
-a.href=URL.createObjectURL(new File([s],"",{type:"text/html"}));
+a.href=URL.createObjectURL(new File([filecontent()],"",{type:"text/html"}));
 a.download=timestamp()+file;
 a.click();
 URL.revokeObjectURL(a.href);
@@ -339,7 +338,7 @@ while(i<s.length){
   i=blockend(i,s,"{");
   if(i>=T.S)break;
 }
-if(name=="" || name=="Library" || /\W/.test(name))return undefined;
+if(name=="" || /\W/.test(name))return undefined;
 return {name:name,ftop:ftop,fend:i,body:s.slice(ftop,i)};
 }
 
