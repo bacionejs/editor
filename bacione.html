@@ -214,11 +214,11 @@ if(T.S==T.E){
 }
 }
 
-function shifter(){
+function shiftkey(){
 if(running){run();return;}
 for(let k of keys){
-  if(k.shiftkey){
-    k.e.textContent=(k.e.textContent==k.d)?k.shiftkey:k.d;
+  if(k.shiftchar){
+    k.e.textContent=(k.e.textContent==k.d)?k.shiftchar:k.d;
   }
 }
 }
@@ -671,7 +671,7 @@ let keys=[
 {r:1,c:2, f:()=>arrow(1),         s:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
 {r:1,c:6, f:()=>restore(-1),      s:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
 {r:1,c:7, f:()=>restore(1),       s:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
-{r:6,c:9, f:()=>shifter(),        s:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
+{r:6,c:9, f:()=>shiftkey(),       s:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
 {r:1,c:4, f:()=>comment(),        s:"Comment",       d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
 {r:1,c:3, f:()=>complete(),       s:"Complete",      d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
 {r:1,c:5, f:()=>paste(),          s:"Paste",         d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
@@ -700,42 +700,42 @@ let keys=[
 {r:3,c:7, d:">"},
 {r:3,c:8, d:"*"},
 {r:3,c:9, d:"/"},
-{r:4,c:0, d:"1", shiftkey:"\\"},
-{r:4,c:1, d:"2", shiftkey:"`"},
-{r:4,c:2, d:"3", shiftkey:"'"},
-{r:4,c:3, d:"4", shiftkey:"@"},
-{r:4,c:4, d:"5", shiftkey:"#"},
-{r:4,c:5, d:"6", shiftkey:"_"},
-{r:4,c:6, d:"7", shiftkey:"%"},
-{r:4,c:7, d:"8", shiftkey:"~"},
-{r:4,c:8, d:"9", shiftkey:"^"},
-{r:4,c:9, d:"0", shiftkey:"$"},
-{r:5,c:0, d:"q", shiftkey:"Q"},
-{r:5,c:1, d:"w", shiftkey:"W"},
-{r:5,c:2, d:"e", shiftkey:"E"},
-{r:5,c:3, d:"r", shiftkey:"R"},
-{r:5,c:4, d:"t", shiftkey:"T"},
-{r:5,c:5, d:"y", shiftkey:"Y"},
-{r:5,c:6, d:"u", shiftkey:"U"},
-{r:5,c:7, d:"i", shiftkey:"I"},
-{r:5,c:8, d:"o", shiftkey:"O"},
-{r:5,c:9, d:"p", shiftkey:"P"},
-{r:6,c:0, d:"a", shiftkey:"A"},
-{r:6,c:1, d:"s", shiftkey:"S"},
-{r:6,c:2, d:"d", shiftkey:"D"},
-{r:6,c:3, d:"f", shiftkey:"F"},
-{r:6,c:4, d:"g", shiftkey:"G"},
-{r:6,c:5, d:"h", shiftkey:"H"},
-{r:6,c:6, d:"j", shiftkey:"J"},
-{r:6,c:7, d:"k", shiftkey:"K"},
-{r:6,c:8, d:"l", shiftkey:"L"},
-{r:7,c:0, d:"z", shiftkey:"Z"},
-{r:7,c:1, d:"x", shiftkey:"X"},
-{r:7,c:2, d:"c", shiftkey:"C"},
-{r:7,c:3, d:"v", shiftkey:"V"},
-{r:7,c:4, d:"b", shiftkey:"B"},
-{r:7,c:5, d:"n", shiftkey:"N"},
-{r:7,c:6, d:"m", shiftkey:"M"},
+{r:4,c:0, d:"1", shiftchar:"\\"},
+{r:4,c:1, d:"2", shiftchar:"`"},
+{r:4,c:2, d:"3", shiftchar:"'"},
+{r:4,c:3, d:"4", shiftchar:"@"},
+{r:4,c:4, d:"5", shiftchar:"#"},
+{r:4,c:5, d:"6", shiftchar:"_"},
+{r:4,c:6, d:"7", shiftchar:"%"},
+{r:4,c:7, d:"8", shiftchar:"~"},
+{r:4,c:8, d:"9", shiftchar:"^"},
+{r:4,c:9, d:"0", shiftchar:"$"},
+{r:5,c:0, d:"q", shiftchar:"Q"},
+{r:5,c:1, d:"w", shiftchar:"W"},
+{r:5,c:2, d:"e", shiftchar:"E"},
+{r:5,c:3, d:"r", shiftchar:"R"},
+{r:5,c:4, d:"t", shiftchar:"T"},
+{r:5,c:5, d:"y", shiftchar:"Y"},
+{r:5,c:6, d:"u", shiftchar:"U"},
+{r:5,c:7, d:"i", shiftchar:"I"},
+{r:5,c:8, d:"o", shiftchar:"O"},
+{r:5,c:9, d:"p", shiftchar:"P"},
+{r:6,c:0, d:"a", shiftchar:"A"},
+{r:6,c:1, d:"s", shiftchar:"S"},
+{r:6,c:2, d:"d", shiftchar:"D"},
+{r:6,c:3, d:"f", shiftchar:"F"},
+{r:6,c:4, d:"g", shiftchar:"G"},
+{r:6,c:5, d:"h", shiftchar:"H"},
+{r:6,c:6, d:"j", shiftchar:"J"},
+{r:6,c:7, d:"k", shiftchar:"K"},
+{r:6,c:8, d:"l", shiftchar:"L"},
+{r:7,c:0, d:"z", shiftchar:"Z"},
+{r:7,c:1, d:"x", shiftchar:"X"},
+{r:7,c:2, d:"c", shiftchar:"C"},
+{r:7,c:3, d:"v", shiftchar:"V"},
+{r:7,c:4, d:"b", shiftchar:"B"},
+{r:7,c:5, d:"n", shiftchar:"N"},
+{r:7,c:6, d:"m", shiftchar:"M"},
 ];
 
 keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
@@ -818,9 +818,9 @@ clearTimeout(keyboard.timeout);if(keyboard.interval){clearInterval(keyboard.inte
 let k=keys.clicked(ev);
 if(k==undefined)return;
 if(!(keys.prev.r==k.r && keys.prev.c==k.c)){//swipeup uppercase
-  if(keys.prev.shiftkey==undefined)return;
+  if(keys.prev.shiftchar==undefined)return;
   k=keys.prev;
-  chars(k.shiftkey);
+  chars(k.shiftchar);
 }else{
   if(k.f){k.f();}else{chars(k.e.textContent);}
 }
