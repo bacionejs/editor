@@ -302,7 +302,11 @@ if(document.fullscreenElement){
 }
 
 function difflocal(){
-let a=T.games;
+let a;
+if(T.editingtheeditor)
+  a=T.editor;
+else
+  a=T.games;
 let b=T.V;
 view("Diff").textContent="Diff:\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
 }
