@@ -284,7 +284,7 @@ T.R("\n"+" ".repeat(i),T.S,T.S,"end");
 
 function capslock(){
 if(running){run();return;}
-keys.filter(o=>o.caps).forEach(o=>o.e.textContent=(o.e.textContent==o.d)?o.caps:o.d);
+keys.filter(o=>Array.isArray(o.d)).forEach(o=>o.e.textContent=o.d[o.d.indexOf(o.e.textContent)^1]);
 }
 
 function zoom(){
@@ -552,7 +552,7 @@ Restore up to 50 changes.
 To rename, select text, type text, click Paste several times. To skip, click Arrow.
 </p><p>
 <b>Swipeup</b>
-Inserts capital letter, instead of using shift.
+Like Shift
 </p><p>
 <b>Errors</b>
 Runtime errors display an error message and automatically jump to the error in code.
@@ -608,7 +608,7 @@ Context aware logic helps reduce task steps.
 Less work to refactor your code.
 Easy to modify editor.
 Edit the editor in the editor.
-Editor is less than 500 lines of significant code.
+Editor is only 7 kilobytes zipped.
 Fully programmable keyboard, including creating your own button icons and functions.
 Supports swipe and longpress-repeat.
 </p><p>
@@ -675,42 +675,42 @@ let keys=[
 {r:3,c:7, d:">"},
 {r:3,c:8, d:"*"},
 {r:3,c:9, d:"/"},
-{r:4,c:0, d:"1", caps:"\\"},
-{r:4,c:1, d:"2", caps:"`"},
-{r:4,c:2, d:"3", caps:"'"},
-{r:4,c:3, d:"4", caps:"@"},
-{r:4,c:4, d:"5", caps:"#"},
-{r:4,c:5, d:"6", caps:"_"},
-{r:4,c:6, d:"7", caps:"%"},
-{r:4,c:7, d:"8", caps:"~"},
-{r:4,c:8, d:"9", caps:"^"},
-{r:4,c:9, d:"0", caps:"$"},
-{r:5,c:0, d:"q", caps:"Q"},
-{r:5,c:1, d:"w", caps:"W"},
-{r:5,c:2, d:"e", caps:"E"},
-{r:5,c:3, d:"r", caps:"R"},
-{r:5,c:4, d:"t", caps:"T"},
-{r:5,c:5, d:"y", caps:"Y"},
-{r:5,c:6, d:"u", caps:"U"},
-{r:5,c:7, d:"i", caps:"I"},
-{r:5,c:8, d:"o", caps:"O"},
-{r:5,c:9, d:"p", caps:"P"},
-{r:6,c:0, d:"a", caps:"A"},
-{r:6,c:1, d:"s", caps:"S"},
-{r:6,c:2, d:"d", caps:"D"},
-{r:6,c:3, d:"f", caps:"F"},
-{r:6,c:4, d:"g", caps:"G"},
-{r:6,c:5, d:"h", caps:"H"},
-{r:6,c:6, d:"j", caps:"J"},
-{r:6,c:7, d:"k", caps:"K"},
-{r:6,c:8, d:"l", caps:"L"},
-{r:7,c:0, d:"z", caps:"Z"},
-{r:7,c:1, d:"x", caps:"X"},
-{r:7,c:2, d:"c", caps:"C"},
-{r:7,c:3, d:"v", caps:"V"},
-{r:7,c:4, d:"b", caps:"B"},
-{r:7,c:5, d:"n", caps:"N"},
-{r:7,c:6, d:"m", caps:"M"},
+{r:4,c:0, d:["1","\\"]},
+{r:4,c:1, d:["2","`"]},
+{r:4,c:2, d:["3","'"]},
+{r:4,c:3, d:["4","@"]},
+{r:4,c:4, d:["5","#"]},
+{r:4,c:5, d:["6","_"]},
+{r:4,c:6, d:["7","%"]},
+{r:4,c:7, d:["8","~"]},
+{r:4,c:8, d:["9","^"]},
+{r:4,c:9, d:["0","$"]},
+{r:5,c:0, d:["q","Q"]},
+{r:5,c:1, d:["w","W"]},
+{r:5,c:2, d:["e","E"]},
+{r:5,c:3, d:["r","R"]},
+{r:5,c:4, d:["t","T"]},
+{r:5,c:5, d:["y","Y"]},
+{r:5,c:6, d:["u","U"]},
+{r:5,c:7, d:["i","I"]},
+{r:5,c:8, d:["o","O"]},
+{r:5,c:9, d:["p","P"]},
+{r:6,c:0, d:["a","A"]},
+{r:6,c:1, d:["s","S"]},
+{r:6,c:2, d:["d","D"]},
+{r:6,c:3, d:["f","F"]},
+{r:6,c:4, d:["g","G"]},
+{r:6,c:5, d:["h","H"]},
+{r:6,c:6, d:["j","J"]},
+{r:6,c:7, d:["k","K"]},
+{r:6,c:8, d:["l","L"]},
+{r:7,c:0, d:["z","Z"]},
+{r:7,c:1, d:["x","X"]},
+{r:7,c:2, d:["c","C"]},
+{r:7,c:3, d:["v","V"]},
+{r:7,c:4, d:["b","B"]},
+{r:7,c:5, d:["n","N"]},
+{r:7,c:6, d:["m","M"]},
 ];
 
 keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
@@ -747,7 +747,7 @@ for(let k of keys){
   if((typeof k.d=="function")){
     k.e.appendChild(k.d());
   }else{
-    k.e.textContent=k.d;
+    k.e.textContent=(k.d[0] || k.d);
   }
   style=k.e.style;
   style.display="flex";
@@ -804,12 +804,12 @@ if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
     chars(k.e.textContent);
   }
 }else{//swipeup
-  if(keys.prev.caps==undefined && keys.prev.f==undefined)return;
+  if(keys.prev.d[1]==undefined && keys.prev.f==undefined)return;
   k=keys.prev;
   if(k.f){
     k.f[1]?.();
   }else{
-    chars(k.caps);
+    chars(k.d[1]);
   }
 }
 k.e.style.backgroundColor=colorkeybackgroundclick;
