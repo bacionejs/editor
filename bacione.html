@@ -57,16 +57,18 @@ let style;
 let floor=Math.floor;
 let FPS;
 let ifra,running=false;
+let sinceopened,sincesaved;
 let blockpairs={"(":")","{":"}","[":"]",'"':'"'};
 let keys=createkeys(), T=createtextarea();
 
-T.V=T.games=gameprograms.toString().replace(/^.*|.*$/g,"");
+T.V=striplinesfirstlast(gameprograms);
+sinceopened=sincesaved=filecontent();
 T.S=T.E=T.V.indexOf("{")+1;
 T.blur(); T.focus();
 new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
 
 /* code layout below:
-   * most button functions
+   * button functions
    * utils
    * error listener
    * misc
@@ -109,24 +111,18 @@ a.click();
 URL.revokeObjectURL(a.href);
 a.remove();
 a=undefined;
+sincesaved=filecontent();
 }//end save
 
 function pretty(){
-let body,name;
-if(T.editingtheeditor){
-  name="IDE";body=T.V;
-}else{
-  let c=currentgame();
-  if(c==undefined)return;
-  ({name,body}=c);
-}
-let e=view("Pretty",name);
+let s,title;
+if(T.editingtheeditor){ title="IDE";s=T.V; }
+else{ let c=currentgame(); if(c==undefined)return; ({name:title,body:s}=c); }
+let e=view("Pretty",title);
 e.style.whiteSpace="pre";
-let s=body;
-s=s.trim().replace(/</g,'&lt;');
-s=s.replace(/^\/\/.*\n/gm,"");
 let b=(i)=>{ return (i?.join('|')?.replace(/^.+$/,"\\b($&)\\b")) || undefined; }
 let c=(s,color,match)=>{return (match && s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`)) || s;}
+s=stripcomments(s).trim().replace(/</g,'&lt;');
 s=c(s,"red",'(([&]{2})|([|]{2})|([?]{2}))=?|[,?:!]');//special
 s=c(s,"blue",  b(s.match(/(?<=unction +)\w+/g)));//functions
 s=c(s,"green", b(s.match(/\w+(?==func)/g)));//functions with state
@@ -302,23 +298,22 @@ if(document.fullscreenElement){
 }
 
 function difflocal(){
-let a;
-if(T.editingtheeditor)
-  a=T.editor;
-else
-  a=T.games;
-let b=T.V;
-view("Diff").textContent="Diff:\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
+let s="Diff:";
+s+="\n\nSince saved:\n";
+s+=diff(sincesaved,filecontent());
+s+="\n\nSince opened:\n";
+s+=diff(sinceopened,filecontent());
+view("Diff").textContent=s;
 }
 function diffgit(){
-let b=filecontent();
-fetch(url).then(r=>r.text()).then(a=>{
-  view("Diff").textContent="Diff "+url+":\n"+(diff(b,a,"<")+"\n"+diff(a,b,">"));
+fetch(url).then(r=>r.text()).then(git=>{
+  view("Diff").textContent="Diff "+url+":\n"+diff(git,sinceopened);
 }).catch(error=>alert(error));
 }
 function diff(a,b,c){
-a=a.replace(/^\/\/.*\n/gm,"").split("\n");
-b=b.replace(/^\/\/.*\n/gm,"").split("\n");
+if(c==undefined){ return (diff(b,a,"<")+"\n"+diff(a,b,">")); }
+a=stripcomments(a).split("\n");
+b=stripcomments(b).split("\n");
 return b.filter(o=>!a.includes(o))?.map(o=>c+" "+o)?.join("\n")||c+" no change";
 }
 
@@ -366,9 +361,16 @@ T.R(c,T.S,T.E,"end");
 T.F.position=T.S;
 }
 
+function stripcomments(s){
+return s.replace(/^\/\/.*\n/gm,"");
+}
+
+function striplinesfirstlast(s){
+return s.toString().replace(/^.*|.*$/g,"");
+}
+
 function currentgame(){
-let i=0,s=T.V,ftop,name;
-s=s.replace(/\n\/\/\S*/g,"");
+let i=0,s=stripcomments(T.V),ftop,name;
 while(i<s.length){
   ftop=i=s.indexOf("{",i)+1;
   name=s.slice(s.lastIndexOf(" ",i)+1,s.lastIndexOf("(",i));
@@ -420,7 +422,7 @@ column:${ev.colno}
 `;
 if(running==true){
   running=false;ifra.remove();ifra=undefined;
-  if(!(T.V.replace(/\/\/.*\n/g,"").match(/[(){}[\]"]/g).length%2==0)){
+  if(!(stripcomments(T.V).match(/[(){}[\]"]/g).length%2==0)){
     s+=`\nMatching [](){}"": failed`;
   }
   T.S=T.E=T.V.split("\n",ev.lineno-1).join("\n").length+ev.colno;
@@ -437,31 +439,17 @@ let con,c;
 con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br><label>Edit the Editor  </label>");
 c=element("button",con); c.textContent="off"
-let message=`
-Saving changes to IDE...
-To see changes, open the new timestamped IDE html file.
-Unlike editing games, once the editor is broken, the broken editor cannot fix itself and a prior IDE html file must be used.
-`;
 c.addEventListener("click",e=>{
+  if(filecontent()!=sinceopened){ alert("To switch between games and editor, first save and open the new IDE"); return; }
   if(T.editingtheeditor){
-    e.target.textContent="off";
-    if(T.editor!==T.V){
-      alert(message);
-      save();
-    }
-    T.V=gameprograms.toString().replace(/^.*|.*$/g,"");
-    T.S=T.E=T.V.indexOf("{")+1;T.blur();T.focus();
-    T.editingtheeditor=false;
-    restore(0);
+    e.target.textContent="off"; T.editingtheeditor=false;
+    T.V=striplinesfirstlast(gameprograms);
   }else{
-    if(T.games!==T.V && !confirm("Unsaved game data will be lost"))return;
-    e.target.textContent="on";
-    T.editingtheeditor=true;
-    T.V=ide.toString().replace(/^.*|.*$/g,"");
-    T.S=T.E=T.V.indexOf("{")+1;T.blur();T.focus();
-    T.editor=T.V;
-    restore(0);
+    e.target.textContent="on"; T.editingtheeditor=true;
+    T.V=striplinesfirstlast(ide);
   }
+  T.S=T.E=T.V.indexOf("{")+1;T.blur();T.focus();
+  restore(0);
 });
 con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br><label>Color Picker  </label>");
@@ -518,16 +506,12 @@ Saves to a timestamped file.
 The file contains your games AND the Editor.
 Swipeup shows changes you have made.
 </p><p>
-<b>Pretty Print</b>
-Displays a readonly version of code that can be saved as PDF.
-</p><p>
 <b>Zoom/Fullscreen</b>
 Toggles font size.
 Swipeup toggles fullscreen.
 </p><p>
-<b>Misc</b>
-Color-Picker and Icon-Picker put a code in Paste.
-Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
+<b>Pretty Print</b>
+Displays a readonly version of code that can be saved as PDF.
 </p><p>
 <b>Complete</b>
 Completes a word.
@@ -560,6 +544,11 @@ Like Shift
 </p><p>
 <b>Errors</b>
 Runtime errors display an error message and automatically jump to the error in code.
+</p><p>
+<b>Misc</b>
+Color-Picker and Icon-Picker put a code in Paste.
+Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
+Unlike editing games, once the editor is broken, the broken editor cannot fix itself and a prior IDE must be used.
 </p><p>
 <b>Global Variables and Aliases</b>
 FPS=(frames per second)
@@ -830,7 +819,7 @@ Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.val
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
 T.R=function(...args){this.setRangeText(...args);}
-T.games=""; T.editor=""; T.editingtheeditor=false;
+T.editingtheeditor=false;
 T.F={value:"",position:0}; T.P="";//find, paste
 T.inputMode="none";
 T.spellcheck=false;
