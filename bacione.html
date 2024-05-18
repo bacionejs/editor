@@ -925,7 +925,7 @@ if(close){yy-=(ya*0.80);xx*=0.98;}
 bad=(yl<yy || xl<Math.abs(xx) || (p/4)<Math.abs(x-lm));
 if(played && landed && bad){
   fuel-=fuelstart*2;
-  ship=L.shape([Array.from({length:40},()=>L.rnd(p)-p/2)]);
+  ship=L.shape([Array.from({length:40},()=>L.rnd(p*2)-p)]);
 }
 cf.resetTransform();
 cf.clearRect(0,0,W,W);
