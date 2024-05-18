@@ -113,29 +113,21 @@ a.remove();
 a=undefined;
 sincesaved=filecontent();
 if(T.editingtheeditor)alert("Open the new IDE to see changes");
-}//end save
+}
 
-function pretty(){
-let s,title;
-if(T.editingtheeditor){ title="IDE";s=T.V; }
-else{ let c=currentgame(); if(c==undefined)return; ({name:title,body:s}=c); }
-let e=view("Pretty",title);
-e.style.whiteSpace="pre";
-let b=(i)=>{ return (i?.join('|')?.replace(/^.+$/,"\\b($&)\\b")) || undefined; }
-let c=(s,color,match)=>{return (match && s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`)) || s;}
-s=stripcomments(s).trim().replace(/</g,'&lt;');
-s=c(s,"red",'(([&]{2})|([|]{2})|([?]{2}))=?|[,?:!]');//special
-s=c(s,"blue",  b(s.match(/(?<=unction +)\w+/g)));//functions
-s=c(s,"green", b(s.match(/\w+(?==func)/g)));//functions with state
-s=c(s,"green", b(s.match(/\w+(?=={)/g)));//objects
-s=c(s,"teal",  b(s.match(/[a-z]*/g).filter(v=>{try{eval('let '+v+'=1')}catch{return true}})));//keywords
-s=c(s,"brown",`//.*`);//comments
-s=c(s,"olive",`[0-9]+|".*?"`);//literals
-s=c(s,"purple",`[(){}[\\]]`);//pairs
-let i=0;let mw=s.match(/\n/g).length.toString().length; s=s.replace(/^/gm,()=>String(++i).padStart(mw," ")+" ");//line numbers
-e.innerHTML=s;
-setTimeout(()=>e.querySelectorAll('span span').forEach(e=>e.style.color='inherit'),0);//outer color wins
-}//end pretty
+function zoom(){
+style=T.style;
+style.fontSize=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
+T.blur();T.focus();
+}
+
+function fullscreen(){
+if(document.fullscreenElement){
+  document.exitFullscreen();
+}else{
+  document.documentElement.requestFullscreen({navigationUI:"show"});
+}
+}
 
 function complete(){
 let word,wordlength,ftop,found,first=0,last=-1,i=T.S;
@@ -161,6 +153,59 @@ if(s.startsWith("//")){
   T.R("//",bl,bl);  T.S=T.E=el+2;
 }
 }
+
+function enter(){
+if(T.F.value!==""){T.P+="\n";T.R("\n",T.S,T.E,"end");T.F.position=T.S;return;}//for unjoin
+if(T.S!=T.E){T.S=T.E;return;}
+let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/g);
+if(i==-1)i=0;
+//if(T.V[T.S-1]=="{")i+=indent;//indent after open-brace
+T.R("\n"+" ".repeat(i),T.S,T.S,"end");
+}
+
+function backspace(){
+if(T.F.value!==""){
+  T.P=T.P.slice(0,-1);
+  T.F.position--;
+}
+if(T.S==T.E){
+  T.S>0 && T.R("",T.S-1,T.E);
+}else{
+  if(/\n/.test(T.V.slice(T.S,T.E))){//was a line cut
+    T.R("",T.S,T.E);
+    T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
+  }else{
+    T.R("",T.S,T.E);
+  }
+}
+}
+
+function capslock(){
+if(running){run();return;}
+keys.filter(o=>Array.isArray(o.d)).forEach(o=>o.e.textContent=o.d[o.d.indexOf(o.e.textContent)^1]);
+}
+
+function pretty(){
+let s,title;
+if(T.editingtheeditor){ title="IDE";s=T.V; }
+else{ let c=currentgame(); if(c==undefined)return; ({name:title,body:s}=c); }
+let e=view("Pretty",title);
+e.style.whiteSpace="pre";
+let b=(i)=>{ return (i?.join('|')?.replace(/^.+$/,"\\b($&)\\b")) || undefined; }
+let c=(s,color,match)=>{return (match && s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`)) || s;}
+s=stripcomments(s).trim().replace(/</g,'&lt;');
+s=c(s,"red",'(([&]{2})|([|]{2})|([?]{2}))=?|[,?:!]');//special
+s=c(s,"blue",  b(s.match(/(?<=unction +)\w+/g)));//functions
+s=c(s,"green", b(s.match(/\w+(?==func)/g)));//functions with state
+s=c(s,"green", b(s.match(/\w+(?=={)/g)));//objects
+s=c(s,"teal",  b(s.match(/[a-z]*/g).filter(v=>{try{eval('let '+v+'=1')}catch{return true}})));//keywords
+s=c(s,"brown",`//.*`);//comments
+s=c(s,"olive",`[0-9]+|".*?"`);//literals
+s=c(s,"purple",`[(){}[\\]]`);//pairs
+let i=0;let mw=s.match(/\n/g).length.toString().length; s=s.replace(/^/gm,()=>String(++i).padStart(mw," ")+" ");//line numbers
+e.innerHTML=s;
+setTimeout(()=>e.querySelectorAll('span span').forEach(e=>e.style.color='inherit'),0);//outer color wins
+}//end pretty
 
 function paste(){
 if(T.F.value!==""){//rename is active
@@ -252,51 +297,6 @@ if(direction===0){//reset
   T.S=T.E=a[curr].position;
 }
 }}();//end restore
-
-function backspace(){
-if(T.F.value!==""){
-  T.P=T.P.slice(0,-1);
-  T.F.position--;
-}
-if(T.S==T.E){
-  T.S>0 && T.R("",T.S-1,T.E);
-}else{
-  if(/\n/.test(T.V.slice(T.S,T.E))){//was a line cut
-    T.R("",T.S,T.E);
-    T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
-  }else{
-    T.R("",T.S,T.E);
-  }
-}
-}
-
-function enter(){
-if(T.F.value!==""){T.P+="\n";T.R("\n",T.S,T.E,"end");T.F.position=T.S;return;}//for unjoin
-if(T.S!=T.E){T.S=T.E;return;}
-let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/g);
-if(i==-1)i=0;
-//if(T.V[T.S-1]=="{")i+=indent;//indent after open-brace
-T.R("\n"+" ".repeat(i),T.S,T.S,"end");
-}
-
-function capslock(){
-if(running){run();return;}
-keys.filter(o=>Array.isArray(o.d)).forEach(o=>o.e.textContent=o.d[o.d.indexOf(o.e.textContent)^1]);
-}
-
-function zoom(){
-style=T.style;
-style.fontSize=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
-T.blur();T.focus();
-}
-
-function fullscreen(){
-if(document.fullscreenElement){
-  document.exitFullscreen();
-}else{
-  document.documentElement.requestFullscreen({navigationUI:"show"});
-}
-}
 
 function difflocal(){
 let s="Diff:";
@@ -415,20 +415,14 @@ else   return             p.appendChild(document.createElement(e));
 
 window.addEventListener("error",(ev)=>{//error
 let e=view("Error");
-let s="";
-s+=`
-${ev.message}
-line:${ev.lineno}
-column:${ev.colno}
-`;
+let s=ev.message+"\nline: "+ev.lineno+"\ncolumn: "+ev.colno;
 if(running==true){
   running=false;ifra.remove();ifra=undefined;
   if(!(stripcomments(T.V).match(/[(){}[\]"]/g).length%2==0)){
     s+=`\nMatching [](){}"": failed`;
   }
   T.S=T.E=T.V.split("\n",ev.lineno-1).join("\n").length+ev.colno;
-  T.blur();
-  T.focus();
+  T.blur(); T.focus();
 }
 e.textContent=s;
 },false);//end error
@@ -449,18 +443,14 @@ c.addEventListener("click",e=>{
     e.target.textContent="on"; T.editingtheeditor=true;
     T.V=striplinesfirstlast(ide);
   }
-  T.S=T.E=T.V.indexOf("{")+1;T.blur();T.focus();
+  T.S=T.E=T.V.indexOf("{")+1; T.blur(); T.focus();
   restore(0);
 });
 con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br><label>Color Picker  </label>");
 c=element("input",con); c.type="color";
 c.addEventListener("change",(e)=>pastetoggle(e.target.value),false);
-let range=(r)=>{
-  let a=[];
-  r.forEach(v=>a.push(Array.from({length:(v[1]-v[0])+1},(_,i)=>v[0]+i)));
-  return a.flat();
-}
+let range=(r)=>{ let a=[]; r.forEach(v=>a.push(Array.from({length:(v[1]-v[0])+1},(_,i)=>v[0]+i))); return a.flat(); }
 let measure=element("span"); measure.style.visibility="hidden";
 con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br>Icon Picker<br>");
@@ -617,58 +607,32 @@ Marslander - Click on right or left of canvas. To disable sound, comment snd.roc
 </p>
 `);
 
-let con,c;
-con=element("div",e);
+let con=element("div",e);
 con.insertAdjacentHTML("beforeend", "<b>Buttons</b><br><br>");
 keys.filter(o=>o.n).forEach(o=>{
-  c=o.d();
-  c.firstChild.style.stroke="black";
-  con.appendChild(c);
+  con.appendChild(o.d()).firstChild.style.stroke="black";
   con.insertAdjacentHTML("beforeend"," "+o.n+"<br><br>");
 });
 }//end help
 
 function createkeys(){
 let keys=[
-{r:0,c:8, f:[save,difflocal],  n:"Save",          d:()=>sv("M5 3 v2 h-10 v-2 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
 {r:0,c:9, f:[run],             n:"Run",           d:()=>sv("M5 0 l-9 5 v-10 l9 5")},
+{r:0,c:8, f:[save,difflocal],  n:"Save",          d:()=>sv("M5 3 v2 h-10 v-2 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
 {r:0,c:7, f:[pretty],          n:"Pretty",        d:()=>sv("M4 -3 h-2 v-2 l2 2 v8 h-8 v-10 h6")},
-{r:0,c:4, f:[help,diffgit],    n:"Help",          d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
-{r:0,c:5, f:[misc],            n:"Misc",          d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
 {r:0,c:6, f:[zoom,fullscreen], n:"Zoom",          d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
-{r:1,c:1, f:[left],            n:"Left",          d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
-{r:1,c:2, f:[right],           n:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
-{r:1,c:6, f:[undo],            n:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
-{r:1,c:7, f:[redo],            n:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
-{r:6,c:9, f:[capslock],        n:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
-{r:1,c:4, f:[comment],         n:"Comment",       d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
-{r:1,c:3, f:[complete],        n:"Complete",      d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
-{r:1,c:5, f:[paste],           n:"Paste",         d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
+{r:0,c:5, f:[misc],            n:"Misc",          d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
+{r:0,c:4, f:[help,diffgit],    n:"Help",          d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
 {r:1,c:9, f:[enter],           n:"Enter",         d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
 {r:1,c:8, f:[backspace],       n:"Backspace",     d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
-{r:7,c:9, d:" "},
-{r:7,c:7, d:"?"},
-{r:2,c:0, d:"\""},
-{r:2,c:4, d:"("},
-{r:2,c:5, d:")"},
-{r:2,c:6, d:"{"},
-{r:2,c:7, d:"}"},
-{r:2,c:8, d:"["},
-{r:2,c:9, d:"]"},
-{r:2,c:3, d:","},
-{r:2,c:2, d:";"},
-{r:2,c:1, d:"."},
-{r:7,c:8, d:":"},
-{r:3,c:0, d:"&"},
-{r:3,c:1, d:"|"},
-{r:3,c:2, d:"+"},
-{r:3,c:3, d:"-"},
-{r:3,c:4, d:"="},
-{r:3,c:5, d:"!"},
-{r:3,c:6, d:"<"},
-{r:3,c:7, d:">"},
-{r:3,c:8, d:"*"},
-{r:3,c:9, d:"/"},
+{r:1,c:7, f:[redo],            n:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
+{r:1,c:6, f:[undo],            n:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
+{r:1,c:5, f:[paste],           n:"Paste",         d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
+{r:1,c:4, f:[comment],         n:"Comment",       d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
+{r:1,c:3, f:[complete],        n:"Complete",      d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
+{r:1,c:2, f:[right],           n:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
+{r:1,c:1, f:[left],            n:"Left",          d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
+{r:6,c:9, f:[capslock],        n:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
 {r:4,c:0, d:["1","\\"]},
 {r:4,c:1, d:["2","`"]},
 {r:4,c:2, d:["3","'"]},
@@ -705,6 +669,29 @@ let keys=[
 {r:7,c:4, d:["b","B"]},
 {r:7,c:5, d:["n","N"]},
 {r:7,c:6, d:["m","M"]},
+{r:7,c:7, d:"?"},
+{r:7,c:8, d:":"},
+{r:7,c:9, d:" "},
+{r:2,c:0, d:"\""},
+{r:2,c:1, d:"."},
+{r:2,c:2, d:";"},
+{r:2,c:3, d:","},
+{r:2,c:4, d:"("},
+{r:2,c:5, d:")"},
+{r:2,c:6, d:"{"},
+{r:2,c:7, d:"}"},
+{r:2,c:8, d:"["},
+{r:2,c:9, d:"]"},
+{r:3,c:0, d:"&"},
+{r:3,c:1, d:"|"},
+{r:3,c:2, d:"+"},
+{r:3,c:3, d:"-"},
+{r:3,c:4, d:"="},
+{r:3,c:5, d:"!"},
+{r:3,c:6, d:"<"},
+{r:3,c:7, d:">"},
+{r:3,c:8, d:"*"},
+{r:3,c:9, d:"/"},
 ];
 
 keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
