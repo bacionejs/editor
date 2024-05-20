@@ -82,7 +82,7 @@ new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=
 function run(){
 if(T.editingtheeditor)return;
 if(running){
-  running=false;ifra.remove();ifra=undefined;
+  running=false; ifra.remove(); ifra=undefined;
   T.focus();
 }else{
   let n=currentgame()?.name;
@@ -108,9 +108,7 @@ a.hidden=true;
 a.href=URL.createObjectURL(new File([filecontent()],"",{type:"text/html"}));
 a.download=timestamp()+file;
 a.click();
-URL.revokeObjectURL(a.href);
-a.remove();
-a=undefined;
+URL.revokeObjectURL(a.href); a.remove(); a=undefined;
 sincesaved=filecontent();
 if(T.editingtheeditor)alert("Open the new IDE to see changes");
 }
@@ -118,7 +116,7 @@ if(T.editingtheeditor)alert("Open the new IDE to see changes");
 function zoom(){
 style=T.style;
 style.fontSize=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
-T.blur();T.focus();
+T.blur(); T.focus();
 }
 
 function fullscreen(){
@@ -147,47 +145,16 @@ let bl=T.V.lastIndexOf("\n",T.S-1)+1;
 let el=T.V.indexOf("\n",T.S)+1;
 let s=T.V.slice(bl,el);
 if(s.startsWith("//")){
-  T.R("",  bl,bl+2);T.S=T.E=el-2;
+  T.R("",  bl,bl+2); T.S=T.E=el-2;
 }else{
   pastetoggle(s);
-  T.R("//",bl,bl);  T.S=T.E=el+2;
+  T.R("//",bl,bl); T.S=T.E=el+2;
 }
-}
-
-function enter(){
-if(T.F.value!==""){T.P+="\n";T.R("\n",T.S,T.E,"end");T.F.position=T.S;return;}//for unjoin
-if(T.S!=T.E){T.S=T.E;return;}
-let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/g);
-if(i==-1)i=0;
-//if(T.V[T.S-1]=="{")i+=indent;//indent after open-brace
-T.R("\n"+" ".repeat(i),T.S,T.S,"end");
-}
-
-function backspace(){
-if(T.F.value!==""){
-  T.P=T.P.slice(0,-1);
-  T.F.position--;
-}
-if(T.S==T.E){
-  T.S>0 && T.R("",T.S-1,T.E);
-}else{
-  if(/\n/.test(T.V.slice(T.S,T.E))){//was a line cut
-    T.R("",T.S,T.E);
-    T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
-  }else{
-    T.R("",T.S,T.E);
-  }
-}
-}
-
-function capslock(){
-if(running){run();return;}
-keys.filter(o=>Array.isArray(o.d)).forEach(o=>o.e.textContent=o.d[o.d.indexOf(o.e.textContent)^1]);
 }
 
 function pretty(){
 let s,title;
-if(T.editingtheeditor){ title="IDE";s=T.V; }
+if(T.editingtheeditor){ title="IDE"; s=T.V; }
 else{ let c=currentgame(); if(c==undefined)return; ({name:title,body:s}=c); }
 let e=view("Pretty",title);
 e.style.whiteSpace="pre";
@@ -202,24 +169,74 @@ s=c(s,"teal",  b(s.match(/[a-z]*/g).filter(v=>{try{eval('let '+v+'=1')}catch{ret
 s=c(s,"brown",`//.*`);//comments
 s=c(s,"olive",`[0-9]+|".*?"`);//literals
 s=c(s,"purple",`[(){}[\\]]`);//pairs
-let i=0;let mw=s.match(/\n/g).length.toString().length; s=s.replace(/^/gm,()=>String(++i).padStart(mw," ")+" ");//line numbers
+let i=0; let mw=s.match(/\n/g).length.toString().length; s=s.replace(/^/gm,()=>String(++i).padStart(mw," ")+" ");//line numbers
 e.innerHTML=s;
 setTimeout(()=>e.querySelectorAll('span span').forEach(e=>e.style.color='inherit'),0);//outer color wins
 }//end pretty
 
-function paste(){
-if(T.F.value!==""){//rename is active
-  if(T.V.slice(T.S,T.E)===T.F.value){
-    T.R(T.P,T.S,T.E,"end");//replace
-  }
-  let i=T.V.slice(T.E,currentgame()?.fend).search(T.F.value.replace(/(^\w+$)/,"\\b$1\\b"));//find
-  if(i<0)return;
-  T.S=T.E+i;
-  T.blur();T.focus();
-  T.E=T.S+T.F.value.length;
-  return;
+function capslock(){
+if(running){run(); return;}
+keys.filter(o=>Array.isArray(o.d)).forEach(o=>o.e.textContent=o.d[o.d.indexOf(o.e.textContent)^1]);
 }
-if(!(T.P==="" || T.S!=T.E)){//paste
+
+function undo(){ restore(-1); }
+function redo(){ restore(1); }
+let restore=function(){
+let a=[],curr=0; a.push({value:T.V,position:T.S});
+return function(direction){
+if(direction===0){//reset
+  a.splice(0,Infinity,{value:T.V,position:T.S});
+}else if(T.P!=="" && direction==-1){//reset paste
+  if(T.S!=T.E){T.E=T.S;}
+  pastetoggle();
+}else if(direction==undefined){//add
+  if(T.V===a.at(-1)?.value)return;
+  if(a.length==50){a.shift();}else{curr++;}
+  a.splice(curr,Infinity,{value:T.V,position:T.S});
+}else{//restore
+  if((direction==-1 && curr==0) || (direction==1 && curr==a.length-1))return;
+  curr+=direction;
+  T.V=a[curr].value;
+  T.S=T.E=a[curr].position;
+}
+}}();//end restore
+
+function left(){ arrow(-1); }
+function right(){ arrow(1); }
+function arrow(direction){
+if(rename("arrow"))return;
+let i=T.E;
+i+=direction;
+if(T.S==T.E){ T.S=T.E=i; }//normal
+else{ pastetoggle(T.V.slice(T.S,T.E=i)); }//selection is active
+}
+
+function enter(){
+if(rename("enter"))return;
+if(T.S!=T.E){T.S=T.E; return;}
+let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/);
+if(i==-1)i=0;
+//if(T.V[T.S-1]=="{")i+=indent;//indent after open-brace
+T.R("\n"+" ".repeat(i),T.S,T.S,"end");
+}
+
+function backspace(){
+rename("backspace");
+if(T.S==T.E){//normal
+  T.S>0 && T.R("",T.S-1,T.E);
+}else{//selection is active
+  if(/\n/.test(T.V.slice(T.S,T.E))){//was a line cut
+    T.R("",T.S,T.E);
+    T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
+  }else{
+    T.R("",T.S,T.E);
+  }
+}
+}
+
+function paste(){
+if(rename("paste"))return;
+if(T.P!=="" && T.S==T.E){//paste
   T.R(T.P,T.S,T.E,"end");
   return;
 }
@@ -245,7 +262,7 @@ if(/\w/.test(s[i])){//select word
 }else if(s[i] in blockpairs){//block
   let i2=i;
   i=blockend(i,s,s[i]);
-  if(s.slice(i2,i).includes("\n")){
+  if(s.slice(i2,i).includes("\n")){//multiline block
     T.S=1+s.lastIndexOf("\n",T.S-1);
     i=1+s.indexOf("\n",i);
   }else{
@@ -256,47 +273,37 @@ if(/\w/.test(s[i])){//select word
 }else{
   T.E++;
 }
-T.F.value="";
-pastetoggle(T.V.slice(T.S,T.E));//pastetext=selection
+pastetoggle(T.V.slice(T.S,T.E));
 }//end paste
 
-function left(){ arrow(-1); }
-function right(){ arrow(1); }
-function arrow(direction){
-let i=T.E;
-if(T.F.value!==""){T.S=T.E;return;}//skips rename
-i+=direction;
-if(T.S==T.E){
-  T.S=T.E=i;
-}else{
-  T.E=i;
-}
-if(T.S!=T.E){
-  T.P=T.V.slice(T.S,T.E);
-}
+function chars(c){
+rename("chars",c);
+T.R(c,T.S,T.E,"end");
 }
 
-function undo(){ restore(-1); }
-function redo(){ restore(1); }
-let restore=function(){
-let a=[],curr=0; a.push({value:T.V,position:T.S});
-return function(direction){
-if(direction===0){//reset
-  a.splice(0,Infinity,{value:T.V,position:T.S});
-}else if(T.P!=="" && direction==-1){//reset paste
-  if(T.S!=T.E){T.E=T.S;}
-  pastetoggle();
-}else if(direction==undefined){//add
-  if(T.V===a.at(-1)?.value)return;
-  if(a.length==50){a.shift();}else{curr++;}
-  a.splice(curr,Infinity,{value:T.V,position:T.S});
-}else{//restore
-  if((direction==-1 && curr==0) || (direction==1 && curr==a.length-1))return;
-  curr+=direction;
-  T.V=a[curr].value;
-  T.S=T.E=a[curr].position;
+function rename(caller,c){
+if((c!=undefined && T.S==T.E && T.F==="") || (c==undefined && T.F==="") || (T.F!=="" && T.P==="")) { T.F=""; return false; }
+if(T.F==="")T.P="";
+//setup
+      if(caller=="chars"){ if(T.S!=T.E){ T.F=T.V.slice(T.S,T.E); } T.P+=c;
+}else if(caller=="backspace"){ T.P=T.P.slice(0,-1);
+}else if(caller=="enter"){ T.P+="\n"; T.R("\n",T.S,T.E,"end");//for unjoin
+}else if(caller=="arrow"){ T.S=T.E; return false;//skips rename
+//execute
+}else if(caller=="paste"){
+  if(T.V.slice(T.S,T.E)===T.F){ T.R(T.P,T.S,T.E,"end"); }//replace selection
+  let i=T.V.slice(T.E,currentgame()?.fend).search(T.F.replace(/(^\w+$)/,"\\b$1\\b"));//find
+  if(i!=-1){ T.S=T.E+i; T.blur();T.focus(); T.E=T.S+T.F.length; }//select found
 }
-}}();//end restore
+return true;
+}//end rename
+
+function pastetoggle(p){
+let color;
+if(p){ T.P=p;  color=colorkeybackgroundclick; }
+else{  T.P=""; color=colorkeyforeground; }
+["Paste","Undo"].forEach(v=>keys.find(k=>k.n?.includes(v)).e.firstChild.firstChild.style.stroke=color);
+}
 
 function difflocal(){
 let s="Diff:";
@@ -332,34 +339,6 @@ if(T.editingtheeditor){
   s+="<\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>";
 }
 return s;
-}
-
-function pastetoggle(p){
-let color;
-if(p){
-  color=colorkeybackgroundclick;
-  T.P=p;
-}else{
-  color=colorkeyforeground;
-  T.P="";
-  T.F.value="";
-}
-["Paste","Undo"].forEach(v=>keys.find(k=>k.n?.includes(v)).e.firstChild.firstChild.style.stroke=color);
-}
-
-function chars(c){
-if(T.S!=T.E){
-  T.F.value=T.V.slice(T.S,T.E);
-  T.P=c;
-}else{
-  if(T.F.value!=="" && T.S==T.F.position){
-    T.P+=c;
-  }else{
-    T.F.value="";
-  }
-}
-T.R(c,T.S,T.E,"end");
-T.F.position=T.S;
 }
 
 function stripcomments(s){
@@ -417,7 +396,7 @@ window.addEventListener("error",(ev)=>{//error
 let e=view("Error");
 let s=ev.message+"\nline: "+ev.lineno+"\ncolumn: "+ev.colno;
 if(running==true){
-  running=false;ifra.remove();ifra=undefined;
+  running=false; ifra.remove(); ifra=undefined;
   if(!(stripcomments(T.V).match(/[(){}[\]"]/g).length%2==0)){
     s+=`\nMatching [](){}"": failed`;
   }
@@ -448,7 +427,7 @@ c.addEventListener("click",e=>{
 });
 con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br><label>Color Picker  </label>");
-c=element("input",con); c.type="color";
+c=element("input",con); c.type="color"; c.value="#0000ff";
 c.addEventListener("change",(e)=>pastetoggle(e.target.value),false);
 let range=(r)=>{ let a=[]; r.forEach(v=>a.push(Array.from({length:(v[1]-v[0])+1},(_,i)=>v[0]+i))); return a.flat(); }
 let measure=element("span"); measure.style.visibility="hidden";
@@ -775,7 +754,7 @@ keyboard.timeout=setTimeout(()=>{keyboard.interval=setInterval(()=>{//longpress 
 
 keyboard.addEventListener("pointerup",(ev)=>{
 ev.preventDefault();
-clearTimeout(keyboard.timeout);if(keyboard.interval){clearInterval(keyboard.interval);keyboard.interval=undefined;return;}
+clearTimeout(keyboard.timeout); if(keyboard.interval){clearInterval(keyboard.interval); keyboard.interval=undefined; return;}
 let k=keys.clicked(ev);
 if(keys.prev==undefined)return;
 if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
@@ -808,7 +787,7 @@ Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.sel
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
 T.R=function(...args){this.setRangeText(...args);}
 T.editingtheeditor=false;
-T.F={value:"",position:0}; T.P="";//find, paste
+T.F=""; T.P="";//find, paste
 T.inputMode="none";
 T.spellcheck=false;
 style=T.style;
