@@ -284,12 +284,12 @@ T.R(c,T.S,T.E,"end");
 function rename(caller,c){
 if((c!=undefined && T.S==T.E && T.F==="") || (c==undefined && T.F==="") || (T.F!=="" && T.P==="")) { T.F=""; return false; }
 if(T.F==="")T.P="";
-//setup
+ //setup
       if(caller=="chars"){ if(T.S!=T.E){ T.F=T.V.slice(T.S,T.E); } T.P+=c;
 }else if(caller=="backspace"){ T.P=T.P.slice(0,-1);
 }else if(caller=="enter"){ T.P+="\n"; T.R("\n",T.S,T.E,"end");//for unjoin
 }else if(caller=="arrow"){ T.S=T.E;//skips rename
-//execute
+ //execute
 }else if(caller=="paste"){
   if(T.V.slice(T.S,T.E)===T.F){ T.R(T.P,T.S,T.E,"end"); }//replace selection
   let i=T.V.slice(T.E,currentgame()?.fend).search(T.F.replace(/(^\w+$)/,"\\b$1\\b"));//find
