@@ -204,20 +204,11 @@ if(direction===0){//reset
 function left(){ arrow(-1); }
 function right(){ arrow(1); }
 function arrow(direction){
-if(rename("arrow"))return;
+rename("arrow");
 let i=T.E;
 i+=direction;
 if(T.S==T.E){ T.S=T.E=i; }//normal
 else{ pastetoggle(T.V.slice(T.S,T.E=i)); }//selection is active
-}
-
-function enter(){
-if(rename("enter"))return;
-if(T.S!=T.E){T.S=T.E; return;}
-let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/);
-if(i==-1)i=0;
-//if(T.V[T.S-1]=="{")i+=indent;//indent after open-brace
-T.R("\n"+" ".repeat(i),T.S,T.S,"end");
 }
 
 function backspace(){
@@ -232,6 +223,15 @@ if(T.S==T.E){//normal
     T.R("",T.S,T.E);
   }
 }
+}
+
+function enter(){
+if(rename("enter"))return;
+if(T.S!=T.E){T.S=T.E; return;}
+let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/);
+if(i==-1)i=0;
+//if(T.V[T.S-1]=="{")i+=indent;//indent after open-brace
+T.R("\n"+" ".repeat(i),T.S,T.S,"end");
 }
 
 function paste(){
@@ -288,7 +288,7 @@ if(T.F==="")T.P="";
       if(caller=="chars"){ if(T.S!=T.E){ T.F=T.V.slice(T.S,T.E); } T.P+=c;
 }else if(caller=="backspace"){ T.P=T.P.slice(0,-1);
 }else if(caller=="enter"){ T.P+="\n"; T.R("\n",T.S,T.E,"end");//for unjoin
-}else if(caller=="arrow"){ T.S=T.E; return false;//skips rename
+}else if(caller=="arrow"){ T.S=T.E;//skips rename
 //execute
 }else if(caller=="paste"){
   if(T.V.slice(T.S,T.E)===T.F){ T.R(T.P,T.S,T.E,"end"); }//replace selection
