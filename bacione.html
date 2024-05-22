@@ -45,6 +45,7 @@ let colortextareabackground="black";
 let colorkeyforeground="white";
 let colorkeybackground="#38393D";//gray
 let colorkeybackgroundclick="lime";
+let delaykeybackgroundclick=100;
 let colorkeyboardopacity=0.5;
 let fontsizesmall=10;
 let fontsizebig=15;
@@ -123,7 +124,8 @@ function fullscreen(){
 if(document.fullscreenElement){
   document.exitFullscreen();
 }else{
-  document.documentElement.requestFullscreen({navigationUI:"show"});
+//  document.documentElement.requestFullscreen({navigationUI:"show"});
+  document.documentElement.requestFullscreen();
 }
 }
 
@@ -773,7 +775,7 @@ if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
   }
 }
 k.e.style.backgroundColor=colorkeybackgroundclick;
-setTimeout(()=>k.e.style.backgroundColor=colorkeybackground,100);
+setTimeout(()=>k.e.style.backgroundColor=colorkeybackground,delaykeybackgroundclick);
 if(!(/Save|Run|Help|Misc|Zoom|Left|Right|Undo|Redo|Shift/.test(k.n)))restore();
 },false);
 
@@ -843,6 +845,7 @@ return function(){ if(i==1 || i==reset){ jump(); } if(i==reset){ i=0; } i && i++
 (function animation(){ os.forEach(o=>o?.()); requestAnimationFrame(animation); })()
 
 }//end ski
+
 
 
 
