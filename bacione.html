@@ -208,6 +208,7 @@ function arrow(direction){
 rename("arrow");
 let i=T.E;
 i+=direction;
+if(i<0 || i>T.V.length){return;}
 if(T.S==T.E){ T.S=T.E=i; }//normal
 else{ pastetoggle(T.V.slice(T.S,T.E=i)); }//selection is active
 }
@@ -749,7 +750,6 @@ keyboard.timeout=setTimeout(()=>{keyboard.interval=setInterval(()=>{//longpress 
   }else{
     chars(k.e.textContent);
   }
-  T.focus();
 },repeatinterval);},repeattimeout);
 },false);
 
