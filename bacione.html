@@ -1028,7 +1028,7 @@ board.run((y,x)=>{cb.fillStyle=(y+x)%2?"green":"white";cb.fillRect(y*p,x*p,p,p);
 move();
 
 function move(x,y){
-if(x && (!tgl || board[y][x])){(board[y][x]=(tgl^=1)?prev:((prev=board[y][x]),0));}
+if(x!=undefined && (!tgl || board[y][x])){(board[y][x]=(tgl^=1)?prev:((prev=board[y][x]),0));}
 cf.clearRect(0,0,W,W);
 board.run((y,x)=>{cf.icon(board[y][x]||"",x*p+(p*0.5),y*p+(p*0.6));});
 }
