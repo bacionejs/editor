@@ -309,10 +309,8 @@ else{  T.P=""; color=colorkeyforeground; }
 
 function difflocal(){
 let s="Diff:";
-s+="\n\nSince saved:\n";
-s+=diff(sincesaved,filecontent());
-s+="\n\nSince opened:\n";
-s+=diff(sinceopened,filecontent());
+s+="\n\nSince saved:\n" +diff(sincesaved, filecontent());
+s+="\n\nSince opened:\n"+diff(sinceopened,filecontent());
 view("Diff").textContent=s;
 }
 function diffgit(){
