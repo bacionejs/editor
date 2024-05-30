@@ -909,7 +909,7 @@ if(played && landed && bad){
   ship=L.shape([Array.from({length:40},()=>L.rnd(p*2)-p)]);
 }
 cf.resetTransform();
-cf.clearRect(0,0,W,W);
+cf.clear();
 cf.translate(x,y);
 cf.rotate(xx/4);
 cf.fillStyle=(bad?hot:cold);
@@ -945,7 +945,7 @@ init();
 
 function init(){
 cb.white();
-cf.clearRect(0,0,W,W);
+cf.clear();
 t.forEach((_,i,a)=>a[i]=rna.next().sort());
 t.forEach((y,iy)=>y.forEach(x=>draw(cb,{x:x,y:iy,icon:127796})));
 draw(cb,rnd(banana));
@@ -958,7 +958,7 @@ if(dx>dy) if(-dx>dy){while(t[y+=-1]?.every(e=>e!=x));}else{x=t[y][t[y].indexOf(x
 else      if(-dx<dy){while(t[y+= 1]?.every(e=>e!=x));}else{x=t[y][t[y].indexOf(x)-1];}
 y=t[y] && y;if(x==undefined || y==undefined)return;
 monkey.x=x;monkey.y=y;
-cf.clearRect(0,0,W,W);draw(cf,monkey);
+cf.clear();draw(cf,monkey);
 if(monkey.x==banana.x && monkey.y==banana.y){setTimeout(init,1000);return;}
 }
 
@@ -1029,7 +1029,7 @@ move();
 
 function move(x,y){
 if(x!=undefined && (!tgl || board[y][x])){(board[y][x]=(tgl^=1)?prev:((prev=board[y][x]),0));}
-cf.clearRect(0,0,W,W);
+cf.clear();
 board.run((y,x)=>{cf.icon(board[y][x]||"",x*p+(p*0.5),y*p+(p*0.6));});
 }
 
@@ -1049,7 +1049,7 @@ for(let i=0;i<(rows*rows);i++){cb.strokeRect(i%rows*p,floor(i/rows)*p,p,p);}
 init();
 
 function init(){
-found=[];pair=[];cf.clearRect(0,0,W,W);misses=0;
+found=[];pair=[];cf.clear();misses=0;
 m=rna.next();m=[...m,...m];
 let r,i=m.length;
 while(i-- && ((r=L.rnd(i)),([m[r],m[i]]=[m[i],m[r]])));
