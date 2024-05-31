@@ -176,7 +176,7 @@ setTimeout(()=>e.querySelectorAll('span span').forEach(e=>e.style.color='inherit
 
 function capslock(){
 if(running){run(); return;}
-keys.filter(o=>Array.isArray(o.d)).forEach(o=>o.e.textContent=o.d[o.d.indexOf(o.e.textContent)^1]);
+keys.filter(k=>!k.f).forEach(k=>k.e.textContent=k.d[k.d.indexOf(k.e.textContent)^1]);
 }
 
 function undo(){ restore(-1); }
@@ -303,7 +303,7 @@ function pastetoggle(p){
 let color;
 if(p){ T.P=p;  color=colorkeybackgroundclick; }
 else{  T.P=""; color=colorkeyforeground; }
-["Paste","Undo"].forEach(v=>keys.find(k=>k.n?.includes(v)).e.querySelector("path").style.stroke=color);
+keys.filter(k=>/paste|undo/.test(k.name)).forEach(k=>k.e.querySelector("path").style.stroke=color);
 }
 
 function difflocal(){
@@ -350,6 +350,10 @@ function striplinesfirstlast(s){
 return s.toString().replace(/^.*|.*$/g,"");
 }
 
+function fname(s,i=0){
+return s.slice(s.indexOf(" ",i)+1,s.indexOf("(",i));
+}
+
 function currentgame(){
 let i=0,s=stripcomments(T.V),ftop,name;
 while(i<s.length){
@@ -373,8 +377,7 @@ if(e){
   e.className="view";
   e.addEventListener("click",()=>view(f));
 }
-e.classList.toggle("unhide");
-if(e.classList.contains("unhide")){
+if(e.classList.toggle("unhide")){
   title=document.title;
   document.title=alt || f;
   T.blur();
@@ -389,8 +392,8 @@ return e;
 }}();//end view
 
 function element(e,p){
-if(!p) return document.body.appendChild(document.createElement(e));
-else   return             p.appendChild(document.createElement(e));
+if(p) return             p.appendChild(document.createElement(e));
+else  return document.body.appendChild(document.createElement(e));
 }
 
 window.addEventListener("error",(ev)=>{//error
@@ -589,30 +592,30 @@ Marslander - Click on right or left of canvas. To disable sound, comment snd.roc
 
 let con=element("div",e);
 con.insertAdjacentHTML("beforeend", "<b>Buttons</b><br><br>");
-keys.filter(o=>o.n).forEach(o=>{
-  con.appendChild(o.d()).querySelector("path").style.stroke="black";
-  con.insertAdjacentHTML("beforeend"," "+o.n+"<br><br>");
+keys.filter(k=>k.f).forEach(k=>{
+  con.appendChild(k.d()).querySelector("path").style.stroke="black";
+  con.insertAdjacentHTML("beforeend"," "+k.name.replace(/^\w/,c=>c.toUpperCase())+"<br><br>");
 });
 }//end help
 
 function createkeys(){
 let keys=[
-{r:0,c:9, f:[run],             n:"Run",           d:()=>sv("M5 0 l-9 5 v-10 l9 5")},
-{r:0,c:8, f:[save,difflocal],  n:"Save",          d:()=>sv("M5 3 v2 h-10 v-2 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
-{r:0,c:7, f:[pretty],          n:"Pretty",        d:()=>sv("M4 -3 h-2 v-2 l2 2 v8 h-8 v-10 h6")},
-{r:0,c:6, f:[zoom,fullscreen], n:"Zoom",          d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
-{r:0,c:5, f:[misc],            n:"Misc",          d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
-{r:0,c:4, f:[help,diffgit],    n:"Help",          d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
-{r:1,c:9, f:[enter],           n:"Enter",         d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
-{r:1,c:8, f:[backspace],       n:"Backspace",     d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
-{r:1,c:7, f:[redo],            n:"Redo",          d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
-{r:1,c:6, f:[undo],            n:"Undo",          d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
-{r:1,c:5, f:[paste],           n:"Paste",         d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
-{r:1,c:4, f:[comment],         n:"Comment",       d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
-{r:1,c:3, f:[complete],        n:"Complete",      d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
-{r:1,c:2, f:[right],           n:"Right",         d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
-{r:1,c:1, f:[left],            n:"Left",          d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
-{r:6,c:9, f:[capslock],        n:"Shift",         d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
+{r:0,c:9, f:[run],             d:()=>sv("M5 0 l-9 5 v-10 l9 5")},
+{r:0,c:8, f:[save,difflocal],  d:()=>sv("M5 3 v2 h-10 v-2 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
+{r:0,c:7, f:[pretty],          d:()=>sv("M4 -3 h-2 v-2 l2 2 v8 h-8 v-10 h6")},
+{r:0,c:6, f:[zoom,fullscreen], d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
+{r:0,c:5, f:[misc],            d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
+{r:0,c:4, f:[help,diffgit],    d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
+{r:1,c:9, f:[enter],           d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
+{r:1,c:8, f:[backspace],       d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
+{r:1,c:7, f:[redo],            d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
+{r:1,c:6, f:[undo],            d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
+{r:1,c:5, f:[paste],           d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
+{r:1,c:4, f:[comment],         d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
+{r:1,c:3, f:[complete],        d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
+{r:1,c:2, f:[right],           d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
+{r:1,c:1, f:[left],            d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
+{r:6,c:9, f:[capslock],        d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
 {r:4,c:0, d:["1","\\"]},
 {r:4,c:1, d:["2","`"]},
 {r:4,c:2, d:["3","'"]},
@@ -649,29 +652,29 @@ let keys=[
 {r:7,c:4, d:["b","B"]},
 {r:7,c:5, d:["n","N"]},
 {r:7,c:6, d:["m","M"]},
-{r:7,c:7, d:"?"},
-{r:7,c:8, d:":"},
-{r:7,c:9, d:" "},
-{r:2,c:0, d:"\""},
-{r:2,c:1, d:"."},
-{r:2,c:2, d:";"},
-{r:2,c:3, d:","},
-{r:2,c:4, d:"("},
-{r:2,c:5, d:")"},
-{r:2,c:6, d:"{"},
-{r:2,c:7, d:"}"},
-{r:2,c:8, d:"["},
-{r:2,c:9, d:"]"},
-{r:3,c:0, d:"&"},
-{r:3,c:1, d:"|"},
-{r:3,c:2, d:"+"},
-{r:3,c:3, d:"-"},
-{r:3,c:4, d:"="},
-{r:3,c:5, d:"!"},
-{r:3,c:6, d:"<"},
-{r:3,c:7, d:">"},
-{r:3,c:8, d:"*"},
-{r:3,c:9, d:"/"},
+{r:7,c:7, d:["?","?"]},
+{r:7,c:8, d:[":",":"]},
+{r:7,c:9, d:[" "," "]},
+{r:2,c:0, d:['"','"']},
+{r:2,c:1, d:[".","."]},
+{r:2,c:2, d:[";",";"]},
+{r:2,c:3, d:[",",","]},
+{r:2,c:4, d:["(","("]},
+{r:2,c:5, d:[")",")"]},
+{r:2,c:6, d:["{","{"]},
+{r:2,c:7, d:["}","}"]},
+{r:2,c:8, d:["[","["]},
+{r:2,c:9, d:["]","]"]},
+{r:3,c:0, d:["&","&"]},
+{r:3,c:1, d:["|","|"]},
+{r:3,c:2, d:["+","+"]},
+{r:3,c:3, d:["-","-"]},
+{r:3,c:4, d:["=","="]},
+{r:3,c:5, d:["!","!"]},
+{r:3,c:6, d:["<","<"]},
+{r:3,c:7, d:[">",">"]},
+{r:3,c:8, d:["*","*"]},
+{r:3,c:9, d:["/","/"]},
 ];
 
 keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
@@ -705,10 +708,11 @@ return s;
 let keyboard=element("div");
 for(let k of keys){
   k.e=element("div",keyboard);
-  if((typeof k.d=="function")){
+  if(k.f){
     k.e.appendChild(k.d());
+    k.name=k.f[0].name;
   }else{
-    k.e.textContent=(k.d[0] || k.d);
+    k.e.textContent=(k.d[0]);
   }
   style=k.e.style;
   style.display="flex";
@@ -742,7 +746,7 @@ ev.preventDefault();
 let k=keys.clicked(ev);
 keys.prev=k;
 if(keys.prev==undefined)return;
-if(k.n?.includes("Save"))return;//prevent save loop
+if(k.name=="save")return;//prevent save loop
 keyboard.timeout=setTimeout(()=>{keyboard.interval=setInterval(()=>{//longpress repeater
   if(k.f){
     k.f[0]();
@@ -774,7 +778,6 @@ if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
 }
 k.e.style.backgroundColor=colorkeybackgroundclick;
 setTimeout(()=>k.e.style.backgroundColor=colorkeybackground,delaykeybackgroundclick);
-if(!(/Save|Run|Help|Misc|Zoom|Left|Right|Undo|Redo|Shift/.test(k.n)))restore();
 },false);
 
 return keys;
@@ -785,7 +788,7 @@ let T=element("textarea");
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
-T.R=function(...args){this.setRangeText(...args);}
+T.R=function(...args){restore(); this.setRangeText(...args);}
 T.editingtheeditor=false;
 T.F=""; T.P="";//find, paste
 T.inputMode="none";
