@@ -350,10 +350,6 @@ function striplinesfirstlast(s){
 return s.toString().replace(/^.*|.*$/g,"");
 }
 
-function fname(s,i=0){
-return s.slice(s.indexOf(" ",i)+1,s.indexOf("(",i));
-}
-
 function currentgame(){
 let i=0,s=stripcomments(T.V),ftop,name;
 while(i<s.length){
