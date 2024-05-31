@@ -59,7 +59,6 @@ let floor=Math.floor;
 let FPS;
 let ifra,running=false;
 let sinceopened,sincesaved;
-let blockpairs={"(":")","{":"}","[":"]",'"':'"'};
 let keys=createkeys(), T=createtextarea();
 
 T.V=striplinesfirstlast(gameprograms);
@@ -261,9 +260,9 @@ if(/\w/.test(s[i])){//select word
   T.E++;
   while(--i>0 && !/\n/.test(s[i]));
   T.S=i+1;
-}else if(s[i] in blockpairs){//block
+}else if(block(s[i])){//block
   let i2=i;
-  i=blockend(i,s,s[i]);
+  i=block(s[i],i,s);
   if(s.slice(i2,i).includes("\n")){//multiline block
     T.S=1+s.lastIndexOf("\n",T.S-1);
     i=1+s.indexOf("\n",i);
@@ -325,8 +324,10 @@ b=stripcomments(b).split("\n");
 return b.filter(o=>!a.includes(o))?.map(o=>c+" "+o)?.join("\n")||c+" no change";
 }
 
-function blockend(i,s,a){
-let cnt=1,b=blockpairs[a];
+function block(a,i,s){
+let pairs={"(":")","{":"}","[":"]",'"':'"'};
+if(i==undefined){return a in pairs;}
+let cnt=1,b=pairs[a];
 while(++i<s.length && (cnt+=s[i]===b?-1:s[i]===a?1:0));
 return i;
 }
@@ -354,7 +355,7 @@ let i=0,s=stripcomments(T.V),ftop,name;
 while(i<s.length){
   ftop=i=s.indexOf("{",i)+1;
   name=s.slice(s.lastIndexOf(" ",i)+1,s.lastIndexOf("(",i));
-  i=blockend(i,s,"{");
+  i=block("{",i,s);
   if(i>=T.S)break;
 }
 if(name=="" || /\W/.test(name))return undefined;
