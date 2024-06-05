@@ -40,13 +40,16 @@ body{background-color:red;}
 }
 `;//end style
 
-let colortextareaforeground="lime";
-let colortextareabackground="black";
+let colorprettybackground="white";
+let colorprettyforeground="black";
+let colorprettypairs="purple";
+let colorprettykeywords="teal";
+let colortextareacaret="blue";
 let colorkeyforeground="white";
 let colorkeybackground="#38393D";//gray
 let colorkeybackgroundclick="lime";
 let delaykeybackgroundclick=100;
-let colorkeyboardopacity=0.5;
+let colorkeyboardopacity=0.2;
 let fontsizesmall=10;
 let fontsizebig=15;
 let repeattimeout=500;
@@ -59,7 +62,7 @@ let floor=Math.floor;
 let FPS;
 let ifra,running=false;
 let sinceopened,sincesaved;
-let keys=createkeys(), T=createtextarea();
+let keys=createkeys(), T=createtextarea(), pretty=createpretty();
 
 T.V=striplinesfirstlast(gameprograms);
 sinceopened=sincesaved=filecontent();
@@ -114,6 +117,8 @@ if(T.editingtheeditor)alert("Open the new IDE to see changes");
 }
 
 function zoom(){
+style=pretty.style;
+style.fontSize=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
 style=T.style;
 style.fontSize=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
 T.focus();
@@ -151,28 +156,6 @@ if(s.startsWith("//")){
   T.R("//",b,b);   T.S=T.E=e+2;
 }
 }
-
-function pretty(){
-let s,title;
-if(T.editingtheeditor){ title="IDE"; s=T.V; }
-else{ let c=currentgame(); if(c==undefined)return; ({name:title,body:s}=c); }
-let e=view("Pretty",title);
-e.style.whiteSpace="pre";
-let b=(i)=>{ return (i?.join('|')?.replace(/^.+$/,"\\b($&)\\b")) || undefined; }
-let c=(s,color,match)=>{return (match && s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`)) || s;}
-s=stripcomments(s).trim().replace(/</g,'&lt;');
-s=c(s,"red",'(([&]{2})|([|]{2})|([?]{2}))=?|[,?:!]');//special
-s=c(s,"blue",  b(s.match(/(?<=unction +)\w+/g)));//functions
-s=c(s,"green", b(s.match(/\w+(?==func)/g)));//functions with state
-s=c(s,"green", b(s.match(/\w+(?=={)/g)));//objects
-s=c(s,"teal",  b(s.match(/[a-z]*/g).filter(v=>{try{eval('let '+v+'=1')}catch{return true}})));//keywords
-s=c(s,"brown",`//.*`);//comments
-s=c(s,"olive",`[0-9]+|".*?"`);//literals
-s=c(s,"purple",`[(){}[\\]]`);//pairs
-let i=0; let mw=s.match(/\n/g).length.toString().length; s=s.replace(/^/gm,()=>String(++i).padStart(mw," ")+" ");//line numbers
-e.innerHTML=s;
-setTimeout(()=>e.querySelectorAll('span span').forEach(e=>e.style.color='inherit'),0);//outer color wins
-}//end pretty
 
 function capslock(){
 if(running){run(); return;}
@@ -479,9 +462,6 @@ Swipeup shows changes you have made.
 Toggles font size.
 Swipeup toggles fullscreen.
 </p><p>
-<b>Pretty Print</b>
-Displays a readonly version of code that can be saved as PDF.
-</p><p>
 <b>Complete</b>
 Completes a word.
 Looks for match in current game and then elsewhere.
@@ -600,10 +580,9 @@ function createkeys(){
 let keys=[
 {r:0,c:9, f:[run],             d:()=>sv("M5 0 l-9 5 v-10 l9 5")},
 {r:0,c:8, f:[save,difflocal],  d:()=>sv("M5 3 v2 h-10 v-2 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
-{r:0,c:7, f:[pretty],          d:()=>sv("M4 -3 h-2 v-2 l2 2 v8 h-8 v-10 h6")},
-{r:0,c:6, f:[zoom,fullscreen], d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
-{r:0,c:5, f:[misc],            d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
-{r:0,c:4, f:[help,diffgit],    d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
+{r:0,c:7, f:[zoom,fullscreen], d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
+{r:0,c:6, f:[misc],            d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
+{r:0,c:5, f:[help,diffgit],    d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
 {r:1,c:9, f:[enter],           d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
 {r:1,c:8, f:[backspace],       d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
 {r:1,c:7, f:[redo],            d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
@@ -729,7 +708,7 @@ style.userSelect="none";
 style.position="fixed";
 style.display="grid";
 style.gap="2%";
-style.zIndex=2;
+style.zIndex=3;
 style.bottom=0;
 style.right=0;
 style.fontFamily="monospace";
@@ -783,10 +762,11 @@ return keys;
 
 function createtextarea(){
 let T=element("textarea");
-Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;}});
+T.addEventListener('scroll',function(){pretty.scrollTop=T.scrollTop;});
+Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v; syncpretty();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
-T.R=function(...args){restore(); this.setRangeText(...args);}
+T.R=function(...args){restore(); this.setRangeText(...args); syncpretty();}
 T.editingtheeditor=false;
 T.F=""; T.P="";//find, paste
 T.inputMode="none";
@@ -796,15 +776,43 @@ style.height="100%";
 style.width="100%";
 style.padding=`10ch 2ch ${innerHeight} 2ch`;
 style.position="fixed"
-style.caretColor="white";
-style.backgroundColor=colortextareabackground;
-style.color=colortextareaforeground;
+style.caretColor=colortextareacaret;
+style.backgroundColor="transparent";
+style.color="transparent";
+style.fontSize=fontsizebig;
+style.fontFamily="monospace";
+style.touchAction="pan-y";
+style.zIndex=2;
+return T;
+}//end createtextarea
+
+function createpretty(){
+let e=element("div");
+e.className="unhide";
+style=e.style;
+style.height="100%";
+style.width="100%";
+style.padding=`10ch 2ch ${innerHeight} 2ch`;
+style.position="fixed"
+style.backgroundColor=colorprettybackground;
+style.color=colorprettyforeground;
 style.fontSize=fontsizebig;
 style.fontFamily="monospace";
 style.touchAction="pan-y";
 style.zIndex=1;
-return T;
-}//end createtextarea
+style.whiteSpace="pre-wrap";
+style.wordWrap="break-word";
+style.overflowY="auto";
+return e;
+}//end createpretty
+
+function syncpretty(){
+let c=(s,color,match)=>{return (match && s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`)) || s;}
+let s=T.V.replace(/</g,'&lt;');
+s=c(s,colorprettypairs,`[(){}[\\]]`);//pairs
+s=c(s,colorprettykeywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);//keywords
+pretty.innerHTML=s;
+}
 
 }//end ide
 
