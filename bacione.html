@@ -22,7 +22,7 @@ body{background-color:red;}
   height:100%;
   background-color:white;
   font-family:monospace;
-  padding:2ch;
+  padding:10ch 2ch 2ch 2ch;
   touch-action:pan-x pan-y;
   position:fixed;
   white-space:pre-wrap;
@@ -68,7 +68,7 @@ T.V=striplinesfirstlast(gameprograms);
 sinceopened=sincesaved=filecontent();
 T.S=T.E=T.V.indexOf("{")+1;
 T.focus();
-new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
+setTimeout(()=>new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r),500);
 
 /* code layout below:
    * button functions
@@ -212,7 +212,7 @@ if(T.S==T.E){//normal
 function enter(){
 if(rename("enter"))return;
 if(T.S!=T.E){T.S=T.E; return;}
-let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/[^ ]/);
+let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/\S/);
 if(i==-1)i=0;
 T.R("\n"+" ".repeat(i),T.S,T.S,"end");
 }
@@ -234,9 +234,9 @@ if(/\w/.test(s[i])){//select word
 }else if(s[i]==" "){//spaces
   while(++i<s.length && / /.test(s[i]));
   T.E=i;
-}else if(s[i-1]=="\n" && s[i]=="\n"){//paragraph
+}else if((i==0 || s[i-1]=="\n") && s[i]=="\n"){//paragraph
   T.S++;
-  while(++i<s.length && !/\n{2}/.test(s[i]+""+s[i+1]));
+  i=s.indexOf("\n\n",i+1);
   T.E=i+2;
 }else if(s[i]=="\n" && T.S==T.E){//line
   T.E++;
@@ -355,6 +355,7 @@ if(e){
   e.className="view";
   e.addEventListener("click",()=>view(f));
 }
+pretty.classList.toggle("unhide");
 if(e.classList.toggle("unhide")){
   title=document.title;
   document.title=alt || f;
