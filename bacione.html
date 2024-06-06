@@ -15,7 +15,7 @@ You may have to close and reopen the first time.`;
 
 element("style").textContent=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
-body{background-color:red;}
+body{background-color:white;}
 ::selection{background:yellow;color:red;}
 .view{
   width:100%;
@@ -40,14 +40,13 @@ body{background-color:red;}
 }
 `;//end style
 
-let colorprettybackground="white";
-let colorprettyforeground="black";
-let colorprettypairs="purple";
-let colorprettykeywords="teal";
-let colortextareacaret="blue";
-let colorkeybackground="white";
-let colorkeyforeground="black";
+let themetoggle=0;
+let themekeybackground;
+let themekeyforeground;
+let themeprettypairs;
+let themeprettykeywords;
 let colorkeyborder="tan";
+let colortextareacaret="blue";
 let colorkeybackgroundclick="blue";
 let delaykeybackgroundclick=300;
 let fontsizesmall=10;
@@ -63,6 +62,7 @@ let FPS;
 let ifra,running=false;
 let sinceopened,sincesaved;
 let keys=createkeys(), T=createtextarea(), pretty=createpretty();
+theme();
 
 T.V=striplinesfirstlast(gameprograms);
 sinceopened=sincesaved=filecontent();
@@ -81,6 +81,27 @@ setTimeout(()=>new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAn
    * games
    * library
 */
+
+function theme(){
+let themeprettybackground;
+let themeprettyforeground;
+let t;
+if(themetoggle^=1){
+  t=["white","black","white","black","purple","teal"];
+}else{
+  t=["black","white","black","lime", "purple","teal"];
+}
+[themekeybackground,themekeyforeground,themeprettybackground,themeprettyforeground,themeprettypairs,themeprettykeywords]=t;
+keys.forEach(k=>{
+  style=k.e.style; 
+  style.backgroundColor=themekeybackground;
+  style.color=themekeyforeground;
+  k.e.querySelector("path")?.style.setProperty("stroke",themekeyforeground);
+});
+style=pretty.style;
+style.backgroundColor=themeprettybackground;
+style.color=themeprettyforeground;
+}
 
 function run(){
 if(T.editingtheeditor)return;
@@ -284,7 +305,7 @@ return true;
 function pastetoggle(p){
 let color;
 if(p){ T.P=p;  color=colorkeybackgroundclick; }
-else{  T.P=""; color=colorkeyforeground; }
+else{  T.P=""; color=themekeyforeground; }
 keys.filter(k=>/paste|undo/.test(k.name)).forEach(k=>k.e.querySelector("path").style.stroke=color);
 }
 
@@ -499,6 +520,7 @@ Repeats key
 Runtime errors display an error message and automatically jump to the error in code.
 </p><p>
 <b>Misc</b>
+Swipeup toggles theme.
 Color-Picker and Icon-Picker put a code in Paste.
 Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
 Unlike editing games, once the editor is broken, the broken editor cannot fix itself and a prior IDE must be used.
@@ -582,7 +604,7 @@ let keys=[
 {r:0,c:9, f:[run],             d:()=>sv("M5 0 l-9 5 v-10 l9 5")},
 {r:0,c:8, f:[save,difflocal],  d:()=>sv("M5 3 v2 h-10 v-2 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
 {r:0,c:7, f:[zoom,fullscreen], d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
-{r:0,c:6, f:[misc],            d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
+{r:0,c:6, f:[misc,theme],      d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
 {r:0,c:5, f:[help,diffgit],    d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
 {r:1,c:9, f:[enter],           d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
 {r:1,c:8, f:[backspace],       d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
@@ -674,7 +696,6 @@ style=s.style;
 style.width=b;
 style.height=b;
 style=p.style;
-style.stroke=colorkeyforeground;
 style.vectorEffect='non-scaling-stroke';
 style.fill="none";
 style.strokeWidth=1;
@@ -697,8 +718,6 @@ for(let k of keys){
   style.justifyContent="center";
   style.alignItems="center";
   style.borderRadius="20%";
-  style.backgroundColor=colorkeybackground;
-  style.color=colorkeyforeground;
   style.border=`2px outset ${colorkeyborder}`;
   style.gridColumn=k.c+1;
   style.gridRow=   k.r+1;
@@ -758,7 +777,7 @@ if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
   }
 }
 k.e.style.backgroundColor=colorkeybackgroundclick;
-setTimeout(()=>k.e.style.backgroundColor=colorkeybackground,delaykeybackgroundclick);
+setTimeout(()=>k.e.style.backgroundColor=themekeybackground,delaykeybackgroundclick);
 },false);
 
 return keys;
@@ -798,8 +817,6 @@ style.height="100%";
 style.width="100%";
 style.padding=`10ch 2ch ${innerHeight} 2ch`;
 style.position="fixed"
-style.backgroundColor=colorprettybackground;
-style.color=colorprettyforeground;
 style.fontSize=fontsizebig;
 style.fontFamily="monospace";
 style.touchAction="pan-y";
@@ -813,8 +830,8 @@ return e;
 function syncpretty(){
 let c=(s,color,match)=>{return (match && s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`)) || s;}
 let s=T.V.replace(/</g,'&lt;');
-s=c(s,colorprettypairs,`[(){}[\\]]`);//pairs
-s=c(s,colorprettykeywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);//keywords
+s=c(s,themeprettypairs,`[(){}[\\]]`);//pairs
+s=c(s,themeprettykeywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);//keywords
 pretty.innerHTML=s;
 }
 
