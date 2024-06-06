@@ -87,11 +87,11 @@ let themeprettybackground;
 let themeprettyforeground;
 let t;
 if(themetoggle^=1){
-  t=["white","black","white","black","purple","teal"];
+  t=["white","black","white","teal","black","purple"];
 }else{
-  t=["black","white","black","lime", "purple","teal"];
+  t=["black","white","black","orange","tan", "brown"];
 }
-[themekeybackground,themekeyforeground,themeprettybackground,themeprettyforeground,themeprettypairs,themeprettykeywords]=t;
+[themekeybackground,themekeyforeground,themeprettybackground,themeprettykeywords,themeprettyforeground,themeprettypairs]=t;
 keys.forEach(k=>{
   style=k.e.style; 
   style.backgroundColor=themekeybackground;
@@ -101,6 +101,7 @@ keys.forEach(k=>{
 style=pretty.style;
 style.backgroundColor=themeprettybackground;
 style.color=themeprettyforeground;
+syncpretty();
 }
 
 function run(){
