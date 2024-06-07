@@ -61,6 +61,7 @@ let c={},themes=[
 ["border"         ,["tan"   ,  "tan"   ,  "tan"   ]],
 ["keywords"       ,["orange",  "teal"  ,  "green" ]],
 ["pairs"          ,["brown" ,  "purple",  "blue"  ]],
+["click"          ,["blue"  ,  "blue",    "blue"  ]],
 ],len=themes[0][1].length,i=len;
 (c.theme=()=>{if(++i>=len)i=0; themes.forEach(a=>c[a[0]]=a[1][i])})();
 i--;
