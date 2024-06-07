@@ -11,7 +11,7 @@ Github: github.com/${user}
 ${tested}`;
 let download=`The editor is one file including the games.
 Download <a href=${url}>${file}</a>, open your file manager, click ${file} to run in your Chrome browser, click Run to play the Ski game.
-You may have to close and reopen the first time.`;
+`;
 
 element("style").textContent=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
@@ -46,7 +46,6 @@ let themekeyforeground;
 let themeprettypairs;
 let themeprettykeywords;
 let colorkeyborder="tan";
-let colortextareacaret="blue";
 let colorkeybackgroundclick="blue";
 let delaykeybackgroundclick=300;
 let fontsizesmall=10;
@@ -85,19 +84,21 @@ setTimeout(()=>new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAn
 function theme(){
 let themeprettybackground;
 let themeprettyforeground;
+let colortextareacaret;
 let t;
 if(themetoggle^=1){
-  t=["black","white","black","orange","tan", "brown"];
+  t=["yellow","black","white","black","orange","tan", "brown"];
 }else{
-  t=["white","black","white","teal","black","purple"];
+  t=["blue","white","black","white","teal","black","purple"];
 }
-[themekeybackground,themekeyforeground,themeprettybackground,themeprettykeywords,themeprettyforeground,themeprettypairs]=t;
+[colortextareacaret,themekeybackground,themekeyforeground,themeprettybackground,themeprettykeywords,themeprettyforeground,themeprettypairs]=t;
 keys.forEach(k=>{
   style=k.e.style; 
   style.backgroundColor=themekeybackground;
   style.color=themekeyforeground;
   k.e.querySelector("path")?.style.setProperty("stroke",themekeyforeground);
 });
+T.style.caretColor=colortextareacaret;
 style=pretty.style;
 style.backgroundColor=themeprettybackground;
 style.color=themeprettyforeground;
@@ -135,7 +136,7 @@ a.download=timestamp()+file;
 a.click();
 URL.revokeObjectURL(a.href); a.remove(); a=undefined;
 sincesaved=filecontent();
-if(T.editingtheeditor)alert("Open the new IDE to see changes");
+if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, open a prior IDE.");
 }
 
 function zoom(){
@@ -398,7 +399,6 @@ else  return document.body.appendChild(document.createElement(e));
 }
 
 window.addEventListener("error",(ev)=>{//error
-let e=view("Error");
 let s=ev.message+"\nline: "+ev.lineno+"\ncolumn: "+ev.colno;
 if(running==true){
   running=false; ifra.remove(); ifra=undefined;
@@ -408,7 +408,7 @@ if(running==true){
   T.S=T.E=T.V.split("\n",ev.lineno-1).join("\n").length+ev.colno;
   T.focus();
 }
-e.textContent=s;
+view("Error").textContent=s;
 },false);//end error
 
 function misc(){
@@ -524,7 +524,6 @@ Runtime errors display an error message and automatically jump to the error in c
 Swipeup toggles theme.
 Color-Picker and Icon-Picker put a code in Paste.
 Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
-Unlike editing games, once the editor is broken, the broken editor cannot fix itself and a prior IDE must be used.
 </p><p>
 <b>Global Variables and Aliases</b>
 FPS=(frames per second)
@@ -805,7 +804,6 @@ style.height="100%";
 style.width="100%";
 style.padding=`10ch 2ch ${innerHeight} 2ch`;
 style.position="fixed"
-style.caretColor=colortextareacaret;
 style.backgroundColor="transparent";
 style.color="transparent";
 style.fontSize=fontsizebig;
