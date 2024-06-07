@@ -40,29 +40,35 @@ body{background-color:white;}
 }
 `;//end style
 
-let themetoggle=0;
-let themekeybackground;
-let themekeyforeground;
-let themeprettypairs;
-let themeprettykeywords;
-let colorkeyborder="tan";
-let colorkeybackgroundclick="blue";
-let delaykeybackgroundclick=300;
 let fontsizesmall=10;
 let fontsizebig=15;
 let repeattimeout=500;
 let repeatinterval=100;
-let iconscale=0.4;
-let fontscale=0.5;
 
 let style;
 let floor=Math.floor;
 let FPS;
 let ifra,running=false;
 let sinceopened,sincesaved;
+
+let colors=(function(){
+let c={},themes=[
+["caret"          ,["yellow",  "blue"  ,  "blue"  ]],
+["background"     ,["black" ,  "white" ,  "white" ]],
+["foreground"     ,["tan"   ,  "black" ,  "black" ]],
+["keybackground"  ,["black" ,  "white" ,  "white" ]],
+["keyforeground"  ,["white" ,  "black" ,  "black" ]],
+["border"         ,["tan"   ,  "tan"   ,  "tan"   ]],
+["keywords"       ,["orange",  "teal"  ,  "green" ]],
+["pairs"          ,["brown" ,  "purple",  "blue"  ]],
+],len=themes[0][1].length,i=len;
+(c.theme=()=>{if(++i>=len)i=0; themes.forEach(a=>c[a[0]]=a[1][i])})();
+i--;
+return c;
+})();
+
 let keys=createkeys(), T=createtextarea(), pretty=createpretty();
 theme();
-
 T.V=striplinesfirstlast(gameprograms);
 sinceopened=sincesaved=filecontent();
 T.S=T.E=T.V.indexOf("{")+1;
@@ -82,26 +88,17 @@ setTimeout(()=>new Promise(r=>setTimeout(r,0)).then(()=>new Promise(r=>requestAn
 */
 
 function theme(){
-let themeprettybackground;
-let themeprettyforeground;
-let colortextareacaret;
-let t;
-if(themetoggle^=1){
-  t=["yellow","black","white","black","orange","tan", "brown"];
-}else{
-  t=["blue","white","black","white","teal","black","purple"];
-}
-[colortextareacaret,themekeybackground,themekeyforeground,themeprettybackground,themeprettykeywords,themeprettyforeground,themeprettypairs]=t;
+colors.theme();
 keys.forEach(k=>{
   style=k.e.style; 
-  style.backgroundColor=themekeybackground;
-  style.color=themekeyforeground;
-  k.e.querySelector("path")?.style.setProperty("stroke",themekeyforeground);
+  style.backgroundColor=colors.keybackground;
+  style.color=colors.keyforeground;
+  k.e.querySelector("path")?.style.setProperty("stroke",colors.keyforeground);
 });
-T.style.caretColor=colortextareacaret;
+T.style.caretColor=colors.caret;
 style=pretty.style;
-style.backgroundColor=themeprettybackground;
-style.color=themeprettyforeground;
+style.backgroundColor=colors.background;
+style.color=colors.foreground;
 syncpretty();
 }
 
@@ -306,8 +303,8 @@ return true;
 
 function pastetoggle(p){
 let color;
-if(p){ T.P=p;  color=colorkeybackgroundclick; }
-else{  T.P=""; color=themekeyforeground; }
+if(p){ T.P=p;  color=colors.click; }
+else{  T.P=""; color=colors.keyforeground; }
 keys.filter(k=>/paste|undo/.test(k.name)).forEach(k=>k.e.querySelector("path").style.stroke=color);
 }
 
@@ -520,8 +517,8 @@ Repeats key
 <b>Errors</b>
 Runtime errors display an error message and automatically jump to the error in code.
 </p><p>
-<b>Misc/Theme</b>
-Swipeup toggles theme.
+<b>Misc/Themes</b>
+Swipeup toggles themes.
 Color-Picker and Icon-Picker put a code in Paste.
 Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
 </p><p>
@@ -579,7 +576,6 @@ Edit the editor in the editor.
 Editor is only 7 kilobytes zipped.
 Fully programmable keyboard, including creating your own button icons and functions.
 Supports swipe and longpress-repeat.
-Dark and Light theme.
 </p><p>
 <b>Game Controls</b>
 Ski - Click anywhere.
@@ -685,6 +681,8 @@ let keys=[
 keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
 keys.rows=keys.reduce((a,k)=>(a>k.r)?a:k.r,0)+1;
 keys.keyboardwidth=floor((innerWidth<(screen.width*0.9))?(innerWidth):Math.min((innerWidth),((innerHeight-innerWidth)*keys.cols/keys.rows)));
+let iconscale=0.4;
+let fontscale=0.5;
 keys.keyboardfontsize=floor(keys.keyboardwidth/(keys.cols/fontscale));
 let scale=keys.keyboardwidth/keys.cols;
 let b=scale*iconscale;
@@ -723,7 +721,7 @@ for(let k of keys){
   style.justifyContent="center";
   style.alignItems="center";
   style.borderRadius="20%";
-  style.border=`2px outset ${colorkeyborder}`;
+  style.border=`2px outset ${colors.border}`;
   style.gridColumn=k.c+1;
   style.gridRow=   k.r+1;
 }
@@ -781,8 +779,8 @@ if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
     chars(k.d[1]);
   }
 }
-k.e.style.backgroundColor=colorkeybackgroundclick;
-setTimeout(()=>k.e.style.backgroundColor=themekeybackground,delaykeybackgroundclick);
+k.e.style.backgroundColor=colors.click;
+setTimeout(()=>k.e.style.backgroundColor=colors.keybackground,300);
 },false);
 
 return keys;
@@ -834,8 +832,8 @@ return e;
 function syncpretty(){
 let c=(s,color,match)=>{return (match && s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`)) || s;}
 let s=T.V.replace(/</g,'&lt;');
-s=c(s,themeprettypairs,`[(){}[\\]]`);//pairs
-s=c(s,themeprettykeywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);//keywords
+s=c(s,colors.pairs,`[(){}[\\]]`);//pairs
+s=c(s,colors.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);//keywords
 pretty.innerHTML=s;
 }
 
