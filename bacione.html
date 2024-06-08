@@ -53,15 +53,15 @@ let sinceopened,sincesaved;
 
 let colors=(function(){
 let c={},themes=[
-["caret"          ,["yellow",  "blue"  ,  "blue"  ]],
-["background"     ,["black" ,  "white" ,  "white" ]],
-["foreground"     ,["tan"   ,  "black" ,  "black" ]],
-["keybackground"  ,["black" ,  "white" ,  "white" ]],
-["keyforeground"  ,["white" ,  "black" ,  "black" ]],
-["border"         ,["tan"   ,  "tan"   ,  "tan"   ]],
-["keywords"       ,["orange",  "teal"  ,  "green" ]],
-["pairs"          ,["brown" ,  "purple",  "blue"  ]],
-["click"          ,["blue"  ,  "blue",    "blue"  ]],
+["keybackground"  ,["black" ,  "white" ,  "#38393D"    ,  "#38393D" ]],
+["keyforeground"  ,["white" ,  "black" ,  "white"      ,  "white"   ]],
+["border"         ,["tan"   ,  "silver",  "white"      ,  "none"    ]],
+["click"          ,["blue"  ,  "blue"  ,  "blue"       ,  "lime"    ]],
+["caret"          ,["yellow",  "blue"  ,  "blue"       ,  "white"   ]],
+["background"     ,["black" ,  "white" ,  "slategray"  ,  "black"   ]],
+["foreground"     ,["tan"   ,  "black" ,  "whitesmoke" ,  "lime"    ]],
+["keywords"       ,["orange",  "teal"  ,  "silver"     ,  "lime"    ]],
+["pairs"          ,["brown" ,  "purple",  "black"      ,  "lime"    ]],
 ],len=themes[0][1].length,i=len;
 (c.theme=()=>{if(++i>=len)i=0; themes.forEach(a=>c[a[0]]=a[1][i])})();
 i--;
@@ -94,6 +94,7 @@ keys.forEach(k=>{
   style=k.e.style; 
   style.backgroundColor=colors.keybackground;
   style.color=colors.keyforeground;
+  style.border=colors.border=="none"?"none":`2px outset ${colors.border}`;
   k.e.querySelector("path")?.style.setProperty("stroke",colors.keyforeground);
 });
 T.style.caretColor=colors.caret;
@@ -722,7 +723,6 @@ for(let k of keys){
   style.justifyContent="center";
   style.alignItems="center";
   style.borderRadius="20%";
-  style.border=`2px outset ${colors.border}`;
   style.gridColumn=k.c+1;
   style.gridRow=   k.r+1;
 }
