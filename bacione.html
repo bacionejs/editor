@@ -52,17 +52,18 @@ let ifra,running=false;
 let sinceopened,sincesaved;
 
 let colors=(function(){
+let themedefault=1;
 let c={},themes=[
-["keybackground"  ,["black" ,  "white" ,  "#38393D"    ,  "#38393D" ]],
-["keyforeground"  ,["white" ,  "black" ,  "white"      ,  "white"   ]],
-["border"         ,["tan"   ,  "silver",  "white"      ,  "none"    ]],
+["keybackground"  ,["white" ,  "black" ,  "#38393D"    ,  "#38393D" ]],
+["keyforeground"  ,["black" ,  "white" ,  "white"      ,  "white"   ]],
+["border"         ,["silver",  "tan"   ,  "white"      ,  "none"    ]],
 ["click"          ,["blue"  ,  "blue"  ,  "blue"       ,  "lime"    ]],
-["caret"          ,["yellow",  "blue"  ,  "blue"       ,  "white"   ]],
-["background"     ,["black" ,  "white" ,  "slategray"  ,  "black"   ]],
-["foreground"     ,["tan"   ,  "black" ,  "whitesmoke" ,  "lime"    ]],
-["keywords"       ,["orange",  "teal"  ,  "silver"     ,  "lime"    ]],
-["pairs"          ,["brown" ,  "purple",  "black"      ,  "lime"    ]],
-],len=themes[0][1].length,i=len;
+["caret"          ,["blue"  ,  "yellow",  "blue"       ,  "white"   ]],
+["background"     ,["white" ,  "black" ,  "slategray"  ,  "black"   ]],
+["foreground"     ,["black" ,  "tan"   ,  "whitesmoke" ,  "lime"    ]],
+["keywords"       ,["teal"  ,  "orange",  "silver"     ,  "lime"    ]],
+["pairs"          ,["purple",  "brown" ,  "black"      ,  "lime"    ]],
+],len=themes[0][1].length,i=themedefault==1?len:themedefault-2;
 (c.theme=()=>{if(++i>=len)i=0; themes.forEach(a=>c[a[0]]=a[1][i])})();
 i--;
 return c;
