@@ -792,7 +792,7 @@ T.addEventListener('scroll',function(){pretty.scrollTop=T.scrollTop;});
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v; syncpretty();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
-T.R=function(...args){restore(); this.setRangeText(...args); syncpretty();}
+T.R=function(...args){this.setRangeText(...args); restore(); syncpretty();}
 T.editingtheeditor=false;
 T.F=""; T.P="";//find, paste
 T.inputMode="none";
