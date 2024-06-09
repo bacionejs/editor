@@ -175,7 +175,7 @@ let s=T.V.slice(b,e);
 if(s.startsWith("//")){
   T.R("",  b,b+2); T.S=T.E=e-2;
 }else{
-  pastetoggle(s);
+  T.P=s;
   T.R("//",b,b);   T.S=T.E=e+2;
 }
 }
@@ -192,9 +192,6 @@ let a=[],curr=0; a.push({value:T.V,position:T.S});
 return function(direction){
 if(direction===0){//reset
   a.splice(0,Infinity,{value:T.V,position:T.S});
-}else if(T.P!=="" && direction==-1){//reset paste
-  if(T.S!=T.E){T.E=T.S;}
-  pastetoggle();
 }else if(direction==undefined){//add
   if(T.V===a.at(-1)?.value)return;
   if(a.length==50){a.shift();}else{curr++;}
@@ -215,7 +212,7 @@ let i=T.E;
 i+=direction;
 if(i<0 || i>T.V.length){return;}
 if(T.S==T.E){ T.S=T.E=i; }//normal
-else{ pastetoggle(T.V.slice(T.S,T.E=i)); }//selection is active
+else{ T.P=T.V.slice(T.S,T.E=i); }//selection is active
 }
 
 function backspace(){
@@ -240,13 +237,12 @@ if(i==-1)i=0;
 T.R("\n"+" ".repeat(i),T.S,T.S,"end");
 }
 
-function paste(){
-if(rename("paste"))return;
-if(T.P!=="" && T.S==T.E){//paste
-  T.R(T.P,T.S,T.E,"end");
-  return;
-}
+function copy(){
 let s=T.V,i=T.E;
+if(T.S==T.E){
+  T.F="";
+  T.P="";
+}
 if(/\w/.test(s[i])){//select word
   if(T.S===T.E){
     while(--i>=0 && /\w/.test(s[i]));
@@ -279,8 +275,13 @@ if(/\w/.test(s[i])){//select word
 }else{
   T.E++;
 }
-pastetoggle(T.V.slice(T.S,T.E));
-}//end paste
+T.P=T.V.slice(T.S,T.E);
+}
+
+function paste(){
+if(rename("paste"))return;
+T.R(T.P,T.S,T.E,"end");
+}
 
 function chars(c){
 rename("chars",c);
@@ -303,13 +304,6 @@ if(T.F==="")T.P="";
 }
 return true;
 }//end rename
-
-function pastetoggle(p){
-let color;
-if(p){ T.P=p;  color=colors.click; }
-else{  T.P=""; color=colors.keyforeground; }
-keys.filter(k=>/paste|undo/.test(k.name)).forEach(k=>k.e.querySelector("path").style.stroke=color);
-}
 
 function difflocal(){
 let s="Diff:";
@@ -433,14 +427,14 @@ c.addEventListener("click",e=>{
 con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br><label>Color Picker  </label>");
 c=element("input",con); c.type="color"; c.value="#0000ff";
-c.addEventListener("change",(e)=>pastetoggle(e.target.value),false);
+c.addEventListener("change",(e)=>T.P=e.target.value,false);
 let range=(r)=>{ let a=[]; r.forEach(v=>a.push(Array.from({length:(v[1]-v[0])+1},(_,i)=>v[0]+i))); return a.flat(); }
 let measure=element("span"); measure.style.visibility="hidden";
 con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br>Icon Picker<br>");
 c=element("div",con); c.style.fontSize=30;
 c.insertAdjacentHTML("beforeend",range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>",""));
-c.addEventListener("click",(e)=>pastetoggle(e.target.textContent.codePointAt(0)),false);
+c.addEventListener("click",(e)=>T.P=e.target.textContent.codePointAt(0),false);
 measure.remove();
 }//end misc
 
@@ -493,18 +487,21 @@ Looks for match in current game and then elsewhere.
 Toggles comments for the current line.
 Also puts the line in Paste.
 </p><p>
-<b>Paste</b>
-Selects text and puts it in Paste. Once Paste is set, it pastes.
-Backspace deletes selected text.
-Enter moves the cursor to the end of selection and unselects.
-Undo resets Paste.
+<b>Copy</b>
+Selects text and puts it in Paste.
 Selection looks at the character to the right and then selects:
   newline: line
   word: left,right
   spaces: right
   blank line: next blank line
   blocks: (){}[]""
-</p>
+</p><p>
+<b>Paste</b>
+Pastes.
+</p><p>
+<b>Backspace</b>
+Deletes character or selection.
+</p><p>
 <b>Undo/Redo</b>
 Restore up to 50 changes.
 </p><p>
@@ -615,10 +612,11 @@ let keys=[
 {r:1,c:7, f:[redo],            d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
 {r:1,c:6, f:[undo],            d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
 {r:1,c:5, f:[paste],           d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
-{r:1,c:4, f:[comment],         d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
-{r:1,c:3, f:[complete],        d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
-{r:1,c:2, f:[right],           d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
-{r:1,c:1, f:[left],            d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
+{r:1,c:4, f:[copy],            d:()=>sv("M2 -3 h2 v8 h-6 v-8 h4 v-2 h-6 v8 h2")},
+{r:1,c:3, f:[right],           d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
+{r:1,c:2, f:[left],            d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
+{r:1,c:1, f:[comment],         d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
+{r:1,c:0, f:[complete],        d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
 {r:6,c:9, f:[capslock],        d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
 {r:4,c:0, d:["1","\\"]},
 {r:4,c:1, d:["2","`"]},
