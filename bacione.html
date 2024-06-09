@@ -439,6 +439,7 @@ c.addEventListener("click",e=>{
 con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br><label>Color Picker  </label>");
 c=element("input",con); c.type="color"; c.value="#0000ff";
+c.addEventListener("change",(e)=>T.P=e.target.value,false);
 con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br>Icon Picker<br>");
 c=element("div",con); c.style.fontSize=30;
