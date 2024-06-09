@@ -392,6 +392,11 @@ if(p) return             p.appendChild(document.createElement(e));
 else  return document.body.appendChild(document.createElement(e));
 }
 
+document.addEventListener('paste',function(ev){//system clipboard
+ev.preventDefault();
+T.R(ev.clipboardData.getData('text'),T.S,T.S,"end");
+});
+
 window.addEventListener("error",(ev)=>{//error
 let s=ev.message+"\nline: "+ev.lineno+"\ncolumn: "+ev.colno;
 if(running==true){
@@ -603,7 +608,7 @@ keys.filter(k=>k.f).forEach(k=>{
 function createkeys(){
 let keys=[
 {r:0,c:9, f:[run],             d:()=>sv("M5 0 l-9 5 v-10 l9 5")},
-{r:0,c:8, f:[save,difflocal],  d:()=>sv("M5 3 v2 h-10 v-2 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
+{r:0,c:8, f:[save,difflocal],  d:()=>sv("M5 5 h-10 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
 {r:0,c:7, f:[zoom,fullscreen], d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
 {r:0,c:6, f:[misc,theme],      d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
 {r:0,c:5, f:[help,diffgit],    d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
@@ -702,7 +707,7 @@ style.height=b;
 style=p.style;
 style.vectorEffect='non-scaling-stroke';
 style.fill="none";
-style.strokeWidth=1;
+style.strokeWidth=1.5;
 p.setAttribute('transform',`translate(${(b*0.5)},${(b*0.5)}) scale(${b/10})`);
 p.setAttribute('d',shape);
 return s;
