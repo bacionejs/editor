@@ -52,8 +52,7 @@ let ifra,running=false;
 let sinceopened,sincesaved;
 
 let colors=(function(){
-let themedefault=1;
-let c={},themes=[
+let i=-1,c={},themes=[
 ["keybackground"  ,["white" ,  "black" ,  "#38393D"    ,  "#38393D" ]],
 ["keyforeground"  ,["black" ,  "white" ,  "white"      ,  "white"   ]],
 ["border"         ,["silver",  "tan"   ,  "white"      ,  "none"    ]],
@@ -63,8 +62,8 @@ let c={},themes=[
 ["foreground"     ,["black" ,  "tan"   ,  "whitesmoke" ,  "lime"    ]],
 ["keywords"       ,["teal"  ,  "orange",  "silver"     ,  "lime"    ]],
 ["pairs"          ,["purple",  "brown" ,  "black"      ,  "lime"    ]],
-],len=themes[0][1].length,i=themedefault==1?len:themedefault-2;
-(c.theme=()=>{if(++i>=len)i=0; themes.forEach(a=>c[a[0]]=a[1][i])})();
+];
+(c.theme=()=>{if(++i>=themes[0][1].length)i=0; themes.forEach(a=>c[a[0]]=a[1][i])})();
 i--;
 return c;
 })();
@@ -707,7 +706,7 @@ style.height=b;
 style=p.style;
 style.vectorEffect='non-scaling-stroke';
 style.fill="none";
-style.strokeWidth=1.5;
+style.strokeWidth=1;
 p.setAttribute('transform',`translate(${(b*0.5)},${(b*0.5)}) scale(${b/10})`);
 p.setAttribute('d',shape);
 return s;
