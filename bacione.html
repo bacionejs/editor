@@ -40,12 +40,13 @@ body{background-color:white;}
 }
 `;//end style
 
+let style;
+
 let fontsizesmall=10;
 let fontsizebig=15;
 let repeattimeout=500;
 let repeatinterval=100;
 
-let style;
 let floor=Math.floor;
 let FPS;
 let ifra,running=false;
@@ -203,45 +204,8 @@ if(direction===0){//reset
 }
 }}();//end restore
 
-function left(){ arrow(-1); }
-function right(){ arrow(1); }
-function arrow(direction){
-rename("arrow");
-let i=T.E;
-i+=direction;
-if(i<0 || i>T.V.length){return;}
-if(T.S==T.E){ T.S=T.E=i; }//normal
-else{ T.P=T.V.slice(T.S,T.E=i); }//selection is active
-}
-
-function backspace(){
-rename("backspace");
-if(T.S==T.E){//normal
-  T.S>0 && T.R("",T.S-1,T.E);
-}else{//selection is active
-  if(/\n/.test(T.V.slice(T.S,T.E))){//was a line cut
-    T.R("",T.S,T.E);
-    T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
-  }else{
-    T.R("",T.S,T.E);
-  }
-}
-}
-
-function enter(){
-if(rename("enter"))return;
-if(T.S!=T.E){T.S=T.E; return;}
-let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/\S/);
-if(i==-1)i=0;
-T.R("\n"+" ".repeat(i),T.S,T.S,"end");
-}
-
 function copy(){
 let s=T.V,i=T.E;
-if(T.S==T.E){
-  T.F="";
-  T.P="";
-}
 if(/\w/.test(s[i])){//select word
   if(T.S===T.E){
     while(--i>=0 && /\w/.test(s[i]));
@@ -277,32 +241,71 @@ if(/\w/.test(s[i])){//select word
 T.P=T.V.slice(T.S,T.E);
 }
 
-function paste(){
-if(rename("paste"))return;
-T.R(T.P,T.S,T.E,"end");
-}
-
 function chars(c){
-rename("chars",c);
 T.R(c,T.S,T.E,"end");
 }
 
-function rename(caller,c){
-if((c!=undefined && T.S==T.E && T.F==="") || (c==undefined && T.F==="") || (T.F!=="" && T.P==="")) { T.F=""; return false; }
-if(T.F==="")T.P="";
-          //setup
-      if(caller=="chars"){ if(T.S!=T.E){ T.F=T.V.slice(T.S,T.E); } T.P+=c;
-}else if(caller=="enter"){ T.P+="\n"; T.R("\n",T.S,T.E,"end");
-}else if(caller=="backspace"){ T.P=T.P.slice(0,-1);
-          //execute
-}else if(caller=="arrow"){ T.S=T.E;                                                    //skips
-}else if(caller=="paste"){
-  if(T.V.slice(T.S,T.E)===T.F){ T.R(T.P,T.S,T.E,"end"); }                              //replace
-  let i=T.V.slice(T.E,currentgame()?.fend).search(T.F.replace(/(^\w+$)/,"\\b$1\\b"));  //find
-  if(i!=-1){ T.E=(T.S=T.E+i)+T.F.length; }                                             //select
+function enter(){
+if(T.S!=T.E){T.S=T.E; return;}
+let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/\S/);
+if(i==-1)i=0;
+T.R("\n"+" ".repeat(i),T.S,T.S,"end");
 }
-return true;
-}//end rename
+
+function backspace(){
+if(T.S==T.E){//normal
+  T.S>0 && T.R("",T.S-1,T.E);
+}else{//selection is active
+  if(/\n/.test(T.V.slice(T.S,T.E))){//it was a line cut
+    T.R("",T.S,T.E);
+    T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
+  }else{
+    T.R("",T.S,T.E);
+  }
+}
+}
+
+function left(){ arrow(-1); }
+function right(){ arrow(1); }
+function arrow(direction){
+let i=T.E;
+i+=direction;
+if(i<0 || i>T.V.length){return;}
+if(T.S==T.E){ T.S=T.E=i; }//normal
+else{ T.P=T.V.slice(T.S,T.E=i); }//selection is active
+}
+
+function paste(){
+T.R(T.P,T.S,T.E,"end");
+}
+
+function rename(){findreplace.show();}
+let findreplace=function(){
+let o={};
+let con=element("div"); style=con.style; style.position="fixed"; style.zIndex=0;
+let f=element("input",con); f.inputMode="none"; f.addEventListener("focus",function(){o.focus=this;});
+let r=element("input",con); r.inputMode="none"; r.addEventListener("focus",function(){o.focus=this;});
+let fb=element("button",con); fb.textContent="Replace"; fb.addEventListener("click",replace);
+let sb=element("button",con); sb.textContent="Skip";    sb.addEventListener("click",skip);
+function replace() {
+T.focus(); o.focus=undefined;
+if(T.V.slice(T.S,T.E)===f.value){ T.R(r.value,T.S,T.E,"end"); }
+findselect();
+}
+function skip() { 
+T.focus(); T.S=T.E; 
+findselect();
+}
+function findselect(){
+let i=T.V.slice(T.E,currentgame()?.fend).search(f.value.replace(/(^\w+$)/,"\\b$1\\b"));
+if(i!=-1){ T.E=(T.S=T.E+i)+f.value.length; }
+}
+o.show=()=>{
+if(con.style.zIndex==0){ con.style.zIndex=9; f.focus(); }
+else{                    con.style.zIndex=0; T.focus(); T.S=T.E; }
+}
+return o;
+}();
 
 function difflocal(){
 let s="Diff:";
@@ -506,7 +509,7 @@ Selection looks at the character to the right and then selects:
   blocks: (){}[]""
 </p><p>
 <b>Paste</b>
-Pastes.
+Pastes
 </p><p>
 <b>Backspace</b>
 Deletes character or selection.
@@ -514,8 +517,8 @@ Deletes character or selection.
 <b>Undo/Redo</b>
 Restore up to 50 changes.
 </p><p>
-<b>Rename</b> (find/replace)
-To rename, select text, type text, click Paste several times. To skip, click Arrow.
+<b>Rename</b>
+find/replace
 </p><p>
 <b>Swipeup</b>
 Like shift
@@ -614,8 +617,9 @@ let keys=[
 {r:0,c:9, f:[run],             d:()=>sv("M5 0 l-9 5 v-10 l9 5")},
 {r:0,c:8, f:[save,difflocal],  d:()=>sv("M5 5 h-10 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
 {r:0,c:7, f:[zoom,fullscreen], d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
-{r:0,c:6, f:[misc,theme],      d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
-{r:0,c:5, f:[help,diffgit],    d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
+{r:0,c:6, f:[rename],          d:()=>sv("M1 -4 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M-1 1 l-4 4")},
+{r:0,c:5, f:[misc,theme],      d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
+{r:0,c:4, f:[help,diffgit],    d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
 {r:1,c:9, f:[enter],           d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
 {r:1,c:8, f:[backspace],       d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
 {r:1,c:7, f:[redo],            d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
@@ -801,9 +805,20 @@ T.addEventListener('scroll',function(){pretty.scrollTop=T.scrollTop;});
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v; syncpretty();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
-T.R=function(...args){this.setRangeText(...args); restore(); syncpretty();}
+T.R=function(...args){
+  if(findreplace.focus){
+    let e=findreplace.focus;
+    let s=args[0];
+    if(s==="") e.selectionStart--;
+    e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
+  }else{
+    this.setRangeText(...args); 
+    restore(); 
+    syncpretty();
+  }
+}
 T.editingtheeditor=false;
-T.F=""; T.P="";//find, paste
+T.P="";//paste
 T.inputMode="none";
 T.spellcheck=false;
 style=T.style;
