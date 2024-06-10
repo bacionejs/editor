@@ -285,14 +285,14 @@ let o={};
 let con=element("div"); style=con.style; style.position="fixed"; style.zIndex=0;
 let f=element("input",con); f.inputMode="none"; f.addEventListener("focus",function(){o.focus=this;});
 let r=element("input",con); r.inputMode="none"; r.addEventListener("focus",function(){o.focus=this;});
+let sb=element("button",con); sb.textContent="Find";    sb.addEventListener("click",find);
 let fb=element("button",con); fb.textContent="Replace"; fb.addEventListener("click",replace);
-let sb=element("button",con); sb.textContent="Skip";    sb.addEventListener("click",skip);
 function replace() {
 T.focus(); o.focus=undefined;
 if(T.V.slice(T.S,T.E)===f.value){ T.R(r.value,T.S,T.E,"end"); }
 findselect();
 }
-function skip() { 
+function find() { 
 T.focus(); T.S=T.E; 
 findselect();
 }
