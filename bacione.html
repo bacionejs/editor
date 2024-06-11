@@ -458,6 +458,7 @@ con.insertAdjacentHTML("beforeend","<br>Icon Picker<br>");
 c=element("div",con); c.style.fontSize=30;
 c.insertAdjacentHTML("beforeend",icons);
 c.addEventListener("click",(e)=>T.P=e.target.textContent.codePointAt(0),false);
+icons=undefined;
 }//end misc
 
 function help(){
