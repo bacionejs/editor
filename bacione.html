@@ -40,13 +40,12 @@ body{background-color:white;}
 }
 `;//end style
 
-let style;
-
 let fontsizesmall=10;
 let fontsizebig=15;
 let repeattimeout=500;
 let repeatinterval=100;
 
+let style;
 let floor=Math.floor;
 let FPS;
 let ifra,running=false;
@@ -311,7 +310,7 @@ let i=T.V.slice(T.E,currentgame()?.fend).search(f.value.replace(/(^\w+$)/,"\\b$1
 if(i!=-1){ T.E=(T.S=T.E+i)+f.value.length; }
 }
 o.show=()=>{
-if(con.style.zIndex==0){ con.style.zIndex=9; f.focus(); }
+if(con.style.zIndex==0){ con.style.zIndex=9; f.value=T.P; f.focus(); }
 else{                    con.style.zIndex=0; T.focus(); o.focus=undefined; T.S=T.E; }
 }
 return o;
@@ -404,6 +403,14 @@ if(p) return             p.appendChild(document.createElement(e));
 else  return document.body.appendChild(document.createElement(e));
 }
 
+function loadicons(){
+let range=(r)=>{ let a=[]; r.forEach(v=>a.push(Array.from({length:(v[1]-v[0])+1},(_,i)=>v[0]+i))); return a.flat(); }
+let measure=element("span"); measure.style.visibility="hidden";
+let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
+measure.remove();
+return icons;
+}
+
 document.addEventListener('paste',function(ev){//system clipboard
 ev.preventDefault();
 T.R(ev.clipboardData.getData('text'),T.S,T.S,"end");
@@ -421,14 +428,6 @@ if(running==true){
 }
 view("Error").textContent=s;
 },false);//end error
-
-function loadicons(){
-let range=(r)=>{ let a=[]; r.forEach(v=>a.push(Array.from({length:(v[1]-v[0])+1},(_,i)=>v[0]+i))); return a.flat(); }
-let measure=element("span"); measure.style.visibility="hidden";
-let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
-measure.remove();
-return icons;
-}
 
 function misc(){
 let e=view("Misc"); if(e.exists)return;
