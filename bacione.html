@@ -140,9 +140,10 @@ if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, o
 
 function zoom(){
 style=pretty.style;
-style.fontSize=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
-style=T.style;
-style.fontSize=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
+let s=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
+style.fontSize=s;
+style.fontSize=T.style;
+style.fontSize=s;
 T.focus();
 }
 
