@@ -68,7 +68,7 @@ i--;
 return c;
 })();
 
-let keys=createkeys(), T=createtextarea(), pretty=createpretty(), icons=loadicons();
+let keys=createkeys(), T=createtextarea(), pretty=createpretty();
 theme();
 T.V=striplinesfirstlast(gameprograms);
 sinceopened=sincesaved=filecontent();
@@ -431,6 +431,7 @@ view("Error").textContent=s;
 
 function misc(){
 let e=view("Misc"); if(e.exists)return;
+let icons=loadicons();
 e.style.overflowWrap="anywhere";
 let con,c;
 con=element("div",e);
@@ -624,16 +625,6 @@ keys.filter(k=>k.f).forEach(k=>{
   con.insertAdjacentHTML("beforeend"," "+k.name.replace(/^\w/,c=>c.toUpperCase())+"<br><br>");
 });
 }//end help
-
-function wrap(){
-if(getComputedStyle(pretty).whiteSpace=="pre"){
-  T.style.whiteSpace="normal";
-  pretty.style.whiteSpace="pre-wrap";
-}else{
-  T.style.whiteSpace="nowrap";
-  pretty.style.whiteSpace="pre";
-}
-}
 
 function createkeys(){
 let keys=[
@@ -878,6 +869,17 @@ style.whiteSpace="pre";
 return e;
 }//end createpretty
 
+function wrap(){
+if(getComputedStyle(pretty).whiteSpace=="pre"){
+  T.style.whiteSpace="normal";
+  pretty.style.whiteSpace="pre-wrap";
+}else{
+  T.style.whiteSpace="nowrap";
+  pretty.style.whiteSpace="pre";
+}
+pretty.scrollTop=T.scrollTop;pretty.scrollLeft=T.scrollLeft;
+}
+
 function syncpretty(){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
 let s=T.V.replace(/</g,'&lt;');
@@ -913,12 +915,12 @@ return function(){ c.clear(); x=x>0?x-speed:L.rnd(W*2,W); c.icon(hit?.(x)?128165
 })());
 
 os.push((function(){        // Skier
-let s=floor(W/20),c=L.canvas(s),x=W/4,tgl=1,i=0,time=floor(s/speed),reset=4*time;
+let s=floor(W/20),c=L.canvas(s),x=W/4,tgl=1,i=0,airtime=4*floor(s/speed);
 c.fillStyle="red"; c.scale(-1,1); c.translate(-x,x); c.icon(9975);
 addEventListener("click",()=>i||=1,false);
-hit=function(t){ return((x-s)<t && t<(x+s) && !(0<i && i<reset)); }
+hit=function(t){ return((x-s)<t && t<(x+s) && !(0<i && i<airtime)); }
 function jump(){ c.clearRect(-s,-s,s*2,s*2); c.translate((tgl*=-1)*(s),0); c.icon(9975); }
-return function(){ if(i==1 || i==reset){ jump(); } if(i==reset){ i=0; } i && i++; };
+return function(){ if(i==1 || i==airtime){ jump(); } if(i==airtime){ i=0; } i && i++; };
 })());
 
 (function animation(){ os.forEach(o=>o?.()); requestAnimationFrame(animation); })()
