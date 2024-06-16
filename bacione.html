@@ -340,7 +340,7 @@ if(con.style.zIndex==0){
 }
 }
 return o;
-}();
+}();//end findreplace
 
 function difflocal(){
 let s="Diff:";
@@ -436,11 +436,6 @@ let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((meas
 measure.remove();
 return icons;
 }
-
-document.addEventListener('paste',function(ev){//system clipboard
-ev.preventDefault();
-T.R(ev.clipboardData.getData('text'),T.S,T.S,"end");
-});
 
 window.addEventListener("error",(ev)=>{//error
 let s=ev.message+"\nline: "+ev.lineno+"\ncolumn: "+ev.colno;
@@ -839,6 +834,8 @@ return keys;
 function createtextarea(){
 let T=element("textarea");
 T.addEventListener('scroll',function(){pretty.scrollTop=T.scrollTop;pretty.scrollLeft=T.scrollLeft;});
+T.addEventListener('paste', function(ev){ ev.preventDefault(); T.R(ev.clipboardData.getData('text'),T.S,T.S,"end"); });
+T.addEventListener('cut',   function(ev){ ev.preventDefault(); ev.clipboardData.setData("text",document.getSelection().toString()); });
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v; syncpretty();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
