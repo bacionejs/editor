@@ -139,12 +139,18 @@ if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, o
 }
 
 function zoom(){
-style=pretty.style;
-let s=(fontsizebig+fontsizesmall)-parseInt(style.fontSize);
-style.fontSize=s;
-style.fontSize=T.style;
-style.fontSize=s;
-T.focus();
+if(parseInt(T.style.fontSize)==fontsizesmall){
+  T.style.whiteSpace="normal";
+  pretty.style.whiteSpace="pre-wrap";
+  T.style.fontSize=fontsizebig;
+  pretty.style.fontSize=fontsizebig;
+}else{
+  T.style.whiteSpace="nowrap";
+  pretty.style.whiteSpace="pre";
+  T.style.fontSize=fontsizesmall;
+  pretty.style.fontSize=fontsizesmall;
+}
+setTimeout(()=>{T.blur(); T.focus();},0);
 }
 
 function fullscreen(){
@@ -292,27 +298,46 @@ style.gap="8px";
 style.margin=8;
 style.top=0; 
 style.right=0;
+style.height=innerWidth/5;
 let f=element("input",con); f.inputMode="none"; f.addEventListener("focus",function(){o.focus=this;});
 let sb=element("button",con); sb.textContent="Find";    sb.addEventListener("click",find);
 let r=element("input",con); r.inputMode="none"; r.addEventListener("focus",function(){o.focus=this;});
 let fb=element("button",con); fb.textContent="Replace"; fb.addEventListener("click",replace);
 function find() { 
-T.focus(); o.focus=undefined;
+T.focus();
+o.focus=undefined;
 T.S=T.E; 
 findselect();
 }
 function replace() {
-T.focus(); o.focus=undefined;
+T.focus();
+o.focus=undefined;
 if(T.V.slice(T.S,T.E)===f.value){ T.R(r.value,T.S,T.E,"end"); }
 findselect();
 }
 function findselect(){
 let i=T.V.slice(T.E,currentgame()?.fend).search(f.value.replace(/(^\w+$)/,"\\b$1\\b"));
-if(i!=-1){ T.E=(T.S=T.E+i)+f.value.length; }
+if(i!=-1){
+  T.E=T.S=T.E+i;
+  T.blur(); 
+  T.focus(); 
+  T.E=T.S+f.value.length;
+}
 }
 o.show=()=>{
-if(con.style.zIndex==0){ con.style.zIndex=9; if(T.P.length<20)f.value=T.P; f.focus(); }
-else{                    con.style.zIndex=0; T.focus(); o.focus=undefined; T.S=T.E; }
+if(con.style.zIndex==0){ 
+  con.style.zIndex=9; 
+  if(T.S!=T.E){
+    f.value=T.V.slice(T.S,T.E);
+    T.E=T.S;
+  }
+  f.focus();
+}else{
+  con.style.zIndex=0; 
+  T.focus(); 
+  o.focus=undefined; 
+  T.S=T.E;
+}
 }
 return o;
 }();
@@ -532,9 +557,6 @@ Restore up to 50 changes.
 <b>Rename</b>
 Find/Replace
 </p><p>
-<b>Wrap</b>
-Line wrapping
-</p><p>
 <b>Swipeup</b>
 Like shift
 </p><p>
@@ -632,10 +654,9 @@ let keys=[
 {r:0,c:9, f:[run],             d:()=>sv("M5 0 l-9 5 v-10 l9 5")},
 {r:0,c:8, f:[save,difflocal],  d:()=>sv("M5 5 h-10 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
 {r:0,c:7, f:[zoom,fullscreen], d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
-{r:0,c:6, f:[wrap],            d:()=>sv("M-4 -4 h10 M-1 -2 h7 M-1 0 h7 M-1 2 h7 M-1 4 h7")},
-{r:0,c:5, f:[rename],          d:()=>sv("M1 -4 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M-1 1 l-4 4")},
-{r:0,c:4, f:[misc,theme],      d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
-{r:0,c:3, f:[help,diffgit],    d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
+{r:0,c:6, f:[rename],          d:()=>sv("M1 -4 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M-1 1 l-4 4")},
+{r:0,c:5, f:[misc,theme],      d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
+{r:0,c:4, f:[help,diffgit],    d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
 {r:1,c:9, f:[enter],           d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
 {r:1,c:8, f:[backspace],       d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
 {r:1,c:7, f:[redo],            d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
@@ -844,7 +865,7 @@ style.padding=`10ch 2ch ${innerHeight} 2ch`;
 style.position="fixed"
 style.backgroundColor="transparent";
 style.color="transparent";
-style.fontSize=fontsizebig;
+style.fontSize=fontsizesmall;
 style.fontFamily="monospace";
 style.touchAction="pan-x pan-y";
 style.zIndex=2;
@@ -860,7 +881,7 @@ style.height="100%";
 style.width="100%";
 style.padding=`10ch 2ch ${innerHeight} 2ch`;
 style.position="fixed"
-style.fontSize=fontsizebig;
+style.fontSize=fontsizesmall;
 style.fontFamily="monospace";
 style.touchAction="pan-x pan-y";
 style.zIndex=1;
@@ -869,17 +890,6 @@ style.wordWrap="break-word";
 style.whiteSpace="pre";
 return e;
 }//end createpretty
-
-function wrap(){
-if(getComputedStyle(pretty).whiteSpace=="pre"){
-  T.style.whiteSpace="normal";
-  pretty.style.whiteSpace="pre-wrap";
-}else{
-  T.style.whiteSpace="nowrap";
-  pretty.style.whiteSpace="pre";
-}
-pretty.scrollTop=T.scrollTop;pretty.scrollLeft=T.scrollLeft;
-}
 
 function syncpretty(){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
