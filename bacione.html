@@ -253,7 +253,7 @@ T.R(c,T.S,T.E,"end");
 
 function enter(){
 if(T.S!=T.E){T.S=T.E; return;}
-let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/\S/);
+let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/\S|\n/);
 if(i==-1)i=0;
 T.R("\n"+" ".repeat(i),T.S,T.S,"end");
 }
