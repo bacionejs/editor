@@ -1,8 +1,10 @@
 [![Info](README.JPG)](bacione.html)
 
-## Quick Tour
+## Help
 
-[YouTube video](http://www.youtube.com/watch?v=7mw81Jz0-30)
+[Help.pdf](Help.pdf)
+[Games.pdf](Games.pdf)
+[YouTube](http://www.youtube.com/@bacionejs)
 
 ## Rationale
 
