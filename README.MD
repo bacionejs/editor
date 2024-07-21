@@ -20,7 +20,8 @@ Bacione means big KISS, as in Keep It Satisfyingly Simple.
 - Common keys are one click.
 - Context aware logic reduces clicks.
 - Less work to refactor your code.
-- Fully programmable keyboard, including creating your own button icons and functions.
+- Fully programmable keyboard.
+- Create your own button icons and functions.
 - Designed for phones and tablets.
 - No setup required.
 - One file.
