@@ -8,3 +8,22 @@ This phone editor was created because many people don't have a computer and othe
 
 Bacione means big KISS, as in Keep It Satisfyingly Simple.
 
+## Features
+
+- Less clicks compared to other phone editors.
+- Common keys are one click.
+- Context aware logic reduces clicks.
+- Less work to refactor your code.
+- Fully programmable keyboard, including creating your own button icons and functions.
+- Designed for phones and tablets.
+- No setup required.
+- One file.
+- Easy to share.
+- Offline.
+- Plain vanilla JavaScript.
+- No dependencies.
+- Run from Android file manager in Chrome browser.
+- Easy to modify editor.
+- Edit the editor in the editor.
+- Editor is only 7 kilobytes zipped.
+- Supports swipe and longpress-repeat.
