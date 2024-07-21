@@ -4,6 +4,7 @@
 
 ## Links
 
+- [Download](bacione.html)
 - [Help.pdf](Help.pdf)
 - [Games.pdf](Games.pdf)
 - [YouTube](http://www.youtube.com/@bacionejs)
