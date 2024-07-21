@@ -2,7 +2,7 @@
 
 [![Info](README.JPG)](bacione.html)
 
-## Help
+## Links
 
 - [Help.pdf](Help.pdf)
 - [Games.pdf](Games.pdf)
