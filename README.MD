@@ -2,9 +2,9 @@
 
 ## Help
 
-[Help.pdf](Help.pdf)
-[Games.pdf](Games.pdf)
-[YouTube](http://www.youtube.com/@bacionejs)
+- [Help.pdf](Help.pdf)
+- [Games.pdf](Games.pdf)
+- [YouTube](http://www.youtube.com/@bacionejs)
 
 ## Rationale
 
