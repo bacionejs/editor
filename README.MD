@@ -1,8 +1,10 @@
 [![Info](README.JPG)](bacione.html)
 
+## Quick Tour
 
 [YouTube video](http://www.youtube.com/watch?v=7mw81Jz0-30)
 
+## Rationale
 
 This phone editor was created because many people don't have a computer and other phone editors lack some important features.
 
