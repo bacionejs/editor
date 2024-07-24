@@ -8,7 +8,7 @@
 - [Help.pdf](Help.pdf)
 - [Games.pdf](Games.pdf)
 - [YouTube](http://www.youtube.com/@bacionejs)
-- [Reddit](https://www.reddit.com/r/bacionejs)
+- [Reddit](https://www.reddit.com/r/bacionejs) - post question
 
 ## Rationale
 
