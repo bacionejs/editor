@@ -36,5 +36,5 @@ Bacione means big KISS, as in Keep It Satisfyingly Simple.
 - Run from Android file manager in Chrome browser.
 - Easy to modify editor.
 - Edit the editor in the editor.
-- Editor is only 7 kilobytes zipped.
+- Editor is only 7 kilobytes (zipped).
 - Supports swipe and longpress-repeat.
