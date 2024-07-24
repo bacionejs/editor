@@ -31,6 +31,8 @@ Bacione means big KISS, as in Keep It Satisfyingly Simple.
 - Offline.
 - Plain vanilla JavaScript.
 - No dependencies.
+- Free (GPL license)
+- No ads
 - Run from Android file manager in Chrome browser.
 - Easy to modify editor.
 - Edit the editor in the editor.
