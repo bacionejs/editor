@@ -8,7 +8,7 @@
 - [Help.pdf](Help.pdf) - same as help inside the editor
 - [Games.pdf](Games.pdf) - tutorial
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
-- [Reddit](https://www.reddit.com/r/bacionejs) - post question
+- [Reddit](https://www.reddit.com/r/bacionejs) - post questions
 
 ## Rationale
 
