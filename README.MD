@@ -4,10 +4,10 @@
 
 ## Links
 
-- [Download](bacione.html)
-- [Help.pdf](Help.pdf)
-- [Games.pdf](Games.pdf)
-- [YouTube](http://www.youtube.com/@bacionejs)
+- [Download](bacione.html) - bacione.html
+- [Help.pdf](Help.pdf) - same as help inside the editor
+- [Games.pdf](Games.pdf) - tutorial
+- [YouTube](http://www.youtube.com/@bacionejs) - product demo
 - [Reddit](https://www.reddit.com/r/bacionejs) - post question
 
 ## Rationale
