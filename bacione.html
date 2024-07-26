@@ -299,9 +299,9 @@ style.top=0;
 style.right=0;
 style.height=innerWidth/5;
 let f=element("input",con); f.inputMode="none"; f.addEventListener("focus",function(){o.focus=this;});
-let sb=element("button",con); sb.textContent="Find";    sb.addEventListener("click",find);
+let fb=element("button",con); fb.textContent="Find";    fb.addEventListener("click",find);
 let r=element("input",con); r.inputMode="none"; r.addEventListener("focus",function(){o.focus=this;});
-let fb=element("button",con); fb.textContent="Replace"; fb.addEventListener("click",replace);
+let rb=element("button",con); rb.textContent="Replace"; rb.addEventListener("click",replace);
 function find() { 
 T.focus();
 o.focus=undefined;
