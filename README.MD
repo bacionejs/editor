@@ -10,11 +10,11 @@
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
 - [Reddit](https://www.reddit.com/r/bacionejs) - post questions
 
-## Rationale
+### Why Choose This IDE?
 
-This phone editor was created because many people don't have a computer and other phone editors lack some important features.
+Discover the ultimate free IDE code editor designed specifically for programming small JavaScript games on your phone, even when offline! This phone editor was created because many people don't have a computer, and other phone editors lack important features.
 
-Bacione means big KISS, as in Keep It Satisfyingly Simple.
+Bacione means "big KISS," as in "Keep It Satisfyingly Simple."
 
 ## Features
 
