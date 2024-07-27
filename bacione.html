@@ -67,6 +67,14 @@ i--;
 return c;
 })();
 
+/* T   - text element
+ * T.V - value
+ * T.R - inserts text
+ * T.S - selection start
+ * T.E - selection end
+ * T.P - paste buffer
+ */
+
 let keys=createkeys(), T=createtextarea(), pretty=createpretty();
 theme();
 T.V=striplinesfirstlast(gameprograms);
