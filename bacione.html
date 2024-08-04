@@ -70,7 +70,7 @@ return c;
 
 /* T   - text element
  * T.V - value
- * T.R - inserts text
+ * T.I - inserts text
  * T.S - selection start
  * T.E - selection end
  * T.P - paste buffer
@@ -179,7 +179,7 @@ for(let f of [[ftop,T.S-wordlength-1,last],[T.S,Infinity,first],[0,ftop,last]]){
   if((found=look(...f))!=undefined)break;
 }
 if(found==undefined)return;
-T.R(found.slice(wordlength),T.S,T.S,"end");
+T.I(found.slice(wordlength),T.S,T.S,"end");
 }
 
 function comment(){
@@ -187,10 +187,10 @@ let b=T.V.lastIndexOf("\n",T.S-1)+1;
 let e=T.V.indexOf("\n",T.S)+1;
 let s=T.V.slice(b,e);
 if(s.startsWith("//")){
-  T.R("",  b,b+2); T.S=T.E=e-2;
+  T.I("",  b,b+2); T.S=T.E=e-2;
 }else{
   T.P=s;
-  T.R("//",b,b);   T.S=T.E=e+2;
+  T.I("//",b,b);   T.S=T.E=e+2;
 }
 }
 
@@ -256,25 +256,25 @@ T.P=T.V.slice(T.S,T.E);
 }//end copy
 
 function chars(c){
-T.R(c,T.S,T.E,"end");
+T.I(c,T.S,T.E,"end");
 }
 
 function enter(){
 if(T.S!=T.E){T.S=T.E; return;}
 let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/\S|\n/);
 if(i==-1)i=0;
-T.R("\n"+" ".repeat(i),T.S,T.S,"end");
+T.I("\n"+" ".repeat(i),T.S,T.S,"end");
 }
 
 function backspace(){
 if(T.S==T.E){//normal
-  T.S>0 && T.R("",T.S-1,T.E);
+  T.S>0 && T.I("",T.S-1,T.E);
 }else{//selection is active
   if(/\n/.test(T.V.slice(T.S,T.E))){//it was a line cut
-    T.R("",T.S,T.E);
+    T.I("",T.S,T.E);
     T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
   }else{
-    T.R("",T.S,T.E);
+    T.I("",T.S,T.E);
   }
 }
 }
@@ -290,7 +290,7 @@ else{ T.P=T.V.slice(T.S,T.E=i); }//selection is active
 }
 
 function paste(){
-T.R(T.P,T.S,T.E,"end");
+T.I(T.P,T.S,T.E,"end");
 }
 
 function rename(){findreplace.show();}
@@ -320,7 +320,7 @@ findselect();
 function replace() {
 T.focus();
 o.focus=undefined;
-if(T.V.slice(T.S,T.E)===f.value){ T.R(r.value,T.S,T.E,"end"); }
+if(T.V.slice(T.S,T.E)===f.value){ T.I(r.value,T.S,T.E,"end"); }
 findselect();
 }
 function findselect(){
@@ -866,12 +866,12 @@ return keys;
 function createtextarea(){
 let T=element("textarea");
 T.addEventListener('scroll',function(){pretty.scrollTop=T.scrollTop;pretty.scrollLeft=T.scrollLeft;});
-T.addEventListener('paste', function(ev){ ev.preventDefault(); T.R(ev.clipboardData.getData('text'),T.S,T.S,"end"); });
+T.addEventListener('paste', function(ev){ ev.preventDefault(); T.I(ev.clipboardData.getData('text'),T.S,T.S,"end"); });
 T.addEventListener('cut',   function(ev){ ev.preventDefault(); ev.clipboardData.setData("text",document.getSelection().toString()); });
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v; syncpretty();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
-T.R=function(...args){
+T.I=function(...args){
   if(findreplace.focus){
     let e=findreplace.focus;
     let s=args[0];
