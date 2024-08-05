@@ -135,6 +135,9 @@ if(running){
 }
 
 function save(){
+if(filecontent()==sincesaved){alert("No changes to save"); return;}
+sincesaved=filecontent();
+if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, open a prior IDE.");
 let timestamp=()=>{ let time=new Date(); return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month"?1:0)).toString().padStart(2,"0")),""); }
 let a=element("a");
 a.hidden=true;
@@ -142,8 +145,6 @@ a.href=URL.createObjectURL(new File([filecontent()],"",{type:"text/html"}));
 a.download=timestamp()+file;
 a.click();
 URL.revokeObjectURL(a.href); a.remove(); a=undefined;
-sincesaved=filecontent();
-if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, open a prior IDE.");
 }
 
 function zoom(){
@@ -611,14 +612,21 @@ Restore up to 50 changes.
 <b>Rename</b>
 Find/Replace
 Uses selection if active.
+Click Rename to close Rename.
 </p><p>
 <b>Errors</b>
 Runtime errors display an error message and automatically jumps to the error in code.
+Click anywhere to close.
 </p><p>
 <b>Misc/Themes</b>
 Color-Picker and Icon-Picker put a code in Paste.
 Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
 Swipeup toggles themes: light, dark, gray, retro
+Click anywhere to close.
+</p><p>
+<b>Help</b>
+Help is this screen.
+Click anywhere to close.
 </p><p>
 <b>Global Variables and Aliases</b>
 FPS=(frames per second)
