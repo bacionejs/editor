@@ -1,14 +1,15 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'/><script>onload=()=>{ ide();function ide(){
 document.title="Bacione Javascript Editor";
-let tested="Tested on: Android 13, Chrome 121, tablet and phone";
+let tested="Tested on: Android 13, Chrome browser 121, tablet and phone";
 if(navigator.maxTouchPoints<2){alert(tested);return;}
-let user="bacionejs";
 let file="bacione.html";
-let url=`https://raw.githubusercontent.com/${user}/editor/main/${file}`;
-let about=`${document.title} is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
+let url=`https://raw.githubusercontent.com/bacionejs/editor/main/${file}`;
+let about=`
+Bacione Javascript Editor is an Integrated Development Environment (IDE) for programming small javascript games on a phone. Several games are included.
 License: GPL
-Github: github.com/${user}
-${tested}`;
+Github: github.com/bacionejs/editor
+${tested}
+`;
 let download=`The editor is one file including the games.
 Download <a href=${url}>${file}</a>, open your file manager, click ${file} to run in your Chrome browser, click Run to play the Ski game.`;
 
@@ -507,14 +508,13 @@ element("div",e).insertAdjacentHTML("beforeend",
   transform="translate(15 15) scale(4) translate(0 2) rotate(30 0 -2)" />
 </svg>
 
-<p><b>About</b>
 ${about}
-</p><p>
+<p>
 <b>Download</b>
 ${download}
 </p><p>
 <b>Links</b>
-<a href=https://raw.githubusercontent.com/${user}/editor/main/Games.pdf>Games.pdf</a>
+<a href=https://raw.githubusercontent.com/bacionejs/editor/main/Games.pdf>Games.pdf</a>
 <a href=https://m.youtube.com/@bacionejs>YouTube</a>
 <a href=https://github.com/bacionejs/editor>Github</a>
 <a href=https://github.com/bacionejs/editor/discussions>Github discussions</a>
