@@ -931,7 +931,7 @@ return e;
 
 function syncpretty(){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
-let s=T.V.replace(/</g,'&lt;');
+let s=T.V.replace(/</g,'&'+'lt;');
 s=c(s,colors.pairs,`[(){}[\\]]`);
 s=c(s,colors.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
 pretty.innerHTML=s;
