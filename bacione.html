@@ -137,11 +137,23 @@ function save(){
 if(filecontent()==sincesaved){alert("No changes to save"); return;}
 sincesaved=filecontent();
 if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, open a prior IDE.");
-let timestamp=()=>{ let time=new Date(); return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month"?1:0)).toString().padStart(2,"0")),""); }
 let a=element("a");
 a.hidden=true;
 a.href=URL.createObjectURL(new File([filecontent()],"",{type:"text/html"}));
 a.download=timestamp()+"bacione.html";
+a.click();
+URL.revokeObjectURL(a.href); a.remove(); a=undefined;
+}
+
+function exportgame(){
+let n=currentgame()?.name;
+if(n==undefined || n=="Library")return;
+let f="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
+  f+="<\script>onload=()=>{ let FPS; new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>{FPS=r; "+n+"();});"+T.V+" }<\/script>";
+let a=element("a");
+a.hidden=true;
+a.href=URL.createObjectURL(new File([f],"",{type:"text/html"}));
+a.download=timestamp()+n+".html";
 a.click();
 URL.revokeObjectURL(a.href); a.remove(); a=undefined;
 }
@@ -387,6 +399,11 @@ if(T.editingtheeditor){
 return s;
 }
 
+function timestamp(){
+let time=new Date();
+return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month"?1:0)).toString().padStart(2,"0")),"");
+}
+
 function stripcomments(s){
 return s.replace(/^\/\/.*\n/gm,"");
 }
@@ -464,6 +481,10 @@ let e=view("Misc"); if(e.exists)return;
 let icons=loadicons();
 e.style.overflowWrap="anywhere";
 let con,c;
+con=element("div",e);
+con.insertAdjacentHTML("beforeend","<br><label>Export Game  </label>");
+c=element("button",con); c.textContent="ok"
+c.addEventListener("click",exportgame);
 con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br><label>Edit the Editor  </label>");
 c=element("button",con); c.textContent="off"
@@ -619,6 +640,7 @@ Runtime errors display an error message and automatically jumps to the error in 
 Click anywhere to close.
 </p><p>
 <b>Misc/Themes</b>
+Export-Game strips editor.
 Color-Picker and Icon-Picker put a code in Paste.
 Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
 Swipeup toggles themes: light, dark, gray, retro
