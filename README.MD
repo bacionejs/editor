@@ -6,7 +6,7 @@
 [![How To Download](README2.JPG)](bacione.html)
 
 ## Links
-
+- [Live](https://bacionejs.github.io/editor)
 - [Help.pdf](Help.pdf) - same as help inside the editor
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
