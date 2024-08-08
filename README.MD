@@ -1,10 +1,13 @@
+## How To Download
+[![How To Download](README2.JPG)](bacione.html)
+
+
 ## Brochure
 
 [![Info](README.JPG)](bacione.html)
 
 ## Links
 
-- [Download](bacione.html) - bacione.html
 - [Help.pdf](Help.pdf) - same as help inside the editor
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
@@ -42,5 +45,4 @@ Bacione means "big KISS," as in "Keep It Satisfyingly Simple." It offers less cl
 - Supports swipe and longpress-repeat.
 
 
-## How To Download
-[![How To Download](README2.JPG)](bacione.html)
+
