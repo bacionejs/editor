@@ -63,7 +63,7 @@ let i=-1,c={},themes=[
 ["keywords"       ,["teal"  ,  "orange",  "silver"     ,  "lime"    ]],
 ["pairs"          ,["purple",  "brown" ,  "black"      ,  "lime"    ]],
 ];
-(c.theme=()=>{if(++i>=themes[0][1].length)i=0; themes.forEach(a=>c[a[0]]=a[1][i])})();
+(c.next=()=>{if(++i>=themes[0][1].length)i=0; themes.forEach(a=>c[a[0]]=a[1][i])})();
 i--;
 return c;
 })();
@@ -97,7 +97,7 @@ new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(
 */
 
 function theme(){
-colors.theme();
+colors.next();
 keys.forEach(k=>{
   style=k.e.style; 
   style.backgroundColor=colors.keybackground;
