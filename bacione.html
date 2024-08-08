@@ -127,6 +127,7 @@ if(running){
   style.height=innerWidth;
   style.position="fixed";
   style.backgroundColor="pink";
+//  style.borderBottom="1px solid black";
   ifra.contentWindow.eval("let FPS="+FPS+";"+T.V+n+"()");
   T.blur();
   setTimeout(()=>{style.zIndex=9;},50);
@@ -1257,7 +1258,7 @@ c.icon(128165,icon.x*p+(p/2),icon.y*p+(p/2));
 
 
 function Library(){
-element("style").textContent=` *{margin:0;padding:0;position:fixed;box-sizing:border-box;touch-action:none;user-select:none;} `;
+element("style").textContent=` *{margin:0;padding:0;position:fixed;box-sizing:border-box;touch-action:none;user-select:none;} canvas{border-bottom:1px solid black;}`;
 
 function RandomArray(qty,range){
 let a=Array.from({length:range},(_,i)=>i);
