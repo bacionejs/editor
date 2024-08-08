@@ -1,10 +1,9 @@
-## How To Download
-[![How To Download](README2.JPG)](bacione.html)
-
-
 ## Brochure
 
 [![Info](README.JPG)](bacione.html)
+
+## How To Download
+[![How To Download](README2.JPG)](bacione.html)
 
 ## Links
 
