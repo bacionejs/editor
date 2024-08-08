@@ -40,3 +40,7 @@ Bacione means "big KISS," as in "Keep It Satisfyingly Simple." It offers less cl
 - Edit the editor in the editor.
 - Editor is only 7 kilobytes.
 - Supports swipe and longpress-repeat.
+
+
+## How To Download
+[![How To Download](README2.JPG)](bacione.html)
