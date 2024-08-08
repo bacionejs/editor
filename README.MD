@@ -4,7 +4,7 @@
 
 ## Links
 
-- [Download](https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html) - bacione.html
+- [Download](https://github.com/bacionejs/raw/editor/main/bacione.html) - bacione.html
 - [Help.pdf](Help.pdf) - same as help inside the editor
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
