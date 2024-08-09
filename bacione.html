@@ -75,11 +75,11 @@ return c;
  */
 
 let keys, T=createtextarea(), pretty=createpretty();
-setTimeout(()=>{keys=createkeys(), theme();},200);
 T.V=striplinesfirstlast(gameprograms);
 sinceopened=sincesaved=filecontent();
 T.S=T.E=T.V.indexOf("{")+1;
 T.focus();
+setTimeout(()=>{keys=createkeys(), theme();},200);
 new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
 
 /* code layout below:
@@ -96,15 +96,16 @@ new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(
 
 function theme(){
 colors.next();
+let style;
 keys.forEach(k=>{
-  let style=k.e.style; 
+  style=k.e.style; 
   style.backgroundColor=colors.keybackground;
   style.color=colors.keyforeground;
   style.border=colors.border=="none"?"none":`2px outset ${colors.border}`;
   k.e.querySelector("path")?.style.setProperty("stroke",colors.keyforeground);
 });
 T.style.caretColor=colors.caret;
-let style=pretty.style;
+style=pretty.style;
 style.backgroundColor=colors.background;
 style.color=colors.foreground;
 syncpretty();
@@ -819,6 +820,7 @@ return s;
 }
 
 let keyboard=element("div");
+let style;
 for(let k of keys){
   k.e=element("div",keyboard);
   if(k.f){
@@ -827,7 +829,7 @@ for(let k of keys){
   }else{
     k.e.textContent=(k.d[0]);
   }
-  let style=k.e.style;
+  style=k.e.style;
   style.display="flex";
   style.justifyContent="center";
   style.alignItems="center";
@@ -835,7 +837,7 @@ for(let k of keys){
   style.gridColumn=k.c+1;
   style.gridRow=   k.r+1;
 }
-let style=keyboard.style;
+style=keyboard.style;
 style.backgroundColor=`rgb(100 110 120/ 20%)`;
 style.border="1px solid black";
 style.borderRadius="5% 0 0 0";
