@@ -44,7 +44,6 @@ let repeattimeout=500;
 let repeatinterval=100;
 let keyroundness="20%";
 
-let style;
 let floor=Math.floor;
 let FPS;
 let ifra,running=false;
@@ -75,8 +74,8 @@ return c;
  * T.P - paste buffer
  */
 
-let keys=createkeys(), T=createtextarea(), pretty=createpretty();
-theme();
+let keys, T=createtextarea(), pretty=createpretty();
+setTimeout(()=>{keys=createkeys(), theme();},200);
 T.V=striplinesfirstlast(gameprograms);
 sinceopened=sincesaved=filecontent();
 T.S=T.E=T.V.indexOf("{")+1;
@@ -98,14 +97,14 @@ new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(
 function theme(){
 colors.next();
 keys.forEach(k=>{
-  style=k.e.style; 
+  let style=k.e.style; 
   style.backgroundColor=colors.keybackground;
   style.color=colors.keyforeground;
   style.border=colors.border=="none"?"none":`2px outset ${colors.border}`;
   k.e.querySelector("path")?.style.setProperty("stroke",colors.keyforeground);
 });
 T.style.caretColor=colors.caret;
-style=pretty.style;
+let style=pretty.style;
 style.backgroundColor=colors.background;
 style.color=colors.foreground;
 syncpretty();
@@ -121,7 +120,7 @@ if(running){
   if(n==undefined || n=="Library")return;
   running=true;
   ifra=element("iframe");
-  style=ifra.style;
+  let style=ifra.style;
   style.border=1;
   style.width=innerWidth;
   style.height=innerWidth;
@@ -308,9 +307,11 @@ T.I(T.P,T.S,T.E,"end");
 function rename(){findreplace.show();}
 let findreplace=function(){
 let o={};
+o.focus=undefined;
 let con=element("div");
-style=con.style;
+let style=con.style;
 style.zIndex=0;
+style.visibility="hidden";
 style.position="fixed"; 
 style.display="grid";
 style.gridTemplateColumns="2fr 1fr";
@@ -345,6 +346,7 @@ if(i!=-1){
 }
 }
 o.show=()=>{
+con.style.visibility="visible";
 if(con.style.zIndex==0){ 
   con.style.zIndex=9; 
   if(T.S!=T.E){
@@ -789,7 +791,7 @@ let keys=[
 
 keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
 keys.rows=keys.reduce((a,k)=>(a>k.r)?a:k.r,0)+1;
-keys.keyboardwidth=floor((innerWidth<(screen.width*0.9))?(innerWidth):Math.min((innerWidth),((innerHeight-innerWidth)*keys.cols/keys.rows)));
+keys.keyboardwidth=floor(Math.min((innerWidth),((innerHeight-innerWidth)*keys.cols/keys.rows)));
 let iconscale=0.4;
 let fontscale=0.5;
 keys.keyboardfontsize=floor(keys.keyboardwidth/(keys.cols/fontscale));
@@ -804,7 +806,7 @@ keys.clicked=(ev)=>{
 function sv(shape){
 let s=document.createElementNS("http://www.w3.org/2000/svg","svg");
 let p=s.appendChild(document.createElementNS("http://www.w3.org/2000/svg",'path'));
-style=s.style;
+let style=s.style;
 style.width=b;
 style.height=b;
 style=p.style;
@@ -825,7 +827,7 @@ for(let k of keys){
   }else{
     k.e.textContent=(k.d[0]);
   }
-  style=k.e.style;
+  let style=k.e.style;
   style.display="flex";
   style.justifyContent="center";
   style.alignItems="center";
@@ -833,7 +835,7 @@ for(let k of keys){
   style.gridColumn=k.c+1;
   style.gridRow=   k.r+1;
 }
-style=keyboard.style;
+let style=keyboard.style;
 style.backgroundColor=`rgb(100 110 120/ 20%)`;
 style.border="1px solid black";
 style.borderRadius="5% 0 0 0";
@@ -918,7 +920,7 @@ T.editingtheeditor=false;
 T.P="";
 T.inputMode="none";
 T.spellcheck=false;
-style=T.style;
+let style=T.style;
 style.height="100%";
 style.width="100%";
 style.padding=`10ch 2ch ${innerHeight} 2ch`;
@@ -936,7 +938,7 @@ return T;
 function createpretty(){
 let e=element("div");
 e.className="unhide";
-style=e.style;
+let style=e.style;
 style.height="100%";
 style.width="100%";
 style.padding=`10ch 2ch ${innerHeight} 2ch`;
