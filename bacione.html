@@ -38,76 +38,70 @@ body{background-color:white;}
 }
 `;//end style
 
-let fontsizesmall=10;
-let fontsizebig=15;
-let repeattimeout=500;
-let repeatinterval=100;
-let keyroundness="20%";
-
-let floor=Math.floor;
-let FPS;
-let ifra,running=false;
-let sinceopened,sincesaved;
-
-let colors=(function(){
-let i=-1,c={},themes=[
+let themes=(function(){
+let i=-1,t={},a=[
+["keyroundness"   ,["20%"   ,  "20%"   ,  "20%"        ,  "50%"     ]],
+["keyborder"      ,["silver",  "tan"   ,  "white"      ,  "none"    ]],
 ["keybackground"  ,["white" ,  "black" ,  "#38393D"    ,  "#38393D" ]],
 ["keyforeground"  ,["black" ,  "white" ,  "white"      ,  "white"   ]],
-["border"         ,["silver",  "tan"   ,  "white"      ,  "none"    ]],
 ["click"          ,["blue"  ,  "blue"  ,  "blue"       ,  "lime"    ]],
 ["caret"          ,["blue"  ,  "yellow",  "blue"       ,  "white"   ]],
 ["background"     ,["white" ,  "black" ,  "slategray"  ,  "black"   ]],
 ["foreground"     ,["black" ,  "tan"   ,  "whitesmoke" ,  "lime"    ]],
 ["keywords"       ,["teal"  ,  "orange",  "silver"     ,  "lime"    ]],
 ["pairs"          ,["purple",  "brown" ,  "black"      ,  "lime"    ]],
+["fontsizesmall"  ,[10    ,   10   ,  10         ,  10      ]],
+["fontsizebig"    ,[15    ,   15   ,  15         ,  15      ]],
 ];
-(c.next=()=>{if(++i>=themes[0][1].length)i=0; themes.forEach(a=>c[a[0]]=a[1][i])})();
+(t.next=()=>{if(++i>=a[0][1].length)i=0; a.forEach(a=>t[a[0]]=a[1][i])})();
 i--;
-return c;
+return t;
 })();
 
-/* T   - text element
+let floor=Math.floor, FPS, ifra, running=false;
+let T=createtextarea(), PRETTY=createpretty(), KEYS; setTimeout(createkeys,200);
+new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
+
+/*
+
+Variables
+ * T   - text element
  * T.V - value
  * T.I - inserts text
  * T.S - selection start
  * T.E - selection end
  * T.P - paste buffer
- */
 
-let KEYS, T=createtextarea(), PRETTY=createpretty();
-T.V=striplinesfirstlast(gameprograms);
-sinceopened=sincesaved=filecontent();
-T.S=T.E=T.V.indexOf("{")+1;
-T.focus();
-setTimeout(createkeys,200);
-new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
+Code layout below:
+ * button functions
+ * utils
+ * error listener
+ * misc
+ * help
+ * keyboard
+ * textarea
+ * games
+ * library
 
-/* code layout below:
-   * button functions
-   * utils
-   * error listener
-   * misc
-   * help
-   * keyboard
-   * textarea
-   * games
-   * library
 */
 
 function theme(){
-colors.next();
+themes.next();
 let style;
 KEYS.forEach(k=>{
   style=k.e.style; 
-  style.backgroundColor=colors.keybackground;
-  style.color=colors.keyforeground;
-  style.border=colors.border=="none"?"none":`2px outset ${colors.border}`;
-  k.e.querySelector("path")?.style.setProperty("stroke",colors.keyforeground);
+  style.borderRadius=themes.keyroundness;
+  style.border=themes.keyborder=="none"?"none":`2px outset ${themes.keyborder}`;
+  style.backgroundColor=themes.keybackground;
+  style.color=themes.keyforeground; k.e.querySelector("path")?.style.setProperty("stroke",themes.keyforeground);
 });
-T.style.caretColor=colors.caret;
+style=T.style;
+style.caretColor=themes.caret;
+style.fontSize=themes.fontsizesmall;
 style=PRETTY.style;
-style.backgroundColor=colors.background;
-style.color=colors.foreground;
+style.backgroundColor=themes.background;
+style.color=themes.foreground;
+style.fontSize=themes.fontsizesmall;
 syncpretty();
 }
 
@@ -134,12 +128,13 @@ if(running){
 }
 
 function save(){
-if(filecontent()==sincesaved){alert("No changes to save"); return;}
-sincesaved=filecontent();
+let s=filecontent();
+if(s==T.sincesaved){alert("No changes to save"); return;}
+T.sincesaved=s;
 if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, open a prior IDE.");
 let a=element("a");
 a.hidden=true;
-a.href=URL.createObjectURL(new File([filecontent()],"",{type:"text/html"}));
+a.href=URL.createObjectURL(new File([s],"",{type:"text/html"}));
 a.download=timestamp()+"bacione.html";
 a.click();
 URL.revokeObjectURL(a.href); a.remove(); a=undefined;
@@ -161,18 +156,18 @@ URL.revokeObjectURL(a.href); a.remove(); a=undefined;
 function zoom(){
 let p=PRETTY.style;
 let t=T.style;
-if(parseInt(T.style.fontSize)==fontsizesmall){
-  t.whiteSpace="normal";
-  p.whiteSpace="pre-wrap";
-  t.fontSize=fontsizebig;
-  p.fontSize=fontsizebig;
+if(parseInt(t.fontSize)==themes.fontsizesmall){
+  t.fontSize=themes.fontsizebig;
+  p.fontSize=themes.fontsizebig;
+//  t.whiteSpace="normal";
+//  p.whiteSpace="pre-wrap";
 }else{
-  t.whiteSpace="nowrap";
-  p.whiteSpace="pre";
-  t.fontSize=fontsizesmall;
-  p.fontSize=fontsizesmall;
+  t.fontSize=themes.fontsizesmall;
+  p.fontSize=themes.fontsizesmall;
+//  t.whiteSpace="nowrap";
+//  p.whiteSpace="pre";
 }
-setTimeout(()=>{T.blur(); T.focus();},0);
+setTimeout(()=>{T.blur(); T.focus();},200);
 }
 
 function fullscreen(){
@@ -369,14 +364,14 @@ return o;
 
 function difflocal(){
 let s="Diff:";
-s+="\n\nSince saved:\n" +diff(sincesaved, filecontent());
-s+="\n\nSince opened:\n"+diff(sinceopened,filecontent());
+s+="\n\nSince saved:\n" +diff(T.sincesaved, filecontent());
+s+="\n\nSince opened:\n"+diff(T.sinceopened,filecontent());
 view("Diff").textContent=s;
 }
 function diffgit(){
 let url=`https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html`;
 fetch(url).then(r=>r.text()).then(git=>{
-  view("Diff").textContent="Diff "+url+":\n"+diff(git,sinceopened);
+  view("Diff").textContent="Diff "+url+":\n"+diff(git,T.sinceopened);
 }).catch(error=>alert(error));
 }
 function diff(a,b,c){
@@ -394,12 +389,12 @@ while(++i<s.length && (cnt+=s[i]===b?-1:s[i]===a?1:0));
 return i;
 }
 
-function filecontent(){
+function filecontent(t=T){
 let s="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
-if(T.editingtheeditor){
-  s+="<\script>onload=()=>{ ide();function ide(){"+T.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
+if(t.editingtheeditor){
+  s+="<\script>onload=()=>{ ide();function ide(){"+t.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
 }else{
-  s+="<\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+T.V+"}}<\/script>";
+  s+="<\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+t.V+"}}<\/script>";
 }
 return s;
 }
@@ -494,7 +489,7 @@ con=element("div",e);
 con.insertAdjacentHTML("beforeend","<br><label>Edit the Editor  </label>");
 c=element("button",con); c.textContent="off"
 c.addEventListener("click",e=>{
-  if(filecontent()!=sinceopened){ alert("To switch between games and editor, first save and open the new IDE"); return; }
+  if(filecontent()!=T.sinceopened){ alert("To switch between games and editor, first save and open the new IDE"); return; }
   if(T.editingtheeditor){
     e.target.textContent="off"; T.editingtheeditor=false;
     T.V=striplinesfirstlast(gameprograms);
@@ -835,7 +830,6 @@ for(let k of keys){
   style.display="flex";
   style.justifyContent="center";
   style.alignItems="center";
-  style.borderRadius=keyroundness;
   style.gridColumn=k.c+1;
   style.gridRow=   k.r+1;
 }
@@ -858,6 +852,7 @@ style.aspectRatio=keys.cols/keys.rows;
 style.gridTemplateColumns=`repeat(${keys.cols},1fr)`;
 style.gridTemplateRows=   `repeat(${keys.rows},1fr)`;
 
+let repeattimeout=500, repeatinterval=100;
 keyboard.addEventListener("pointerdown",(ev)=>{
 ev.preventDefault();
 let k=keys.clicked(ev);
@@ -893,8 +888,8 @@ if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
     chars(k.d[1]);
   }
 }
-k.e.style.backgroundColor=colors.click;
-setTimeout(()=>k.e.style.backgroundColor=colors.keybackground,200);
+k.e.style.backgroundColor=themes.click;
+setTimeout(()=>k.e.style.backgroundColor=themes.keybackground,200);
 },false);
 
 KEYS=keys;
@@ -933,11 +928,15 @@ style.padding=`10ch 2ch ${innerHeight} 2ch`;
 style.position="fixed"
 style.backgroundColor="transparent";
 style.color="transparent";
-style.fontSize=fontsizesmall;
 style.fontFamily="monospace";
 style.touchAction="pan-x pan-y";
 style.zIndex=2;
 style.whiteSpace="nowrap";
+
+T.value=striplinesfirstlast(gameprograms);
+T.sinceopened=T.sincesaved=filecontent(T);
+T.S=T.E=T.V.indexOf("{")+1;
+T.focus();
 return T;
 }//end createtextarea
 
@@ -949,7 +948,6 @@ style.height="100%";
 style.width="100%";
 style.padding=`10ch 2ch ${innerHeight} 2ch`;
 style.position="fixed"
-style.fontSize=fontsizesmall;
 style.fontFamily="monospace";
 style.touchAction="pan-x pan-y";
 style.zIndex=1;
@@ -962,8 +960,8 @@ return e;
 function syncpretty(){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
 let s=T.V.replace(/</g,'&'+'lt;');
-s=c(s,colors.pairs,`[(){}[\\]]`);
-s=c(s,colors.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
+s=c(s,themes.pairs,`[(){}[\\]]`);
+s=c(s,themes.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
 PRETTY.innerHTML=s;
 }
 
