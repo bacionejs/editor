@@ -40,6 +40,8 @@ body{background-color:white;}
 
 let themes=(function(){
 let i=-1,t={},a=[
+["fontsizesmall"  ,[10      ,  10      ,  10           ,  10        ]],
+["fontsizebig"    ,[15      ,  15      ,  15           ,  15        ]],
 ["keyroundness"   ,["20%"   ,  "20%"   ,  "20%"        ,  "50%"     ]],
 ["keyborder"      ,["silver",  "tan"   ,  "white"      ,  "none"    ]],
 ["keybackground"  ,["white" ,  "black" ,  "#38393D"    ,  "#38393D" ]],
@@ -50,8 +52,6 @@ let i=-1,t={},a=[
 ["foreground"     ,["black" ,  "tan"   ,  "whitesmoke" ,  "lime"    ]],
 ["keywords"       ,["teal"  ,  "orange",  "silver"     ,  "lime"    ]],
 ["pairs"          ,["purple",  "brown" ,  "black"      ,  "lime"    ]],
-["fontsizesmall"  ,[10    ,   10   ,  10         ,  10      ]],
-["fontsizebig"    ,[15    ,   15   ,  15         ,  15      ]],
 ];
 (t.next=()=>{if(++i>=a[0][1].length)i=0; a.forEach(a=>t[a[0]]=a[1][i])})();
 i--;
@@ -154,8 +154,8 @@ URL.revokeObjectURL(a.href); a.remove(); a=undefined;
 }
 
 function zoom(){
-let p=PRETTY.style;
 let t=T.style;
+let p=PRETTY.style;
 if(parseInt(t.fontSize)==themes.fontsizesmall){
   t.fontSize=themes.fontsizebig;
   p.fontSize=themes.fontsizebig;
@@ -166,6 +166,7 @@ if(parseInt(t.fontSize)==themes.fontsizesmall){
   p.fontSize=themes.fontsizesmall;
 //  t.whiteSpace="nowrap";
 //  p.whiteSpace="pre";
+
 }
 setTimeout(()=>{T.blur(); T.focus();},200);
 }
@@ -931,6 +932,7 @@ style.color="transparent";
 style.fontFamily="monospace";
 style.touchAction="pan-x pan-y";
 style.zIndex=2;
+style.overflow="auto";
 style.whiteSpace="nowrap";
 
 T.value=striplinesfirstlast(gameprograms);
@@ -952,8 +954,8 @@ style.fontFamily="monospace";
 style.touchAction="pan-x pan-y";
 style.zIndex=1;
 style.overflow="auto";
-style.wordWrap="break-word";
 style.whiteSpace="pre";
+style.wordWrap="break-word";
 return e;
 }//end createpretty
 
