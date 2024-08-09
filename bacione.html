@@ -74,12 +74,12 @@ return c;
  * T.P - paste buffer
  */
 
-let keys, T=createtextarea(), pretty=createpretty();
+let KEYS, T=createtextarea(), PRETTY=createpretty();
 T.V=striplinesfirstlast(gameprograms);
 sinceopened=sincesaved=filecontent();
 T.S=T.E=T.V.indexOf("{")+1;
 T.focus();
-setTimeout(()=>{keys=createkeys(), theme();},200);
+setTimeout(createkeys,200);
 new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
 
 /* code layout below:
@@ -97,7 +97,7 @@ new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(
 function theme(){
 colors.next();
 let style;
-keys.forEach(k=>{
+KEYS.forEach(k=>{
   style=k.e.style; 
   style.backgroundColor=colors.keybackground;
   style.color=colors.keyforeground;
@@ -105,7 +105,7 @@ keys.forEach(k=>{
   k.e.querySelector("path")?.style.setProperty("stroke",colors.keyforeground);
 });
 T.style.caretColor=colors.caret;
-style=pretty.style;
+style=PRETTY.style;
 style.backgroundColor=colors.background;
 style.color=colors.foreground;
 syncpretty();
@@ -159,16 +159,18 @@ URL.revokeObjectURL(a.href); a.remove(); a=undefined;
 }
 
 function zoom(){
+let p=PRETTY.style;
+let t=T.style;
 if(parseInt(T.style.fontSize)==fontsizesmall){
-  T.style.whiteSpace="normal";
-  pretty.style.whiteSpace="pre-wrap";
-  T.style.fontSize=fontsizebig;
-  pretty.style.fontSize=fontsizebig;
+  t.whiteSpace="normal";
+  p.whiteSpace="pre-wrap";
+  t.fontSize=fontsizebig;
+  p.fontSize=fontsizebig;
 }else{
-  T.style.whiteSpace="nowrap";
-  pretty.style.whiteSpace="pre";
-  T.style.fontSize=fontsizesmall;
-  pretty.style.fontSize=fontsizesmall;
+  t.whiteSpace="nowrap";
+  p.whiteSpace="pre";
+  t.fontSize=fontsizesmall;
+  p.fontSize=fontsizesmall;
 }
 setTimeout(()=>{T.blur(); T.focus();},0);
 }
@@ -208,7 +210,7 @@ if(s.startsWith("//")){
 
 function capslock(){
 if(running){run(); return;}
-keys.filter(k=>!k.f).forEach(k=>k.e.textContent=k.d[k.d.indexOf(k.e.textContent)^1]);
+KEYS.filter(k=>!k.f).forEach(k=>k.e.textContent=k.d[k.d.indexOf(k.e.textContent)^1]);
 }
 
 function undo(){ restore(-1); }
@@ -438,7 +440,7 @@ if(e){
   e.className="view";
   e.addEventListener("click",()=>view(f));
 }
-pretty.classList.toggle("unhide");
+PRETTY.classList.toggle("unhide");
 if(e.classList.toggle("unhide")){
   title=document.title;
   document.title=alt || f;
@@ -704,7 +706,7 @@ Marslander - Click on right or left side. To disable sound, comment snd.rocket()
 
 let con=element("div",e);
 con.insertAdjacentHTML("beforeend", "<b>Buttons</b><br><br>");
-keys.filter(k=>k.f).forEach(k=>{
+KEYS.filter(k=>k.f).forEach(k=>{
   con.appendChild(k.d()).querySelector("path").style.stroke="black";
   con.insertAdjacentHTML("beforeend"," "+k.name.replace(/^\w/,c=>c.toUpperCase())+"<br><br>");
 });
@@ -895,12 +897,14 @@ k.e.style.backgroundColor=colors.click;
 setTimeout(()=>k.e.style.backgroundColor=colors.keybackground,200);
 },false);
 
-return keys;
+KEYS=keys;
+theme();
+
 }//end createkeys
 
 function createtextarea(){
 let T=element("textarea");
-T.addEventListener('scroll',function(){pretty.scrollTop=T.scrollTop;pretty.scrollLeft=T.scrollLeft;});
+T.addEventListener('scroll',function(){PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft;});
 T.addEventListener('paste', function(ev){ ev.preventDefault(); T.I(ev.clipboardData.getData('text'),T.S,T.S,"end"); });
 T.addEventListener('cut',   function(ev){ ev.preventDefault(); ev.clipboardData.setData("text",document.getSelection().toString()); });
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v; syncpretty();}});
@@ -960,7 +964,7 @@ let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${c
 let s=T.V.replace(/</g,'&'+'lt;');
 s=c(s,colors.pairs,`[(){}[\\]]`);
 s=c(s,colors.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
-pretty.innerHTML=s;
+PRETTY.innerHTML=s;
 }
 
 }//end ide
