@@ -59,7 +59,7 @@ return t;
 })();
 
 let floor=Math.floor, FPS, ifra, running=false;
-let T=createtextarea(), PRETTY=createpretty(), KEYS; setTimeout(createkeys,200);
+let T=createtextarea(), PRETTY=createpretty(), KEYS; setTimeout(createkeys,500);
 new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
 
 /*
@@ -96,12 +96,12 @@ KEYS.forEach(k=>{
   style.color=themes.keyforeground; k.e.querySelector("path")?.style.setProperty("stroke",themes.keyforeground);
 });
 style=T.style;
-style.caretColor=themes.caret;
 style.fontSize=themes.fontsizesmall;
+style.caretColor=themes.caret;
 style=PRETTY.style;
+style.fontSize=themes.fontsizesmall;
 style.backgroundColor=themes.background;
 style.color=themes.foreground;
-style.fontSize=themes.fontsizesmall;
 syncpretty();
 }
 
@@ -166,7 +166,6 @@ if(parseInt(t.fontSize)==themes.fontsizesmall){
   p.fontSize=themes.fontsizesmall;
 //  t.whiteSpace="nowrap";
 //  p.whiteSpace="pre";
-
 }
 setTimeout(()=>{T.blur(); T.focus();},200);
 }
@@ -217,7 +216,7 @@ return function(direction){
 if(direction===0){//reset
   a.splice(0,Infinity,{value:T.V,position:T.S});
 }else if(direction==undefined){//add
-  if(T.V===a.at(-1)?.value)return;
+  if(a.at(-1)?.value===T.V)return;
   if(a.length==50){a.shift();}else{curr++;}
   a.splice(curr,Infinity,{value:T.V,position:T.S});
 }else{//restore
