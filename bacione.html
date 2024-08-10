@@ -6,6 +6,7 @@ let license=`
 Bacione Javascript Editor is an Integrated Development Environment (IDE) for programming small javascript games on a phone offline. Several games are included.
 License: GPL
 Github: github.com/bacionejs/editor
+Tested: ${tested}
 `;
 let download=`The editor is one file including the games.
 Download <a href=https://github.com/bacionejs/editor>bacione.html</a>, open your file manager, click bacione.html to run in your Chrome browser, click Run to play the Ski game.`;
@@ -59,8 +60,9 @@ return t;
 })();
 
 let floor=Math.floor, FPS, ifra, running=false;
-let T=createtextarea(), PRETTY=createpretty(), KEYS; setTimeout(createkeys,1000);
+let T=createtextarea(), PRETTY=createpretty(), KEYS; waitforheight(createkeys);
 new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
+function waitforheight(callback){(function check(){if(innerHeight<screen.height){callback();}else{requestAnimationFrame(check);}})();}
 
 /*
 
@@ -127,6 +129,16 @@ if(running){
 }
 }
 
+function filecontent(t=T){
+let s="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
+if(t.editingtheeditor){
+  s+="<\script>onload=()=>{ ide();function ide(){"+t.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
+}else{
+  s+="<\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+t.V+"}}<\/script>";
+}
+return s;
+}
+
 function save(){
 let s=filecontent();
 if(s==T.sincesaved){alert("No changes to save"); return;}
@@ -134,7 +146,7 @@ T.sincesaved=s;
 if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, open a prior IDE.");
 let a=element("a");
 a.hidden=true;
-a.href=URL.createObjectURL(new File([s],"",{type:"text/html"}));
+a.href=URL.createObjectURL(new File([s],""));
 a.download=timestamp()+"bacione.html";
 a.click();
 URL.revokeObjectURL(a.href); a.remove(); a=undefined;
@@ -147,7 +159,7 @@ let f="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
   f+="<\script>onload=()=>{ let FPS; new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>{FPS=r; "+n+"();});"+T.V+" }<\/script>";
 let a=element("a");
 a.hidden=true;
-a.href=URL.createObjectURL(new File([f],"",{type:"text/html"}));
+a.href=URL.createObjectURL(new File([f],""));
 a.download=timestamp()+n+".html";
 a.click();
 URL.revokeObjectURL(a.href); a.remove(); a=undefined;
@@ -159,13 +171,9 @@ let p=PRETTY.style;
 if(parseInt(t.fontSize)==themes.fontsizesmall){
   t.fontSize=themes.fontsizebig;
   p.fontSize=themes.fontsizebig;
-//  t.whiteSpace="normal";
-//  p.whiteSpace="pre-wrap";
 }else{
   t.fontSize=themes.fontsizesmall;
   p.fontSize=themes.fontsizesmall;
-//  t.whiteSpace="nowrap";
-//  p.whiteSpace="pre";
 }
 setTimeout(()=>{T.blur(); T.focus();},200);
 }
@@ -389,16 +397,6 @@ while(++i<s.length && (cnt+=s[i]===b?-1:s[i]===a?1:0));
 return i;
 }
 
-function filecontent(t=T){
-let s="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
-if(t.editingtheeditor){
-  s+="<\script>onload=()=>{ ide();function ide(){"+t.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
-}else{
-  s+="<\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+t.V+"}}<\/script>";
-}
-return s;
-}
-
 function timestamp(){
 let time=new Date();
 return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month"?1:0)).toString().padStart(2,"0")),"");
@@ -529,7 +527,6 @@ element("div",e).insertAdjacentHTML("beforeend",
 </svg>
 
 ${license}
-${tested}
 <p>
 <b>Download</b>
 ${download}
