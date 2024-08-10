@@ -343,7 +343,7 @@ if(T.V.slice(T.S,T.E)===f.value){ T.I(r.value,T.S,T.E,"end"); }
 findselect();
 }
 function findselect(){
-let i=T.V.slice(T.E,currentgame()?.fend).search(f.value.replace(/(^\w+$)/,"\\b$1\\b"));
+let i=T.V.slice(T.E,Infinity).search(f.value.replace(/(^\w+$)/,"\\b$1\\b"));
 if(i!=-1){
   T.E=T.S=T.E+i;
   T.blur(); 
