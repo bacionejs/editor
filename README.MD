@@ -6,6 +6,7 @@
 [![How To Download](README2.JPG)](bacione.html)
 
 ## Links
+- [Download](#How-To-Download)
 - [Live](https://bacionejs.github.io/editor) - only works with mobile devices
 - [Help.pdf](Help.pdf) - same as help inside the editor
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
