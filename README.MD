@@ -7,7 +7,7 @@
 
 ## Links
 - [Download](#How-To-Download)
-- [Live](https://bacionejs.github.io/editor) - only works with mobile devices
+- [Live](https://bacionejs.github.io/editor) - only works with Android 13, Chrome browser 121, tablet and phone
 - [Help.pdf](Help.pdf) - same as help inside the editor
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
