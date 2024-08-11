@@ -68,11 +68,12 @@ If this editor doesn't support your needs, you might consider trying Neovim with
 
 ## Issues
 
-- **Keyboard Size Issue**: When opening the editor on a tablet, the keyboard may appear at the wrong size. If this happens, please refresh the page to adjust the keyboard to the correct size.  
+- **Keyboard Size/Position Issue**: When opening the editor on a tablet, the keyboard may appear the wrong size. This issue only applies to tablets; on a cell phone, the keyboard width will match the width of the phone. On a tablet, the keyboard should be half the width of the tablet and located in the lower right corner. If you use your left thumb to type instead of your right thumb, you can move it to the left side using the "Edit the Editor" functionality. If the keyboard appears incorrectly, please refresh the page to adjust it to the correct size.
 - **Cursor Misalignment**: Swiping up hard at the end of the file in the editor window can cause the cursor to become misaligned with the text. A suggested workaround is to back off a little bit from the end.
 
 ## Notes
 
+- This editor only supports portrait mode.
 - **Copying and Pasting**: You must use the internal copy and paste buttons in the editor to copy and paste code within the editor. To copy code from external sources, use system copy and paste techniques, such as long pressing and then choosing copy and paste.
 - **Custom Keyboard Functionality**: This editor is particularly useful because it features a custom keyboard where all the main functionality is accessible with one click. To support this, 22 of the 32 special characters, which are important to programming, are accessible with one click, while the remaining 10 are accessible via the Shift key. Note that the space key is very small and located in the bottom right corner. Additionally, the backspace and return keys are on the second row because they coordinate with other keys often. For example, to cut text, you press copy and then backspace, and to unselect, you press the return key. If you don't like this layout, you can easily change it by using the "Edit the Editor" option found at the miscellaneous button, represented by a diamond symbol.
 
