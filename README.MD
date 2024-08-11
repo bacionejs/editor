@@ -65,3 +65,14 @@ This editor was created because many people don't have access to a computer, but
 
 If this editor doesn't support your needs, you might consider trying Neovim with Termux and Apache. You can find my configuration for those tools [here](https://github.com/bacionejs/termux).
 
+
+## Issues
+
+- **Keyboard Size Issue**: When opening the editor on a tablet, the keyboard may appear at the wrong size. If this happens, please refresh the page to adjust the keyboard to the correct size.  
+- **Cursor Misalignment**: Swiping up hard at the end of the file in the editor window can cause the cursor to become misaligned with the text. A suggested workaround is to back off a little bit from the end.
+
+## Notes
+
+- **Copying and Pasting**: You must use the internal copy and paste buttons in the editor to copy and paste code within the editor. To copy code from external sources, use system copy and paste techniques, such as long pressing and then choosing copy and paste.
+
+
