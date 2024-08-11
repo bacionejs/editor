@@ -10,6 +10,10 @@
   - the editor only works with Chrome browser, tablet or phone
   - however, exported games, which remove the editor first, have no limitation
 - [Download](#How-To-Download)
+  - download bacione.html
+  - open your file manager
+  - click bacione.html to run in your Chrome browser
+  - click Run to play the Ski game
 - [Help.pdf](Help.pdf) - same as help inside the editor
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
