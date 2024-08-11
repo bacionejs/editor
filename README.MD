@@ -6,7 +6,9 @@
 [![How To Download](README2.JPG)](bacione.html)
 
 ## Links
-- [Live](https://bacionejs.github.io/editor) - only works with Chrome browser, tablet and phone
+- [Live](https://bacionejs.github.io/editor):
+  - the editor only works with Chrome browser, tablet and phone
+  - however, exported games, which delete the editor first, have no limitation
 - [Download](#How-To-Download)
 - [Help.pdf](Help.pdf) - same as help inside the editor
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
