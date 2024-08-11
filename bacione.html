@@ -575,9 +575,7 @@ At the top of the editor, create this code and click Run:
   border: 1px solid #ccc;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   ">
-<span style=color:teal>function</span> helloworld<span style=color:purple>(</span><span style=color:purple>)</span><span style=color:purple>{</span>
-  L.canvas<span style=color:purple>(</span>W/2<span style=color:purple>)</span>.icon<span style=color:purple>(</span>127759,W/2,W/2<span style=color:purple>)</span>;
-<span style=color:purple>}</span>  
+${pretty('function helloworld(){\n  L.canvas(W/2).icon(127759,W/2,W/2);\n}')}
 </pre>
 </p><p>
 <b>Run</b>
@@ -964,12 +962,16 @@ style.wordWrap="break-word";
 return e;
 }//end createpretty
 
-function syncpretty(){
+function pretty(s){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
-let s=T.V.replace(/</g,'&'+'lt;');
+s=s.replace(/</g,'&'+'lt;');
 s=c(s,themes.pairs,`[(){}[\\]]`);
 s=c(s,themes.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
-PRETTY.innerHTML=s;
+return s;
+}
+
+function syncpretty(){
+PRETTY.innerHTML=pretty(T.V);
 }
 
 }//end ide
