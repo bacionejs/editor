@@ -85,4 +85,4 @@ Any reference to **change** below refers to the **Edit-the-Editor** functionalit
 - **Navigation**: Navigation is primarily done by touching the screen, so there are no Home, End, or vertical arrow keys. Instead, a left-right arrow is provided to help position the cursor accurately after touching the approximate location. The Zoom key, which increases the text size, can also assist in positioning the cursor in the correct place.
 - **Suggested Size**: Since navigating code on a phone can be quite challenging, it's advisable to create games that are small enough to be scrollable with a single gesture.
 - **Fullscreen**: Activating fullscreen mode will give you more real estate for navigating and editing your code. You can toggle fullscreen by swiping up on the Zoom button.
-
+- **Closing Views**: There are no close buttons. To close a View, click anywhere or select an option. The Views are: Help, Miscellaneous, Diff and Error.
