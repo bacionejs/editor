@@ -51,4 +51,17 @@ Bacione means "big KISS," as in "Keep It Satisfyingly Simple." It offers **less 
 - Supports swipe and longpress-repeat.
 
 
+## Limitations
+
+This editor was created because many people don't have access to a computer, but they do have a phone. My purpose was to create an editor that could be used for learning programming, making it suitable for beginners. It's also ideal for experienced programmers who sometimes find programming small games on a tablet or phone more relaxing than on a laptop or desktop. Given its intended purpose, some limitations are to be expected:
+
+- **Save Mechanism:** The save function in the editor is limited by HTML constraints. As a workaround, a **new** timestamped file is generated each time you save. If you're saving to your Downloads folder, it's important to keep it organized—ideally, free of files from other purposes, as these can accumulate over time. To prevent clutter, it's best to immediately move downloaded files for other purposes into a different folder. A cluttered Downloads folder can make it difficult to quickly locate the most recent timestamped file, which is essential for reopening your work. Also, periodically delete older editor HTML files, keeping only the most recent version.
+
+- **Diff Function:** The Diff function is **naive** and will not produce accurate results. It is designed to provide only an approximate indication of progress since the file was opened or last saved, so use it with caution.
+
+- **Game Size and File Support:** The editor is not designed for large games or multi-file projects. This is because opening an HTML file from the File Manager on Android in the Chrome browser doesn't support multiple files—everything has to be contained within a single, monolithic HTML file. This also means that external images or audio files cannot be used. Programmatically created elements can be utilized instead; for example, the Marslander game uses vector graphics and a noise generator, and several other games utilize emojis.
+
+- **Debugging Limitations:** While the editor includes a debug function that allows you to display variable values and will direct you to the line of code where an error occurs, it lacks more advanced debugging capabilities. Unlike some integrated development environments (IDEs), this editor does not support stepping through code line by line or provide the complex support that a browser console offers. This may make diagnosing and fixing issues more challenging for users.
+
+If this editor doesn't support your needs, you might consider trying Neovim with Termux and Apache. You can find my configuration for those tools [here](https://github.com/bacionejs/termux).
 
