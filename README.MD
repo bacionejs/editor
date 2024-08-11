@@ -22,7 +22,9 @@
 
 ### Why Choose This IDE?
 
-Discover the ultimate free IDE code editor designed specifically for programming **small** JavaScript games on your **phone offline**! This phone editor was created because many people don't have a computer, and other phone editors lack important features. 
+Discover the ultimate free IDE code editor designed specifically for programming **small** JavaScript games on your **phone offline**! This phone editor was created because many people don't have a computer, and other phone editors lack important features.
+
+It's also ideal for experienced programmers who sometimes find programming small games on a tablet or phone more relaxing than on a laptop or desktop.
 
 Bacione means "big KISS," as in "Keep It Satisfyingly Simple." It offers **less clicks** compared to other phone editors, with common keys accessible in one click and context-aware logic that reduces the need for repetitive actions. Refactoring code is easier, and you have a fully programmable keyboard where you can create your own icons and functions. Designed for phones and tablets, it requires no setup and operates as a single file that's easy to share. Written in plain vanilla JavaScript with no dependencies, it's free (GPL license), contains no ads, and runs directly from your Android file manager in the Chrome browser. The editor itself is only 7 kilobytes, and is easy to modify and customize right within the editor. Plus, it supports swipe and longpress-repeat for enhanced usability.
 
@@ -52,8 +54,6 @@ Bacione means "big KISS," as in "Keep It Satisfyingly Simple." It offers **less 
 
 
 ## Limitations
-
-This editor was created because many people don't have access to a computer, but they do have a phone. My purpose was to create an editor that could be used for learning programming, making it suitable for beginners. It's also ideal for experienced programmers who sometimes find programming small games on a tablet or phone more relaxing than on a laptop or desktop. Given its intended purpose, some limitations are to be expected:
 
 - **Save Mechanism:** The save function in the editor is limited by HTML constraints. As a workaround, a **new** timestamped file is generated each time you save. If you're saving to your Downloads folder, it's important to keep it organized—ideally, free of files from other purposes, as these can accumulate over time. To prevent clutter, it's best to immediately move downloaded files for other purposes into a different folder. A cluttered Downloads folder can make it difficult to quickly locate the most recent timestamped file, which is essential for reopening your work. Also, periodically delete older editor HTML files, keeping only the most recent version.
 
