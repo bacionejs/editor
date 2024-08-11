@@ -62,7 +62,7 @@ return t;
 let floor=Math.floor, FPS, ifra, running=false;
 let T=createtextarea(), PRETTY=createpretty(), KEYS; waitforheight(createkeys);
 new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
-function waitforheight(callback){(function check(){if(innerHeight<screen.height){callback();}else{requestAnimationFrame(check);}})();}
+function waitforheight(callback){(function check(){if(innerHeight<screen.availHeight){callback();}else{requestAnimationFrame(check);}})();}
 
 /*
 
