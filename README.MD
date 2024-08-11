@@ -18,7 +18,7 @@
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
 - [Reddit](https://www.reddit.com/r/bacionejs) - reddit discussions
-- [Discussions](https://github.com/bacionejs/editor/discussions) - github discussions
+- [Github](https://github.com/bacionejs/editor/discussions) - github discussions
 
 ### Why Choose This IDE?
 
