@@ -87,3 +87,4 @@ Any reference to **change** below refers to the **Edit-the-Editor** functionalit
 - **Fullscreen**: Activating fullscreen mode will give you more real estate for navigating and editing your code. You can toggle fullscreen by swiping up on the Zoom button.
 - **Closing Views**: There are no close buttons. To close a View, click anywhere or select an option. The Views are: Help, Miscellaneous, Diff and Error.
 - **Emoji Generation**: When opening the Miscellaneous View the first time, it will take a moment as the icons are loaded.
+- **Pickers**: Color-Picker and Icon-Picker put a code in Paste, so don't be alarmed if it seems nothing has happened. Click the Paste button to see the code.
