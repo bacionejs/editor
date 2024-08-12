@@ -14,7 +14,6 @@
   - open your file manager
   - click bacione.html to run in your Chrome browser
   - click Run to play the Ski game
-- [Help.pdf](Help.pdf) - same as help inside the editor
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
 - [Reddit](https://www.reddit.com/r/bacionejs) - reddit discussions
