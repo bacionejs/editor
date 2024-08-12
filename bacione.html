@@ -491,11 +491,13 @@ c.addEventListener("click",e=>{
   if(T.editingtheeditor){
     e.target.textContent="off"; T.editingtheeditor=false;
     T.V=striplinesfirstlast(gameprograms);
+    T.S=T.E=T.V.indexOf("{")+1;
   }else{
     e.target.textContent="on"; T.editingtheeditor=true;
     T.V=striplinesfirstlast(ide);
+    T.S=T.E=0;
   }
-  T.S=T.E=T.V.indexOf("{")+1; T.focus();
+  T.focus();
   restore(0);
 });
 con=element("div",e);
@@ -794,7 +796,7 @@ let keys=[
 
 keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
 keys.rows=keys.reduce((a,k)=>(a>k.r)?a:k.r,0)+1;
-keys.keyboardwidth=floor(Math.min((innerWidth),((innerHeight-innerWidth)*keys.cols/keys.rows)));
+keys.keyboardwidth=floor(Math.min((innerWidth),((innerHeight-innerWidth)*(keys.cols/keys.rows))));
 let iconscale=0.4;
 let fontscale=0.5;
 keys.keyboardfontsize=floor(keys.keyboardwidth/(keys.cols/fontscale));
