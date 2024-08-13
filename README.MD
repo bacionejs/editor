@@ -6,7 +6,7 @@
 [![How To Download](README2.JPG)](bacione.html)
 
 ## Links
-The editor only works with Chrome browser, tablet or phone. However, exported games, which remove the editor first, have no limitation.
+The **editor only works with Chrome browser, tablet or phone**. However, exported games, which remove the editor first, have no limitation.
 - [Live](https://bacionejs.github.io/editor):
 - [Download](#How-To-Download)
   - download bacione.html
