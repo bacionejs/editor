@@ -1,6 +1,7 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'/><script>onload=()=>{ ide();function ide(){
 document.title="Bacione Javascript Editor";
 let tested="Works with Chrome browser, tablet and phone";
+//alert(navigator.maxTouchPoints);
 if(navigator.maxTouchPoints<2 || (!navigator.userAgent.includes("Chrome") || navigator.userAgent.includes("Edg"))){alert(tested);return;}
 let product=`<b>Bacione Javascript Editor</b><br>Integrated Development Environment`;
 let about=`
@@ -836,25 +837,29 @@ style.aspectRatio=keys.cols/keys.rows;
 style.gridTemplateColumns=`repeat(${keys.cols},1fr)`;
 style.gridTemplateRows=   `repeat(${keys.rows},1fr)`;
 
+
+keyboard.timeout=[];
+function clear(t){ while(t.length && clearTimeout(t.pop())); }
 let repeattimeout=500, repeatinterval=100;
 keyboard.addEventListener("pointerdown",(ev)=>{
 ev.preventDefault();
 let k=keys.clicked(ev);
 keys.prev=k;
 if(keys.prev==undefined)return;
-if(k.name=="save")return;//prevent save loop
-keyboard.timeout=setTimeout(()=>{keyboard.interval=setInterval(()=>{//longpress repeater
+if(k.name=="save" || k.name=="capslock")return;//prevent loop
+keyboard.timeout.push(setTimeout(()=>{keyboard.timeout.push(setInterval(()=>{//longpress repeater
   if(k.f){
     k.f[0]();
   }else{
     chars(k.e.textContent);
   }
-},repeatinterval);},repeattimeout);
+},repeatinterval));},repeattimeout));
 },false);
 
+keyboard.addEventListener("pointercancel",()=>clear(keyboard.timeout),false);//hack: fingers>2 will not trigger pointerup
 keyboard.addEventListener("pointerup",(ev)=>{
 ev.preventDefault();
-clearTimeout(keyboard.timeout); if(keyboard.interval){clearInterval(keyboard.interval); keyboard.interval=undefined; return;}
+clear(keyboard.timeout);
 let k=keys.clicked(ev);
 if(keys.prev==undefined)return;
 if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
