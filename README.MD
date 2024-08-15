@@ -18,7 +18,7 @@ The **editor only works with Chrome browser, tablet or phone**. However, exporte
 - [Reddit](https://www.reddit.com/r/bacionejs) - reddit discussions
 - [Github](https://github.com/bacionejs/editor/discussions) - github discussions
 
-### Bacione?
+## Bacione?
 Bacione means "big KISS," as in "Keep It Satisfyingly Simple".
 
 ## Design
