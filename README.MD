@@ -18,17 +18,13 @@ The **editor only works with Chrome browser, tablet or phone**. However, exporte
 - [Reddit](https://www.reddit.com/r/bacionejs) - reddit discussions
 - [Github](https://github.com/bacionejs/editor/discussions) - github discussions
 
-### Why Choose This IDE?
+### Bacione?
+Bacione means "big KISS," as in "Keep It Satisfyingly Simple".
 
-Discover the ultimate free IDE code editor designed specifically for programming **small** JavaScript games on your **phone offline**! This phone editor was created because many people don't have a computer, and other phone editors lack important features.
-
-It's also ideal for experienced programmers who sometimes find programming small games on a tablet or phone more **relaxing** than on a laptop or desktop.
-
-Bacione means "big KISS," as in "Keep It Satisfyingly Simple." It offers **less clicks** compared to other phone editors, with common keys accessible in one click and context-aware logic that reduces the need for repetitive actions. Refactoring code is easier, and you have a fully programmable keyboard where you can create your own icons and functions. Designed for phones and tablets, it requires no setup and operates as a single file that's easy to share. Written in plain vanilla JavaScript with no dependencies, it's free (GPL license), contains no ads, and runs directly from your Android file manager in the Chrome browser. The editor itself is only 7 kilobytes, and is easy to modify and customize right within the editor. Plus, it supports swipe and longpress-repeat for enhanced usability.
-
+## Design
+The design goals of this editor are to provide a pleasant experience for those who don't have a computer or simply prefer a phone or tablet for programming small JavaScript games. Additional constraints are being offline and not having an external keyboard (typing on the screen with a thumb or stylus). While there are many editors and keyboard apps which fit this use case, the best one is Neovim with Termux and Apache. However, all solutions are suboptimal. The two main issues are reducing clicks for: 1) accessing special characters and 2) refactoring. To solve #1, it is necessary to support an extra-keys capability or install a configurable keyboard app. To solve #2, it is necessary to make refactoring require fewer clicks. After solving these two issues, a large portion of the screen is taken, leaving little room for the code area. To address this, the editor includes a built-in keyboard and efficient refactoring tools.
 
 ## Features
-
 - Less clicks compared to other phone editors.
 - Common keys are one click.
 - Context aware logic reduces clicks.
@@ -49,9 +45,6 @@ Bacione means "big KISS," as in "Keep It Satisfyingly Simple." It offers **less 
 - Edit the editor in the editor.
 - Editor is only 7 kilobytes.
 - Supports swipe and longpress-repeat.
-
-## Design
-The design goals of this editor are to provide a pleasant experience for those who don't have a computer or simply prefer a phone or tablet for programming small JavaScript games. Additional constraints are being offline and not having an external keyboard (typing on the screen with a thumb or stylus). While there are many editors and keyboard apps which fit this use case, the best one is Neovim with Termux and Apache. However, all solutions are suboptimal. The two main issues are reducing clicks for: 1) accessing special characters and 2) refactoring. To solve #1, it is necessary to support an extra-keys capability or install a configurable keyboard app. To solve #2, it is necessary to make refactoring require fewer clicks. After solving these two issues, a large portion of the screen is taken, leaving little room for the code area. To address this, the editor includes a built-in keyboard and efficient refactoring tools.
 
 ## Limitations
 - **Compatibility**: The editor only works with the Chrome browser on a tablet or phone. However, exported games, which remove the editor, have no such limitations.
