@@ -47,6 +47,7 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Supports swipe and longpress-repeat.
 
 ## Limitations
+- **Portrait Mode Support**: This editor only supports portrait mode.
 - **Compatibility**: The editor only works with the Chrome browser on a tablet or phone. However, exported games, which remove the editor, have no such limitations.
 - **Save Mechanism:** The save function in the editor is limited by HTML constraints. As a workaround, a **new** timestamped file is generated each time you save. If you're saving to your Downloads folder, it's important to keep it organized—ideally, free of files from other purposes, as these can accumulate over time. To prevent clutter, it's best to immediately move downloaded files for other purposes into a different folder. A cluttered Downloads folder can make it difficult to quickly locate the most recent timestamped file, which is essential for reopening your work. Also, periodically delete older editor HTML files, keeping only the most recent version.
 
@@ -67,7 +68,6 @@ If this editor doesn't support your needs, you might consider trying Neovim with
 
 ## Notes
 Any reference to **change** below refers to the **Edit-the-Editor** functionality found in the Miscellaneous button, represented by the diamond symbol.
-- **Portrait Mode Support**: This editor only supports portrait mode.
 - **Edit-the-Editor**: The editor can be edited within the editor. However, it is not live, so you must click Save and open the newly created timestamped HTML file. If the new one is broken, open your prior one. This feature is to support simple changes. Complex changes should be performed in a more robust environment such as [Neovim](https://github.com/bacionejs/termux).
 - **Keyboard Size**: The size of the keyboard is whatever remaining area there is after accounting for a square game frame. This means that on a phone the keyboard with is approximately the width of the screen and on a tablet approximately half the width of the screen.
 - **Keyboard Position**: On a tablet, the keyboard is located in the lower **right** corner. If you use your left thumb to type instead of your right thumb, you can **change** it.
