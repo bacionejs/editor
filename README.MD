@@ -57,7 +57,9 @@ The design goals of this editor are to provide a pleasant experience for those w
 - **Compatibility**: The editor only works with the Chrome browser on a tablet or phone. However, exported games, which remove the editor, have no such limitations.
 - **Save Mechanism:** The save function in the editor is limited by HTML constraints. As a workaround, a **new** timestamped file is generated each time you save. If you're saving to your Downloads folder, it's important to keep it  free of files from other purposes, as this can make it difficult to quickly reopen your work. Also, periodically delete older editor HTML files, keeping only the most recent version.
 
-- **Game Size and File Support:** The editor is not designed for large games or multi-file projects. This is because opening an HTML file from the File Manager on Android in the Chrome browser doesn't support multiple files—everything has to be contained within a single, monolithic HTML file. This also means that external images or audio files cannot be used. Programmatically created elements can be utilized instead; for example, the Marslander game uses vector graphics and a noise generator, and several other games utilize emojis.
+- **Multi-file:** To support file references in your html file, instead of opening from file manager, open as a bookmark. To make a bookmark, change an existing one to point to file:///storage/emulated/0/download/bacione.html
+
+The editor is not designed for large games or multi-file projects. This is because opening an HTML file from the File Manager on Android in the Chrome browser doesn't support multiple files—everything has to be contained within a single, monolithic HTML file. This also means that external images or audio files cannot be used. Programmatically created elements can be utilized instead; for example, the Marslander game uses vector graphics and a noise generator, and several other games utilize emojis.
 
 
 If this editor doesn't support your needs, you might consider trying Neovim with Termux and Apache. You can find my configuration for those tools [here](https://github.com/bacionejs/termux).
