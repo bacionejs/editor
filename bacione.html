@@ -12,13 +12,15 @@ let about=`
 <b>License</b> GPL
 
 <hr>
-`;
-let install=`<ul>\
+
+<b>Install</b>
+<ol style=margin-left:30>\
 <li>download <a href=https://github.com/bacionejs/editor>bacione.html</a>
 <li>open your file manager
 <li>click bacione.html to run in your Chrome browser
-<li>click Run to play the Ski game.</ul>`;
-
+<li>click Run to play the Ski game
+</ol>
+`;
 element("style").textContent=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
 body{background-color:white;}
@@ -49,8 +51,8 @@ body{background-color:white;}
 
 let themes=(function(){
 let i=-1,t={},a=[
-["fontsizesmall"  ,[10      ,  10      ,  10           ,  10        ]],
-["fontsizebig"    ,[15      ,  15      ,  15           ,  15        ]],
+["fontsizesmall"  ,[10      ,  10      ,  10           ,  8         ]],
+["fontsizebig"    ,[15      ,  15      ,  15           ,  20        ]],
 ["keyroundness"   ,["20%"   ,  "20%"   ,  "20%"        ,  "50%"     ]],
 ["keyborder"      ,["silver",  "tan"   ,  "white"      ,  "none"    ]],
 ["keybackground"  ,["white" ,  "black" ,  "#38393D"    ,  "#38393D" ]],
@@ -538,11 +540,9 @@ element("div",e).insertAdjacentHTML("beforeend",
   fill="url(#grad)"
   transform="translate(15 15) scale(4) translate(0 2) rotate(30 0 -2)" />
 </svg>
-<div style="margin-left: 5%;">${product}</div>
+<div style=margin-left:5%>${product}</div>
 </div>
 ${about}
-<b>Install</b>
-${install}
 </p><p>
 <b>Hello World</b>
 At the top of the editor, create this code and click Run:
