@@ -908,6 +908,7 @@ T.I=function(...args){
 T.editingtheeditor=false;
 T.P="";
 T.inputMode="none";
+//T.addEventListener("contextmenu",e=>e.preventDefault());
 T.spellcheck=false;
 let style=T.style;
 style.height="100%";
@@ -966,6 +967,7 @@ function gameprograms(){
 
 
 
+
 function ski(){
 let speed=W/FPS/3,os=[],c=L.canvas(),hit;
 c.white();
@@ -996,6 +998,72 @@ return function(){ if(i==1 || i==airtime){ jump(); } if(i==airtime){ i=0; } i &&
 (function animation(){ os.forEach(o=>o?.()); requestAnimationFrame(animation); })()
 
 }//end ski
+
+
+
+
+
+function defense(){
+let score=0,hitred,snd=L.Sound(),c=L.canvas(),blue=Blue(),red=Red(); addEventListener("click",blue.shoot);
+(function animation(){ c.black(); blue.update();red.update();blue.draw();red.draw(); requestAnimationFrame(animation); })();
+
+function Blue(){
+let blues=[],radius=W/15,speed=(W/FPS/2);
+function shoot({pageX: tx,pageY: ty}){ 
+  score--;
+  snd.rocket(); blues.push({ state:0, x:W/2, y:W, tx:tx, ty:ty, angle:atan2(ty-W,tx-W/2)}); 
+}
+function update(){
+  blues.forEach(o=>{
+    if(o.state==0){
+      o.x+=cos(o.angle)*speed; o.y+=sin(o.angle)*speed;
+      if(hypot(o.x-o.tx,o.y-o.ty)<10){
+        snd.explosion(); hitred(o.x,o.y,radius); o.state=1; requestAnimationFrame(()=>o.state=2);
+      }
+    }
+  });
+  blues=blues.filter(o=>o.state!=2);
+}
+function draw(){
+  blues.forEach(o=>{
+    if(o.state==0){//move
+      c.save(); c.translate(o.x,o.y); c.rotate(o.angle+PI/2); c.fillStyle="lime"; c.fillRect(-1,-10,2,20); c.restore();
+    }else{         //explode
+      let g=c.createRadialGradient(o.x,o.y,0,o.x,o.y,radius); g.addColorStop(0,"gold");g.addColorStop(1,"black");
+      c.beginPath(); c.arc(o.x,o.y,radius,0,PI*2); c.closePath(); c.fillStyle=g; c.fill();
+    }
+  });
+}
+return {shoot,update,draw};
+}//end blue
+
+function Red(){
+let reds=[],radius=W/50,speed=0,level=0; hitred=(x,y,r)=>reds.forEach(o=>hypot(x-o.x,y-o.y)<r && (o.state=1) && (score++)); levelup(); setInterval(levelup,10000);
+function levelup(){
+  speed=L.fit(level++,0.8,1.7,30,1);
+}
+function spawn(){
+  for(let i=0;i<13 && reds.length<16;i++){reds.push(L.stars(13,radius,W*0.2));}
+  reds.forEach(o=>o.old=false);
+}
+function update(){
+  if(reds.every(o=>o.old)){spawn();}
+  reds.forEach(o=>{
+    o.y+=cos(o.angle)*speed; o.x+=sin(o.angle)*speed; o.rotation+=o.rotationspeed; 
+    if(o.x<0)o.x=W; if(o.x>W)o.x=0; if(o.y>W){ o.y=0; o.old=true; }
+  });
+  reds=reds.filter(o=>o.state!=1);
+}
+function draw(){ 
+  L.debug(score,c,"white"); 
+  reds.forEach(o=>{ c.save(); c.translate(o.x,o.y); c.rotate(o.rotation); c.strokeStyle=o.color; c.stroke(o.path); c.restore(); });
+}
+return {update,draw};
+}//end red
+
+}//end defense
+
+
 
 
 
@@ -1071,7 +1139,8 @@ requestAnimationFrame(animation);
 }
 
 function move({pageX}){
-snd.rocket();
+//snd.rocket();
+snd.explosion();
 played=true;
 fuel--;
 yy-=yd;
@@ -1271,12 +1340,29 @@ function next(){
 return {next};
 }
 
+
 function Sound(){
+function noise(seconds){
+let b=auc.createBuffer(1,auc.sampleRate*seconds,auc.sampleRate);
+b.getChannelData(0).forEach((_,i,a)=>a[i]=Math.random()*2-1);
+return b;
+}
 let auc=new AudioContext();
-let aubrocket=auc.createBuffer(1,auc.sampleRate*0.2,auc.sampleRate);
-aubrocket.getChannelData(0).forEach((_,i,a)=>a[i]=rnd(1,-1));
+let aubrocket=noise(0.2);
+let aubexplosion=noise(1);
 let rocket=()=>{let s=auc.createBufferSource();s.buffer=aubrocket;s.connect(auc.destination);s.start();}
-return {rocket};
+let explosion=()=>{
+let s=auc.createBufferSource();
+s.buffer=aubexplosion;
+let gain=auc.createGain(); gain.gain.value=8;
+let filter=auc.createBiquadFilter(); filter.type='lowpass'; filter.frequency.value=300;
+gain.gain.linearRampToValueAtTime(0, auc.currentTime + 1);
+s.connect(filter);
+filter.connect(gain);
+gain.connect(auc.destination);
+s.start();
+}
+return {rocket,explosion};
 }
 
 function canvas(font=12,iconstart=0){
@@ -1317,8 +1403,9 @@ for(let i=1;i<a.length-1;i++){
 return v;
 }
 
-function debug(v,c){
-let f=c.font;c.font="10px monospace";
+function debug(v,c,color="black",size=10){
+let f=c.font;c.font=size+"px monospace";
+c.fillStyle=color;
 c.fillText(v,W/2,10);c.font=f;
 }
 
@@ -1333,12 +1420,38 @@ for(i of a){
 }
 return p1;
 }
-return {RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,element};
+
+function fit(x,s,a,x2,y2){ return a-(a-s)*Math.pow(((a-y2)/(a-s)),x/x2); }
+
+function stars(points,radius,at){
+let color=Array.from({length:3},()=>floor(random()*155)+100).reduce((a,v,i)=>a+(i>0?",":"")+v,"rgb(")+")";
+//let color="white";
+let x=random()*W;
+let y=random()*at;
+let rotation=random()*PI*2;
+let rotationspeed=random()*0.05-0.025;
+let angle=random()*(PI/3)-PI/6;
+let inner=random()*(2/3*radius);
+//let inner=(1/3*radius);
+let path=new Path2D();
+path.moveTo(0,-radius);
+for(let i=1;i<points*2;i++){
+  let r=i%2===0?radius:inner;
+  let angle=i*PI/points;
+  let dx=r*sin(angle);
+  let dy=-r*cos(angle);
+  path.lineTo(dx,dy);
+}
+path.closePath();
+return {x:x,y:y,path:path,color:color,angle:angle,rotation:rotation,rotationspeed:rotationspeed};
+}
+
+return {RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,fit,stars,element};
 
 };//end library
 
 let W=innerWidth;
-let floor=Math.floor;
+let floor=Math.floor,random=Math.random,pow=Math.pow,sin=Math.sin,cos=Math.cos,PI=Math.PI,hypot=Math.hypot,atan2=Math.atan2;
 (function(sort){Array.prototype.sort=function(){return sort.call(this,(a,b)=>a-b)};})(Array.prototype.sort);//Overridden Array sort: compares numbers instead of strings
 let L=Library();
 
