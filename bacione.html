@@ -56,7 +56,7 @@ let i=-1,t={},a=[
 ["keyroundness"   ,["20%"   ,  "20%"   ,  "20%"        ,  "50%"     ]],
 ["keyborder"      ,["silver",  "tan"   ,  "white"      ,  "none"    ]],
 ["keybackground"  ,["white" ,  "black" ,  "#38393D"    ,  "#38393D" ]],
-["keyforeground"  ,["black" ,  "white" ,  "white"      ,  "white"   ]],
+["keyforeground"  ,["black" ,  "white" ,  "white"      ,  "lime"   ]],
 ["click"          ,["blue"  ,  "blue"  ,  "blue"       ,  "lime"    ]],
 ["caret"          ,["blue"  ,  "yellow",  "blue"       ,  "white"   ]],
 ["background"     ,["white" ,  "black" ,  "slategray"  ,  "black"   ]],
@@ -69,10 +69,14 @@ i--;
 return t;
 })();
 
+
+
+
 let floor=Math.floor, FPS, ifra, running=false;
-let T=createtextarea(), PRETTY=createpretty(), KEYS; waitforheight(createkeys);
+let T,PRETTY,KEYS;
+T=createtextarea(); PRETTY=createpretty(); 
+createkeys();
 new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
-function waitforheight(callback){(function check(){if(innerHeight<screen.availHeight){callback();}else{requestAnimationFrame(check);}})();}
 
 /*
 
@@ -686,30 +690,32 @@ Marslander - Click on right or left side. To disable sound, comment snd.rocket()
 let con=element("div",e);
 con.insertAdjacentHTML("beforeend", "<b>Buttons</b><br><br>");
 KEYS.filter(k=>k.f).forEach(k=>{
-  con.appendChild(k.d()).querySelector("path").style.stroke="black";
+  let e=con.appendChild(k.d());
+  e.querySelector("path").style.stroke="black";
+  e.style.width=10;
   con.insertAdjacentHTML("beforeend"," "+k.name.replace(/^\w/,c=>c.toUpperCase())+"<br><br>");
 });
 }//end help
 
 function createkeys(){
 let keys=[
-{r:0,c:9, f:[run],             d:()=>sv("M5 0 l-9 5 v-10 l9 5")},
-{r:0,c:8, f:[save,difflocal],  d:()=>sv("M5 5 h-10 M 0 4 v-8 M0 4 l-4 -4 M0 4 l4 -4")},
-{r:0,c:7, f:[zoom,fullscreen], d:()=>sv("M0 -5 l-4 10 M0 -5 l4 10 M2 0 h-4 M2 0 l-2 5 M1 2.5 h2")},
-{r:0,c:6, f:[rename],          d:()=>sv("M1 -4 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M-1 1 l-4 4")},
-{r:0,c:5, f:[misc,theme],      d:()=>sv("M0 -5 l5 5 l-5 5 l-5 -5 l5 -5")},
-{r:0,c:4, f:[help,diffgit],    d:()=>sv("M1 0 v5 h-2 v-5 h2 M1 -2 h-2 v-2 h2 v2")},
-{r:1,c:9, f:[enter],           d:()=>sv("M5 -5 v10 h-10 l5 -5 v5")},
-{r:1,c:8, f:[backspace],       d:()=>sv("M5 -4 l-6 8 l-4 -4 l4 -4 l6 8")},
-{r:1,c:7, f:[redo],            d:()=>sv("M-5 0 Q0 -5 5 2 M5 -3 v5 h-5")},
-{r:1,c:6, f:[undo],            d:()=>sv("M5 0 Q0 -5 -5 2 M-5 -3 v5 h5")},
-{r:1,c:5, f:[paste],           d:()=>sv("M2 -4 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
-{r:1,c:4, f:[copy],            d:()=>sv("M2 -3 h2 v8 h-6 v-8 h4 v-2 h-6 v8 h2")},
-{r:1,c:3, f:[right],           d:()=>sv("M 4 0 h-8 M4 0 l-4 -4 M4 0 l-4 4")},
-{r:1,c:2, f:[left],            d:()=>sv("M-4 0 h8 M-4 0 l4 -4 M-4 0 l4 4")},
-{r:1,c:1, f:[comment],         d:()=>sv("M1 -4 l-6 8 M5 -4 l-6 8")},
-{r:1,c:0, f:[complete],        d:()=>sv("M0 0 h-4 v-2 h6 l2 2 l-2 2 h-6")},
-{r:6,c:9, f:[capslock],        d:()=>sv("M4 5 h-8 M-4 -1 l 4 -4 l4 4")},
+{r:0,c:9, f:[run],             d:()=>sv("M10 5 l-9 5 v-10 l9 5")},
+{r:0,c:8, f:[save,difflocal],  d:()=>sv("M10 10 h-10 M 5 9 v-8 M5 9 l-4 -4 M5 9 l4 -4")},
+{r:0,c:7, f:[zoom,fullscreen], d:()=>sv("M5 0 l-4 10 M5 0 l4 10 M7 5 h-4 M7 5 l-2 5 M6 7.5 h2")},
+{r:0,c:6, f:[rename],          d:()=>sv("M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M4 6 l-4 4")},
+{r:0,c:5, f:[misc,theme],      d:()=>sv("M5 0 l5 5 l-5 5 l-5 -5 l5 -5")},
+{r:0,c:4, f:[help,diffgit],    d:()=>sv("M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2")},
+{r:1,c:9, f:[enter],           d:()=>sv("M10 0 v10 h-10 l5 -5 v5")},
+{r:1,c:8, f:[backspace],       d:()=>sv("M10 1 l-6 8 l-4 -4 l4 -4 l6 8")},
+{r:1,c:7, f:[redo],            d:()=>sv("M0  5 Q5 0 10 7 M10 2 v5 h-5")},
+{r:1,c:6, f:[undo],            d:()=>sv("M10 5 Q5 0  0 7 M0  2 v5 h5")},
+{r:1,c:5, f:[paste],           d:()=>sv("M7 1 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
+{r:1,c:4, f:[copy],            d:()=>sv("M7 2 h2 v8 h-6 v-8 h4 v-2 h-6 v8 h2")},
+{r:1,c:3, f:[right],           d:()=>sv("M 9 5 h-8 M9 5 l-4 -4 M9 5 l-4 4")},
+{r:1,c:2, f:[left],            d:()=>sv("M1 5 h8 M1 5 l4 -4 M1 5 l4 4")},
+{r:1,c:1, f:[comment],         d:()=>sv("M6 1 l-6 8 M10 1 l-6 8")},
+{r:1,c:0, f:[complete],        d:()=>sv("M5 5 h-4 v-2 h6 l2 2 l-2 2 h-6")},
+{r:6,c:9, f:[capslock],        d:()=>sv("M9 10 h-8 M1 4 l 4 -4 l4 4")},
 {r:2,c:0, d:['"','"']},
 {r:2,c:1, d:[".","."]},
 {r:2,c:2, d:[";",";"]},
@@ -773,50 +779,22 @@ let keys=[
 
 keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
 keys.rows=keys.reduce((a,k)=>(a>k.r)?a:k.r,0)+1;
-keys.keyboardwidth=floor(Math.min((innerWidth),((innerHeight-innerWidth)*(keys.cols/keys.rows))));
-let iconscale=0.4;
-let fontscale=0.5;
-keys.keyboardfontsize=floor(keys.keyboardwidth/(keys.cols/fontscale));
-let scale=keys.keyboardwidth/keys.cols;
-let b=scale*iconscale;
-keys.clicked=(ev)=>{
-  let r=floor((ev.y-ev.currentTarget.offsetTop)/(scale));
-  let c=floor((ev.x-ev.currentTarget.offsetLeft)/(scale));
-  return keys.find(k=>k.r==r && k.c==c);
-}
 
 function sv(shape){
 let s=document.createElementNS("http://www.w3.org/2000/svg","svg");
 let p=s.appendChild(document.createElementNS("http://www.w3.org/2000/svg",'path'));
-let style=s.style;
-style.width=b;
-style.height=b;
 style=p.style;
 style.vectorEffect='non-scaling-stroke';
 style.fill="none";
 style.strokeWidth=1;
-p.setAttribute('transform',`translate(${(b*0.5)},${(b*0.5)}) scale(${b/10})`);
 p.setAttribute('d',shape);
+s.setAttribute('viewBox','0 0 10 10');
 return s;
 }
 
 let keyboard=element("div");
 let style;
-for(let k of keys){
-  k.e=element("div",keyboard);
-  if(k.f){
-    k.e.appendChild(k.d());
-    k.name=k.f[0].name;
-  }else{
-    k.e.textContent=(k.d[0]);
-  }
-  style=k.e.style;
-  style.display="flex";
-  style.justifyContent="center";
-  style.alignItems="center";
-  style.gridColumn=k.c+1;
-  style.gridRow=   k.r+1;
-}
+
 style=keyboard.style;
 style.backgroundColor=`rgb(100 110 120/ 20%)`;
 style.border="1px solid black";
@@ -830,11 +808,50 @@ style.zIndex=3;
 style.bottom=0;
 style.right=0;
 style.fontFamily="monospace";
-style.fontSize=keys.keyboardfontsize;
-style.width=keys.keyboardwidth;
 style.aspectRatio=keys.cols/keys.rows;
 style.gridTemplateColumns=`repeat(${keys.cols},1fr)`;
 style.gridTemplateRows=   `repeat(${keys.rows},1fr)`;
+
+for(let k of keys){
+  k.e=element("div",keyboard);
+  if(k.f){
+    k.e.appendChild(k.d());
+    k.name=k.f[0].name;
+  }else{
+    k.e.textContent=(k.d[0]);
+  }
+  style=k.e.style;
+  style.display="flex";
+  style.justifyContent="center";
+  style.alignItems="center";
+  style.lineHeight=1;
+  style.gridColumn=k.c+1;
+  style.gridRow=   k.r+1;
+}
+
+let scale;
+
+function resize(){
+let width=floor(Math.min((innerWidth),((innerHeight-innerWidth)*(keys.cols/keys.rows))));
+scale=floor(width/keys.cols);
+keyboard.style.width=width;
+keys.filter(k=>!k.e.querySelector("svg")).forEach(k=>{ k.e.style.fontSize=k.e.clientHeight*0.5; });
+keys.filter(k=> k.e.querySelector("svg")).forEach(k=>{ k.e.children[0].style.width="45%"; });
+}
+new ResizeObserver(resize).observe(document.body);
+
+keys.clicked=(ev)=>{
+  let r=floor((ev.y-ev.currentTarget.offsetTop)/(scale));
+  let c=floor((ev.x-ev.currentTarget.offsetLeft)/(scale));
+  return keys.find(k=>k.r==r && k.c==c);
+}
+
+
+
+
+
+
+
 
 
 keyboard.timeout=[];
@@ -865,6 +882,7 @@ if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
   if(k.f){
     k.f[0]();
   }else{
+//alert(k.e.textContent);
     chars(k.e.textContent);
   }
 }else{//swipeup
@@ -1038,7 +1056,8 @@ return {shoot,update,draw};
 }//end blue
 
 function Red(){
-let reds=[],radius=W/50,speed=0,level=0; hitred=(x,y,r)=>reds.forEach(o=>hypot(x-o.x,y-o.y)<r && (o.state=1) && (score++)); levelup(); setInterval(levelup,10000);
+let reds=[],radius=W/50,speed=0,level=0; levelup(); setInterval(levelup,10000);
+hitred=(x,y,r)=>reds.forEach(o=>{if(hypot(x-o.x,y-o.y)<r){o.state=1;score++;}}); 
 function levelup(){
   speed=L.fit(level++,0.8,1.7,30,1);
 }
@@ -1050,7 +1069,7 @@ function update(){
   if(reds.every(o=>o.old)){spawn();}
   reds.forEach(o=>{
     o.y+=cos(o.angle)*speed; o.x+=sin(o.angle)*speed; o.rotation+=o.rotationspeed; 
-    if(o.x<0)o.x=W; if(o.x>W)o.x=0; if(o.y>W){ o.y=0; o.old=true; }
+    if(o.x<0)o.x=W; if(o.x>W)o.x=0; if(o.y>W){o.y=0;o.old=true;}
   });
   reds=reds.filter(o=>o.state!=1);
 }
@@ -1126,6 +1145,7 @@ if(close){yy-=(ya*0.80);xx*=0.98;}
 bad=(yl<yy || xl<Math.abs(xx) || (p/4)<Math.abs(x-lm));
 if(played && landed && bad){
   fuel-=fuelstart*2;
+  snd.explosion();
   ship=L.shape([Array.from({length:40},()=>L.rnd(p*2)-p)]);
 }
 cf.resetTransform();
