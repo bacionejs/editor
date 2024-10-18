@@ -21,6 +21,30 @@ let about=`
 <li>click Run to play the Ski game
 </ol>
 `;
+
+/*
+Variables
+ * T   - text element
+ * T.V - value
+ * T.I - inserts text
+ * T.S - selection start
+ * T.E - selection end
+ * T.P - paste buffer
+Code layout below:
+ * styles
+ * themes
+ * initialize
+ * button functions
+ * utils
+ * error listener
+ * misc
+ * help
+ * keyboard
+ * textarea
+ * games
+ * library
+*/
+
 element("style").textContent=`
 *{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
 body{background-color:white;}
@@ -56,50 +80,17 @@ let i=-1,t={},a=[
 ["keyroundness"   ,["20%"   ,  "20%"   ,  "20%"        ,  "50%"     ]],
 ["keyborder"      ,["silver",  "tan"   ,  "white"      ,  "none"    ]],
 ["keybackground"  ,["white" ,  "black" ,  "#38393D"    ,  "#38393D" ]],
-["keyforeground"  ,["black" ,  "white" ,  "white"      ,  "lime"   ]],
+["keyforeground"  ,["black" ,  "white" ,  "white"      ,  "white"   ]],
 ["click"          ,["blue"  ,  "blue"  ,  "blue"       ,  "lime"    ]],
 ["caret"          ,["blue"  ,  "yellow",  "blue"       ,  "white"   ]],
 ["background"     ,["white" ,  "black" ,  "slategray"  ,  "black"   ]],
 ["foreground"     ,["black" ,  "tan"   ,  "whitesmoke" ,  "lime"    ]],
-["keywords"       ,["teal"  ,  "orange",  "silver"     ,  "lime"    ]],
+["keywords"       ,["teal"  ,  "orange",  "skyblue"     ,  "lime"    ]],
 ["pairs"          ,["purple",  "brown" ,  "black"      ,  "lime"    ]],
 ];
-(t.next=()=>{if(++i>=a[0][1].length)i=0; a.forEach(a=>t[a[0]]=a[1][i])})();
-i--;
+(t.next=()=>{if(++i>=a[0][1].length)i=0; a.forEach(a=>t[a[0]]=a[1][i])})(); i--;
 return t;
 })();
-
-
-
-
-let floor=Math.floor, FPS, ifra, running=false;
-let T,PRETTY,KEYS;
-T=createtextarea(); PRETTY=createpretty(); 
-createkeys();
-new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
-
-/*
-
-Variables
- * T   - text element
- * T.V - value
- * T.I - inserts text
- * T.S - selection start
- * T.E - selection end
- * T.P - paste buffer
-
-Code layout below:
- * button functions
- * utils
- * error listener
- * misc
- * help
- * keyboard
- * textarea
- * games
- * library
-
-*/
 
 function theme(){
 themes.next();
@@ -120,6 +111,10 @@ style.backgroundColor=themes.background;
 style.color=themes.foreground;
 syncpretty();
 }
+
+let floor=Math.floor, FPS, ifra, running=false;
+let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys(); theme();
+new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
 
 function run(){
 if(T.editingtheeditor)return;
@@ -326,59 +321,34 @@ T.I(T.P,T.S,T.E,"end");
 
 function rename(){findreplace.show();}
 let findreplace=function(){
-let o={};
-o.focus=undefined;
-let con=element("div");
-let style=con.style;
-style.zIndex=0;
-style.visibility="hidden";
-style.position="fixed"; 
-style.display="grid";
-style.gridTemplateColumns="2fr 1fr";
-style.gap="8px"; 
-style.margin=8;
-style.top=0; 
-style.right=0;
-style.height=innerWidth/5;
+let o={}; o.focus=undefined; let con=element("div");
+let s=con.style;
+s.zIndex=0; s.visibility="hidden"; s.position="fixed"; 
+s.display="grid"; s.gridTemplateColumns="2fr 1fr"; s.gap="8px"; 
+s.margin=8; s.top=0; s.right=0;
+s.height=innerWidth/5;
 let f=element("input",con); f.inputMode="none"; f.addEventListener("focus",function(){o.focus=this;});
 let fb=element("button",con); fb.textContent="Find";    fb.addEventListener("click",find);
 let r=element("input",con); r.inputMode="none"; r.addEventListener("focus",function(){o.focus=this;});
 let rb=element("button",con); rb.textContent="Replace"; rb.addEventListener("click",replace);
 function find() { 
-T.focus();
-o.focus=undefined;
-T.S=T.E; 
-findselect();
+T.focus(); o.focus=undefined; T.S=T.E; findselect();
 }
 function replace() {
-T.focus();
-o.focus=undefined;
+T.focus(); o.focus=undefined;
 if(T.V.slice(T.S,T.E)===f.value){ T.I(r.value,T.S,T.E,"end"); }
 findselect();
 }
 function findselect(){
 let i=T.V.slice(T.E,Infinity).search(f.value.replace(/(^\w+$)/,"\\b$1\\b"));
-if(i!=-1){
-  T.E=T.S=T.E+i;
-  T.blur(); 
-  T.focus(); 
-  T.E=T.S+f.value.length;
-}
+if(i!=-1){ T.E=T.S=T.E+i; T.blur(); T.focus(); T.E=T.S+f.value.length; }
 }
 o.show=()=>{
 con.style.visibility="visible";
 if(con.style.zIndex==0){ 
-  con.style.zIndex=9; 
-  if(T.S!=T.E){
-    f.value=T.V.slice(T.S,T.E);
-    T.E=T.S;
-  }
-  f.focus();
+  con.style.zIndex=9; if(T.S!=T.E){ f.value=T.V.slice(T.S,T.E); T.E=T.S; } f.focus();
 }else{
-  con.style.zIndex=0; 
-  T.focus(); 
-  o.focus=undefined; 
-  T.S=T.E;
+  con.style.zIndex=0; T.focus(); o.focus=undefined; T.S=T.E;
 }
 }
 return o;
@@ -678,6 +648,7 @@ canvas.fill(L.shape(L.vertices(pixels)))
 </p><p>
 <b>Game Controls</b>
 Ski - Click anywhere.
+Defense - Click anywhere
 Pairs - Click in squares.
 Smash - Click the pumpkin.
 Monkeymaze - Click quadrants.
@@ -832,7 +803,14 @@ for(let k of keys){
 let scale;
 
 function resize(){
-let width=floor(Math.min((innerWidth),((innerHeight-innerWidth)*(keys.cols/keys.rows))));
+let width;
+if(innerWidth/window.screen.width<0.9){
+  width=((innerHeight-innerWidth)*(keys.cols/keys.rows));
+}else if(((innerWidth) > ((innerHeight-innerWidth)*(keys.cols/keys.rows)))){
+  width=innerWidth/2;
+}else{
+  width=innerWidth;
+}
 scale=floor(width/keys.cols);
 keyboard.style.width=width;
 keys.filter(k=>!k.e.querySelector("svg")).forEach(k=>{ k.e.style.fontSize=k.e.clientHeight*0.5; });
@@ -882,7 +860,6 @@ if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
   if(k.f){
     k.f[0]();
   }else{
-//alert(k.e.textContent);
     chars(k.e.textContent);
   }
 }else{//swipeup
@@ -898,9 +875,7 @@ k.e.style.backgroundColor=themes.click;
 setTimeout(()=>k.e.style.backgroundColor=themes.keybackground,200);
 },false);
 
-KEYS=keys;
-theme();
-
+return keys;
 }//end createkeys
 
 function createtextarea(){
@@ -986,6 +961,9 @@ function gameprograms(){
 
 
 
+
+
+
 function ski(){
 let speed=W/FPS/3,os=[],c=L.canvas(),hit;
 c.white();
@@ -1016,6 +994,10 @@ return function(){ if(i==1 || i==airtime){ jump(); } if(i==airtime){ i=0; } i &&
 (function animation(){ os.forEach(o=>o?.()); requestAnimationFrame(animation); })()
 
 }//end ski
+
+
+
+
 
 
 
@@ -1081,6 +1063,8 @@ return {update,draw};
 }//end red
 
 }//end defense
+
+
 
 
 
@@ -1174,6 +1158,10 @@ setTimeout(()=>         ship=rocketnone,200);
 
 
 
+
+
+
+
 function monkeymaze(){
 addEventListener("click",move,false);
 let rows=12,qty=3,p=floor(W/rows);
@@ -1211,6 +1199,10 @@ function draw(cn,{x,y,icon}){cn.icon(icon,x*p+(p/2),y*p+(p/2));}
 
 
 
+
+
+
+
 function snake(){
 addEventListener("click",move,false);
 let cb=L.canvas();
@@ -1237,6 +1229,10 @@ function move({pageX,pageY}){d=(d==du || d==dd)?pageX<(W/2)?dl:dr:pageY<(W/2)?du
 function draw(i,color){cb.fillStyle=color;cb.fillRect((i%r)*p,floor(i/r)*p,p,p);}
 
 }//end snake
+
+
+
+
 
 
 
@@ -1279,6 +1275,10 @@ board.run((y,x)=>{cf.icon(board[y][x]||"",x*p+(p*0.5),y*p+(p*0.6));});
 
 
 
+
+
+
+
 function pairs(){
 addEventListener("click",({pageX:x,pageY:y})=>move(floor(x/p)+floor(y/p)*rows),false);
 let rows=4,p=floor(W/rows),m,found,pair,misses=0;
@@ -1313,6 +1313,10 @@ cf.icon(m[i],i%rows*p+p*0.5,floor(i/rows)*p+p*0.6);
 
 
 
+
+
+
+
 function smash(){
 addEventListener("click",move);
 let rows=3,p=floor(W/rows),icon={x:0,y:0};
@@ -1335,6 +1339,7 @@ c.icon(128165,icon.x*p+(p/2),icon.y*p+(p/2));
 }
 
 }//end smash
+
 
 
 
