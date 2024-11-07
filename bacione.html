@@ -498,6 +498,7 @@ icons=undefined;
 
 function help(){
 let e=view("Help"); if(e.exists)return;
+
 element("div",e).insertAdjacentHTML("beforeend",
 `
 <p>
@@ -517,7 +518,22 @@ element("div",e).insertAdjacentHTML("beforeend",
 <div style=margin-left:5%>${product}</div>
 </div>
 ${about}
-</p><p>
+</p>
+`);
+
+let con=element("div",e);
+con.insertAdjacentHTML("beforeend", "<b>Buttons</b><br><br>");
+KEYS.filter(k=>k.f).forEach(k=>{
+  let e=con.appendChild(k.d());
+  e.querySelector("path").style.stroke="black";
+  e.style.width=10;
+  con.insertAdjacentHTML("beforeend"," "+k.name.replace(/^\w/,c=>c.toUpperCase())+"<br><br>");
+});
+
+
+element("div",e).insertAdjacentHTML("beforeend",
+`
+<p>
 <b>Hello World</b>
 At the top of the editor, create this code and click Run:
 <pre style="
@@ -629,6 +645,7 @@ set.next()
 <b>Sound</b>
 sound=L.Sound()
 sound.rocket()
+sound.explosion()
 </p><p>
 <b>Canvas</b>
 canvas=L.canvas(fontsize,iconstart)
@@ -658,14 +675,6 @@ Marslander - Click on right or left side. To disable sound, comment snd.rocket()
 </p>
 `);
 
-let con=element("div",e);
-con.insertAdjacentHTML("beforeend", "<b>Buttons</b><br><br>");
-KEYS.filter(k=>k.f).forEach(k=>{
-  let e=con.appendChild(k.d());
-  e.querySelector("path").style.stroke="black";
-  e.style.width=10;
-  con.insertAdjacentHTML("beforeend"," "+k.name.replace(/^\w/,c=>c.toUpperCase())+"<br><br>");
-});
 }//end help
 
 function createkeys(){
@@ -836,43 +845,43 @@ keyboard.timeout=[];
 function clear(t){ while(t.length && clearTimeout(t.pop())); }
 let repeattimeout=500, repeatinterval=100;
 keyboard.addEventListener("pointerdown",(ev)=>{
-ev.preventDefault();
-let k=keys.clicked(ev);
-keys.prev=k;
-if(keys.prev==undefined)return;
-if(k.name=="save" || k.name=="capslock")return;//prevent loop
-keyboard.timeout.push(setTimeout(()=>{keyboard.timeout.push(setInterval(()=>{//longpress repeater
-  if(k.f){
-    k.f[0]();
-  }else{
-    chars(k.e.textContent);
-  }
-},repeatinterval));},repeattimeout));
+  ev.preventDefault();
+  let k=keys.clicked(ev);
+  keys.prev=k;
+  if(keys.prev==undefined)return;
+  if(k.name=="save" || k.name=="capslock")return;//prevent loop
+  keyboard.timeout.push(setTimeout(()=>{keyboard.timeout.push(setInterval(()=>{//longpress repeater
+    if(k.f){
+      k.f[0]();
+    }else{
+      chars(k.e.textContent);
+    }
+  },repeatinterval));},repeattimeout));
 },false);
 
 keyboard.addEventListener("pointercancel",()=>clear(keyboard.timeout),false);//hack: fingers>2 will not trigger pointerup
 keyboard.addEventListener("pointerup",(ev)=>{
-ev.preventDefault();
-clear(keyboard.timeout);
-let k=keys.clicked(ev);
-if(keys.prev==undefined)return;
-if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
-  if(k.f){
-    k.f[0]();
-  }else{
-    chars(k.e.textContent);
+  ev.preventDefault();
+  clear(keyboard.timeout);
+  let k=keys.clicked(ev);
+  if(keys.prev==undefined)return;
+  if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
+    if(k.f){
+      k.f[0]();
+    }else{
+      chars(k.e.textContent);
+    }
+  }else{//swipeup
+    if(keys.prev.d[1]==undefined && keys.prev.f==undefined)return;
+    k=keys.prev;
+    if(k.f){
+      k.f[1]?.();
+    }else{
+      chars(k.d[1]);
+    }
   }
-}else{//swipeup
-  if(keys.prev.d[1]==undefined && keys.prev.f==undefined)return;
-  k=keys.prev;
-  if(k.f){
-    k.f[1]?.();
-  }else{
-    chars(k.d[1]);
-  }
-}
-k.e.style.backgroundColor=themes.click;
-setTimeout(()=>k.e.style.backgroundColor=themes.keybackground,200);
+  k.e.style.backgroundColor=themes.click;
+  setTimeout(()=>k.e.style.backgroundColor=themes.keybackground,200);
 },false);
 
 return keys;
