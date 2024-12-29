@@ -1434,10 +1434,7 @@ return v;
 
 function debug(v,c,color="black",size=10){
 let f=c.font;c.font=size+"px monospace";
-c.fillStyle=color;
-//let lines=v.split('\n'); for(let i=0;i<lines.length;i++){ c.fillText(lines[i],W/2,10+i*20); }
-c.fillText(v,W/2,10);
-c.font=f;
+c.fillStyle=color; c.fillText(v,W/2,10); c.font=f;
 }
 
 function shape(a,s=1){
