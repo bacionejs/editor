@@ -1061,7 +1061,7 @@ function update(){
   reds=reds.filter(o=>o.state!=1);
 }
 function draw(){ 
-  L.debug(score,c,"white"); 
+  L.debug("Level "+level+" Score "+score,c,"white"); 
   reds.forEach(o=>{ c.save(); c.translate(o.x,o.y); c.rotate(o.rotation); c.strokeStyle=o.color; c.stroke(o.path); c.restore(); });
 }
 return {update,draw};
@@ -1435,7 +1435,9 @@ return v;
 function debug(v,c,color="black",size=10){
 let f=c.font;c.font=size+"px monospace";
 c.fillStyle=color;
-c.fillText(v,W/2,10);c.font=f;
+//let lines=v.split('\n'); for(let i=0;i<lines.length;i++){ c.fillText(lines[i],W/2,10+i*20); }
+c.fillText(v,W/2,10);
+c.font=f;
 }
 
 function shape(a,s=1){
