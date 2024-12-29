@@ -1052,15 +1052,12 @@ hitred=(x,y,r)=>reds.forEach(o=>{if(hypot(x-o.x,y-o.y)<r){o.state=1;score++;}});
 function levelup(){
   speed=L.fit(level++,0.8,1.7,30,1);
 }
-function spawn(){
-  for(let i=0;i<13 && reds.length<16;i++){reds.push(L.stars(13,radius,W*0.2));}
-  reds.forEach(o=>o.old=false);
-}
 function update(){
-  if(reds.every(o=>o.old)){spawn();}
+  if(reds.length==0){for(let i=0;i<13;i++){reds.push(L.stars(13,radius,W*0.2));}}
   reds.forEach(o=>{
     o.y+=cos(o.angle)*speed; o.x+=sin(o.angle)*speed; o.rotation+=o.rotationspeed; 
-    if(o.x<0)o.x=W; if(o.x>W)o.x=0; if(o.y>W){o.y=0;o.old=true;}
+    if(o.x<0)o.x=W; if(o.x>W)o.x=0; 
+    if(o.y>W){o.state=1; score--;}
   });
   reds=reds.filter(o=>o.state!=1);
 }
