@@ -1056,8 +1056,7 @@ function update(){
   if(reds.length==0){for(let i=0;i<13;i++){reds.push(L.stars(13,radius,W*0.2));}}
   reds.forEach(o=>{
     o.y+=cos(o.angle)*speed; o.x+=sin(o.angle)*speed; o.rotation+=o.rotationspeed; 
-    if(o.x<0)o.x=W; if(o.x>W)o.x=0; 
-    if(o.y>W){o.state=1; score--;}
+    if(o.x<0)o.x=W; if(o.x>W)o.x=0; if(o.y>W){o.state=1; score--;}
   });
   reds=reds.filter(o=>o.state!=1);
 }
