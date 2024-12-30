@@ -4,14 +4,13 @@ let tested="Works with Chrome browser, tablet and phone";
 if(navigator.maxTouchPoints<2 || (!navigator.userAgent.includes("Chrome") || navigator.userAgent.includes("Edg"))){alert(tested);return;}
 let product=`<b>Bacione Javascript Editor</b><br>Integrated Development Environment`;
 let about=`
-<hr>
 <b>Purpose</b> Programming small javascript games on a phone offline
 <b>Mission</b> Create the most thumb-friendly IDE in its class
 <b>Tested</b>  ${tested}
 <b>Github</b>  github.com/bacionejs/editor
 <b>License</b> GPL
 
-<hr>
+
 
 <b>Install</b>
 <ol style=margin-left:30>\
@@ -85,7 +84,7 @@ let i=-1,t={},a=[
 ["caret"          ,["blue"  ,  "yellow",  "blue"       ,  "white"   ]],
 ["background"     ,["white" ,  "black" ,  "slategray"  ,  "black"   ]],
 ["foreground"     ,["black" ,  "tan"   ,  "whitesmoke" ,  "lime"    ]],
-["keywords"       ,["teal"  ,  "orange",  "skyblue"     ,  "lime"    ]],
+["keywords"       ,["teal"  ,  "orange",  "skyblue"    ,  "lime"    ]],
 ["pairs"          ,["purple",  "brown" ,  "black"      ,  "lime"    ]],
 ];
 (t.next=()=>{if(++i>=a[0][1].length)i=0; a.forEach(a=>t[a[0]]=a[1][i])})(); i--;
@@ -521,16 +520,6 @@ ${about}
 </p>
 `);
 
-let con=element("div",e);
-con.insertAdjacentHTML("beforeend", "<b>Buttons</b><br><br>");
-KEYS.filter(k=>k.f).forEach(k=>{
-  let e=con.appendChild(k.d());
-  e.querySelector("path").style.stroke="black";
-  e.style.width=10;
-  con.insertAdjacentHTML("beforeend"," "+k.name.replace(/^\w/,c=>c.toUpperCase())+"<br><br>");
-});
-
-
 element("div",e).insertAdjacentHTML("beforeend",
 `
 <p>
@@ -546,7 +535,24 @@ At the top of the editor, create this code and click Run:
   ">
 ${pretty('function helloworld(){\n  L.canvas(W/2).icon(127759,W/2,W/2);\n}')}
 </pre>
-</p><p>
+
+
+
+</p>
+`);
+
+let con=element("div",e);
+con.insertAdjacentHTML("beforeend", "<b>Buttons</b><br><br>");
+KEYS.filter(k=>k.f).forEach(k=>{
+  let e=con.appendChild(k.d());
+  e.querySelector("path").style.stroke="black";
+  e.style.width=10;
+  con.insertAdjacentHTML("beforeend"," "+k.name.replace(/^\w/,c=>c.toUpperCase())+"<br><br>");
+});
+
+element("div",e).insertAdjacentHTML("beforeend",
+`
+<p>
 <b>Run</b>
 Runs the game which contains the cursor.
 Also stops the game.
