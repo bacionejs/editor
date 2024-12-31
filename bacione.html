@@ -544,7 +544,7 @@ ${pretty('function helloworld(){\n  L.canvas(W/2).icon(127759,W/2,W/2);\n}')}
 let con=element("div",e);
 con.insertAdjacentHTML("beforeend", "<b>Buttons</b><br><br>");
 KEYS.filter(k=>k.f).forEach(k=>{
-  let e=con.appendChild(k.d());
+  let e=con.appendChild(k.e.querySelector("svg").cloneNode(true));
   e.querySelector("path").style.stroke="black";
   e.style.width=10;
   con.insertAdjacentHTML("beforeend"," "+k.name.replace(/^\w/,c=>c.toUpperCase())+"<br><br>");
@@ -685,23 +685,25 @@ Marslander - Click on right or left side. To disable sound, comment snd.rocket()
 
 function createkeys(){
 let keys=[
-{r:0,c:9, f:[run],             d:()=>sv("M10 5 l-9 5 v-10 l9 5")},
-{r:0,c:8, f:[save,difflocal],  d:()=>sv("M10 10 h-10 M 5 9 v-8 M5 9 l-4 -4 M5 9 l4 -4")},
-{r:0,c:7, f:[zoom,fullscreen], d:()=>sv("M5 0 l-4 10 M5 0 l4 10 M7 5 h-4 M7 5 l-2 5 M6 7.5 h2")},
-{r:0,c:6, f:[rename],          d:()=>sv("M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M4 6 l-4 4")},
-{r:0,c:5, f:[misc,theme],      d:()=>sv("M5 0 l5 5 l-5 5 l-5 -5 l5 -5")},
-{r:0,c:4, f:[help,diffgit],    d:()=>sv("M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2")},
-{r:1,c:9, f:[enter],           d:()=>sv("M10 0 v10 h-10 l5 -5 v5")},
-{r:1,c:8, f:[backspace],       d:()=>sv("M10 1 l-6 8 l-4 -4 l4 -4 l6 8")},
-{r:1,c:7, f:[redo],            d:()=>sv("M0  5 Q5 0 10 7 M10 2 v5 h-5")},
-{r:1,c:6, f:[undo],            d:()=>sv("M10 5 Q5 0  0 7 M0  2 v5 h5")},
-{r:1,c:5, f:[paste],           d:()=>sv("M7 1 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2")},
-{r:1,c:4, f:[copy],            d:()=>sv("M7 2 h2 v8 h-6 v-8 h4 v-2 h-6 v8 h2")},
-{r:1,c:3, f:[right],           d:()=>sv("M 9 5 h-8 M9 5 l-4 -4 M9 5 l-4 4")},
-{r:1,c:2, f:[left],            d:()=>sv("M1 5 h8 M1 5 l4 -4 M1 5 l4 4")},
-{r:1,c:1, f:[comment],         d:()=>sv("M6 1 l-6 8 M10 1 l-6 8")},
-{r:1,c:0, f:[complete],        d:()=>sv("M5 5 h-4 v-2 h6 l2 2 l-2 2 h-6")},
-{r:6,c:9, f:[capslock],        d:()=>sv("M9 10 h-8 M1 4 l 4 -4 l4 4")},
+
+{r:0,c:9, f:[run],             d:"M10 5 l-9 5 v-10 l9 5"},
+{r:0,c:8, f:[save,difflocal],  d:"M10 10 h-10 M 5 9 v-8 M5 9 l-4 -4 M5 9 l4 -4"},
+{r:0,c:7, f:[zoom,fullscreen], d:"M5 0 l-4 10 M5 0 l4 10 M7 5 h-4 M7 5 l-2 5 M6 7.5 h2"},
+{r:0,c:6, f:[rename],          d:"M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M4 6 l-4 4"},
+{r:0,c:5, f:[misc,theme],      d:"M5 0 l5 5 l-5 5 l-5 -5 l5 -5"},
+{r:0,c:4, f:[help,diffgit],    d:"M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2"},
+{r:1,c:9, f:[enter],           d:"M10 0 v10 h-10 l5 -5 v5"},
+{r:1,c:8, f:[backspace],       d:"M10 1 l-6 8 l-4 -4 l4 -4 l6 8"},
+{r:1,c:7, f:[redo],            d:"M0  5 Q5 0 10 7 M10 2 v5 h-5"},
+{r:1,c:6, f:[undo],            d:"M10 5 Q5 0  0 7 M0  2 v5 h5"},
+{r:1,c:5, f:[paste],           d:"M7 1 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2"},
+{r:1,c:4, f:[copy],            d:"M7 2 h2 v8 h-6 v-8 h4 v-2 h-6 v8 h2"},
+{r:1,c:3, f:[right],           d:"M 9 5 h-8 M9 5 l-4 -4 M9 5 l-4 4"},
+{r:1,c:2, f:[left],            d:"M1 5 h8 M1 5 l4 -4 M1 5 l4 4"},
+{r:1,c:1, f:[comment],         d:"M6 1 l-6 8 M10 1 l-6 8"},
+{r:1,c:0, f:[complete],        d:"M5 5 h-4 v-2 h6 l2 2 l-2 2 h-6"},
+{r:6,c:9, f:[capslock],        d:"M9 10 h-8 M1 4 l 4 -4 l4 4"},
+
 {r:2,c:0, d:['"','"']},
 {r:2,c:1, d:[".","."]},
 {r:2,c:2, d:[";",";"]},
@@ -801,7 +803,7 @@ style.gridTemplateRows=   `repeat(${keys.rows},1fr)`;
 for(let k of keys){
   k.e=element("div",keyboard);
   if(k.f){
-    k.e.appendChild(k.d());
+    k.e.appendChild(sv(k.d));
     k.name=k.f[0].name;
   }else{
     k.e.textContent=(k.d[0]);
