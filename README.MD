@@ -55,6 +55,7 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Fullscreen
 - Debugging
 - Diff
+- Game examples
 
 ## Limitations
 - **Compatibility**: The editor only works with the Chrome browser on a tablet or phone. However, exported games, which remove the editor, have no such limitations.
