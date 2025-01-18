@@ -124,7 +124,7 @@ function findselect(){
 let i=T.V.slice(T.E,Infinity).search(f.value.replace(/(^\w+$)/,"\\b$1\\b"));
 if(i!=-1){ T.E=T.S=T.E+i; T.blur(); T.focus(); T.E=T.S+f.value.length; }
 }
-return function(){
+return function rename(){
 con.style.visibility="visible";
 if(con.style.zIndex==0){ 
   con.style.zIndex=9; if(T.S!=T.E){ f.value=T.V.slice(T.S,T.E); T.E=T.S; } f.focus();
