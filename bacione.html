@@ -80,7 +80,7 @@ let i=-1,t={},a=[
 ];
 if(++i>=a[0][1].length)i=0; a.forEach(a=>t[a[0]]=a[1][i]);
 i--;
-function next(){
+function theme(){
 if(++i>=a[0][1].length)i=0; a.forEach(a=>t[a[0]]=a[1][i]);
 let style;
 KEYS.forEach(k=>{
@@ -99,8 +99,8 @@ style.backgroundColor=t.background;
 style.color=t.foreground;
 syncpretty();
 }
-next.t=t;
-return next;
+theme.t=t;
+return theme;
 })();//end theme
 
 let rename=(function(){
