@@ -135,20 +135,19 @@ if(con.style.zIndex==0){
 })();//end rename
 
 //////////////////////init
-let floor=Math.floor, FPS, ifra, running=false;
 let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys(); theme();
-new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>FPS=r);
+let FPS; new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(Math.floor(1000/(b-a))))))).then(r=>FPS=r);
 //////////////////////init
 
 function run(){
 if(T.editingtheeditor)return;
-if(running){
-  running=false; ifra.remove(); ifra=undefined;
+let ifra=document.querySelector("iframe");
+if(ifra){
+  ifra.remove();
   T.focus();
 }else{
   let n=currentgame()?.name;
   if(n==undefined || n=="Library")return;
-  running=true;
   ifra=element("iframe");
   let style=ifra.style;
   style.border=1;
@@ -179,7 +178,7 @@ function exportgame(){
 let n=currentgame()?.name;
 if(n==undefined || n=="Library")return;
 let f="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
-  f+="<\script>onload=()=>{ let FPS; new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(floor(1000/(b-a))))))).then(r=>{FPS=r; "+n+"();});"+T.V+" }<\/script>";
+  f+="<\script>onload=()=>{ let FPS; new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(Math.floor(1000/(b-a))))))).then(r=>{FPS=r; "+n+"();});"+T.V+" }<\/script>";
 let a=element("a");
 a.hidden=true;
 a.href=URL.createObjectURL(new File([f],""));
@@ -231,7 +230,6 @@ if(s.startsWith("//")){
 }
 
 function capslock(){
-if(running){run(); return;}
 KEYS.filter(k=>!k.f).forEach(k=>k.e.textContent=k.d[k.d.indexOf(k.e.textContent)^1]);
 }
 
@@ -436,8 +434,9 @@ else  return document.body.appendChild(document.createElement(e));
 
 window.addEventListener("error",(ev)=>{//error
 let s=ev.message+"\nline: "+ev.lineno+"\ncolumn: "+ev.colno;
-if(running==true){
-  running=false; ifra.remove(); ifra=undefined;
+let ifra=document.querySelector("iframe");
+if(ifra){
+  ifra.remove();
   if(!(stripcomments(T.V).match(/[(){}[\]"]/g).length%2==0)){
     s+=`\nMatching [](){}"": failed`;
   }
@@ -591,7 +590,7 @@ if(innerWidth/window.screen.width<0.9){
 }else{
   width=innerWidth;
 }
-scale=floor(width/keys.cols);
+scale=Math.floor(width/keys.cols);
 keyboard.style.width=width;
 keys.filter(k=>!k.e.querySelector("svg")).forEach(k=>{ k.e.style.fontSize=k.e.clientHeight*0.5; });
 keys.filter(k=> k.e.querySelector("svg")).forEach(k=>{ k.e.children[0].style.width="45%"; });
@@ -599,8 +598,8 @@ keys.filter(k=> k.e.querySelector("svg")).forEach(k=>{ k.e.children[0].style.wid
 new ResizeObserver(resize).observe(document.body);
 
 keys.clicked=(ev)=>{
-  let r=floor((ev.y-ev.currentTarget.offsetTop)/(scale));
-  let c=floor((ev.x-ev.currentTarget.offsetLeft)/(scale));
+  let r=Math.floor((ev.y-ev.currentTarget.offsetTop)/(scale));
+  let c=Math.floor((ev.x-ev.currentTarget.offsetLeft)/(scale));
   return keys.find(k=>k.r==r && k.c==c);
 }
 
@@ -868,7 +867,6 @@ Swipeup on alphanumeric keys is like shift.
 </p><p>
 <b>Capslock (shift)</b>
 Reveals shift characters.
-Also can be used to stop a game if the Run button is covered.
 </p><p>
 <b>Longpress</b>
 Repeats key
