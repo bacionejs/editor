@@ -51,10 +51,19 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Edit the editor in the editor.
 - Editor is only 7 kilobytes.
 - Supports swipe and longpress-repeat.
+- Instant game run
+- Zoom
+- Fullscreen
+- Cut/Copy/Paste
+- Undo/Redo
+- Auto complete
+- Auto indent
 - Themes
 - Fullscreen
 - Debugging
 - Diff
+- Save
+- Rename (find/replace)
 - Game examples
 
 ## Limitations
