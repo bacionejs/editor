@@ -62,8 +62,10 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Fullscreen
 - Debugging
 - Diff
-- Save
+- Save/Export
 - Rename (find/replace)
+- Icon Picker
+- Color Picker
 - Game examples
 
 ## Limitations
