@@ -59,7 +59,6 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Auto complete
 - Auto indent
 - Themes (light/dark)
-- Fullscreen
 - Debugging
 - Diff
 - Save/Export
