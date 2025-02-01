@@ -64,7 +64,7 @@ body{background-color:white;}
 `;//end style
 
 let theme=(function(){
-let i=-1,t={},a=[
+let i=0,a=[
 ["fontsizesmall"  ,[10      ,  10      ,  10           ,  8         ]],
 ["fontsizebig"    ,[15      ,  15      ,  15           ,  20        ]],
 ["keyroundness"   ,["20%"   ,  "20%"   ,  "20%"        ,  "50%"     ]],
@@ -78,30 +78,28 @@ let i=-1,t={},a=[
 ["keywords"       ,["teal"  ,  "orange",  "skyblue"    ,  "lime"    ]],
 ["pairs"          ,["purple",  "brown" ,  "black"      ,  "lime"    ]],
 ];
-if(++i>=a[0][1].length)i=0; a.forEach(a=>t[a[0]]=a[1][i]);
-i--;
 function theme(){
-if(++i>=a[0][1].length)i=0; a.forEach(a=>t[a[0]]=a[1][i]);
+if(i==a[0][1].length)i=0; a.forEach(a=>theme[a[0]]=a[1][i]); i++;
 let style;
 KEYS.forEach(k=>{
   style=k.e.style; 
-  style.borderRadius=t.keyroundness;
-  style.border=t.keyborder=="none"?"none":`2px outset ${t.keyborder}`;
-  style.backgroundColor=t.keybackground;
-  style.color=t.keyforeground; k.e.querySelector("path")?.style.setProperty("stroke",t.keyforeground);
+  style.borderRadius=theme.keyroundness;
+  style.border=theme.keyborder=="none"?"none":`2px outset ${theme.keyborder}`;
+  style.backgroundColor=theme.keybackground;
+  style.color=theme.keyforeground; k.e.querySelector("path")?.style.setProperty("stroke",theme.keyforeground);
 });
 style=T.style;
-style.fontSize=t.fontsizesmall;
-style.caretColor=t.caret;
+style.fontSize=theme.fontsizesmall;
+style.caretColor=theme.caret;
 style=PRETTY.style;
-style.fontSize=t.fontsizesmall;
-style.backgroundColor=t.background;
-style.color=t.foreground;
+style.fontSize=theme.fontsizesmall;
+style.backgroundColor=theme.background;
+style.color=theme.foreground;
 syncpretty();
 }
-theme.t=t;
 return theme;
 })();//end theme
+
 
 let rename=(function(){
 let con=element("div");
@@ -190,12 +188,12 @@ URL.revokeObjectURL(a.href); a.remove(); a=undefined;
 function zoom(){
 let t=T.style;
 let p=PRETTY.style;
-if(parseInt(t.fontSize)==theme.t.fontsizesmall){
-  t.fontSize=theme.t.fontsizebig;
-  p.fontSize=theme.t.fontsizebig;
+if(parseInt(t.fontSize)==theme.fontsizesmall){
+  t.fontSize=theme.fontsizebig;
+  p.fontSize=theme.fontsizebig;
 }else{
-  t.fontSize=theme.t.fontsizesmall;
-  p.fontSize=theme.t.fontsizesmall;
+  t.fontSize=theme.fontsizesmall;
+  p.fontSize=theme.fontsizesmall;
 }
 setTimeout(()=>{T.blur(); T.focus();},200);
 }
@@ -642,8 +640,8 @@ keyboard.addEventListener("pointerup",(ev)=>{
       chars(k.d[1]);
     }
   }
-  k.e.style.backgroundColor=theme.t.click;
-  setTimeout(()=>k.e.style.backgroundColor=theme.t.keybackground,200);
+  k.e.style.backgroundColor=theme.click;
+  setTimeout(()=>k.e.style.backgroundColor=theme.keybackground,200);
 },false);
 
 return keys;
@@ -714,8 +712,8 @@ return e;
 function pretty(s){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
 s=s.replace(/</g,'&'+'lt;');
-s=c(s,theme.t.pairs,`[(){}[\\]]`);
-s=c(s,theme.t.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
+s=c(s,theme.pairs,`[(){}[\\]]`);
+s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
 return s;
 }
 
