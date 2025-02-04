@@ -30,6 +30,7 @@ Variables
  * T.S - selection start
  * T.E - selection end
  * T.P - paste buffer
+ * T.H - highlight
 Code layout below:
  * styles
  * themes
@@ -250,6 +251,22 @@ if(direction===0){//reset
 }
 }}();//end restore
 
+function highlight(){
+if(T.H!==undefined){T.H=undefined;syncpretty();return;}
+let s=T.V,i=T.E;
+if(/\w/.test(s[i])){//select word
+  if(T.S===T.E){
+    while(--i>=0 && /\w/.test(s[i]));
+    T.S=i+1;
+  }
+  while(++i<s.length && /\w/.test(s[i]));
+  T.E=i;
+}
+T.H=T.V.substring(T.S,T.E);
+if(T.H===""){T.H=undefined;return;}
+syncpretty();
+}
+
 function copy(){
 let s=T.V,i=T.E;
 if(/\w/.test(s[i])){//select word
@@ -450,7 +467,7 @@ let keys=[
 {r:0,c:9, f:[run],             d:"M10 5 l-9 5 v-10 l9 5"},
 {r:0,c:8, f:[save,difflocal],  d:"M10 10 h-10 M 5 9 v-8 M5 9 l-4 -4 M5 9 l4 -4"},
 {r:0,c:7, f:[zoom,fullscreen], d:"M5 0 l-4 10 M5 0 l4 10 M7 5 h-4 M7 5 l-2 5 M6 7.5 h2"},
-{r:0,c:6, f:[rename],          d:"M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M4 6 l-4 4"},
+{r:0,c:6, f:[rename,highlight],d:"M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M4 6 l-4 4"},
 {r:0,c:5, f:[misc,theme],      d:"M5 0 l5 5 l-5 5 l-5 -5 l5 -5"},
 {r:0,c:4, f:[help,diffgit],    d:"M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2"},
 {r:1,c:9, f:[enter],           d:"M10 0 v10 h-10 l5 -5 v5"},
@@ -714,6 +731,9 @@ let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${c
 s=s.replace(/</g,'&'+'lt;');
 s=c(s,theme.pairs,`[(){}[\\]]`);
 s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
+if(T.H){
+  s=s.replace(RegExp(`(\\b${T.H}\\b)`,'g'),`<span style='color:red;background-color:pink;'>$1</span>`);
+}
 return s;
 }
 
@@ -872,10 +892,11 @@ Repeats key
 <b>Undo/Redo</b>
 Restore up to 50 changes.
 </p><p>
-<b>Rename</b>
+<b>Rename/Highlight</b>
 Find/Replace
 Uses selection if active.
 Click Rename to close Rename.
+Swipeup toggles highlights for all occurrences.
 </p><p>
 <b>Errors</b>
 Runtime errors display an error message and automatically jumps to the error in code.
