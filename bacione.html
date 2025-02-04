@@ -254,7 +254,7 @@ if(direction===0){//reset
 function highlight(){
 if(T.H!==undefined){T.H=undefined;syncpretty();return;}
 let s=T.V,i=T.E;
-if(/\w/.test(s[i])){//select word
+if(/\w/.test(s[i])){
   if(T.S===T.E){
     while(--i>=0 && /\w/.test(s[i]));
     T.S=i+1;
