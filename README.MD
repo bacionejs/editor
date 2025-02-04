@@ -63,6 +63,7 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Diff
 - Save/Export
 - Rename (find/replace)
+- Star (highlight all occurences)
 - Icon Picker
 - Color Picker
 - Game examples
