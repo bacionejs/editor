@@ -121,7 +121,7 @@ findselect();
 }
 function findselect(){
 let i=T.V.slice(T.E,Infinity).search(f.value.replace(/(^\w+$)/,"\\b$1\\b"));
-if(i!=-1){ T.E=T.S=T.E+i; T.blur(); T.focus(); T.E=T.S+f.value.length; }
+if(i!=-1){ T.E=T.S=T.E+i; T.blur(); T.focus(); T.E=T.S+f.value.length; }else{T.E=T.S=0;findselect();}
 }
 return function rename(){
 con.style.visibility="visible";
