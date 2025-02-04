@@ -729,11 +729,9 @@ return e;
 function pretty(s){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
 s=s.replace(/</g,'&'+'lt;');
+if(T.H){s=s.replace(RegExp(`(\\b${T.H}\\b)`,'g'),`<span style=color:red;background-color:pink;>$1</span>`);}
 s=c(s,theme.pairs,`[(){}[\\]]`);
 s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
-if(T.H){
-  s=s.replace(RegExp(`(\\b${T.H}\\b)`,'g'),`<span style='color:red;background-color:pink;'>$1</span>`);
-}
 return s;
 }
 
