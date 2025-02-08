@@ -48,7 +48,7 @@ Code layout below:
 */
 
 element("style").textContent=`
-*{margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
+*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
 body{background-color:white;}
 ::selection{background:yellow;color:red;}
 @media print{
@@ -400,7 +400,6 @@ if(e){
   e.style.cssText=`
     width:100%;height:100%;
     background-color:white;
-    font-family:monospace;
     padding:10ch 2ch 2ch 2ch;
     touch-action:pan-x pan-y;
     position:fixed;
@@ -567,7 +566,6 @@ style.gap="1%";
 style.zIndex=3;
 style.bottom=0;
 style.right=0;
-style.fontFamily="monospace";
 style.aspectRatio=keys.cols/keys.rows;
 style.gridTemplateColumns=`repeat(${keys.cols},1fr)`;
 style.gridTemplateRows=   `repeat(${keys.rows},1fr)`;
@@ -691,7 +689,6 @@ style.padding=`10ch 2ch ${innerHeight} 2ch`;
 style.position="fixed"
 style.backgroundColor="transparent";
 style.color="transparent";
-style.fontFamily="monospace";
 style.touchAction="pan-x pan-y";
 style.zIndex=2;
 style.overflow="auto";
@@ -712,7 +709,6 @@ style.height="100%";
 style.width="100%";
 style.padding=`10ch 2ch ${innerHeight} 2ch`;
 style.position="fixed"
-style.fontFamily="monospace";
 style.touchAction="pan-x pan-y";
 style.zIndex=1;
 style.overflow="auto";
