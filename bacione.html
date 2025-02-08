@@ -104,11 +104,7 @@ return theme;
 
 let rename=(function(){
 let con=element("div");
-let s=con.style;
-s.zIndex=0; s.visibility="hidden"; s.position="fixed"; 
-s.display="grid"; s.gridTemplateColumns="2fr 1fr"; s.gap="8px"; 
-s.margin=8; s.top=0; s.right=0;
-s.height=innerWidth/5;
+con.style.cssText="z-index:0;visibility:hidden;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
 let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find);
 let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace);
 function find() { 
@@ -169,8 +165,7 @@ let a=element("a");
 a.hidden=true;
 a.href=URL.createObjectURL(new File([s],""));
 a.download=timestamp()+"bacione.html";
-a.click();
-URL.revokeObjectURL(a.href); a.remove(); a=undefined;
+a.click(); URL.revokeObjectURL(a.href); a.remove();
 }
 
 function exportgame(){
