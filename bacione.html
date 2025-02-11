@@ -356,6 +356,16 @@ b=stripcomments(b).split("\n");
 return b.filter(o=>!a.includes(o))?.reduce((a,v)=>a+"\n"+c+" "+v,"")||c+" no change";
 }
 
+function filecontent(t=T){
+let s="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
+if(t.editingtheeditor){
+  s+="<\script>onload=()=>{ ide();function ide(){"+t.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
+}else{
+  s+="<\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+t.V+"}}<\/script>";
+}
+return s;
+}
+
 function block(a,i,s){
 let pairs={"(":")","{":"}","[":"]",'"':'"'};
 if(i==undefined){return a in pairs;}
@@ -424,16 +434,6 @@ let measure=element("span"); measure.style.visibility="hidden";
 let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
 measure.remove();
 return icons;
-}
-
-function filecontent(t=T){
-let s="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
-if(t.editingtheeditor){
-  s+="<\script>onload=()=>{ ide();function ide(){"+t.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
-}else{
-  s+="<\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+t.V+"}}<\/script>";
-}
-return s;
 }
 
 function element(e,p){
@@ -1037,7 +1037,7 @@ blues.forEach(o=>{
   }
 });
 }
-return {shoot,update,draw};
+return {update,draw,shoot};
 }//end blue
 
 function Red(){
