@@ -1104,7 +1104,7 @@ init();
 
 function init(){
 let tgl=-1;
-let rise;
+let slope;
 let mx2=0;
 let lx=L.rnd(W-p);
 lm=lx+(p/2);
@@ -1117,14 +1117,14 @@ cb.fillStyle="white";
 for(let stars=W*W/2000;stars>0;stars--){cb.fillRect(L.rnd(W),L.rnd(W),1,1);}
 for(let mx=0;mx<W;mx++){
   if(mx==lx){
-    rise=0;
+    slope=0;
     mx2=lx+p;
   }else if(mx==mx2){
-    rise=(tgl*=-1)*L.rnd(5,1);
+    slope=(tgl*=-1)*L.rnd(5,1);
     mx2=mx2+L.rnd(floor(W/10),floor(W/20));
   }
-  rise*=((mountain[mx]+rise)>(W-p) || (mountain[mx]+rise)<p)?-1:1;
-  mountain[mx+1]=mountain[mx]+rise;
+  slope*=((mountain[mx]+slope)>(W-p) || (mountain[mx]+slope)<p)?-1:1;
+  mountain[mx+1]=mountain[mx]+slope;
 }
 cb.fillStyle=L.gradient(cb,W,-W,[[0,"hsl("+fuel+",100%,20%)"],[0.3,"white"]]);
 cb.fill(L.shape([[W,mountain.at(-1),W,W,0,W,0,mountain[0],...L.vertices(mountain)]]));
@@ -1439,11 +1439,6 @@ for(let i=1;i<a.length-1;i++){
 return v;
 }
 
-function debug(v,c,color="black",size=10){
-let f=c.font;c.font=size+"px monospace";
-c.fillStyle=color;c.fillText(v,W/2,10);c.font=f;
-}
-
 function shape(a,s=1){
 let p1=new Path2D,p2,i,j;
 for(i of a){
@@ -1457,6 +1452,11 @@ return p1;
 }
 
 function fit(x,s,a,x2,y2){return a-(a-s)*Math.pow(((a-y2)/(a-s)),x/x2);}
+
+function debug(v,c,color="black",size=10){
+let f=c.font;c.font=size+"px monospace";
+c.fillStyle=color;c.fillText(v,W/2,10);c.font=f;
+}
 
 return {RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,fit,element};
 
