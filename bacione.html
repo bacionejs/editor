@@ -1103,7 +1103,6 @@ let ship=rocketnone;
 init();
 
 function init(){
-let tgl=-1;
 let slope;
 let mx2=0;
 let lx=L.rnd(W-p);
@@ -1120,7 +1119,7 @@ for(let mx=0;mx<W;mx++){
     slope=0;
     mx2=lx+p;
   }else if(mx==mx2){
-    slope=(tgl*=-1)*L.rnd(5,1);
+    slope=L.rnd(5,1)*(random()<0.5?-1:1);
     mx2=mx2+L.rnd(floor(W/10),floor(W/20));
   }
   slope*=((mountain[mx]+slope)>(W-p) || (mountain[mx]+slope)<p)?-1:1;
