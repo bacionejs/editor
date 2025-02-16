@@ -1087,15 +1087,15 @@ return {x:x,y:y,path:path,color:color,angle:angle,rotation:rotation,rotationspee
 function marslander(){
 addEventListener("click",move,false);
 let snd=L.Sound();
-let cb=L.canvas(),cf=L.canvas();
+let cb=L.canvas(),c=L.canvas();
 let p=floor(W/20);
 let mountain=[floor(W*0.70)];
 let landed,close,bad,played=false;
 let fuelstart=20,fuel=fuelstart;
 let my,lm,x,y,xx,yy;
 let yt=W/FPS/10,yd=yt/3,ya=yd/FPS,yl=yt/(3/2),xv=yt/2/4,xl=xv*2;
-let cold=L.gradient(cf,0,-p,[[.2,"skyblue"],[.8,"blue"]]);
-let hot =L.gradient(cf,0,-p,[[.2,"gold"]   ,[.8,"red"]]);
+let cold=L.gradient(c,0,-p,[[.2,"skyblue"],[.8,"blue"]]);
+let hot =L.gradient(c,0,-p,[[.2,"gold"]   ,[.8,"red"]]);
 let rocketleft =L.shape([[0,0,-1,0,-2,-1,0,-4,2,-1,1,0],[-1.5,0,-2,0,-2,-0.5]],p/4);
 let rocketright=L.shape([[0,0,-1,0,-2,-1,0,-4,2,-1,1,0],[ 1.5,0, 2,0, 2,-0.5]],p/4);
 let rocketnone =L.shape([[0,0,-1,0,-2,-1,0,-4,2,-1,1,0]]                      ,p/4);
@@ -1143,12 +1143,12 @@ if(played && landed && bad){
   snd.explosion();
   ship=L.shape([Array.from({length:40},()=>L.rnd(p*2)-p)]);
 }
-cf.resetTransform();
-cf.clear();
-cf.translate(x,y);
-cf.rotate(xx/4);
-cf.fillStyle=(bad?hot:cold);
-cf.fill(ship);
+c.resetTransform();
+c.clear();
+c.translate(x,y);
+c.rotate(xx/4);
+c.fillStyle=(bad?hot:cold);
+c.fill(ship);
 if(landed){setTimeout(init,1000);return;}
 requestAnimationFrame(animation);
 }
@@ -1176,7 +1176,7 @@ setTimeout(()=>         ship=rocketnone,200);
 function monkeymaze(){
 addEventListener("click",move,false);
 let rows=12,qty=3,p=floor(W/rows);
-let cb=L.canvas(p*0.7),cf=L.canvas(p*0.7);
+let cb=L.canvas(p*0.7),c=L.canvas(p*0.7);
 let t=Array.from({length:rows}),rna=L.RandomArray(qty,rows);
 let banana={x:0,y:0,icon:127820};
 let monkey={x:0,y:0,icon:128018};
@@ -1184,11 +1184,11 @@ init();
 
 function init(){
 cb.white();
-cf.clear();
+c.clear();
 t.forEach((_,i,a)=>a[i]=rna.next().sort());
 t.forEach((y,iy)=>y.forEach(x=>draw(cb,{x:x,y:iy,icon:127796})));
 draw(cb,rnd(banana));
-draw(cf,rnd(monkey));
+draw(c,rnd(monkey));
 }
 
 function move({pageX,pageY}){
@@ -1197,7 +1197,7 @@ if(dx>dy) if(-dx>dy){while(t[y+=-1]?.every(e=>e!=x));}else{x=t[y][t[y].indexOf(x
 else      if(-dx<dy){while(t[y+= 1]?.every(e=>e!=x));}else{x=t[y][t[y].indexOf(x)-1];}
 y=t[y] && y;if(x==undefined || y==undefined)return;
 monkey.x=x;monkey.y=y;
-cf.clear();draw(cf,monkey);
+c.clear();draw(c,monkey);
 if(monkey.x==banana.x && monkey.y==banana.y){setTimeout(init,1000);return;}
 }
 
@@ -1216,19 +1216,19 @@ function draw(cn,{x,y,icon}){cn.icon(icon,x*p+(p/2),y*p+(p/2));}
 
 function snake(){
 addEventListener("click",move,false);
-let cb=L.canvas();
+let c=L.canvas();
 let r=10,p=floor(W/r),m=r*r,head=m-r,food=head+3,snake=[head];
 let du=()=>-r+m*(head<r);
 let dd=()=>+r-m*(head>=(m-r));
 let dl=()=>-1+r*(head%r==0);
 let dr=()=>+1-r*(head%r==(r-1));
 let d=dr;
-cb.white();
+c.white();
 setInterval(animation,500);
 
 function animation(){
 head+=d();
-if(snake.includes(head)){cb.white();snake=[head];}
+if(snake.includes(head)){c.white();snake=[head];}
 snake.push(head);
 draw(head,"blue");
 if(head==food){food=L.rnd(m);}
@@ -1237,7 +1237,7 @@ draw(food,"red");
 }
 
 function move({pageX,pageY}){d=(d==du || d==dd)?pageX<(W/2)?dl:dr:pageY<(W/2)?du:dd;}
-function draw(i,color){cb.fillStyle=color;cb.fillRect((i%r)*p,floor(i/r)*p,p,p);}
+function draw(i,color){c.fillStyle=color;c.fillRect((i%r)*p,floor(i/r)*p,p,p);}
 
 }//end snake
 
@@ -1270,14 +1270,14 @@ let board=[
 ];
 board.run=function(func){this.forEach((y,iy)=>y.forEach((_,ix)=>func(iy,ix)));}
 
-let timeout,interval,p=W/board.length,cb=L.canvas(),cf=L.canvas(p,9811),tgl=1,prev;
+let timeout,interval,p=W/board.length,cb=L.canvas(),c=L.canvas(p,9811),tgl=1,prev;
 board.run((y,x)=>{cb.fillStyle=(y+x)%2?"green":"white";cb.fillRect(y*p,x*p,p,p);});
 move();
 
 function move(x,y){
 if(x!=undefined && (!tgl || board[y][x])){(board[y][x]=(tgl^=1)?prev:((prev=board[y][x]),0));}
-cf.clear();
-board.run((y,x)=>{cf.icon(board[y][x]||"",x*p+(p*0.5),y*p+(p*0.6));});
+c.clear();
+board.run((y,x)=>{c.icon(board[y][x]||"",x*p+(p*0.5),y*p+(p*0.6));});
 }
 
 }//end chess
@@ -1294,13 +1294,13 @@ function pairs(){
 addEventListener("click",({pageX:x,pageY:y})=>move(floor(x/p)+floor(y/p)*rows),false);
 let rows=4,p=floor(W/rows),m,found,pair,misses=0;
 let rna=L.RandomArray((rows*rows/2),66);
-let cb=L.canvas(),cf=L.canvas(p*0.4,127789);
+let cb=L.canvas(),c=L.canvas(p*0.4,127789);
 cb.white();
 for(let i=0;i<(rows*rows);i++){cb.strokeRect(i%rows*p,floor(i/rows)*p,p,p);}
 init();
 
 function init(){
-found=[];pair=[];cf.clear();misses=0;
+found=[];pair=[];c.clear();misses=0;
 m=rna.next();m=[...m,...m];
 let r,i=m.length;
 while(i-- && ((r=L.rnd(i)),([m[r],m[i]]=[m[i],m[r]])));
@@ -1311,11 +1311,11 @@ if(found.length==m.length-2){alert("Misses: "+misses);init();return;}
 if(pair.includes(i) || found.includes(i)){return;}
 if(pair.length==2){
   if(m[pair[0]]==m[pair[1]]){found.push(...pair);}
-  else{pair.forEach(v=>cf.clearRect(v%rows*p,floor(v/rows)*p,p,p));misses++;}
+  else{pair.forEach(v=>c.clearRect(v%rows*p,floor(v/rows)*p,p,p));misses++;}
   pair=[];
 }
 pair.push(i);
-cf.icon(m[i],i%rows*p+p*0.5,floor(i/rows)*p+p*0.6);
+c.icon(m[i],i%rows*p+p*0.5,floor(i/rows)*p+p*0.6);
 }
 
 }//end pairs
