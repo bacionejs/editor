@@ -66,6 +66,7 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Highlight all occurrences of current word (superstar)
 - Icon Picker
 - Color Picker
+- Built-in Help
 - Game examples
 
 ## Limitations
