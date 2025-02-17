@@ -62,7 +62,8 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Diff
 - Save/Export
 - Rename
-- Highlight all occurrences
+- Incremental find
+- Highlight all occurrences of current word
 - Icon Picker
 - Color Picker
 - Game examples
