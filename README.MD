@@ -15,7 +15,6 @@ The **editor only works with Chrome browser, tablet or phone**. However, exporte
   - click Run to play the Ski game
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
-- [Reddit](https://www.reddit.com/r/bacionejs) - reddit discussions
 - [Github](https://github.com/bacionejs/editor/discussions) - github discussions
 
 ## Bacione?
