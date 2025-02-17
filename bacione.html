@@ -116,6 +116,7 @@ if(T.V.slice(T.S,T.E)===f.value){T.I(r.value,T.S,T.E,"end");}
 findselect();
 }
 function findselect(){
+if(f.value==="")return;
 T.H="\\b"+f.value+"\\b";syncpretty();
 let regex=new RegExp("\\b"+f.value+"\\b");
 let i=T.V.slice(T.E).search(regex);if(i==-1)i=T.V.search(regex);if(i==-1)return;
@@ -249,7 +250,7 @@ if(direction===0){//reset
 }}();//end restore
 
 function highlight(){
-if(T.H!==undefined){T.H=undefined;syncpretty();return;}
+if(T.H!==""){T.H="";syncpretty();return;}
 let s=T.V,i=T.E;
 if(/\w/.test(s[i])){
   if(T.S===T.E){
@@ -259,8 +260,8 @@ if(/\w/.test(s[i])){
   while(++i<s.length && /\w/.test(s[i]));
   T.E=i;
 }
+if(T.S==T.E)return;
 T.H="\\b"+T.V.substring(T.S,T.E)+"\\b";
-if(T.H===""){T.H=undefined;return;}
 syncpretty();
 }
 
@@ -678,13 +679,14 @@ T.I=function(...args){
     if(s==="")e.selectionStart--;
     e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
     if(e.id=="find"){
-      T.H="\\b"+e.value;
+      if(e.value==="")T.H=""; else T.H="\\b"+e.value;
       syncpretty();
     }
   }
 }
 T.editingtheeditor=false;
 T.P="";
+T.H="";
 T.inputMode="none";
 //T.addEventListener("contextmenu",e=>e.preventDefault());
 T.spellcheck=false;
@@ -726,7 +728,7 @@ return e;
 function pretty(s){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
 s=s.replace(/</g,'&'+'lt;');
-if(T.H){s=s.replace(RegExp(`(${T.H})`,'g'),`<span style=color:red;background-color:pink;>$1</span>`);}
+if(T.H!==""){s=s.replace(RegExp(`(${T.H})`,'g'),`<span style=color:red;background-color:pink;>$1</span>`);}
 s=c(s,theme.pairs,`[(){}[\\]]`);
 s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
 return s;
