@@ -116,7 +116,8 @@ if(T.V.slice(T.S,T.E)===f.value){T.I(r.value,T.S,T.E,"end");}
 findselect();
 }
 function findselect(){
-let regex=new RegExp(f.value.replace(/(^\w+$)/,"\\b$1"),"i");
+T.H="\\b"+f.value+"\\b";syncpretty();
+let regex=new RegExp("\\b"+f.value+"\\b");
 let i=T.V.slice(T.E).search(regex);if(i==-1)i=T.V.search(regex);if(i==-1)return;
 T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
 }
@@ -258,7 +259,7 @@ if(/\w/.test(s[i])){
   while(++i<s.length && /\w/.test(s[i]));
   T.E=i;
 }
-T.H=T.V.substring(T.S,T.E);
+T.H="\\b"+T.V.substring(T.S,T.E)+"\\b";
 if(T.H===""){T.H=undefined;return;}
 syncpretty();
 }
@@ -677,7 +678,7 @@ T.I=function(...args){
     if(s==="")e.selectionStart--;
     e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
     if(e.id=="find"){
-      T.H=e.value;
+      T.H="\\b"+e.value;
       syncpretty();
     }
   }
@@ -725,7 +726,7 @@ return e;
 function pretty(s){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
 s=s.replace(/</g,'&'+'lt;');
-if(T.H){s=s.replace(RegExp(`(\\b${T.H})`,'gi'),`<span style=color:red;background-color:pink;>$1</span>`);}
+if(T.H){s=s.replace(RegExp(`(${T.H})`,'g'),`<span style=color:red;background-color:pink;>$1</span>`);}
 s=c(s,theme.pairs,`[(){}[\\]]`);
 s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
 return s;
