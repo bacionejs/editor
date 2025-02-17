@@ -105,7 +105,7 @@ return theme;
 let rename=(function(){
 let con=element("div");
 con.style.cssText="z-index:0;visibility:hidden;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
-let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find);
+let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find); f.id="find";
 let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace);
 function find(){
 T.focus();T.S=T.E;findselect();
@@ -116,8 +116,9 @@ if(T.V.slice(T.S,T.E)===f.value){T.I(r.value,T.S,T.E,"end");}
 findselect();
 }
 function findselect(){
-let i=T.V.slice(T.E,Infinity).search(f.value.replace(/(^\w+$)/,"\\b$1\\b"));
-if(i!=-1){T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;}else{T.E=T.S=0;findselect();}
+let regex=new RegExp(f.value.replace(/(^\w+$)/,"\\b$1"),"i");
+let i=T.V.slice(T.E).search(regex);if(i==-1)i=T.V.search(regex);if(i==-1)return;
+T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
 }
 return function rename(){
 con.style.visibility="visible";
@@ -675,6 +676,10 @@ T.I=function(...args){
     let s=args[0];
     if(s==="")e.selectionStart--;
     e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
+    if(e.id=="find"){
+      T.H=e.value;
+      syncpretty();
+    }
   }
 }
 T.editingtheeditor=false;
@@ -720,7 +725,7 @@ return e;
 function pretty(s){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
 s=s.replace(/</g,'&'+'lt;');
-if(T.H){s=s.replace(RegExp(`(\\b${T.H}\\b)`,'g'),`<span style=color:red;background-color:pink;>$1</span>`);}
+if(T.H){s=s.replace(RegExp(`(\\b${T.H})`,'gi'),`<span style=color:red;background-color:pink;>$1</span>`);}
 s=c(s,theme.pairs,`[(){}[\\]]`);
 s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
 return s;
