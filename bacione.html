@@ -677,6 +677,7 @@ T.I=function(...args){
     let e=document.activeElement;
     let s=args[0];
     if(s==="")e.selectionStart--;
+    if(T.S==0)T.S=T.E=1;//hack
     e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
     if(e.id=="find"){
       if(e.value==="")T.H=""; else T.H="\\b"+e.value;
