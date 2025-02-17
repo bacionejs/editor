@@ -118,7 +118,7 @@ findselect();
 function findselect(){
 if(f.value==="")return;
 let regex=new RegExp("\\b"+f.value+"\\b");
-let i=T.V.slice(T.E).search(regex);if(i==-1)i=T.V.search(regex);if(i==-1){f.focus();return;}
+let i=T.V.slice(T.E).search(regex);if(i==-1){T.E=T.S=0;i=T.V.search(regex);}if(i==-1){f.focus();return;}
 T.H="\\b"+f.value+"\\b";syncpretty();
 T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
 }
