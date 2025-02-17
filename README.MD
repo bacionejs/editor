@@ -62,7 +62,7 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Debugging
 - Diff
 - Save/Export
-- Rename (find/replace)
+- Rename. Incremental find/replace
 - Highlight all occurrences
 - Icon Picker
 - Color Picker
