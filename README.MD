@@ -62,7 +62,7 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Debugging
 - Diff
 - Save/Export
-- Rename. Incremental find/replace
+- Rename
 - Highlight all occurrences
 - Icon Picker
 - Color Picker
@@ -98,3 +98,4 @@ Any reference to **change** below refers to the **Edit-the-Editor** functionalit
 - **Diff Function:** The Diff function is **naive** and will not produce accurate results. It is designed to provide only an approximate indication of progress since the file was opened or last saved.
 - **Save Mechanism:** The save function in the editor is limited by HTML constraints. As a workaround, a **new** timestamped file is generated each time you save. For simplicity, the games and editor are saved together as one file. If you're saving to your Downloads folder, it's important to keep it  free of files from other purposes, as this can make it difficult to quickly reopen your work. Also, periodically delete older editor HTML files, keeping only the most recent version.
 - **Themes**: The editor offers both light and dark themes for a customizable viewing experience. You can toggle between themes by swiping up on the Miscellaneous button. You can also **change** or add more.
+- **Rename**: Performs incremental highlight, but switches to whole word when Find is clicked.
