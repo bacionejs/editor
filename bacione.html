@@ -118,7 +118,7 @@ findselect();
 function findselect(){
 if(f.value==="")return;
 let regex=new RegExp("\\b"+f.value+"\\b");
-let i=T.V.slice(T.E).search(regex);if(i==-1){T.E=T.S=0;i=T.V.search(regex);}if(i==-1){f.focus();return;}
+let i=T.V.slice(T.E).search(regex);if(i==-1){T.E=T.S=1;i=T.V.search(regex);}if(i==-1){f.focus();return;}
 T.H="\\b"+f.value+"\\b";syncpretty();
 T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
 }
@@ -847,13 +847,34 @@ Swipeup shows changes you have made.
 Toggles font size.
 Swipeup toggles fullscreen.
 </p><p>
-<b>Complete</b>
-Completes a word.
-Looks for match in current game and then elsewhere.
+<b>Rename/Highlight</b>
+Uses selection if active.
+Click Rename to close Rename.
+Swipeup toggles highlights for all occurrences.
 </p><p>
-<b>Comment</b>
-Toggles comments for the current line.
-Also puts the line in Paste.
+<b>Misc/Themes</b>
+Export-Game removes the editor and will run in any browser.
+Color-Picker and Icon-Picker put a code in Paste.
+Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
+Swipeup toggles theme: light, dark, gray, retro
+Click anywhere to close.
+</p><p>
+<b>Help</b>
+Help is this screen.
+Click anywhere to close.
+</p><p>
+<b>Enter</b>
+Inserts a new line or cancels selection.
+Retains prior indentation.
+</p><p>
+<b>Backspace</b>
+Deletes character or selection.
+</p><p>
+<b>Capslock (shift)</b>
+Reveals shift characters.
+</p><p>
+<b>Restore (Undo/Redo)</b>
+Restore up to 50 changes.
 </p><p>
 <b>Copy</b>
 Selects text or extends selection and puts it in Paste.
@@ -867,53 +888,31 @@ Selection looks at the character to the right and then selects:
 <b>Paste</b>
 Pastes
 </p><p>
-<b>Backspace</b>
-Deletes character or selection.
-</p><p>
 <b>Arrows</b>
 Moves cursor or extends selection.
 </p><p>
-<b>Enter</b>
-Inserts a new line or cancels selection.
-Retains prior indentation.
+<b>Comment</b>
+Toggles comments for the current line.
+Also puts the line in Paste.
+</p><p>
+<b>Complete</b>
+Completes a word.
+Looks for match in current game and then elsewhere.
 </p><p>
 <b>Characters</b>
 Inserts a character or replaces selection.
 Swipeup on alphanumeric keys is like shift.
 </p><p>
-<b>Capslock (shift)</b>
-Reveals shift characters.
-</p><p>
 <b>Longpress</b>
 Repeats key
-</p><p>
-<b>Restore (Undo/Redo)</b>
-Restore up to 50 changes.
-</p><p>
-<b>Rename/Highlight</b>
-Uses selection if active.
-Click Rename to close Rename.
-Swipeup toggles highlights for all occurrences.
 </p><p>
 <b>Errors</b>
 Runtime errors display an error message and automatically jumps to the error in code.
 Click anywhere to close.
 </p><p>
-<b>Misc/Themes</b>
-Export-Game removes the editor and will run in any browser.
-Color-Picker and Icon-Picker put a code in Paste.
-Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
-Swipeup toggles theme: light, dark, gray, retro
-Click anywhere to close.
-</p><p>
-<b>Help</b>
-Help is this screen.
-Click anywhere to close.
-</p><p>
-<b>Global Variables and Aliases</b>
+<b>Global Variables</b>
 FPS=frames per second
 W=innerWidth;
-floor=Math.floor;
 </p><p>
 <b>Overridden</b>
 Array sort: compares numbers instead of strings.
@@ -922,7 +921,7 @@ Array sort: compares numbers instead of strings.
 L.debug(string,canvas)
 </p><p>
 <b>Random number</b>
-number=L.rnd(max,min)
+number=L.rnd(max,[min])
 </p><p>
 <b>Random biased sets</b>
 set=L.RandomArray(quantity,range)
@@ -949,6 +948,10 @@ canvas.fill(L.shape([[x,y,...],...],scale))
 <b>Pixel to Vector</b>
 canvas.fill(L.shape(L.vertices(pixels)))
 </p><p>
+<b>Fit</b>
+L.fit(x, start, asymptote, x2, y2)
+Use the <a href=https://bacionejs.github.io/difficultyalgorithm>Fit</a> algorithm to smoothly adjust game difficulty and enhance player experience with a dynamically scaling challenge
+</p><p>
 <b>Game Controls</b>
 Ski - Click anywhere.
 Defense - Click anywhere
@@ -961,6 +964,8 @@ Marslander - Click on right or left side. To disable sound, comment snd.rocket()
 </p>
 `);
 
+
+//requestAnimationFrame(() => { e.style.opacity = "0.9"; // Any small style change triggers reflow });
 }//end help
 
 }//end ide
@@ -1458,7 +1463,7 @@ for(i of a){
 return p1;
 }
 
-function fit(x,s,a,x2,y2){return a-(a-s)*Math.pow(((a-y2)/(a-s)),x/x2);}
+function fit(x,start,asymptote,x2,y2){return asymptote-(asymptote-start)*Math.pow(((asymptote-y2)/(asymptote-start)),x/x2);}
 
 function debug(v,c,color="black",size=10){
 let f=c.font;c.font=size+"px monospace";
