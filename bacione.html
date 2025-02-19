@@ -105,8 +105,21 @@ return theme;
 let rename=(function(){
 let con=element("div");
 con.style.cssText="z-index:0;visibility:hidden;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
-let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find); f.id="find";
+let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find); f.id="find"; fb.disabled=true;
 let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace);
+f.addEventListener("input", function(event) {
+//  alert("Input changed: " + event.target.value);
+  if(f.value==="")return;
+  let regex=new RegExp("\\b"+f.value+"\\b");
+  let i=T.V.slice(T.E).search(regex);if(i==-1){T.E=T.S=1;i=T.V.search(regex);}
+  if(i==-1){
+    f.focus();
+    fb.disabled=true;
+    return;
+  }else{
+    fb.disabled=false;
+  }
+});
 function find(){
 T.focus();T.S=T.E;findselect();
 }
@@ -677,11 +690,17 @@ T.I=function(...args){
     let e=document.activeElement;
     let s=args[0];
     if(s==="")e.selectionStart--;
-    if(T.S==0)T.S=T.E=1;//hack
+    if(T.S==0)T.S=T.E=1;
     e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
     if(e.id=="find"){
-      if(e.value==="")T.H=""; else T.H="\\b"+e.value;
-      syncpretty();
+      if(e.value===""){
+        T.H="";
+        syncpretty();
+      }else{
+        T.H="\\b"+e.value;
+        syncpretty();
+        e.dispatchEvent(new Event("input"));
+      }
     }
   }
 }
