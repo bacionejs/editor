@@ -108,13 +108,14 @@ con.style.cssText="z-index:0;visibility:hidden;position:fixed;display:grid;grid-
 let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find); f.id="find"; fb.disabled=true;
 let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace);
 f.addEventListener("input", ()=>{
-  if(f.value==="")return;
+  if(f.value===""){
+    fb.disabled=true;
+    return;
+  }
   let regex=new RegExp("\\b"+f.value+"\\b");
   let i=T.V.slice(T.E).search(regex);if(i==-1){T.E=T.S=1;i=T.V.search(regex);}
   if(i==-1){
-    f.focus();
     fb.disabled=true;
-    return;
   }else{
     fb.disabled=false;
   }
@@ -694,12 +695,11 @@ T.I=function(...args){
     if(e.id=="find"){
       if(e.value===""){
         T.H="";
-        syncpretty();
       }else{
         T.H="\\b"+e.value;
-        syncpretty();
-        e.dispatchEvent(new Event("input"));
       }
+      syncpretty();
+      e.dispatchEvent(new Event("input"));
     }
   }
 }
