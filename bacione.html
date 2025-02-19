@@ -135,8 +135,8 @@ let i=T.V.slice(T.E).search(regex);if(i==-1){T.E=T.S=1;i=T.V.search(regex);}if(i
 T.H="\\b"+f.value+"\\b";syncpretty();
 T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
 }
-return function rename(args){
-if(args){
+return function rename(...args){
+if(args.length){
   let e=document.activeElement;
   let s=args[0];
   if(s==="")e.selectionStart--;
@@ -704,11 +704,11 @@ Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.val
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
 T.I=function(...args){
-  if(this==document.activeElement){
+  if(document.activeElement==this){
     this.setRangeText(...args);
     restore();
     syncpretty();
-  }else{
+  }else if(document.activeElement==document.getElementById("find")){
     rename(...args);
   }
 }
