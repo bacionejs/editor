@@ -107,8 +107,7 @@ let con=element("div");
 con.style.cssText="z-index:0;visibility:hidden;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
 let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find); f.id="find"; fb.disabled=true;
 let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace);
-f.addEventListener("input", function(event) {
-//  alert("Input changed: " + event.target.value);
+f.addEventListener("input", ()=>{
   if(f.value==="")return;
   let regex=new RegExp("\\b"+f.value+"\\b");
   let i=T.V.slice(T.E).search(regex);if(i==-1){T.E=T.S=1;i=T.V.search(regex);}
