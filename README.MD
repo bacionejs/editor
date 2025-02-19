@@ -62,7 +62,7 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Diff
 - Save/Export
 - Rename (find/replace)
-- Incremental find
+- Incremental search
 - Highlight all occurrences of current word (superstar)
 - Icon Picker
 - Color Picker
