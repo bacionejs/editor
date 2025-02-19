@@ -135,7 +135,24 @@ let i=T.V.slice(T.E).search(regex);if(i==-1){T.E=T.S=1;i=T.V.search(regex);}if(i
 T.H="\\b"+f.value+"\\b";syncpretty();
 T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
 }
-return function rename(){
+return function rename(args){
+if(args){
+  let e=document.activeElement;
+  let s=args[0];
+  if(s==="")e.selectionStart--;
+  if(T.S==0)T.S=T.E=1;
+  e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
+  if(e.id=="find"){
+    if(e.value===""){
+      T.H="";
+    }else{
+      T.H="\\b"+e.value;
+    }
+    syncpretty();
+    e.dispatchEvent(new Event("input"));
+  }
+  return;
+}
 con.style.visibility="visible";
 if(con.style.zIndex==0){
   con.style.zIndex=9;
@@ -687,25 +704,12 @@ Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.val
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
 T.I=function(...args){
-  if(this==document.activeElement){//editor
+  if(this==document.activeElement){
     this.setRangeText(...args);
     restore();
     syncpretty();
-  }else{//rename
-    let e=document.activeElement;
-    let s=args[0];
-    if(s==="")e.selectionStart--;
-    if(T.S==0)T.S=T.E=1;
-    e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
-    if(e.id=="find"){
-      if(e.value===""){
-        T.H="";
-      }else{
-        T.H="\\b"+e.value;
-      }
-      syncpretty();
-      e.dispatchEvent(new Event("input"));
-    }
+  }else{
+    rename(...args);
   }
 }
 T.editingtheeditor=false;
