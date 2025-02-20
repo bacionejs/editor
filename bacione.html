@@ -107,19 +107,11 @@ let con=element("div");
 con.style.cssText="z-index:0;visibility:hidden;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
 let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find); f.id="find"; fb.disabled=true;
 let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace);
-f.addEventListener("input", ()=>{
-  if(f.value===""){
-    fb.disabled=true;
-    return;
-  }
-  let regex=new RegExp("\\b"+f.value+"\\b");
-  let i=T.V.slice(T.E).search(regex);if(i==-1){T.E=T.S=1;i=T.V.search(regex);}
-  if(i==-1){
-    fb.disabled=true;
-  }else{
-    fb.disabled=false;
-  }
-});
+function notword(s){
+  let regex=new RegExp("\\b"+s+"\\b");
+  let i=T.V.slice(T.E).search(regex);if(i==-1){i=T.V.search(regex);}
+  return (s==="" || i==-1);
+}
 function find(){
 T.focus();T.S=T.E;findselect();
 }
@@ -136,20 +128,16 @@ T.H="\\b"+f.value+"\\b";syncpretty();
 T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
 }
 return function rename(...args){
-if(args.length){
+if(args.length){//input
   let e=document.activeElement;
   let s=args[0];
   if(s==="")e.selectionStart--;
   if(T.S==0)T.S=T.E=1;
   e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
   if(e.id=="find"){
-    if(e.value===""){
-      T.H="";
-    }else{
-      T.H="\\b"+e.value;
-    }
+    e.value===""?T.H="":T.H="\\b"+e.value;
     syncpretty();
-    e.dispatchEvent(new Event("input"));
+    fb.disabled=notword(f.value);
   }
   return;
 }
@@ -158,7 +146,7 @@ if(con.style.zIndex==0){
   con.style.zIndex=9;
   if(T.S!=T.E){
     f.value=T.V.slice(T.S,T.E);T.E=T.S;
-    f.dispatchEvent(new Event("input"));
+    fb.disabled=notword(f.value);
   }
   f.focus();
 }else{
@@ -708,7 +696,7 @@ T.I=function(...args){
     this.setRangeText(...args);
     restore();
     syncpretty();
-  }else if(document.activeElement==document.getElementById("find")){
+  }else{
     rename(...args);
   }
 }
