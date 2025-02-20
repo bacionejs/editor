@@ -76,7 +76,7 @@ The design goals of this editor are to provide a pleasant experience for those w
 If this editor doesn't support your needs, try Neovim with Termux and Apache. You can find my configuration for those tools [here](https://github.com/bacionejs/termux).
 
 ## Issues
-- **Cursor Misalignment**: Swiping up hard at the end of the file in the editor window can cause the cursor to become misaligned with the text. A workaround is to back off a little bit from the end.
+- **Cursor Misalignment**: Swiping up at the end of the file in the editor window can cause the cursor to become misaligned with the text. A workaround is to back off a little bit from the end.
 
 ## Notes
 Any reference to **change** below refers to the **Edit-the-Editor** functionality found in the Miscellaneous button, represented by the diamond symbol.
