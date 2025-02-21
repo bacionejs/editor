@@ -79,7 +79,7 @@ let i=0,a=[
 ["keywords"       ,["teal"  ,  "orange",  "skyblue"    ,  "lime"    ]],
 ["pairs"          ,["purple",  "brown" ,  "black"      ,  "lime"    ]],
 ];
-function theme(){
+return function theme(){
 if(i==a[0][1].length)i=0;a.forEach(a=>theme[a[0]]=a[1][i]);i++;
 let style;
 KEYS.forEach(k=>{
@@ -98,7 +98,6 @@ style.backgroundColor=theme.background;
 style.color=theme.foreground;
 syncpretty();
 }
-return theme;
 })();//end theme
 
 
@@ -108,9 +107,9 @@ con.style.cssText="z-index:0;visibility:hidden;position:fixed;display:grid;grid-
 let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find); f.id="find"; fb.disabled=true;
 let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace);
 function notword(s){
-  let regex=new RegExp("\\b"+s+"\\b");
-  let i=T.V.slice(T.E).search(regex);if(i==-1){i=T.V.search(regex);}
-  return (s==="" || i==-1);
+let regex=new RegExp("\\b"+s+"\\b");
+let i=T.V.slice(T.E).search(regex);if(i==-1){i=T.V.search(regex);}
+return (s==="" || i==-1);
 }
 function find(){
 T.focus();T.S=T.E;findselect();
@@ -139,18 +138,18 @@ if(args.length){//input
     syncpretty();
     fb.disabled=notword(f.value);
   }
-  return;
-}
-con.style.visibility="visible";
-if(con.style.zIndex==0){
-  con.style.zIndex=9;
-  if(T.S!=T.E){
-    f.value=T.V.slice(T.S,T.E);T.E=T.S;
-    fb.disabled=notword(f.value);
+}else{//popup
+  con.style.visibility="visible";
+  if(con.style.zIndex==0){
+    con.style.zIndex=9;
+    if(T.S!=T.E){
+      f.value=T.V.slice(T.S,T.E);T.E=T.S;
+      fb.disabled=notword(f.value);
+    }
+    f.focus();
+  }else{
+    con.style.zIndex=0;T.focus();T.S=T.E;
   }
-  f.focus();
-}else{
-  con.style.zIndex=0;T.focus();T.S=T.E;
 }
 }
 })();//end rename
