@@ -118,13 +118,13 @@ else{fb.disabled=true;}
 find();
 }
 return function rename(s){
-if(s!==undefined){//input
+if(s===undefined){//popup
+  if(con.style.zIndex==0){con.style.zIndex=9;if(T.S!=T.E){f.value=T.V.slice(T.S,T.E);T.E=T.S;fb.disabled=search(f.value)==-1;}f.focus();}
+  else{con.style.zIndex=0;T.S=T.E;T.focus();}
+}else{//input
   let e=document.activeElement;
   if(s==="")e.selectionStart--;e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
   if(e.id=="find"){T.H=e.value===""?"":"\\b"+e.value;syncpretty();fb.disabled=search(f.value)==-1;}
-}else{//popup
-  if(con.style.zIndex==0){con.style.zIndex=9;if(T.S!=T.E){f.value=T.V.slice(T.S,T.E);T.E=T.S;fb.disabled=search(f.value)==-1;}f.focus();}
-  else{con.style.zIndex=0;T.S=T.E;T.focus();}
 }
 }
 })();//end rename
