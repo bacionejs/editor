@@ -103,53 +103,28 @@ syncpretty();
 
 let rename=(function(){
 let con=element("div");
-con.style.cssText="z-index:0;visibility:hidden;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
+con.style.cssText="z-index:0;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
 let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find); f.id="find"; fb.disabled=true;
 let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace);
-function notword(s){
-let regex=new RegExp("\\b"+s+"\\b");
-let i=T.V.slice(T.E).search(regex);if(i==-1){i=T.V.search(regex);}
-return (s==="" || i==-1);
-}
+function search(s){if(s==="")return -1;return T.V.slice(T.E).search("\\b"+s+"\\b");}
 function find(){
-T.focus();T.S=T.E;findselect();
-}
-function replace(){
-T.focus();
-if(T.V.slice(T.S,T.E)===f.value){T.I(r.value,T.S,T.E,"end");}
-findselect();
-}
-function findselect(){
-if(f.value==="")return;
-let regex=new RegExp("\\b"+f.value+"\\b");
-let i=T.V.slice(T.E).search(regex);if(i==-1){T.E=T.S=1;i=T.V.search(regex);}if(i==-1){f.focus();return;}
+let i=search(f.value);if(i==-1)return;
 T.H="\\b"+f.value+"\\b";syncpretty();
 T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
 }
-return function rename(...args){
-if(args.length){//input
+function replace(){
+if(T.V.slice(T.S,T.E)===f.value){T.focus();T.I(r.value,T.S,T.E,"end");}
+else{fb.disabled=true;}
+find();
+}
+return function rename(s){
+if(s!==undefined){//input
   let e=document.activeElement;
-  let s=args[0];
-  if(s==="")e.selectionStart--;
-  if(T.S==0)T.S=T.E=1;
-  e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
-  if(e.id=="find"){
-    e.value===""?T.H="":T.H="\\b"+e.value;
-    syncpretty();
-    fb.disabled=notword(f.value);
-  }
+  if(s==="")e.selectionStart--;e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
+  if(e.id=="find"){T.H=e.value===""?"":"\\b"+e.value;syncpretty();fb.disabled=search(f.value)==-1;}
 }else{//popup
-  con.style.visibility="visible";
-  if(con.style.zIndex==0){
-    con.style.zIndex=9;
-    if(T.S!=T.E){
-      f.value=T.V.slice(T.S,T.E);T.E=T.S;
-      fb.disabled=notword(f.value);
-    }
-    f.focus();
-  }else{
-    con.style.zIndex=0;T.focus();T.S=T.E;
-  }
+  if(con.style.zIndex==0){con.style.zIndex=9;if(T.S!=T.E){f.value=T.V.slice(T.S,T.E);T.E=T.S;fb.disabled=search(f.value)==-1;}f.focus();}
+  else{con.style.zIndex=0;T.S=T.E;T.focus();}
 }
 }
 })();//end rename
