@@ -114,7 +114,7 @@ T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
 }
 function replace(){
 if(T.V.slice(T.S,T.E)===f.value){T.focus();T.I(r.value,T.S,T.E,"end");}
-else{fb.disabled=true;}
+fb.disabled=search(f.value)==-1;
 find();
 }
 return function rename(s){
