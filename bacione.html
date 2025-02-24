@@ -104,27 +104,28 @@ syncpretty();
 let rename=(function(){
 let con=element("div");
 con.style.cssText="z-index:0;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
-let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find); f.id="find"; fb.disabled=true;
-let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace);
+let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find);    fb.disabled=true; f.id="find";
+let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace); rb.disabled=true;
 function search(s){if(s==="")return -1;return T.V.slice(T.E).search("\\b"+s+"\\b");}
+function disable(){let d=search(f.value)==-1;fb.disabled=d;rb.disabled=d;}
 function find(){
 let i=search(f.value);if(i==-1)return;
 T.H="\\b"+f.value+"\\b";syncpretty();
 T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
 }
 function replace(){
-if(T.V.slice(T.S,T.E)===f.value){T.focus();T.I(r.value,T.S,T.E,"end");}
-fb.disabled=search(f.value)==-1;
+if(T.V.slice(T.S,T.E)===f.value){T.focus();T.I(r.value);}
+disable();
 find();
 }
 return function rename(s){
 if(s===undefined){//popup
-  if(con.style.zIndex==0){con.style.zIndex=9;if(T.S!=T.E){f.value=T.V.slice(T.S,T.E);T.E=T.S;fb.disabled=search(f.value)==-1;}f.focus();}
+  if(con.style.zIndex==0){con.style.zIndex=9;if(T.S!=T.E){f.value=T.V.slice(T.S,T.E);T.E=T.S;disable();}f.focus();}
   else{con.style.zIndex=0;T.S=T.E;T.focus();}
 }else{//input
   let e=document.activeElement;
   if(s==="")e.selectionStart--;e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
-  if(e.id=="find"){T.H=e.value===""?"":"\\b"+e.value;syncpretty();fb.disabled=search(f.value)==-1;}
+  if(e.id=="find"){T.H=e.value===""?"":"\\b"+e.value;syncpretty();disable();}
 }
 }
 })();//end rename
@@ -208,7 +209,7 @@ for(let f of [[ftop,T.S-wordlength-1,last],[T.S,Infinity,first],[0,ftop,last]]){
   if((found=look(...f))!=undefined)break;
 }
 if(found==undefined)return;
-T.I(found.slice(wordlength),T.S,T.S,"end");
+T.I(found.slice(wordlength));
 }
 
 function comment(){
@@ -300,29 +301,24 @@ T.P=T.V.slice(T.S,T.E);
 }//end copy
 
 function paste(){
-T.I(T.P,T.S,T.E,"end");
-}
-
-function chars(c){
-T.I(c,T.S,T.E,"end");
+T.I(T.P);
 }
 
 function enter(){
 if(T.S!=T.E){T.S=T.E;return;}
 let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/\S|\n/);
 if(i==-1)i=0;
-T.I("\n"+" ".repeat(i),T.S,T.S,"end");
+T.I("\n"+" ".repeat(i));
 }
 
 function backspace(){
 if(T.S==T.E){//normal
-  T.S>0 && T.I("",T.S-1,T.E);
+  T.S>0 && T.I("",T.S-1);
 }else{//selection is active
   if(/\n/.test(T.V.slice(T.S,T.E))){//it was a line cut
-    T.I("",T.S,T.E);
-    T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
+    T.I("");T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
   }else{
-    T.I("",T.S,T.E);
+    T.I("");
   }
 }
 }
@@ -624,7 +620,7 @@ keyboard.addEventListener("pointerdown",(ev)=>{
     if(k.f){
       k.f[0]();
     }else{
-      chars(k.e.textContent);
+      T.I(k.e.textContent);
     }
   },repeatinterval));},repeattimeout));
 },false);
@@ -639,7 +635,7 @@ keyboard.addEventListener("pointerup",(ev)=>{
     if(k.f){
       k.f[0]();
     }else{
-      chars(k.e.textContent);
+      T.I(k.e.textContent);
     }
   }else{//swipeup
     if(keys.prev.d[1]==undefined && keys.prev.f==undefined)return;
@@ -647,7 +643,7 @@ keyboard.addEventListener("pointerup",(ev)=>{
     if(k.f){
       k.f[1]?.();
     }else{
-      chars(k.d[1]);
+      T.I(k.d[1]);
     }
   }
   k.e.style.backgroundColor=theme.click;
@@ -660,18 +656,18 @@ return keys;
 function createtextarea(){
 let T=element("textarea");
 T.addEventListener('scroll',function(){PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft;});
-T.addEventListener('paste', function(ev){ev.preventDefault();T.I(ev.clipboardData.getData('text'),T.S,T.S,"end");});
+T.addEventListener('paste', function(ev){ev.preventDefault();T.I(ev.clipboardData.getData('text'));});
 T.addEventListener('cut',   function(ev){ev.preventDefault();ev.clipboardData.setData("text",document.getSelection().toString());});
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
-T.I=function(...args){
+T.I=function(t,s=T.S,e=T.E){
   if(document.activeElement==this){
-    this.setRangeText(...args);
+    this.setRangeText(t,s,e,"end");
     restore();
     syncpretty();
   }else{
-    rename(...args);
+    rename(t);
   }
 }
 T.editingtheeditor=false;
