@@ -1369,27 +1369,13 @@ function next(){
 return {next};
 }
 
-
 function Sound(){
-function noise(seconds){
-let b=auc.createBuffer(1,auc.sampleRate*seconds,auc.sampleRate);
-b.getChannelData(0).forEach((_,i,a)=>a[i]=Math.random()*2-1);
-return b;
+let a=new AudioContext();
+[.2,1].forEach((v,i)=>(a[i+1]=a.createBuffer(1,a.sampleRate*v,a.sampleRate)).getChannelData(0).forEach((_,i,a)=>a[i]=Math.random()*2-1))
+return {
+  rocket:()=>{let s=a.createBufferSource();s.buffer=a[1];s.connect(a.destination);s.start()},
+  explosion:()=>{let s=a.createBufferSource(),g=a.createGain(),f=a.createBiquadFilter();s.buffer=a[2];g.gain.value=8;f.type="lowpass";f.frequency.value=300;g.gain.linearRampToValueAtTime(0,a.currentTime+1);s.connect(f).connect(g).connect(a.destination);s.start()}
 }
-let auc=new AudioContext();
-let aubrocket=noise(0.2);
-let aubexplosion=noise(1);
-let rocket=()=>{let s=auc.createBufferSource();s.buffer=aubrocket;s.connect(auc.destination);s.start();}
-let explosion=()=>{
-let s=auc.createBufferSource();
-s.buffer=aubexplosion;
-let gain=auc.createGain();gain.gain.value=8;
-let filter=auc.createBiquadFilter();filter.type='lowpass';filter.frequency.value=300;
-gain.gain.linearRampToValueAtTime(0,auc.currentTime+1);
-s.connect(filter).connect(gain).connect(auc.destination);
-s.start();
-}
-return {rocket,explosion};
 }
 
 function canvas(font=12,iconstart=0){
