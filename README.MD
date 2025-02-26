@@ -72,7 +72,7 @@ The design goals of this editor are to provide a pleasant experience for those w
 - **Compatibility**: The editor only works with the Chrome browser on a tablet or phone. However, exported games, which remove the editor, have no such limitations.
 - **Multi-file:** The editor is not designed for large games or multi-file projects. This is because opening an HTML file from the File Manager on Android in the Chrome browser does not support multiple files—everything has to be contained within a single, monolithic HTML file. This also means that external images or audio files cannot be used. Programmatically created elements can be utilized instead; for example, the Marslander game uses vector graphics and a noise generator, and several other games utilize emojis.
 
-If this editor does not support your needs, try Neovim with Termux and Apache. You can find my configuration for those tools [here](https://github.com/bacionejs/termux).
+If this editor does not support your needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
 
 ## Notes
 Any reference to **change** below refers to the **Edit-the-Editor** functionality found in the Miscellaneous button, represented by the diamond symbol.
