@@ -36,6 +36,7 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Undo/Redo
 - Auto complete
 - Auto indent
+- Auto comment
 - Themes, light and dark
 - Debugging
 - Diff
