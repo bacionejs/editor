@@ -49,7 +49,7 @@ Code layout below:
 
 element("style").textContent=`
 *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
-body{background-color:white;}
+body{background:white;}
 ::selection{background:yellow;color:red;}
 @media print{
   div,p,li,ul{break-inside:avoid;}
@@ -151,7 +151,8 @@ if(ifra){
   style.height=innerWidth;
   style.position="fixed";
   style.backgroundColor="pink";
-  ifra.contentWindow.eval("let FPS="+FPS+";"+T.V+n+"()");
+//  ifra.contentWindow.eval("let FPS="+FPS+";"+T.V+n+"()");
+  ifra.contentWindow.eval(`let FPS=${FPS};${T.V}${n}()`);
   T.blur();
   setTimeout(()=>{style.zIndex=9;},50);
 }
@@ -159,7 +160,8 @@ if(ifra){
 
 function save(){
 let s=filecontent();
-if(s==T.sincesaved){alert("No changes to save");return;}
+//if(s==T.sincesaved){alert("No changes to save");return;}
+if(s==T.sincesaved)return alert("No changes to save");
 T.sincesaved=s;
 if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, open a prior IDE.");
 let a=element("a");
@@ -185,13 +187,14 @@ URL.revokeObjectURL(a.href);a.remove();a=undefined;
 function zoom(){
 let t=T.style;
 let p=PRETTY.style;
-if(parseInt(t.fontSize)==theme.fontsizesmall){
-  t.fontSize=theme.fontsizebig;
-  p.fontSize=theme.fontsizebig;
-}else{
-  t.fontSize=theme.fontsizesmall;
-  p.fontSize=theme.fontsizesmall;
-}
+//if(parseInt(t.fontSize)==theme.fontsizesmall){
+//  t.fontSize=theme.fontsizebig;
+//  p.fontSize=theme.fontsizebig;
+//}else{
+//  t.fontSize=theme.fontsizesmall;
+//  p.fontSize=theme.fontsizesmall;
+//}
+t.fontSize=p.fontSize=parseInt(t.fontSize)==theme.fontsizesmall?theme.fontsizebig:theme.fontsizesmall;
 setTimeout(()=>{T.blur();T.focus();},200);
 }
 
@@ -304,6 +307,9 @@ function paste(){
 T.I(T.P);
 }
 
+
+
+
 function enter(){
 if(T.S!=T.E){T.S=T.E;return;}
 let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/\S|\n/);
@@ -340,16 +346,18 @@ s+="\n\nSince opened:\n"+diff(T.sinceopened,filecontent());
 view("Diff").textContent=s;
 }
 function diffgit(){
-let url=`https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html`;
+let url="https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html";
 fetch(url).then(r=>r.text()).then(git=>{
   view("Diff").textContent="Diff "+url+":\n"+diff(git,T.sinceopened);
-}).catch(error=>alert(error));
+//}).catch(error=>alert(error));
+}).catch(alert);
 }
 function diff(a,b,c){
 if(c==undefined){ return(diff(b,a,"<")+"\n"+diff(a,b,">"));}
 a=stripcomments(a).split("\n");
 b=stripcomments(b).split("\n");
-return b.filter(o=>!a.includes(o))?.reduce((a,v)=>a+"\n"+c+" "+v,"")||c+" no change";
+//return b.filter(o=>!a.includes(o))?.reduce((a,v)=>a+"\n"+c+" "+v,"")||c+" no change";
+return b.filter(o=>!a.includes(o))?.join("\n"+c+" ")||c+" no change";
 }
 
 function filecontent(t=T){
@@ -372,7 +380,8 @@ return i;
 
 function timestamp(){
 let time=new Date();
-return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month"?1:0)).toString().padStart(2,"0")),"");
+//return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month"?1:0)).toString().padStart(2,"0")),"");
+return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");
 }
 
 function stripcomments(s){
@@ -405,7 +414,7 @@ if(e){
   e=a[f]=element("div");
   e.style.cssText=`
     width:100%;height:100%;
-    background-color:white;
+    background:white;
     padding:10ch 2ch 2ch 2ch;
     touch-action:pan-x pan-y;
     position:fixed;
@@ -425,7 +434,8 @@ return e;
 }}();//end view
 
 function loadicons(){
-let range=(r)=>{let a=[];r.forEach(v=>a.push(Array.from({length:(v[1]-v[0])+1},(_,i)=>v[0]+i)));return a.flat();}
+//let range=(r)=>{let a=[];r.forEach(v=>a.push(Array.from({length:(v[1]-v[0])+1},(_,i)=>v[0]+i)));return a.flat();}
+let range=r=>r.flatMap(v=>Array.from({length:v[1]-v[0]+1},(_,i)=>v[0]+i));
 let measure=element("span");measure.style.visibility="hidden";
 let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
 measure.remove();
@@ -714,7 +724,7 @@ return e;
 function pretty(s){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
 s=s.replace(/</g,'&'+'lt;');
-if(T.H!==""){s=s.replace(RegExp(`(${T.H})`,'g'),`<span style=color:red;background-color:pink;>$1</span>`);}
+if(T.H!==""){s=s.replace(RegExp(`(${T.H})`,'g'),`<span style=color:red;background:pink;>$1</span>`);}
 s=c(s,theme.pairs,`[(){}[\\]]`);
 s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
 return s;
@@ -1041,7 +1051,8 @@ function Red(){
 let reds=[],radius=W/50,speed=0,level=0;
 hitred=(x,y,r)=>reds.forEach(o=>{if(hypot(x-o.x,y-o.y)<r){o.state=1;score++;}});
 function update(){
-if(reds.length==0){speed=L.fit(level++,0.8,1.7,30,1);for(let i=0;i<13;i++){reds.push(stars(13,radius,W*0.2));}}
+//if(reds.length==0){speed=L.fit(level++,0.8,1.7,30,1);for(let i=0;i<13;i++){reds.push(stars(13,radius,W*0.2));}}
+if(reds.length==0)speed=L.fit(level++,0.8,1.7,30,1),reds=Array(13).fill().map(()=>stars(13,radius,W*0.2));
 reds.forEach(o=>{
   o.y+=cos(o.angle)*speed;o.x+=sin(o.angle)*speed;o.rotation+=o.rotationspeed;
   if(o.x<0)o.x=W;if(o.x>W)o.x=0;if(o.y>W){o.state=1;score--;}
@@ -1057,6 +1068,7 @@ return {update,draw};
 
 function stars(points,radius,at){
 let color=Array.from({length:3},()=>floor(random()*155)+100).reduce((a,v,i)=>a+(i>0?",":"")+v,"rgb(")+")";
+//let color=rgb(${Array(3).fill().map(()=>floor(random()*155)+100).join(",")});
 let x=random()*W,y=random()*at;
 let rotation=random()*PI*2,rotationspeed=random()*0.05-0.025;
 let angle=random()*(PI/3)-PI/6,inner=random()*(2/3*radius);
@@ -1389,9 +1401,10 @@ s.buffer=aubexplosion;
 let gain=auc.createGain();gain.gain.value=8;
 let filter=auc.createBiquadFilter();filter.type='lowpass';filter.frequency.value=300;
 gain.gain.linearRampToValueAtTime(0,auc.currentTime+1);
-s.connect(filter);
-filter.connect(gain);
-gain.connect(auc.destination);
+//s.connect(filter);
+//filter.connect(gain);
+//gain.connect(auc.destination);
+s.connect(filter).connect(gain).connect(auc.destination);
 s.start();
 }
 return {rocket,explosion};
@@ -1406,7 +1419,6 @@ cn.textBaseline="middle";
 cn.font=font+'px monospace';
 cn.iconstart=iconstart;
 cn.icon=function(n,x=0,y=0){this.fillText((n==="")?"":String.fromCodePoint(this.iconstart+n),x,y);}
-
 cn.clear=function(){
 this.clearRect(0,0,this.canvas.width,this.canvas.height);
 }
@@ -1425,34 +1437,11 @@ return cn;
 
 function gradient(c,b,h,a){let g=c.createLinearGradient(0,b,0,h);a.forEach(e=>g.addColorStop(...e));return g;}
 function rnd(b,a=0){return floor(Math.random()*(b-a))+a;}
+function vertices(a){return Array.from({length:a.length-2},(_,i)=>a[i+1]-a[i]!=a[i+2]-a[i+1]?[i+1,a[i+1]]:[]).flat();}
+function shape(a,s=1){return a.reduce((p,i)=>(i.length&&(p.moveTo(s*i[0],s*i[1]),i.slice(2).forEach((x,j)=>j%2||p.lineTo(s*x,s*i[j+3]))),p),new Path2D)}
+function fit(x,start,asymptote,x2,y2){return asymptote-(asymptote-start)*((asymptote-y2)/(asymptote-start))**(x/x2);}
+function debug(v,c,color="black",size=10){let f=c.font;c.font=size+"px monospace";c.fillStyle=color;c.fillText(v,W/2,10);c.font=f;}
 function element(e){return document.body.appendChild(document.createElement(e));}
-
-function vertices(a){
-let v=[];
-for(let i=1;i<a.length-1;i++){
-  if(a[i-1]-a[i]!=a[i]-a[i+1])v.push(i,a[i]);
-}
-return v;
-}
-
-function shape(a,s=1){
-let p1=new Path2D,p2,i,j;
-for(i of a){
-  p2=new Path2D;
-  for(j=0;j<i.length;j+=2){
-    p2.lineTo(s*i[j],s*i[j+1]);
-  }
-  p1.addPath(p2);
-}
-return p1;
-}
-
-function fit(x,start,asymptote,x2,y2){return asymptote-(asymptote-start)*Math.pow(((asymptote-y2)/(asymptote-start)),x/x2);}
-
-function debug(v,c,color="black",size=10){
-let f=c.font;c.font=size+"px monospace";
-c.fillStyle=color;c.fillText(v,W/2,10);c.font=f;
-}
 
 return {RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,fit,element};
 
