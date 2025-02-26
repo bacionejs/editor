@@ -9,7 +9,7 @@
 - Click Run to play the Ski game
 
 ## Links
-- [Live](https://bacionejs.github.io/editor)
+- [Live](https://bacionejs.github.io/editor) - run from github
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
 - [Github](https://github.com/bacionejs/editor/discussions) - github discussions
