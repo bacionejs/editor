@@ -2,14 +2,10 @@
 
 [![Info](README.JPG)](bacione.html)
 
-## How To Download
-[![How To Download](README2.JPG)](bacione.html)
-
 ## Links
-The **editor only works with Chrome browser, tablet or phone**. However, exported games, which remove the editor first, have no limitation.
 - [Live](https://bacionejs.github.io/editor)
-- [Download](#How-To-Download)
-  - download bacione.html
+- Install
+  - Download [bacione.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html)
   - open your file manager
   - click bacione.html to run in your Chrome browser
   - click Run to play the Ski game
