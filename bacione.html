@@ -1419,7 +1419,7 @@ return cn;
 
 function rnd(b,a=0){return floor(Math.random()*(b-a))+a;}
 function gradient(c,b,h,a){let g=c.createLinearGradient(0,b,0,h);a.forEach(e=>g.addColorStop(...e));return g;}
-function vertices(a){return Array.from({length:a.length-2},(_,i)=>a[i+1]-a[i]!=a[i+2]-a[i+1]?[i+1,a[i+1]]:[]).flat();}
+function vertices(a){return a.reduce((r,v,i)=>a[i+2]-v!=v-a[i]?r.concat([i+1,v]):r,[])}
 function shape(a,s=1){return a.reduce((p,i)=>(i.length&&(p.moveTo(s*i[0],s*i[1]),i.slice(2).forEach((x,j)=>j%2||p.lineTo(s*x,s*i[j+3]))),p),new Path2D)}
 function fit(x,start,asymptote,x2,y2){return asymptote-(asymptote-start)*((asymptote-y2)/(asymptote-start))**(x/x2);}
 function debug(v,c,color="black",size=10){let f=c.font;c.font=size+"px monospace";c.fillStyle=color;c.fillText(v,W/2,10);c.font=f;}
