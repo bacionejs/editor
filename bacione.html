@@ -151,7 +151,6 @@ if(ifra){
   style.height=innerWidth;
   style.position="fixed";
   style.backgroundColor="pink";
-//  ifra.contentWindow.eval("let FPS="+FPS+";"+T.V+n+"()");
   ifra.contentWindow.eval(`let FPS=${FPS};${T.V}${n}()`);
   T.blur();
   setTimeout(()=>{style.zIndex=9;},50);
@@ -160,7 +159,6 @@ if(ifra){
 
 function save(){
 let s=filecontent();
-//if(s==T.sincesaved){alert("No changes to save");return;}
 if(s==T.sincesaved)return alert("No changes to save");
 T.sincesaved=s;
 if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, open a prior IDE.");
@@ -187,13 +185,6 @@ URL.revokeObjectURL(a.href);a.remove();a=undefined;
 function zoom(){
 let t=T.style;
 let p=PRETTY.style;
-//if(parseInt(t.fontSize)==theme.fontsizesmall){
-//  t.fontSize=theme.fontsizebig;
-//  p.fontSize=theme.fontsizebig;
-//}else{
-//  t.fontSize=theme.fontsizesmall;
-//  p.fontSize=theme.fontsizesmall;
-//}
 t.fontSize=p.fontSize=parseInt(t.fontSize)==theme.fontsizesmall?theme.fontsizebig:theme.fontsizesmall;
 setTimeout(()=>{T.blur();T.focus();},200);
 }
@@ -349,14 +340,12 @@ function diffgit(){
 let url="https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html";
 fetch(url).then(r=>r.text()).then(git=>{
   view("Diff").textContent="Diff "+url+":\n"+diff(git,T.sinceopened);
-//}).catch(error=>alert(error));
 }).catch(alert);
 }
 function diff(a,b,c){
 if(c==undefined){ return(diff(b,a,"<")+"\n"+diff(a,b,">"));}
 a=stripcomments(a).split("\n");
 b=stripcomments(b).split("\n");
-//return b.filter(o=>!a.includes(o))?.reduce((a,v)=>a+"\n"+c+" "+v,"")||c+" no change";
 return b.filter(o=>!a.includes(o))?.join("\n"+c+" ")||c+" no change";
 }
 
@@ -380,7 +369,6 @@ return i;
 
 function timestamp(){
 let time=new Date();
-//return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month"?1:0)).toString().padStart(2,"0")),"");
 return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");
 }
 
@@ -434,7 +422,6 @@ return e;
 }}();//end view
 
 function loadicons(){
-//let range=(r)=>{let a=[];r.forEach(v=>a.push(Array.from({length:(v[1]-v[0])+1},(_,i)=>v[0]+i)));return a.flat();}
 let range=r=>r.flatMap(v=>Array.from({length:v[1]-v[0]+1},(_,i)=>v[0]+i));
 let measure=element("span");measure.style.visibility="hidden";
 let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
@@ -1051,7 +1038,6 @@ function Red(){
 let reds=[],radius=W/50,speed=0,level=0;
 hitred=(x,y,r)=>reds.forEach(o=>{if(hypot(x-o.x,y-o.y)<r){o.state=1;score++;}});
 function update(){
-//if(reds.length==0){speed=L.fit(level++,0.8,1.7,30,1);for(let i=0;i<13;i++){reds.push(stars(13,radius,W*0.2));}}
 if(reds.length==0)speed=L.fit(level++,0.8,1.7,30,1),reds=Array(13).fill().map(()=>stars(13,radius,W*0.2));
 reds.forEach(o=>{
   o.y+=cos(o.angle)*speed;o.x+=sin(o.angle)*speed;o.rotation+=o.rotationspeed;
@@ -1068,7 +1054,6 @@ return {update,draw};
 
 function stars(points,radius,at){
 let color=Array.from({length:3},()=>floor(random()*155)+100).reduce((a,v,i)=>a+(i>0?",":"")+v,"rgb(")+")";
-//let color=rgb(${Array(3).fill().map(()=>floor(random()*155)+100).join(",")});
 let x=random()*W,y=random()*at;
 let rotation=random()*PI*2,rotationspeed=random()*0.05-0.025;
 let angle=random()*(PI/3)-PI/6,inner=random()*(2/3*radius);
@@ -1401,9 +1386,6 @@ s.buffer=aubexplosion;
 let gain=auc.createGain();gain.gain.value=8;
 let filter=auc.createBiquadFilter();filter.type='lowpass';filter.frequency.value=300;
 gain.gain.linearRampToValueAtTime(0,auc.currentTime+1);
-//s.connect(filter);
-//filter.connect(gain);
-//gain.connect(auc.destination);
 s.connect(filter).connect(gain).connect(auc.destination);
 s.start();
 }
