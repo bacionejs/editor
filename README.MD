@@ -2,13 +2,14 @@
 
 [![Info](README.JPG)](bacione.html)
 
+## Install
+- Download [bacione.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html)
+- Open your file manager
+- Click bacione.html to run in your Chrome browser
+- Click Run to play the Ski game
+
 ## Links
 - [Live](https://bacionejs.github.io/editor)
-- Install
-  - Download [bacione.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html)
-  - open your file manager
-  - click bacione.html to run in your Chrome browser
-  - click Run to play the Ski game
 - [YouTube](http://www.youtube.com/@bacionejs) - product demo
 - [Games.pdf](Games.pdf) - tutorial for Ski and Marslander
 - [Github](https://github.com/bacionejs/editor/discussions) - github discussions
