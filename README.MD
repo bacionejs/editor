@@ -44,6 +44,7 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Diff
 - Icon Picker
 - Color Picker
+- Supports swipe and longpress-repeat.
 - Built-in Help
 - Game examples
 - Less clicks compared to other phone editors.
@@ -65,7 +66,6 @@ The design goals of this editor are to provide a pleasant experience for those w
 - Easy to modify editor.
 - Edit the editor in the editor.
 - Editor is only 7 kilobytes.
-- Supports swipe and longpress-repeat.
 
 
 ## Limitations
