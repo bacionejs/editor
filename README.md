@@ -42,7 +42,7 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 - **Debugging**: Basic error detection
 - **Diff**: Compare changes
 - **Pickers**: Icon and color selectors
-- **Gestures**: Swipe and long-press support
+- **Gestures**: Swipe and long-press-repeat support
 - **Help**: Built-in guide
 - **Examples**: Games included
 - **Efficiency**: Fewer clicks than competing editors
