@@ -44,7 +44,7 @@ Bacione aims to deliver a smooth coding experience for users without a computer 
 - **Pickers**: Icon and color selectors
 - **Gestures**: Swipe and long-press support
 - **Help**: Built-in guide
-- **Examples**: Game templates included
+- **Examples**: Games included
 - **Efficiency**: Fewer clicks than competing editors
 - **Keyboard**: Fully customizable, one-tap common keys
 - **Design**: Optimized for phones and tablets
