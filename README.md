@@ -30,7 +30,8 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 
 ## Features
 - **Run**: Instant code execution
-- **Save/Export**: Save or share your work
+- **Save**: Saves games with editor
+- **Export**: Removes editor
 - **Zoom**: Adjust text size
 - **Fullscreen**: Expand your workspace
 - **Themes**: Light and dark modes
