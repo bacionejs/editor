@@ -68,7 +68,7 @@ Bacione aims to deliver a smooth coding experience for users without a computer 
 References to **change** below pertain to the **Edit-the-Editor** feature (Miscellaneous button, diamond icon).
 
 - **Edit-the-Editor**: Modify Bacione within itself. Save creates a new timestamped file—reopen it to test changes. If it fails, revert to the previous version. Best for simple tweaks; use [Neovim](https://github.com/bacionejs/termux) for complex edits.
-- **Run**: Executes or stops the game at the cursor. The square game frame appears above the keyboard for a quick 2-click edit-run cycle. For a larger frame, tweak the editor, library, or export the game (7-click cycle).
+- **Run**: Executes or stops the game which contains the cursor. The square game frame appears above the keyboard for a quick 2-click edit-run cycle. For a larger frame, tweak the editor, library, or export the game (7-click cycle).
 - **Keyboard Size**: Adapts to screen size—full width on phones, half-width on tablets.
 - **Keyboard Position**: Lower-right on tablets. Left-thumb users can **change** it.
 - **Custom Keyboard**: One-tap access to 22 key programming characters; 10 more via Shift. Space is small (bottom-right); backspace and return are on row two for combo efficiency (e.g., copy + backspace = cut). Adjust layout via **change**.
