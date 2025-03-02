@@ -37,7 +37,7 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 - **Rename**: Find and replace
 - **Superstar**: Highlights all instances of the current word
 - **Editing**: Cut, copy, paste, undo, redo
-- **Code Assistance**: Autocomplete, auto-indent, auto-comment
+- **Code Assistance**: Auto-complete, auto-indent, auto-comment
 - **Debugging**: Basic error detection
 - **Diff**: Compare changes
 - **Pickers**: Icon and color selectors
