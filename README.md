@@ -1,15 +1,15 @@
 # BacioneJS Brochure
 
-[![Info](README.jpg)](bacione.html)
+[![Info](README.jpg)](bacionejs.html)
 
 ## Install
-- Download [bacione.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html)
+- Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)
 - Open your file manager
-- Tap `bacione.html` to launch in Chrome
+- Tap `bacionejs.html` to launch in Chrome
 - Click `Run` to play the Ski game
 
 ## Links
-- [Live Demo](https://bacionejs.github.io/editor/bacione.html) - Run from GitHub
+- [Live Demo](https://bacionejs.github.io/editor/bacionejs.html) - Run from GitHub
 - [YouTube](http://www.youtube.com/@bacionejs) - Product demos
 - [Games.pdf](Games.pdf) - Tutorials for Ski and Marslander
 - [GitHub Discussions](https://github.com/bacionejs/editor/discussions)
