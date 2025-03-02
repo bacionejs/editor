@@ -1,4 +1,4 @@
-# Bacione Brochure
+# BacioneJS Brochure
 
 [![Info](README.jpg)](bacione.html)
 
