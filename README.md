@@ -26,7 +26,7 @@ Create the most thumb-friendly IDE in its class
 ## Unique
 As of March 2025, BacioneJS stands alone as the [only](//github.com/search?q=serverless+javascript+ide+language%3Ahtml&type=repositories) serverless JavaScript IDE built entirely in JavaScript.
 Also, the [only](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories)
-IDE featuring a custom keyboard.
+IDE to feature a fully custom keyboard.
 
 ## Features
 - **Run**: Instant code execution
