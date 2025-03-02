@@ -68,11 +68,11 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 - **Zoom**: Aids precision in cursor positioning.
 - **Rename**: Highlights matches as you type; Find (forward-only) activates on whole-word match.
 - **Swipe**: Swipe up on a key for alternative functionality
-  - **Save**: Diff
-  - **Zoom**: Fullscreen
-  - **Rename**: Superstar Highlight
-  - **Misc**: Themes
-  - **Character**: Like shift
+  - Save -> Diff
+  - Zoom -> Fullscreen
+  - Rename -> Superstar Highlight
+  - Misc -> Themes
+  - Characters -> Like shift
 - **Editing**: Use editor buttons for cut (copy + backspace), copy, and paste internally; system copy/paste for external code. Selection is context-aware—selects words, lines, paragraphs, or blocks with one tap (Copy button). Multi-tap Copy expands selection; arrows fine-tune it. Enter moves cursor to selection end. Watch [YouTube](http://www.youtube.com/@bacionejs) for demo.
 - **Code Assistance**: Enter preserves indentation. Minimize horizontal whitespace; use vertical spacing instead (see Marslander example). Complete button completed word. Comment button toggles code comments and copies it to paste buffer for easy editing.
 - **Debugging**: Errors detected on Run, not live. Error view shows message and positions cursor at issue. Block character mismatches (e.g., missing paren) trigger a count-check message.
