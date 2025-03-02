@@ -6,7 +6,7 @@
 - Download [bacione.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html)
 - Open your file manager
 - Tap `bacione.html` to launch in Chrome
-- Click "Run" to play the Ski game
+- Click `Run` to play the Ski game
 
 ## Links
 - [Live Demo](https://bacionejs.github.io/editor/bacione.html) - Run from GitHub
