@@ -1,6 +1,6 @@
 # Bacione Brochure
 
-[![Info](README.JPG)](bacione.html)
+[![Info](README.jpg)](bacione.html)
 
 ## Install
 - Download [bacione.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html)
