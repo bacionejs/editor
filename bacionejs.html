@@ -13,9 +13,9 @@ let about=`
 
 <b>Install</b>
 <ol style=margin-left:30>\
-<li>download <a href=https://github.com/bacionejs/editor>bacione.html</a>
+<li>download <a href=https://github.com/bacionejs/editor>bacionejs.html</a>
 <li>open your file manager
-<li>click bacione.html to run in your Chrome browser
+<li>click bacionejs.html to run in your Chrome browser
 <li>click Run to play the Ski game
 </ol>
 `;
@@ -165,7 +165,7 @@ if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, o
 let a=element("a");
 a.hidden=true;
 a.href=URL.createObjectURL(new File([s],""));
-a.download=timestamp()+"bacione.html";
+a.download=timestamp()+"bacionejs.html";
 a.click();URL.revokeObjectURL(a.href);a.remove();
 }
 
@@ -337,7 +337,7 @@ s+="\n\nSince opened:\n"+diff(T.sinceopened,filecontent());
 view("Diff").textContent=s;
 }
 function diffgit(){
-let url="https://raw.githubusercontent.com/bacionejs/editor/main/bacione.html";
+let url="https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html";
 fetch(url).then(r=>r.text()).then(git=>{
   view("Diff").textContent="Diff "+url+":\n"+diff(git,T.sinceopened);
 }).catch(alert);
