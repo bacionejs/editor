@@ -66,7 +66,7 @@ Bacione aims to deliver a smooth coding experience for users without a computer 
 ## Detailed Notes
 References to **change** below pertain to the **Edit-the-Editor** feature (Miscellaneous button, diamond icon).
 
-- **Run**: Executes or stops the game at the cursor. The square game frame appears above the keyboard for a quick 2-click edit-run cycle. For a larger frame, tweak the editor, library, or export the game (7-click cycle).
+- **Run**: Executes or stops the game which contains the cursor. The square game frame appears above the keyboard for a quick 2-click edit-run cycle. For a larger frame, tweak the editor, library, or export the game (7-click cycle).
 - **Save/Export**: Creates a new timestamped file. Keep Downloads folder clean; delete old versions.
 - **Zoom**: Aids precision in cursor positioning. Swipe up on Zoom to toggle fullscreen.
 - **Fullscreen**: Swipe up on Zoom to toggle, giving more real estate for navigation and editing.
