@@ -24,7 +24,10 @@ Programming small javascript games on a phone offline
 Create the most thumb-friendly IDE in its class
 
 ## Unique
-As of March 2025, Bacione appears to be the [only](//github.com/search?q=javascript+editor+serverless+language%3Ahtml&type=repositories) serverless JavaScript IDE coded purely in JavaScript. It runs offline, launching directly from the Android file manager in Chrome, and features a built-in keyboard, delivering a distinctive, streamlined solution for mobile game development.
+
+
+As of March 2025, Bacione appears to be the [only](//github.com/search?
+q=serverless+javascript+ide+language%3Ahtml&type=repositories) serverless JavaScript IDE coded purely in JavaScript. It runs offline, launching directly from the Android file manager in Chrome, and features a built-in keyboard, delivering a distinctive, streamlined solution for mobile game development.
 
 ## Design
 Bacione aims to deliver a smooth coding experience for users without a computer or those who just prefer programming small JavaScript games on a phone or tablet. It tackles key challenges: working offline and typing without an external keyboard (using a thumb or stylus on-screen). While many editors and keyboard apps serve this niche, they fall short. The main pain points are excessive clicks for 1) accessing special characters and 2) refactoring code. Typically, special characters demand an extra-keys feature or a separate keyboard app, and refactoring involves cumbersome steps. Bacione resolves these by integrating a built-in keyboard for quick character access and streamlined refactoring tools needing fewer clicks. This design frees up screen space, ensuring a larger, uncluttered coding area.
