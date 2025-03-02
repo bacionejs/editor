@@ -64,26 +64,38 @@ Bacione aims to deliver a smooth coding experience for users without a computer 
 - **Single-File**: Not suited for large or multi-file projects. Android’s file manager limits Chrome to a single HTML file, excluding external assets like images or audio. Use programmatic alternatives (e.g., vector graphics, emojis, noise generators) as seen in Marslander.
 - **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
 
-## Notes
+## Detailed Notes
 References to **change** below pertain to the **Edit-the-Editor** feature (Miscellaneous button, diamond icon).
 
-- **Edit-the-Editor**: Modify Bacione within itself. Save creates a new timestamped file—reopen it to test changes. If it fails, revert to the previous version. Best for simple tweaks; use [Neovim](https://github.com/bacionejs/termux) for complex edits.
-- **Run**: Executes or stops the game which contains the cursor. The square game frame appears above the keyboard for a quick 2-click edit-run cycle. For a larger frame, tweak the editor, library, or export the game (7-click cycle).
-- **Keyboard Size**: Adapts to screen size—full width on phones, half-width on tablets.
-- **Keyboard Position**: Lower-right on tablets. Left-thumb users can **change** it.
-- **Custom Keyboard**: One-tap access to 22 key programming characters; 10 more via Shift. Space is small (bottom-right); backspace and return are on row two for combo efficiency (e.g., copy + backspace = cut). Adjust layout via **change**.
-- **Selection**: Context-aware—selects words, lines, paragraphs, or blocks with one tap (Copy button). Copy selects and copies; backspace cuts; Enter moves cursor to selection end. Multi-tap Copy expands selection; arrows fine-tune it. Watch [YouTube](http://www.youtube.com/@bacionejs) for demo.
-- **Copy/Paste**: Use editor buttons internally; system copy/paste for external code.
-- **Formatting**: Space key indents (no Tab). Enter preserves indentation. Minimize horizontal whitespace; use vertical spacing instead (see Marslander example).
-- **Comment**: Comments code and copies it to paste buffer for easy editing. Revert by uncommenting if needed.
-- **Navigation**: Tap to move cursor; left-right arrows refine position. Zoom aids precision. No Home/End keys.
-- **Game Size**: Keep code short for one-gesture scrolling.
-- **Fullscreen**: Swipe up on Zoom to toggle.
-- **Closing Views**: Tap anywhere to dismiss Help, Miscellaneous, Diff, or Error views.
-- **Emoji Load**: Initial Miscellaneous view may lag as icons load.
-- **Pickers**: Color/Icon codes go to paste buffer—tap Paste to insert.
-- **Errors**: Detected on Run, not live. Error view shows message and positions cursor at issue. Block character mismatches (e.g., missing paren) trigger a count-check message.
-- **Diff**: Basic, approximate change tracking since open/save.
-- **Save**: Creates a new timestamped file. Keep Downloads folder clean; delete old versions.
+- **Run**: Executes or stops the game at the cursor. The square game frame appears above the keyboard for a quick 2-click edit-run cycle. For a larger frame, tweak the editor, library, or export the game (7-click cycle).
+- **Save/Export**: Creates a new timestamped file. Keep Downloads folder clean; delete old versions.
+- **Zoom**: Aids precision in cursor positioning. Swipe up on Zoom to toggle fullscreen.
+- **Fullscreen**: Swipe up on Zoom to toggle, giving more real estate for navigation and editing.
 - **Themes**: Toggle light/dark by swiping Miscellaneous up. Add more via **change**.
 - **Rename**: Highlights matches as you type; Find (forward-only) activates on whole-word match.
+- **Search**: No additional notes (covered by Rename).
+- **Superstar**: No additional notes (self-explanatory).
+- **Editing**: Use editor buttons for cut (copy + backspace), copy, and paste internally; system copy/paste for external code. Selection is context-aware—selects words, lines, paragraphs, or blocks with one tap (Copy button). Multi-tap Copy expands selection; arrows fine-tune it. Enter moves cursor to selection end. Watch [YouTube](http://www.youtube.com/@bacionejs) for demo.
+- **Code Assistance**: Space key indents (no Tab). Enter preserves indentation. Minimize horizontal whitespace; use vertical spacing instead (see Marslander example). Comment button comments code and copies it to paste buffer for easy editing; revert by uncommenting.
+- **Debugging**: Errors detected on Run, not live. Error view shows message and positions cursor at issue. Block character mismatches (e.g., missing paren) trigger a count-check message.
+- **Diff**: Basic, approximate change tracking since open/save.
+- **Pickers**: Color/Icon codes go to paste buffer—tap Paste to insert.
+- **Gestures**: No additional notes (swipe/long-press usage covered elsewhere).
+- **Help**: Tap anywhere to dismiss the Help view.
+- **Examples**: Keep game code short for one-gesture scrolling (see Marslander example).
+- **Efficiency**: No additional notes (covered by design and keyboard).
+- **Keyboard**: One-tap access to 22 key programming characters; 10 more via Shift. Space is small (bottom-right); backspace and return are on row two for combo efficiency (e.g., copy + backspace = cut). Adjust layout via **change**. Adapts to screen size—full width on phones, half-width on tablets. Lower-right on tablets; left-thumb users can **change** it.
+- **Design**: Tap to move cursor; left-right arrows refine position. No Home/End keys.
+- **Setup**: No additional notes (self-explanatory).
+- **Sharing**: No additional notes (covered by Save/Export).
+- **Offline**: No additional notes (covered by Design).
+- **Serverless**: No additional notes (covered by Design).
+- **Compatibility**: No additional notes (covered by Limitations).
+- **Pure JS**: No additional notes (self-explanatory).
+- **Free**: No additional notes (self-explanatory).
+- **Lightweight**: No additional notes (self-explanatory).
+- **Self-Editable**: Modify Bacione within itself. Save creates a new timestamped file—reopen it to test changes. If it fails, revert to the previous version. Best for simple tweaks; use [Neovim](https://github.com/bacionejs/termux) for complex edits.
+- **Additional Notes**:
+  - **Closing Views**: Tap anywhere to dismiss Help, Miscellaneous, Diff, or Error views.
+  - **Emoji Load**: Initial Miscellaneous view may lag as icons load.
+
