@@ -24,8 +24,6 @@ Programming small javascript games on a phone offline
 Create the most thumb-friendly IDE in its class
 
 ## Unique
-As of March 2025, Bacione appears to be the only serverless JavaScript IDE crafted entirely in pure JavaScript. It runs offline, launching directly from the Android file manager in the Chrome browser, offering a unique blend of portability and simplicity for mobile game development.
-
 As of March 2025, Bacione appears to be the only serverless JavaScript IDE coded purely in JavaScript. It runs offline, launches directly from the Android file manager in Chrome, and features a built-in keyboard, delivering a distinctive, streamlined solution for mobile game development.
 
 ## Design
