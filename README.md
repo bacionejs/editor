@@ -78,10 +78,8 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 - **Debugging**: Errors detected on Run, not live. Error view shows message and positions cursor at issue. Block character mismatches (e.g., missing paren) trigger a count-check message.
 - **Diff**: Basic, approximate change tracking since open/save.
 - **Pickers**: Color/Icon codes go to paste buffer—tap Paste to insert.
-- **Help**: Tap anywhere to dismiss the Help view.
-- **Examples**: Keep game code short for one-gesture scrolling (see Marslander example).
 - **Keyboard**: One-tap access to 22 key programming characters; 10 more via Shift. Space is small (bottom-right); backspace and return are on row two for combo efficiency (e.g., copy + backspace = cut). Adapts to screen size—full width on phones, half-width on tablets. Lower-right on tablets.
-- **Navigation**: Tap to move cursor; left-right arrows refine position. No Home/End keys.
+- **Navigation**: Tap to move cursor; left-right arrows refine position. No Home/End keys. Keep game code short for one-gesture scrolling (see Marslander example).
 - **Self-Editable**: Modify Bacione within itself. Save creates a new timestamped file—reopen it to test changes. If it fails, revert to the previous version. Best for simple tweaks; use [Neovim](https://github.com/bacionejs/termux) for complex edits.
 - **Closing Views**: Tap anywhere to dismiss Help, Miscellaneous, Diff, or Error views.
 - **Emoji Load**: Initial Miscellaneous view may lag as icons load.
