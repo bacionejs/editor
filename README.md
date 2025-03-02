@@ -74,12 +74,12 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
   - Misc -> Themes
   - Characters -> Like shift
 - **Editing**: Use editor buttons for cut (copy + backspace), copy, and paste internally; system copy/paste for external code. Selection is context-aware—selects words, lines, paragraphs, or blocks with one tap (Copy button). Multi-tap Copy expands selection; arrows fine-tune it. Enter moves cursor to selection end. Watch [YouTube](http://www.youtube.com/@bacionejs) for demo.
-- **Code Assistance**: Enter preserves indentation. Minimize horizontal whitespace; use vertical spacing instead (see Marslander example). Complete button completed word. Comment button toggles code comments and copies it to paste buffer for easy editing.
+- **Code Assistance**: Enter preserves indentation. Complete button completed word. Comment button toggles code comments and copies it to paste buffer for easy editing.
 - **Debugging**: Errors detected on Run, not live. Error view shows message and positions cursor at issue. Block character mismatches (e.g., missing paren) trigger a count-check message.
 - **Diff**: Basic, approximate change tracking since open/save.
 - **Pickers**: Color/Icon codes go to paste buffer—tap Paste to insert.
 - **Keyboard**: One-tap access to 22 key programming characters; 10 more via Shift. Space is small (bottom-right); backspace and return are on row two for combo efficiency (e.g., copy + backspace = cut). Adapts to screen size—full width on phones, half-width on tablets. Lower-right on tablets.
-- **Navigation**: Tap to move cursor; left-right arrows refine position. No Home/End keys. Keep game code short for one-gesture scrolling (see Marslander example).
+- **Navigation**: Tap to move cursor; left-right arrows refine position. No Home/End keys. Keep game code short for one-gesture scrolling. Minimize horizontal whitespace (see Marslander example).
 - **Self-Editable**: Modify Bacione within itself. Save creates a new timestamped file—reopen it to test changes. If it fails, revert to the previous version. Best for simple tweaks; use [Neovim](https://github.com/bacionejs/termux) for complex edits.
 - **Closing Views**: Tap anywhere to dismiss Help, Miscellaneous, Diff, or Error views.
 - **Emoji Load**: Initial Miscellaneous view may lag as icons load.
