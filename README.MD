@@ -74,7 +74,7 @@ References to **change** below pertain to the **Edit-the-Editor** feature (Misce
 - **Themes**: Toggle light/dark by swiping Miscellaneous up. Add more via **change**.
 - **Rename**: Highlights matches as you type; Find (forward-only) activates on whole-word match.
 - **Editing**: Use editor buttons for cut (copy + backspace), copy, and paste internally; system copy/paste for external code. Selection is context-aware—selects words, lines, paragraphs, or blocks with one tap (Copy button). Multi-tap Copy expands selection; arrows fine-tune it. Enter moves cursor to selection end. Watch [YouTube](http://www.youtube.com/@bacionejs) for demo.
-- **Code Assistance**: Space key indents (no Tab). Enter preserves indentation. Minimize horizontal whitespace; use vertical spacing instead (see Marslander example). Comment button comments code and copies it to paste buffer for easy editing; revert by uncommenting.
+- **Code Assistance**: Space key indents (no Tab). Enter preserves indentation. Minimize horizontal whitespace; use vertical spacing instead (see Marslander example). Autocomplete inserts word. Comment button comments code and copies it to paste buffer for easy editing; revert by uncommenting.
 - **Debugging**: Errors detected on Run, not live. Error view shows message and positions cursor at issue. Block character mismatches (e.g., missing paren) trigger a count-check message.
 - **Diff**: Basic, approximate change tracking since open/save.
 - **Pickers**: Color/Icon codes go to paste buffer—tap Paste to insert.
