@@ -23,6 +23,9 @@ Programming small javascript games on a phone offline
 ## Mission
 Create the most thumb-friendly IDE in its class
 
+## Unique
+As of 2025, it appears that Bacione is the only serverless-javascript IDE in the world. Specifically, it runs offline from the Android file manager in the Chrome browser.
+
 ## Design
 The design goals of this editor are to provide a pleasant experience for those who do not have a computer or simply prefer a phone or tablet for programming small JavaScript games. Additional constraints addressed are being offline and not having an external keyboard (typing on the screen with a thumb or stylus). While there are many editors and keyboard apps which fit this use case, they are all suboptimal. The two main issues are reducing clicks for: 1) accessing special characters and 2) refactoring. To solve 1, it is necessary to support an extra-keys capability or install a keyboard app. To solve 2, it is necessary to make refactoring require fewer clicks. After solving these two issues, a large portion of the screen is taken, leaving little room for the code area. To address this, the editor includes a built-in keyboard and efficient refactoring tools.
 
@@ -58,11 +61,13 @@ The design goals of this editor are to provide a pleasant experience for those w
 - One file.
 - Easy to share.
 - Offline.
+- Serverless.
+- Run from the Android file manager in Chrome browser.
 - Plain vanilla JavaScript.
 - No dependencies.
 - Free (GPL license)
 - No ads
-- Run from Android file manager in Chrome browser.
+
 - Easy to modify editor.
 - Edit the editor in the editor.
 - Editor is only 7 kilobytes.
