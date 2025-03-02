@@ -76,7 +76,7 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 - **Pickers**: Color/Icon codes are sent to the paste buffer—tap Paste to insert them.  
 - **Keyboard**: One-tap access to 22 essential programming characters; 10 more via Shift. Space is compact (bottom-right); backspace and return are on row two for efficient combos (e.g., copy + backspace = cut). Adapts to screen size—full-width on phones, half-width on tablets (lower-right placement).  
 - **Navigation**: Tap to place the cursor; left-right arrows fine-tune it. Keep game code concise for single-gesture scrolling. Minimize horizontal whitespace (see Marslander example).  
-- **Self-Editable**: Edit BacioneJS within itself. Saving creates a new timestamped file—reopen to test changes. If it fails, open prior version. Ideal for small tweaks; use [Neovim](https://github.com/bacionejs/termux) for complex edits.  
+- **Self-Editable**: Edit BacioneJS within itself. Saving creates a new timestamped file—reopen to test changes. If it fails, open prior version. Ideal for small tweaks.
 - **Closing Views**: Tap anywhere to dismiss Help, Miscellaneous, Diff, or Error views.  
 - **Emoji Load**: The initial Miscellaneous view may lag as icons load.  
 
