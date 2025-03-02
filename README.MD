@@ -36,7 +36,6 @@ Bacione aims to deliver a smooth coding experience for users without a computer 
 - **Fullscreen**: Expand your workspace
 - **Themes**: Light and dark modes
 - **Rename**: Find and replace
-- **Search**: Incremental, highlights all matches
 - **Superstar**: Highlights all instances of the current word
 - **Editing**: Cut, copy, paste, undo, redo
 - **Code Assistance**: Autocomplete, auto-indent, auto-comment
