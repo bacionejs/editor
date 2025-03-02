@@ -58,11 +58,6 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 - **Lightweight**: Just 7 KB
 - **Self-Editable**: Modify the editor within itself
 
-## Limitations
-- **Compatibility**: Requires Chrome on phones or tablets. Exported games have no such restriction.
-- **Single-File**: Not suited for large or multi-file projects. Android’s file manager limits Chrome to a single HTML file, excluding external assets like images or audio. Use programmatic alternatives (e.g., vector graphics, emojis, noise generators) as seen in Marslander.
-- **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
-
 ## Details
 - **Run**: Starts or stops the game containing the cursor. The square game frame appears above the keyboard for a fast 2-click edit-run cycle. For a larger frame, adjust the editor, library, or export the game (7-click cycle).  
 - **Save/Export**: Generates a new timestamped file. Keep your Downloads folder tidy by deleting outdated versions.  
@@ -84,3 +79,8 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 - **Self-Editable**: Edit BacioneJS within itself. Saving creates a new timestamped file—reopen to test changes. If it fails, open prior version. Ideal for small tweaks; use [Neovim](https://github.com/bacionejs/termux) for complex edits.  
 - **Closing Views**: Tap anywhere to dismiss Help, Miscellaneous, Diff, or Error views.  
 - **Emoji Load**: The initial Miscellaneous view may lag as icons load.  
+
+## Limitations
+- **Compatibility**: Requires Chrome on phones or tablets. Exported games have no such restriction.
+- **Single-File**: Not suited for large or multi-file projects. Android’s file manager limits Chrome to a single HTML file, excluding external assets like images or audio. Use programmatic alternatives (e.g., vector graphics, emojis, noise generators) as seen in Marslander.
+- **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
