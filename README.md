@@ -18,16 +18,13 @@
 Bacione means big KISS as in Keep It Satisfyingly Simple.
 
 ## Purpose
-Programming small javascript games on a phone offline
+Programming small JavaScript games on a phone offline
 
 ## Mission
 Create the most thumb-friendly IDE in its class
 
 ## Unique
-As of March 2025, Bacione appears to be the [only](//github.com/search?q=serverless+javascript+ide+language%3Ahtml&type=repositories) serverless JavaScript IDE coded purely in JavaScript. It runs offline, launching directly from the phone file manager in Chrome, and features a built-in keyboard, delivering a distinctive, streamlined solution for game development.
-
-## Advantages
-Bacione aims to deliver a smooth coding experience for users without a computer or those who just prefer programming small JavaScript games on a phone or tablet. It tackles key challenges: working offline and typing without an external keyboard (using a thumb or stylus on-screen). While many editors and keyboard apps serve this niche, they fall short. The main pain points are excessive clicks for 1) accessing special characters and 2) refactoring code. Typically, special characters demand an extra-keys feature or a separate keyboard app, and refactoring involves cumbersome steps. Bacione resolves these by integrating a built-in keyboard for quick character access and streamlined refactoring tools needing fewer clicks. This design frees up screen space, ensuring a larger, uncluttered coding area.
+As of March 2025, Bacione is likely the [only](//github.com/search?q=serverless+javascript+ide+language%3Ahtml&type=repositories) serverless JavaScript IDE coded purely in JavaScript, running offline from your phone’s file manager in Chrome with a custom-built keyboard. It’s designed for anyone without a computer or those who love coding small games on a phone or tablet. Unlike other editors, Bacione tackles mobile coding’s biggest headaches: it works without internet, and its integrated keyboard and refactoring tools cut the taps needed for special characters and code edits. This frees up screen space for a spacious, distraction-free coding area—perfect for thumb or stylus use.
 
 ## Features
 - **Run**: Instant code execution
