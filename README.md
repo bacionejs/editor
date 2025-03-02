@@ -63,25 +63,26 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 - **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
 
 ## Detailed Notes
-References to **change** below pertain to the **Edit-the-Editor** feature (Miscellaneous button, diamond icon).
-
 - **Run**: Executes or stops the game which contains the cursor. The square game frame appears above the keyboard for a quick 2-click edit-run cycle. For a larger frame, tweak the editor, library, or export the game (7-click cycle).
 - **Save/Export**: Creates a new timestamped file. Keep Downloads folder clean; delete old versions.
-- **Zoom**: Aids precision in cursor positioning. Swipe up on Zoom to toggle fullscreen.
-- **Fullscreen**: Swipe up on Zoom to toggle, giving more real estate for navigation and editing.
-- **Themes**: Toggle light/dark by swiping Miscellaneous up. Add more via **change**.
+- **Zoom**: Aids precision in cursor positioning.
 - **Rename**: Highlights matches as you type; Find (forward-only) activates on whole-word match.
+- **Swipe**: Swipe up on a key for alternative functionality
+  - **Save**: Diff
+  - **Zoom**: Fullscreen
+  - **Rename**: Superstar Highlight
+  - **Misc**: Themes
+  - **Character**: Like shift
 - **Editing**: Use editor buttons for cut (copy + backspace), copy, and paste internally; system copy/paste for external code. Selection is context-aware—selects words, lines, paragraphs, or blocks with one tap (Copy button). Multi-tap Copy expands selection; arrows fine-tune it. Enter moves cursor to selection end. Watch [YouTube](http://www.youtube.com/@bacionejs) for demo.
-- **Code Assistance**: Space key indents (no Tab). Enter preserves indentation. Minimize horizontal whitespace; use vertical spacing instead (see Marslander example). Autocomplete inserts word. Comment button comments code and copies it to paste buffer for easy editing; revert by uncommenting.
+- **Code Assistance**: Enter preserves indentation. Minimize horizontal whitespace; use vertical spacing instead (see Marslander example). Complete button completed word. Comment button toggles code comments and copies it to paste buffer for easy editing.
 - **Debugging**: Errors detected on Run, not live. Error view shows message and positions cursor at issue. Block character mismatches (e.g., missing paren) trigger a count-check message.
 - **Diff**: Basic, approximate change tracking since open/save.
 - **Pickers**: Color/Icon codes go to paste buffer—tap Paste to insert.
 - **Help**: Tap anywhere to dismiss the Help view.
 - **Examples**: Keep game code short for one-gesture scrolling (see Marslander example).
-- **Keyboard**: One-tap access to 22 key programming characters; 10 more via Shift. Space is small (bottom-right); backspace and return are on row two for combo efficiency (e.g., copy + backspace = cut). Adjust layout via **change**. Adapts to screen size—full width on phones, half-width on tablets. Lower-right on tablets; left-thumb users can **change** it.
-- **Design**: Tap to move cursor; left-right arrows refine position. No Home/End keys.
+- **Keyboard**: One-tap access to 22 key programming characters; 10 more via Shift. Space is small (bottom-right); backspace and return are on row two for combo efficiency (e.g., copy + backspace = cut). Adapts to screen size—full width on phones, half-width on tablets. Lower-right on tablets.
+- **Navigation**: Tap to move cursor; left-right arrows refine position. No Home/End keys.
 - **Self-Editable**: Modify Bacione within itself. Save creates a new timestamped file—reopen it to test changes. If it fails, revert to the previous version. Best for simple tweaks; use [Neovim](https://github.com/bacionejs/termux) for complex edits.
-- **Additional Notes**:
-  - **Closing Views**: Tap anywhere to dismiss Help, Miscellaneous, Diff, or Error views.
-  - **Emoji Load**: Initial Miscellaneous view may lag as icons load.
+- **Closing Views**: Tap anywhere to dismiss Help, Miscellaneous, Diff, or Error views.
+- **Emoji Load**: Initial Miscellaneous view may lag as icons load.
 
