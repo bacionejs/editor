@@ -28,7 +28,6 @@ As of March 2025, BacioneJS stands alone as the [only](//github.com/search?q=ser
 IDE with a fully custom keyboard. These features simplify installation, enable rapid enhancements and reduce editing frustrating.
 
 ## Features
-Run, Editing, Code Assistance, Rename, Debugging, and syntax highlighting define BacioneJS a true IDE, not just an editor.
 - **Run**: Instant code execution
 - **Editing**: Cut, copy, paste, undo, redo
 - **Code Assistance**: Auto-complete, auto-indent, auto-comment
