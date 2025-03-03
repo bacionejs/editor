@@ -6,7 +6,7 @@
 - Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)
 - Open your file manager
 - Tap `bacionejs.html` to launch in Chrome
-- Click `Run` to play the Ski game
+- Click `Run` to play the Ski game (runs the game which contains the cursor)
 
 ## Links
 - [Live Demo](https://bacionejs.github.io/editor/bacionejs.html) - Run from GitHub
