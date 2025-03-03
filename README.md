@@ -33,7 +33,7 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 - **Export**: Removes editor
 - **Zoom**: Adjust text size
 - **Fullscreen**: Expand your workspace
-- **Themes**: Light and dark modes
+- **Themes**: Light and dark mode syntax highlighting
 - **Rename**: Find and replace
 - **Superstar**: Highlights all instances of the current word
 - **Editing**: Cut, copy, paste, undo, redo
