@@ -29,16 +29,16 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 
 ## Features
 - **Run**: Instant code execution
+- **Rename**: Find and replace
+- **Editing**: Cut, copy, paste, undo, redo
+- **Code Assistance**: Auto-complete, auto-indent, auto-comment
+- **Debugging**: Basic error detection
 - **Save**: Saves games with editor
 - **Export**: Removes editor
 - **Zoom**: Adjust text size
 - **Fullscreen**: Expand your workspace
 - **Themes**: Light and dark mode syntax highlighting
-- **Rename**: Find and replace
 - **Superstar**: Highlights all instances of the current word
-- **Editing**: Cut, copy, paste, undo, redo
-- **Code Assistance**: Auto-complete, auto-indent, auto-comment
-- **Debugging**: Basic error detection
 - **Diff**: Compare changes
 - **Pickers**: Icon and color selectors
 - **Gestures**: Swipe and long-press-repeat support
