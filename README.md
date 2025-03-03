@@ -29,9 +29,9 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 
 ## Features
 - **Run**: Instant code execution
-- **Rename**: Find and replace
 - **Editing**: Cut, copy, paste, undo, redo
 - **Code Assistance**: Auto-complete, auto-indent, auto-comment
+- **Rename**: Find and replace
 - **Debugging**: Basic error detection
 - **Save**: Saves games with editor
 - **Export**: Removes editor
