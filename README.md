@@ -65,7 +65,7 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
   - Misc → Themes  
   - Characters → Shift-like behavior  
 - **Editing**: Copy button selects. Backspace cuts. Enter cancels. Repeat to extend or use arrows. See a demo on [YouTube](http://www.youtube.com/@bacionejs).  
-- **Paste Buffer**: The Comments button and the Pickers use the Paste buffer.  
+- **Paste Buffer**: The Comment button and the Pickers use the Paste buffer.  
 - **Closing Views**: Tap anywhere to dismiss views  
 
 ## Limitations
