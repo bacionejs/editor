@@ -43,8 +43,8 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 - **Themes**: Light and dark mode syntax highlighting
 - **Zoom**: Adjust text size
 - **Fullscreen**: Expand your workspace
-- **Pickers**: Icon and color selectors
 - **Gestures**: Swipe and long-press-repeat support
+- **Pickers**: Icon and color selectors
 - **Help**: Built-in guide
 - **Examples**: Games included
 - **Efficiency**: Fewer clicks than competing editors
