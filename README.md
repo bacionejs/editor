@@ -24,14 +24,11 @@ Programming small JavaScript games on a phone offline
 Create the most thumb-friendly IDE in its class
 
 ## Unique
-As of March 2025, BacioneJS stands alone as the [only](//github.com/search?q=serverless+javascript+ide+language%3Ahtml&type=repositories) serverless JavaScript IDE built entirely in JavaScript and the [only](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories)
-IDE with a fully custom keyboard. These features simplify installation, enable rapid enhancements and reduce editing frustrating.
+As of March 2025, BacioneJS stands alone as the [only](//github.com/search?q=serverless+javascript+ide+language%3Ahtml&type=repositories) *serverless* JavaScript IDE built entirely in *JavaScript* and the [only](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories)
+IDE with a fully *custom keyboard*. These features simplify installation, enable rapid enhancements and reduce editing frustrating.
 
 
 ## Features
-1. **Serverless**: No backend or internet, runs from file manager in Chrome
-1. **Pure JS**: No dependencies, vanilla JavaScript, only 7k  
-1. **Keyboard**: One-tap common keys, fewer clicks than competing editors
 1. **Run**: Instant code execution  
 1. **Save**: Generates a new timestamped file  
 1. **Export**: Removes editor  
