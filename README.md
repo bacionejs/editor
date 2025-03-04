@@ -47,7 +47,8 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 1. **Gestures**: Swipe and long-press-repeat support  
 1. **Pickers**: Icon and color selectors  
 1. **Help**: Built-in guide  
-1. **Examples**: Games included  
+1. **Examples**: Games included
+1. **Self-Editable**: Modify the editor within itself
 1. **Efficiency**: Fewer clicks than competing editors  
 1. **Design**: Optimized for phones and tablets  
 1. **Setup**: None—just one file  
@@ -56,7 +57,6 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 1. **Compatibility**: Runs from Android file manager in Chrome  
 1. **Free**: GPL licensed, ad-free  
 1. **Lightweight**: Just 7 KB  
-1. **Self-Editable**: Modify the editor within itself
 
 ## Help
 - **Swipe**: Swipe up on a key for alternate functions:  
