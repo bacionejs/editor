@@ -45,7 +45,7 @@ IDE with a fully `custom keyboard`. These features simplify installation, enable
 1. **Pickers**: Icon and color selectors  
 1. **Help**: Built-in guide  
 1. **Examples**: Games included
-1. **Configure**: Modify the editor within itself  
+1. **Configure**: Modify the editor source within itself  
 
 
 ## Help
