@@ -55,7 +55,7 @@ IDE with a fully `custom keyboard`. These features simplify installation, enable
   - Rename → Superstar Highlight  
   - Misc → Themes  
   - Characters → Shift-like behavior  
-- **Editing**: Copy button selects. Backspace cuts. Enter cancels. Repeat to extend or use arrows. See a demo on [YouTube](http://www.youtube.com/@bacionejs).  
+- **Editing**: Copy button selects, then Backspace cuts selection or Enter cancels. Repeat to extend or use arrows. See a demo on [YouTube](http://www.youtube.com/@bacionejs).  
 - **Paste Buffer**: The Comment button and the Pickers use the Paste buffer.  
 - **Closing Views**: Tap anywhere to dismiss views  
 
