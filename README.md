@@ -29,9 +29,9 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 
 
 ## Features
-1. **Serverless**: No backend needed  
-1. **Pure JS**: No dependencies, vanilla JavaScript  
-1. **Keyboard**: One-tap common keys  
+1. **Serverless**: No backend or internet, runs from file manager in Chrome
+1. **Pure JS**: No dependencies, vanilla JavaScript, only 7k  
+1. **Keyboard**: One-tap common keys, fewer clicks than competing editors
 1. **Run**: Instant code execution  
 1. **Save**: Generates a new timestamped file  
 1. **Export**: Removes editor  
@@ -48,15 +48,8 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 1. **Pickers**: Icon and color selectors  
 1. **Help**: Built-in guide  
 1. **Examples**: Games included
-1. **Self-Editable**: Modify the editor within itself
-1. **Efficiency**: Fewer clicks than competing editors  
-1. **Design**: Optimized for phones and tablets  
-1. **Setup**: None—just one file  
-1. **Sharing**: Easy to send  
-1. **Offline**: No internet required  
-1. **Compatibility**: Runs from Android file manager in Chrome  
-1. **Free**: GPL licensed, ad-free  
-1. **Lightweight**: Just 7 KB  
+1. **Self-Editable**: Modify the editor within itself  
+
 
 ## Help
 - **Swipe**: Swipe up on a key for alternate functions:  
