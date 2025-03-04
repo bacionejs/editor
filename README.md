@@ -32,17 +32,17 @@ IDE with a fully custom keyboard. These features simplify installation, enable r
 - **Pure JS**: No dependencies, vanilla JavaScript
 - **Keyboard**: One-tap common keys
 - **Run**: Instant code execution
+- **Save**: Generates a new timestamped file
+- **Export**: Removes editor
 - **Editing**: Cut, copy, paste, undo, redo
 - **Code Assistance**: Auto-complete, auto-indent, auto-comment
 - **Rename**: Highlights matches as you type
 - **Superstar**: Highlights all instances of the current word
 - **Debugging**: Displays message and positions the cursor at the issue
+- **Diff**: Changes since open/save
 - **Themes**: Light and dark mode syntax highlighting
-- **Save**: Generates a new timestamped file
-- **Export**: Removes editor
 - **Zoom**: Adjust text size
 - **Fullscreen**: Expand your workspace
-- **Diff**: Changes since open/save
 - **Pickers**: Icon and color selectors
 - **Gestures**: Swipe and long-press-repeat support
 - **Help**: Built-in guide
