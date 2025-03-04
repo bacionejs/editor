@@ -25,7 +25,7 @@ Create the most thumb-friendly IDE in its class
 
 ## Unique
 BacioneJS stands alone as the [only](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories)
-IDE with a fully `custom keyboard` and the [only](//github.com/search?q=serverless+javascript+ide+language%3Ahtml&type=repositories) `serverless` JavaScript` IDE. These features reduce editing frustrating, simplify installation, and enable rapid enhancements.
+IDE with a fully `custom keyboard` and the [only](//github.com/search?q=serverless+javascript+ide+language%3Ahtml&type=repositories) `serverless JavaScript` IDE. These features reduce editing frustrating, simplify installation, and enable rapid enhancements.
 
 
 ## Features
