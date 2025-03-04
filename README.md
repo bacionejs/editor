@@ -60,5 +60,5 @@ IDE with a fully `custom keyboard`. These features simplify installation, enable
 - **Closing Views**: Tap anywhere to dismiss views  
 
 ## Limitations
-- **Single-File**: For security reasons, JavaScript cannot access local resources. Use programmatic alternatives (e.g., vector graphics, emojis, noise generators) as seen in Marslander.
+- **Single-File**: For [security reasons](https://developer.chrome.com/docs/extensions/mv3/security/#content-scripts) Chrome cannot access local resources. Use programmatic alternatives (e.g., vector graphics, emojis, noise generators) as seen in Marslander.
 - **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
