@@ -60,6 +60,5 @@ IDE with a fully `custom keyboard`. These features simplify installation, enable
 - **Closing Views**: Tap anywhere to dismiss views  
 
 ## Limitations
-- **Compatibility**: Requires Chrome on phones or tablets. Exported games have no such restriction.
-- **Single-File**: Android’s file manager limits Chrome to a single HTML file, excluding external assets like images or audio. Use programmatic alternatives (e.g., vector graphics, emojis, noise generators) as seen in Marslander.
+- **Single-File**: For security reasons, JavaScript cannot access local resources. Use programmatic alternatives (e.g., vector graphics, emojis, noise generators) as seen in Marslander.
 - **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
