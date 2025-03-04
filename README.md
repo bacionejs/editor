@@ -27,35 +27,36 @@ Create the most thumb-friendly IDE in its class
 As of March 2025, BacioneJS stands alone as the [only](//github.com/search?q=serverless+javascript+ide+language%3Ahtml&type=repositories) serverless JavaScript IDE built entirely in JavaScript and the [only](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories)
 IDE with a fully custom keyboard. These features simplify installation, enable rapid enhancements and reduce editing frustrating.
 
+
 ## Features
-- **Serverless**: No backend needed
-- **Pure JS**: No dependencies, vanilla JavaScript
-- **Keyboard**: One-tap common keys
-- **Run**: Instant code execution
-- **Save**: Generates a new timestamped file
-- **Export**: Removes editor
-- **Editing**: Cut, copy, paste, undo, redo
-- **Code Assistance**: Auto-complete, auto-indent, auto-comment
-- **Rename**: Highlights matches as you type
-- **Superstar**: Highlights all instances of the current word
-- **Debugging**: Displays message and positions the cursor at the issue
-- **Diff**: Changes since open/save
-- **Themes**: Light and dark mode syntax highlighting
-- **Zoom**: Adjust text size
-- **Fullscreen**: Expand your workspace
-- **Gestures**: Swipe and long-press-repeat support
-- **Pickers**: Icon and color selectors
-- **Help**: Built-in guide
-- **Examples**: Games included
-- **Efficiency**: Fewer clicks than competing editors
-- **Design**: Optimized for phones and tablets
-- **Setup**: None—just one file
-- **Sharing**: Easy to send
-- **Offline**: No internet required
-- **Compatibility**: Runs from Android file manager in Chrome
-- **Free**: GPL licensed, ad-free
-- **Lightweight**: Just 7 KB
-- **Self-Editable**: Modify the editor within itself
+1. **Serverless**: No backend needed  
+1. **Pure JS**: No dependencies, vanilla JavaScript  
+1. **Keyboard**: One-tap common keys  
+1. **Run**: Instant code execution  
+1. **Save**: Generates a new timestamped file  
+1. **Export**: Removes editor  
+1. **Editing**: Cut, copy, paste, undo, redo  
+1. **Code Assistance**: Auto-complete, auto-indent, auto-comment  
+1. **Rename**: Highlights matches as you type  
+1. **Superstar**: Highlights all instances of the current word  
+1. **Debugging**: Displays message and positions the cursor at the issue  
+1. **Diff**: Changes since open/save  
+1. **Themes**: Light and dark mode syntax highlighting  
+1. **Zoom**: Adjust text size  
+1. **Fullscreen**: Expand your workspace  
+1. **Gestures**: Swipe and long-press-repeat support  
+1. **Pickers**: Icon and color selectors  
+1. **Help**: Built-in guide  
+1. **Examples**: Games included  
+1. **Efficiency**: Fewer clicks than competing editors  
+1. **Design**: Optimized for phones and tablets  
+1. **Setup**: None—just one file  
+1. **Sharing**: Easy to send  
+1. **Offline**: No internet required  
+1. **Compatibility**: Runs from Android file manager in Chrome  
+1. **Free**: GPL licensed, ad-free  
+1. **Lightweight**: Just 7 KB  
+1. **Self-Editable**: Modify the editor within itself
 
 ## Help
 - **Swipe**: Swipe up on a key for alternate functions:  
