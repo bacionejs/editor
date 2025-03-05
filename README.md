@@ -33,7 +33,7 @@ BacioneJS is the only IDE with a fully [custom keyboard](//github.com/search?q=i
 1. **Export**: Removes editor  
 1. **Editing**: Cut, copy, paste, undo, redo  
 1. **Code Assistance**: Auto-complete, auto-indent, auto-comment  
-1. **Rename**: Highlights matches as you type  
+1. **Rename**: Find/Replace  
 1. **Superstar**: Highlights all instances of the current word  
 1. **Debugging**: Displays message and positions the cursor at the issue  
 1. **Diff**: Changes since open/save  
