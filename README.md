@@ -2,11 +2,8 @@
 
 [![Info](README.jpg)](bacionejs.html)
 
-## Install
-- Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)
-- Open your file manager
-- Tap `bacionejs.html` to launch in Chrome
-- Click `Run` to play the game which contains the cursor
+## Bacione?
+Bacione means big KISS as in Keep It Satisfyingly Simple
 
 ## Links
 - [Live Demo](https://bacionejs.github.io/editor/bacionejs.html) - Run from GitHub
@@ -14,8 +11,11 @@
 - [Games.pdf](Games.pdf) - Tutorials for Ski and Marslander
 - [GitHub Discussions](https://github.com/bacionejs/editor/discussions)
 
-## Bacione?
-Bacione means big KISS as in Keep It Satisfyingly Simple.
+## Install
+- Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)
+- Open your file manager
+- Tap `bacionejs.html` to launch in Chrome
+- Click `Run` to play the game which contains the cursor
 
 ## Purpose
 Programming small JavaScript games on a phone offline
