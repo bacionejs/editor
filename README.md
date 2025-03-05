@@ -59,5 +59,5 @@ BacioneJS is the only IDE with a fully [custom keyboard](//github.com/search?q=i
 - **Closing Views**: Tap anywhere to dismiss views  
 
 ## Limitations
-- **Security**: Chrome cannot access local resources. Instead, use programmatic graphics and sound as seen in the Marslander example.
+- **Security**: Chrome cannot access local resources. Instead, use programmatic graphics and sound.
 - **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
