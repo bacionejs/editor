@@ -24,7 +24,7 @@ Programming small JavaScript games on a phone offline
 Create the most thumb-friendly IDE in its class
 
 ## Unique
-BacioneJS is the only IDE with a fully [custom keyboard](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories) and the only IDE implemented in [standalone JavaScript](//github.com/search?q=standalone+javascript+ide+language%3Ahtml&type=repositories). These features reduce editing frustrating, simplify installation, and enable rapid enhancements.
+BacioneJS is the only IDE with a fully [custom keyboard](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories) and the only IDE implemented in [standalone JavaScript](//github.com/search?q=standalone+javascript+ide+language%3Ahtml&type=repositories). These innovations reduce editing frustrating, simplify installation, and enable rapid enhancements.
 
 
 ## Features
