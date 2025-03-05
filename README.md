@@ -46,18 +46,6 @@ BacioneJS is the only IDE with a fully [custom keyboard](//github.com/search?q=i
 1. **Examples**: Games included
 1. **Configure**: Modify the editor source within itself  
 
-
-## Help
-- **Swipe**: Swipe up on a key for alternate functions:  
-  - Save → Diff  
-  - Zoom → Fullscreen  
-  - Rename → Superstar Highlight  
-  - Misc → Themes  
-  - Characters → Shift-like behavior  
-- **Editing**: Copy button selects, then Backspace cuts selection or Enter cancels. Repeat to extend or use arrows. See a demo on [YouTube](http://www.youtube.com/@bacionejs).  
-- **Paste Buffer**: The Comment button and the Pickers use the Paste buffer.  
-- **Closing Views**: Tap anywhere to dismiss views  
-
 ## Limitations
 - **Security**: Chrome cannot access local resources. Instead, use programmatic graphics and sound.
 - **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
