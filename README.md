@@ -30,7 +30,6 @@ BacioneJS is the only IDE with a fully [custom keyboard](//github.com/search?q=i
 ## Features
 1. **Run**: Instant code execution  
 1. **Save**: Generates a new timestamped file  
-1. **Export**: Removes editor  
 1. **Editing**: Cut, copy, paste, undo, redo  
 1. **Code Assistance**: Auto-complete, auto-indent, auto-comment  
 1. **Rename**: Find/Replace  
