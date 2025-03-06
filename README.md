@@ -1,17 +1,10 @@
-## Brochure
-
-
-
-
-  <img src="README.jpg" width="33%" />
-
-
-
-## Bacione?
-Bacione means big KISS as in Keep It Satisfyingly Simple
+## [Live Demo](https://bacionejs.github.io/editor/bacionejs.html)
+<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank">
+    <img src="README.jpg" width="33%" />
+</a>
 
 ## Links
-- [Live Demo](https://bacionejs.github.io/editor/bacionejs.html) - Run from GitHub
+
 - [YouTube](http://www.youtube.com/@bacionejs) - Product demos
 - [Games.pdf](Games.pdf) - Tutorials for Ski and Marslander
 - [GitHub Discussions](https://github.com/bacionejs/editor/discussions)
