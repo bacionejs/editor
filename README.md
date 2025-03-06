@@ -1,4 +1,4 @@
-## Live Demo
+## Demo
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank">
     <img src="README.jpg" width="33%" />
 </a>
