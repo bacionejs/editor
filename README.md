@@ -3,12 +3,6 @@
     <img src="README.jpg" width="33%" />
 </a>
 
-## Links
-
-- [YouTube](http://www.youtube.com/@bacionejs) - Product demos
-- [Games.pdf](Games.pdf) - Tutorials for Ski and Marslander
-- [GitHub Discussions](https://github.com/bacionejs/editor/discussions)
-
 ## Install
 - Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)
 - Open your file manager
@@ -46,3 +40,8 @@ BacioneJS is the only IDE with a fully [custom keyboard](//github.com/search?q=i
 ## Limitations
 - **Security**: Chrome cannot access local resources. Instead, use programmatic graphics and sound.
 - **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
+
+## Links
+- [YouTube](http://www.youtube.com/@bacionejs) - Product demos
+- [Games.pdf](Games.pdf) - Tutorials for Ski and Marslander
+- [GitHub Discussions](https://github.com/bacionejs/editor/discussions)
