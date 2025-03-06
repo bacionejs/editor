@@ -1,6 +1,11 @@
 ## Brochure
 
-[![Info](README.jpg)](bacionejs.html)
+
+
+<p align="center">
+  <img src="README.jpg" width="33%" />
+</p>
+
 
 ## Bacione?
 Bacione means big KISS as in Keep It Satisfyingly Simple
