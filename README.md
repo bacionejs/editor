@@ -34,7 +34,7 @@ BacioneJS is the only IDE with a fully [custom keyboard](//github.com/search?q=i
 1. **Code Assistance**: Auto-complete, auto-indent, auto-comment  
 1. **Rename**: Find/Replace  
 1. **Superstar**: Highlights all instances of the current word  
-1. **Debugging**: Displays message and positions the cursor at the issue  
+1. **Debugging**: Displays message and positions the cursor at the error  
 1. **Diff**: Changes since open/save  
 1. **Themes**: Light and dark mode syntax highlighting  
 1. **Zoom**: Adjust text size  
