@@ -41,10 +41,10 @@ BacioneJS is the only IDE with a fully [custom keyboard](//github.com/search?q=i
 1. **Fullscreen**: Expand your workspace  
 1. **Gestures**: Swipe and long-press-repeat support  
 1. **Pickers**: Icon and color selectors  
-1. **Help**: Built-in guide  
 1. **Configurable**: Modify the editor source within itself  
 1. **Examples**: Games included
-
+1. **Help**: Built-in guide
+   
 ## Limitations
 - **Security**: Chrome cannot access local resources. Instead, use programmatic graphics and sound.
 - **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
