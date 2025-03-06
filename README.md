@@ -2,9 +2,9 @@
 
 
 
-<p align="center">
+
   <img src="README.jpg" width="33%" />
-</p>
+
 
 
 ## Bacione?
