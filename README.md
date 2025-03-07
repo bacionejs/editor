@@ -3,21 +3,14 @@
     <img src="README.jpg" width="33%" />
 </a>
 
-## Install
+## Purpose
+BacioneJS is my most thumb-friendly IDE for programming small JavaScript games on a phone offline; the only IDE with a fully [custom keyboard](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories) and the only IDE implemented in [standalone JavaScript](//github.com/search?q=standalone+javascript+ide+language%3Ahtml&type=repositories). These innovations reduce editing frustrating, simplify installation, and enable rapid enhancements.
+
+## Installation
 - Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)
 - Open your file manager
 - Tap `bacionejs.html` to launch in Chrome
 - Click `Run` to play the game which contains the cursor
-
-## Purpose
-Programming small JavaScript games on a phone offline
-
-## Mission
-Create the most thumb-friendly IDE in its class
-
-## Unique
-BacioneJS is the only IDE with a fully [custom keyboard](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories) and the only IDE implemented in [standalone JavaScript](//github.com/search?q=standalone+javascript+ide+language%3Ahtml&type=repositories). These innovations reduce editing frustrating, simplify installation, and enable rapid enhancements.
-
 
 ## Features
 1. **Run**: Instant code execution  
