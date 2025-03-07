@@ -4,7 +4,8 @@
 </a>
 
 ## Purpose
-Designed for those who **[don't have a computer but have a smartphone](#footnote-1)** and would like to experiment with programming, BacioneJS is the most [thumb-friendly](https://youtu.be/lx6Pf-KflcQ?si=jBlJVh4iwFUp_Nj8) IDE for coding small JavaScript games on a phone offline; the only IDE with a fully [custom keyboard](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories) and the only IDE implemented in [standalone JavaScript](//github.com/search?q=standalone+javascript+ide+language%3Ahtml&type=repositories). These innovations reduce editing frustration, simplify installation, and enable rapid enhancements. 
+Designed for those who [don't have a computer but have a smartphone](
+https://www.google.com/search?q=80%25+of+families+in+The+Philippines+don%27t+have+a+computer+but+have+a+smartphone&oq=80%25+of+families+in+The+Philippines+don%27t+have+a+computer+but+have+a+smartphone) and would like to experiment with programming, BacioneJS is the most [thumb-friendly](https://youtu.be/lx6Pf-KflcQ?si=jBlJVh4iwFUp_Nj8) IDE for coding small JavaScript games on a phone offline; the only IDE with a fully [custom keyboard](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories) and the only IDE implemented in [standalone JavaScript](//github.com/search?q=standalone+javascript+ide+language%3Ahtml&type=repositories). These innovations reduce editing frustration, simplify installation, and enable rapid enhancements. 
 
 ## Installation
 - Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)
@@ -34,4 +35,3 @@ Designed for those who **[don't have a computer but have a smartphone](#footnote
 - **Security**: Chrome cannot access local resources. Instead, use programmatic graphics and sound.
 - **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
 
-### Footnote 1: 80% of families in The Philippines don't have a computer but have a smartphone.
