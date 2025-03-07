@@ -34,9 +34,4 @@ Designed for those who don't have a computer but have a smartphone [^1] and woul
 - **Security**: Chrome cannot access local resources. Instead, use programmatic graphics and sound.
 - **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
 
-## Links
-- [YouTube](http://www.youtube.com/@bacionejs) - Product demos
-- [Games.pdf](Games.pdf) - Tutorials for Ski and Marslander
-- [GitHub Discussions](https://github.com/bacionejs/editor/discussions)
-
 [^1]: 80% of families in The Philippines don't have a computer but have a smartphone.
