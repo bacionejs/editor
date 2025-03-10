@@ -14,22 +14,22 @@ and would like to experiment with programming, BacioneJS is the most [thumb-frie
 - Click `Run` to play the game which contains the cursor
 
 ## Features
-1. **Run**: Instant code execution  
-1. **Save**: Generates a new timestamped file  
-1. **Editing**: Cut, copy, paste, undo, redo  
-1. **Code Assistance**: Auto-complete, auto-indent, auto-comment  
-1. **Rename**: Find/Replace
-1. **Themes**: Light and dark mode syntax highlighting  
-1. **Highlight**: Highlights all instances of the current word  
-1. **Debugging**: Displays message and positions the cursor at the error  
-1. **Diff**: Changes since open/save  
-1. **Zoom**: Adjust text size  
-1. **Fullscreen**: Expand your workspace  
-1. **Gestures**: Swipe and long-press-repeat support  
-1. **Pickers**: Icon and color selectors  
-1. **Configurable**: Modify the editor source within itself  
-1. **Examples**: Games included
-1. **Help**: Built-in guide
+- **Run**: Instant code execution  
+- **Save**: Generates a new timestamped file  
+- **Editing**: Cut, copy, paste, undo, redo  
+- **Code Assistance**: Auto-complete, auto-indent, auto-comment  
+- **Rename**: Find/Replace  
+- **Themes**: Light and dark mode syntax highlighting  
+- **Highlight**: Highlights all instances of the current word  
+- **Debugging**: Displays message and positions the cursor at the error  
+- **Diff**: Changes since open/save  
+- **Zoom**: Adjust text size  
+- **Fullscreen**: Expand your workspace  
+- **Gestures**: Swipe and long-press-repeat support  
+- **Pickers**: Icon and color selectors  
+- **Configurable**: Modify the editor source within itself  
+- **Examples**: Games included
+- **Help**: Built-in guide
    
 ## Limitations
 - **Security**: Chrome cannot access local resources. Instead, use programmatic graphics and sound.
