@@ -1006,6 +1006,95 @@ return function(){if(i==1 || i==airtime){jump();}if(i==airtime){i=0;} i && i++;}
 
 
 
+function marslander(){
+addEventListener("click",move,false);
+let snd=L.Sound();
+let cb=L.canvas(),c=L.canvas();
+let p=floor(W/20);
+let mountain=[floor(W*0.70)];
+let landed,close,bad,played=false;
+let fuelstart=20,fuel=fuelstart;
+let my,lm,x,y,xx,yy;
+let yt=W/FPS/10,yd=yt/3,ya=yd/FPS,yl=yt/(3/2),xv=yt/2/4,xl=xv*2;
+let cold=L.gradient(c,0,-p,[[.2,"skyblue"],[.8,"blue"]]);
+let hot =L.gradient(c,0,-p,[[.2,"gold"]   ,[.8,"red"]]);
+let rocketleft =L.shape([[0,0,-1,0,-2,-1,0,-4,2,-1,1,0],[-1.5,0,-2,0,-2,-0.5]],p/4);
+let rocketright=L.shape([[0,0,-1,0,-2,-1,0,-4,2,-1,1,0],[ 1.5,0, 2,0, 2,-0.5]],p/4);
+let rocketnone =L.shape([[0,0,-1,0,-2,-1,0,-4,2,-1,1,0]]                      ,p/4);
+let ship=rocketnone;
+init();
+
+function init(){
+let slope;
+let mx2=0;
+let lx=L.rnd(W-p);
+lm=lx+(p/2);
+played&&=((fuel=fuel<0?fuelstart:fuel>120?120:fuelstart+fuel),false);
+ship=rocketnone;
+x=L.rnd(W);y=0;
+xx=0.0;yy=yt;
+cb.fillStyle="black";cb.fillRect(0,0,W,W);
+cb.fillStyle="white";
+for(let stars=W*W/2000;stars>0;stars--){cb.fillRect(L.rnd(W),L.rnd(W),1,1);}
+for(let mx=0;mx<W;mx++){
+  if(mx==lx){
+    slope=0;
+    mx2=lx+p;
+  }else if(mx==mx2){
+    slope=L.rnd(5,1)*(random()<0.5?-1:1);
+    mx2+=L.rnd(floor(W/10),floor(W/20));
+  }
+  slope*=((mountain[mx]+slope)>(W-p) || (mountain[mx]+slope)<p)?-1:1;
+  mountain[mx+1]=mountain[mx]+slope;
+}
+cb.fillStyle=L.gradient(cb,W,-W,[[0,"hsl("+fuel+",100%,20%)"],[0.3,"white"]]);
+cb.fill(L.shape([[W,mountain.at(-1),W,W,0,W,0,mountain[0],...L.vertices(mountain)]]));
+animation();
+}
+
+function animation(){
+x=x>W?0:x<0?W:x+xx;
+y+=yy=yy>yt?yt:yy+ya;
+my=mountain[floor(x)];
+landed=(y>my);
+close =(y>my-p);
+if(close){yy-=(ya*0.80);xx*=0.98;}
+bad=(yl<yy || xl<Math.abs(xx) || (p/4)<Math.abs(x-lm));
+if(played && landed && bad){
+  fuel-=fuelstart*2;
+  snd.explosion();
+  ship=L.shape([Array.from({length:40},()=>L.rnd(p*2)-p)]);
+}
+c.resetTransform();
+c.clear();
+c.translate(x,y);
+c.rotate(xx/4);
+c.fillStyle=(bad?hot:cold);
+c.fill(ship);
+if(landed){setTimeout(init,1000);return;}
+requestAnimationFrame(animation);
+}
+
+function move({pageX}){
+snd.rocket();
+played=true;
+fuel--;
+yy-=yd;
+if(pageX<(W/2)){ xx+=xv;ship=rocketleft;  }
+else           { xx-=xv;ship=rocketright; }
+setTimeout(()=>         ship=rocketnone,200);
+}
+
+}//end marslander
+
+
+
+
+
+
+
+
+
 function defense(){
 let score=0,hitred,snd=L.Sound(),c=L.canvas(),blue=Blue(),red=Red();addEventListener("click",blue.shoot);
 (function animation(){c.black();blue.update();red.update();blue.draw();red.draw();requestAnimationFrame(animation);})();
@@ -1075,95 +1164,6 @@ return {x:x,y:y,path:path,color:color,angle:angle,rotation:rotation,rotationspee
 }//end stars
 
 }//end defense
-
-
-
-
-
-
-
-
-
-function marslander(){
-addEventListener("click",move,false);
-let snd=L.Sound();
-let cb=L.canvas(),c=L.canvas();
-let p=floor(W/20);
-let mountain=[floor(W*0.70)];
-let landed,close,bad,played=false;
-let fuelstart=20,fuel=fuelstart;
-let my,lm,x,y,xx,yy;
-let yt=W/FPS/10,yd=yt/3,ya=yd/FPS,yl=yt/(3/2),xv=yt/2/4,xl=xv*2;
-let cold=L.gradient(c,0,-p,[[.2,"skyblue"],[.8,"blue"]]);
-let hot =L.gradient(c,0,-p,[[.2,"gold"]   ,[.8,"red"]]);
-let rocketleft =L.shape([[0,0,-1,0,-2,-1,0,-4,2,-1,1,0],[-1.5,0,-2,0,-2,-0.5]],p/4);
-let rocketright=L.shape([[0,0,-1,0,-2,-1,0,-4,2,-1,1,0],[ 1.5,0, 2,0, 2,-0.5]],p/4);
-let rocketnone =L.shape([[0,0,-1,0,-2,-1,0,-4,2,-1,1,0]]                      ,p/4);
-let ship=rocketnone;
-init();
-
-function init(){
-let slope;
-let mx2=0;
-let lx=L.rnd(W-p);
-lm=lx+(p/2);
-played&&=((fuel=fuel<0?fuelstart:fuel>120?120:fuelstart+fuel),false);
-ship=rocketnone;
-x=L.rnd(W);y=0;
-xx=0.0;yy=yt;
-cb.fillStyle="black";cb.fillRect(0,0,W,W);
-cb.fillStyle="white";
-for(let stars=W*W/2000;stars>0;stars--){cb.fillRect(L.rnd(W),L.rnd(W),1,1);}
-for(let mx=0;mx<W;mx++){
-  if(mx==lx){
-    slope=0;
-    mx2=lx+p;
-  }else if(mx==mx2){
-    slope=L.rnd(5,1)*(random()<0.5?-1:1);
-    mx2=mx2+L.rnd(floor(W/10),floor(W/20));
-  }
-  slope*=((mountain[mx]+slope)>(W-p) || (mountain[mx]+slope)<p)?-1:1;
-  mountain[mx+1]=mountain[mx]+slope;
-}
-cb.fillStyle=L.gradient(cb,W,-W,[[0,"hsl("+fuel+",100%,20%)"],[0.3,"white"]]);
-cb.fill(L.shape([[W,mountain.at(-1),W,W,0,W,0,mountain[0],...L.vertices(mountain)]]));
-animation();
-}
-
-function animation(){
-x=x>W?0:x<0?W:x+xx;
-y+=yy=yy>yt?yt:yy+ya;
-my=mountain[floor(x)];
-landed=(y>my);
-close =(y>my-p);
-if(close){yy-=(ya*0.80);xx*=0.98;}
-bad=(yl<yy || xl<Math.abs(xx) || (p/4)<Math.abs(x-lm));
-if(played && landed && bad){
-  fuel-=fuelstart*2;
-  snd.explosion();
-  ship=L.shape([Array.from({length:40},()=>L.rnd(p*2)-p)]);
-}
-c.resetTransform();
-c.clear();
-c.translate(x,y);
-c.rotate(xx/4);
-c.fillStyle=(bad?hot:cold);
-c.fill(ship);
-if(landed){setTimeout(init,1000);return;}
-requestAnimationFrame(animation);
-}
-
-function move({pageX}){
-snd.rocket();
-played=true;
-fuel--;
-yy-=yd;
-if(pageX<(W/2)){ xx+=xv;ship=rocketleft;  }
-else           { xx-=xv;ship=rocketright; }
-setTimeout(()=>         ship=rocketnone,200);
-}
-
-}//end marslander
 
 
 
@@ -1408,7 +1408,7 @@ return cn;
 
 function rnd(b,a=0){return floor(Math.random()*(b-a))+a;}
 function gradient(c,b,h,a){let g=c.createLinearGradient(0,b,0,h);a.forEach(e=>g.addColorStop(...e));return g;}
-function vertices(a){return a.reduce((r,v,i)=>a[i+2]-v!=v-a[i]?r.concat([i+1,v]):r,[])}
+function vertices(a){return a.flatMap((_,i)=>a[i+2]-2*a[i+1]+a[i]?[i+1,a[i+1]]:[]);}
 function shape(a,s=1){return a.reduce((p,i)=>(i.length&&(p.moveTo(s*i[0],s*i[1]),i.slice(2).forEach((x,j)=>j%2||p.lineTo(s*x,s*i[j+3]))),p),new Path2D)}
 function fit(x,start,asymptote,x2,y2){return asymptote-(asymptote-start)*((asymptote-y2)/(asymptote-start))**(x/x2);}
 function debug(v,c,color="black",size=10){let f=c.font;c.font=size+"px monospace";c.fillStyle=color;c.fillText(v,W/2,10);c.font=f;}
