@@ -1106,13 +1106,11 @@ score--;
 snd.rocket();blues.push({state:0,x:W/2,y:W,tx:tx,ty:ty,angle:atan2(ty-W,tx-W/2)});
 }
 function update(){
-blues.forEach(o=>{
-if(o.state==0){
+blues.filter(o=>o.state==0).forEach(o=>{
   o.x+=cos(o.angle)*speed;o.y+=sin(o.angle)*speed;
   if(hypot(o.x-o.tx,o.y-o.ty)<10){
     snd.explosion();hitred(o.x,o.y,radius);o.state=1;requestAnimationFrame(()=>o.state=2);
   }
-}
 });
 blues=blues.filter(o=>o.state!=2);
 }
