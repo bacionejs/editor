@@ -654,7 +654,8 @@ function createtextarea(){
 let T=element("textarea");
 T.addEventListener('scroll',function(){PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft;});
 T.addEventListener('paste', function(ev){ev.preventDefault();T.I(ev.clipboardData.getData('text'));});
-T.addEventListener('cut',   function(ev){ev.preventDefault();ev.clipboardData.setData("text",document.getSelection().toString());});
+T.addEventListener('copy',   function(ev){ev.preventDefault();ev.clipboardData.setData("text",document.getSelection().toString());});
+T.addEventListener('cut',   function(ev){ev.preventDefault();ev.clipboardData.setData("text",T.P);});
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
