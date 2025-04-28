@@ -1060,7 +1060,7 @@ my=mountain[floor(x)];
 landed=(y>my);
 close =(y>my-p);
 if(close){yy-=(ya*0.80);xx*=0.98;}
-bad=(yl<yy || xl<Math.abs(xx) || (p/4)<Math.abs(x-lm));
+bad=(yl<yy || xl<abs(xx) || (p/4)<abs(x-lm));
 if(played && landed && bad){
   fuel-=fuelstart*2;
   snd.explosion();
@@ -1417,7 +1417,7 @@ return {RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,fit,element};
 };//end library
 
 let W=innerWidth;
-let floor=Math.floor,random=Math.random,pow=Math.pow,sin=Math.sin,cos=Math.cos,PI=Math.PI,hypot=Math.hypot,atan2=Math.atan2;
+let floor=Math.floor,random=Math.random,pow=Math.pow,sin=Math.sin,cos=Math.cos,PI=Math.PI,hypot=Math.hypot,atan2=Math.atan2,abs=Math.abs;
 (function(sort){Array.prototype.sort=function(){return sort.call(this,(a,b)=>a-b)};})(Array.prototype.sort);//Overridden Array sort: compares numbers instead of strings
 let L=Library();
 
