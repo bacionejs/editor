@@ -1104,7 +1104,7 @@ function Blue(){
 let blues=[],radius=W/15,speed=(W/FPS/2);
 function shoot({pageX:tx,pageY:ty}){
 score--;
-snd.rocket();blues.push({state:0,x:W/2,y:W,tx:tx,ty:ty,angle:atan2(ty-W,tx-W/2)});
+snd.rocket();blues.push({state:0,x:W/2,y:W,tx,ty,angle:atan2(ty-W,tx-W/2)});
 }
 function update(){
 blues.filter(o=>o.state==0).forEach(o=>{
@@ -1159,7 +1159,7 @@ for(let i=1;i<points*2;i++){
   path.lineTo(dx,dy);
 }
 path.closePath();
-return {x:x,y:y,path:path,color:color,angle:angle,rotation:rotation,rotationspeed:rotationspeed};
+return {x,y,path,color,angle,rotation,rotationspeed};
 }//end stars
 
 }//end defense
@@ -1184,8 +1184,7 @@ init();
 function init(){
 cb.white();
 c.clear();
-t.forEach((_,i,a)=>a[i]=rna.next().sort());
-t.forEach((y,iy)=>y.forEach(x=>draw(cb,{x:x,y:iy,icon:127796})));
+t.forEach((_,y,a)=>{a[y]=rna.next().sort();a[y].forEach(x=>draw(cb,{x,y,icon:127796}))});
 draw(cb,rnd(banana));
 draw(c,rnd(monkey));
 }
