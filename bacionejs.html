@@ -1372,7 +1372,7 @@ return {next};
 
 function Sound(){
 let b=new AudioContext();
-[.2,1].forEach((v,i)=>(b[i+1]=b.createBuffer(1,b.sampleRate*v,b.sampleRate)).getChannelData(0).forEach((_,i,a)=>a[i]=Math.random()*2-1))
+[.2,1].forEach((v,i)=>(b[i+1]=b.createBuffer(1,b.sampleRate*v,b.sampleRate)).getChannelData(0).forEach((_,i,a)=>a[i]=random()*2-1))
 return {
   rocket:()=>{let s=b.createBufferSource();s.buffer=b[1];s.connect(b.destination);s.start()},
   explosion:()=>{let s=b.createBufferSource(),g=b.createGain(),f=b.createBiquadFilter();s.buffer=b[2];g.gain.value=8;f.type="lowpass";f.frequency.value=300;g.gain.linearRampToValueAtTime(0,b.currentTime+1);s.connect(f).connect(g).connect(b.destination);s.start()}
@@ -1404,7 +1404,7 @@ this.fillStyle=s;
 return cn;
 }
 
-function rnd(b,a=0){return floor(Math.random()*(b-a))+a;}
+function rnd(b,a=0){return floor(random()*(b-a))+a;}
 function gradient(c,b,h,a){let g=c.createLinearGradient(0,b,0,h);a.forEach(e=>g.addColorStop(...e));return g;}
 function vertices(a){return a.flatMap((_,i)=>a[i+2]-2*a[i+1]+a[i]?[i+1,a[i+1]]:[]);}
 function shape(a,s=1){return a.reduce((p,i)=>(i.length&&(p.moveTo(s*i[0],s*i[1]),i.slice(2).forEach((x,j)=>j%2||p.lineTo(s*x,s*i[j+3]))),p),new Path2D)}
