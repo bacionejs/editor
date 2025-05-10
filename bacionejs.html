@@ -968,6 +968,86 @@ function gameprograms(){
 
 
 
+function defense(){
+let score=0,hitred,snd=L.Sound(),c=L.canvas(),blue=Blue(),red=Red();addEventListener("click",blue.shoot);
+(function animation(){c.black();blue.update();red.update();blue.draw();red.draw();requestAnimationFrame(animation);})();
+
+function Blue(){
+let blues=[],radius=W/15,speed=(W/FPS/2);
+function shoot({pageX:tx,pageY:ty}){
+score--;
+snd.rocket();blues.push({state:0,x:W/2,y:W,tx,ty,angle:atan2(ty-W,tx-W/2)});
+}
+function update(){
+blues.filter(o=>o.state==0).forEach(o=>{
+  o.x+=cos(o.angle)*speed;o.y+=sin(o.angle)*speed;
+  if(hypot(o.x-o.tx,o.y-o.ty)<10){
+    snd.explosion();hitred(o.x,o.y,radius);o.state=1;requestAnimationFrame(()=>o.state=2);
+  }
+});
+blues=blues.filter(o=>o.state!=2);
+}
+function draw(){
+blues.forEach(o=>{
+  if(o.state==0){//move
+    c.save();c.translate(o.x,o.y);c.rotate(o.angle+PI/2);c.fillStyle="lime";c.fillRect(-1,-10,2,20);c.restore();
+  }else{         //explode
+    let g=c.createRadialGradient(o.x,o.y,0,o.x,o.y,radius);g.addColorStop(0,"gold");g.addColorStop(1,"black");
+    c.beginPath();c.arc(o.x,o.y,radius,0,PI*2);c.closePath();c.fillStyle=g;c.fill();
+  }
+});
+}
+return {update,draw,shoot};
+}//end blue
+
+function Red(){
+let reds=[],radius=W/50,level=0,speed=0;
+hitred=(x,y,r)=>reds.forEach(o=>{if(hypot(x-o.x,y-o.y)<r){o.state=1;score++;}});
+function update(){
+if(reds.length==0){
+  speed=L.fit(level++,0.8,1.7,30,1);
+  reds=Array.from({length:13},()=>stars(speed,13,radius,W*0.2));
+}
+if(Math.random()<(1/(FPS*9)))reds.push(stars(speed*2,20,radius*1.5,W*0.2));
+reds.forEach(o=>{
+  o.y+=cos(o.angle)*o.speed;o.x+=sin(o.angle)*o.speed;o.rotation+=o.rotationspeed;
+  if(o.x<0)o.x=W;if(o.x>W)o.x=0;if(o.y>W){o.state=1;score--;}
+});
+reds=reds.filter(o=>o.state!=1);
+}
+function draw(){ 
+L.debug("Level "+level+" Score "+score,c,"white");
+reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
+}
+return {update,draw};
+}//end red
+
+function stars(speed,points,radius,at){
+let color=Array.from({length:3},()=>floor(random()*155)+100).reduce((a,v,i)=>a+(i>0?",":"")+v,"rgb(")+")";
+let x=random()*W,y=random()*at;
+let rotation=random()*PI*2,rotationspeed=random()*0.05-0.025;
+let angle=random()*(PI/3)-PI/6,inner=random()*(2/3*radius);
+let path=new Path2D();
+path.moveTo(0,-radius);
+for(let i=1;i<points*2;i++){
+  let r=i%2===0?radius:inner,angle=i*PI/points;
+  let dx=r*sin(angle),dy=-r*cos(angle);
+  path.lineTo(dx,dy);
+}
+path.closePath();
+return {speed,x,y,path,color,angle,rotation,rotationspeed};
+}//end stars
+
+}//end defense
+
+
+
+
+
+
+
+
+
 function ski(){
 let speed=W/FPS/3,os=[],c=L.canvas(),hit;
 c.white();
@@ -1087,82 +1167,6 @@ setTimeout(()=>         ship=rocketnone,200);
 }
 
 }//end marslander
-
-
-
-
-
-
-
-
-
-function defense(){
-let score=0,hitred,snd=L.Sound(),c=L.canvas(),blue=Blue(),red=Red();addEventListener("click",blue.shoot);
-(function animation(){c.black();blue.update();red.update();blue.draw();red.draw();requestAnimationFrame(animation);})();
-
-function Blue(){
-let blues=[],radius=W/15,speed=(W/FPS/2);
-function shoot({pageX:tx,pageY:ty}){
-score--;
-snd.rocket();blues.push({state:0,x:W/2,y:W,tx,ty,angle:atan2(ty-W,tx-W/2)});
-}
-function update(){
-blues.filter(o=>o.state==0).forEach(o=>{
-  o.x+=cos(o.angle)*speed;o.y+=sin(o.angle)*speed;
-  if(hypot(o.x-o.tx,o.y-o.ty)<10){
-    snd.explosion();hitred(o.x,o.y,radius);o.state=1;requestAnimationFrame(()=>o.state=2);
-  }
-});
-blues=blues.filter(o=>o.state!=2);
-}
-function draw(){
-blues.forEach(o=>{
-  if(o.state==0){//move
-    c.save();c.translate(o.x,o.y);c.rotate(o.angle+PI/2);c.fillStyle="lime";c.fillRect(-1,-10,2,20);c.restore();
-  }else{         //explode
-    let g=c.createRadialGradient(o.x,o.y,0,o.x,o.y,radius);g.addColorStop(0,"gold");g.addColorStop(1,"black");
-    c.beginPath();c.arc(o.x,o.y,radius,0,PI*2);c.closePath();c.fillStyle=g;c.fill();
-  }
-});
-}
-return {update,draw,shoot};
-}//end blue
-
-function Red(){
-let reds=[],radius=W/50,speed=0,level=0;
-hitred=(x,y,r)=>reds.forEach(o=>{if(hypot(x-o.x,y-o.y)<r){o.state=1;score++;}});
-function update(){
-if(reds.length==0)speed=L.fit(level++,0.8,1.7,30,1),reds=Array.from({length:13},()=>stars(13,radius,W*0.2));
-reds.forEach(o=>{
-  o.y+=cos(o.angle)*speed;o.x+=sin(o.angle)*speed;o.rotation+=o.rotationspeed;
-  if(o.x<0)o.x=W;if(o.x>W)o.x=0;if(o.y>W){o.state=1;score--;}
-});
-reds=reds.filter(o=>o.state!=1);
-}
-function draw(){ 
-L.debug("Level "+level+" Score "+score,c,"white");
-reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
-}
-return {update,draw};
-}//end red
-
-function stars(points,radius,at){
-let color=Array.from({length:3},()=>floor(random()*155)+100).reduce((a,v,i)=>a+(i>0?",":"")+v,"rgb(")+")";
-let x=random()*W,y=random()*at;
-let rotation=random()*PI*2,rotationspeed=random()*0.05-0.025;
-let angle=random()*(PI/3)-PI/6,inner=random()*(2/3*radius);
-let path=new Path2D();
-path.moveTo(0,-radius);
-for(let i=1;i<points*2;i++){
-  let r=i%2===0?radius:inner,angle=i*PI/points;
-  let dx=r*sin(angle),dy=-r*cos(angle);
-  path.lineTo(dx,dy);
-}
-path.closePath();
-return {x,y,path,color,angle,rotation,rotationspeed};
-}//end stars
-
-}//end defense
 
 
 
