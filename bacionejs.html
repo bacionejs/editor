@@ -1001,28 +1001,30 @@ return {update,draw,shoot};
 }//end blue
 
 function Red(){
-let reds=[],radius=W/50,level=0,speed=0;
+let reds=[],radius=W/50,level=0,speed=0,particles=L.Particles(c);
 hitred=(x,y,r)=>reds.forEach(o=>{if(hypot(x-o.x,y-o.y)<r){o.state=1;score++;}});
 function update(){
 if(reds.length==0){
   speed=L.fit(level++,0.8,1.7,30,1);
-  reds=Array.from({length:13},()=>stars(speed,13,radius,W*0.2));
+  reds=Array.from({length:13},()=>bomb(speed,13,radius,W*0.2));
 }
-if(Math.random()<(1/(FPS*9)))reds.push(stars(speed*2,20,radius*1.5,W*0.2));
+if(random()<(1/(FPS*9)))reds.push(bomb(speed*2,20,radius*1.5,W*0.2));
 reds.forEach(o=>{
   o.y+=cos(o.angle)*o.speed;o.x+=sin(o.angle)*o.speed;o.rotation+=o.rotationspeed;
-  if(o.x<0)o.x=W;if(o.x>W)o.x=0;if(o.y>W){o.state=1;score--;}
+  if(o.x<0)o.x=W;if(o.x>W)o.x=0;if(o.y>W){particles.create(o.x,o.y);o.state=1;score--;}
 });
+particles.update();
 reds=reds.filter(o=>o.state!=1);
 }
 function draw(){ 
 L.debug("Level "+level+" Score "+score,c,"white");
 reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
+particles.draw();
 }
 return {update,draw};
 }//end red
 
-function stars(speed,points,radius,at){
+function bomb(speed,points,radius,at){
 let color=Array.from({length:3},()=>floor(random()*155)+100).reduce((a,v,i)=>a+(i>0?",":"")+v,"rgb(")+")";
 let x=random()*W,y=random()*at;
 let rotation=random()*PI*2,rotationspeed=random()*0.05-0.025;
@@ -1036,7 +1038,16 @@ for(let i=1;i<points*2;i++){
 }
 path.closePath();
 return {speed,x,y,path,color,angle,rotation,rotationspeed};
-}//end stars
+}//end bomb
+
+
+
+
+
+
+
+
+
 
 }//end defense
 
@@ -1383,6 +1394,34 @@ return {
 }
 }
 
+function Particles(c){
+let list=[],life=FPS;
+return {
+create(x,y){
+for(let i=0;i<100;i++){
+  let a=random()*6.28,s=random()*4+1;
+  list.push({x,y,vx:cos(a)*s,vy:sin(a)*s,life});
+}
+},
+update(){
+list=list.filter(p=>p.life-->0);
+for(let p of list){
+  p.x+=p.vx;
+  p.y+=p.vy;
+  p.vy+=0.1;
+}
+},
+draw(){
+for(let p of list){
+  c.fillStyle=`rgba(255,${random()*255},0,${p.life/60})`;
+  c.beginPath();
+  c.arc(p.x,p.y,2,0,6.28);
+  c.fill();
+}
+}
+};
+}
+
 function canvas(font=12,iconstart=0){
 let c=element("canvas");
 c.width=c.height=W;
@@ -1416,7 +1455,7 @@ function fit(x,start,asymptote,x2,y2){return asymptote-(asymptote-start)*((asymp
 function debug(v,c,color="black",size=10){let f=c.font;c.font=size+"px monospace";c.fillStyle=color;c.fillText(v,W/2,10);c.font=f;}
 function element(e){return document.body.appendChild(document.createElement(e));}
 
-return {RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,fit,element};
+return {Particles,RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,fit,element};
 
 };//end library
 
