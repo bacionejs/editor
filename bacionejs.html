@@ -987,14 +987,18 @@ return {update,draw,shoot};
 
 function Red(){
 let reds=[],radius=W/50,level=0,speed=0;
+let difficulty=L.Difficulty({start:0.8,end:1.7,at:30,be:1});
 hitred=(x,y,r)=>{
 for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
   if(hypot(x-o.x,y-o.y)<r){ snd.explosion(); particles.create(o.x,o.y); reds.splice(i,1); score++; }
 }
 }
 function update(){
-if(reds.length==0){speed=L.fit(level++,0.8,1.7,30,1);reds=Array.from({length:13},()=>bomb(speed,13,radius,W*0.2));}
-if(random()<(1/(FPS*9)))reds.push(bomb(speed*2,20,radius*1.5,W*0.2));
+if(reds.length==0){
+  speed=difficulty(level++);
+  reds=Array.from({length:13},()=>bomb(speed,13,radius,W*0.2));
+}
+if(random()<(1/(FPS*9)))reds.push(bomb(speed*2,3,radius,W*0.2));
 for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
   o.y+=cos(o.angle)*o.speed;o.x+=sin(o.angle)*o.speed;o.rotation+=o.rotationspeed;
   if(o.x<0)o.x=W;if(o.x>W)o.x=0;
@@ -1002,7 +1006,7 @@ for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
 }
 }
 function draw(){
-L.debug("Level "+level+" Score "+score,c,"white");
+L.debug(" Level "+level+" Score "+score,c,"white");
 reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
 }
 return {update,draw};
@@ -1426,11 +1430,18 @@ function rnd(b,a=0){return floor(random()*(b-a))+a;}
 function gradient(c,b,h,a){let g=c.createLinearGradient(0,b,0,h);a.forEach(e=>g.addColorStop(...e));return g;}
 function vertices(a){return a.flatMap((_,i)=>a[i+2]-2*a[i+1]+a[i]?[i+1,a[i+1]]:[]);}
 function shape(a,s=1){return a.reduce((p,i)=>(i.length&&(p.moveTo(s*i[0],s*i[1]),i.slice(2).forEach((x,j)=>j%2||p.lineTo(s*x,s*i[j+3]))),p),new Path2D)}
-function fit(x,start,asymptote,x2,y2){return asymptote-(asymptote-start)*((asymptote-y2)/(asymptote-start))**(x/x2);}
+
+function Difficulty(p){
+let start=p.start,end=p.end,at=p.at,be=p.be;
+return function(x){
+  return end-(end-start)*((end-be)/(end-start))**(x/at);
+}
+}
+
 function debug(v,c,color="black",size=10){let f=c.font;c.font=size+"px monospace";c.fillStyle=color;c.fillText(v,W/2,10);c.font=f;}
 function element(e){return document.body.appendChild(document.createElement(e));}
 
-return {Particles,RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,fit,element};
+return {Particles,RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,Difficulty,element};
 
 };//end library
 
