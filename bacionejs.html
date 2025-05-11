@@ -1005,8 +1005,10 @@ path.closePath();
 return {speed,x,y,path,color,angle,rotation,rotationspeed};
 }
 function update(){
-if(reds.length==0){ speed=difficulty(level++); reds=Array.from({length:13},()=>bomb(speed,13,radius,W*0.2)); }
-if(random()<(1/(FPS*9)))reds.push(bomb(speed*2,3,radius,W*0.2));
+if(reds.length==0 && !Red.spawning){ Red.spawning = true;
+  setTimeout(()=>{ speed = difficulty(level++); reds = Array.from({length:13},()=>bomb(speed,13,radius,W*0.2)); Red.spawning = false; }, 2000);
+}
+if(random()<(1/(FPS*9)) && !Red.spawning)reds.push(bomb(speed*2,3,radius,W*0.2));
 for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
   o.y+=cos(o.angle)*o.speed;o.x+=sin(o.angle)*o.speed;o.rotation+=o.rotationspeed;
   if(o.x<0)o.x=W;if(o.x>W)o.x=0; if(o.y>W){ particles.create(o.x,o.y); reds.splice(i,1); score--; }
