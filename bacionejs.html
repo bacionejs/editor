@@ -969,12 +969,13 @@ function gameprograms(){
 
 
 function defense(){
-let score=0,hitred,snd=L.Sound(),c=L.canvas(),particles=L.Particles(c),blue=Blue(),red=Red();addEventListener("click",blue.shoot);
-(function animation(){c.black();blue.update();red.update();particles.update();blue.draw();red.draw();particles.draw();requestAnimationFrame(animation);})();
+let score=0,hitred,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
+(function animation(){c.black();os.forEach(o=>o.update());os.forEach(o=>o.draw());requestAnimationFrame(animation);})();
 
 function Blue(){
 let blues=[],radius=W/15,speed=(W/FPS/2);
 function shoot({pageX:tx,pageY:ty}){ snd.rocket(); blues.push({state:0,x:W/2,y:W,tx,ty,angle:atan2(ty-W,tx-W/2)}); score--; }
+addEventListener("click",shoot);
 function update(){
 for(let i=blues.length-1;i>=0;i--){ let o=blues[i];
   o.x+=cos(o.angle)*speed;o.y+=sin(o.angle)*speed;
@@ -982,24 +983,21 @@ for(let i=blues.length-1;i>=0;i--){ let o=blues[i];
 }
 }
 function draw(){ blues.forEach(o=>{ c.save();c.translate(o.x,o.y);c.rotate(o.angle+PI/2);c.fillStyle="lime";c.fillRect(-1,-10,2,20);c.restore(); }); }
-return {update,draw,shoot};
+return {update,draw};
 }//end blue
 
 function Red(){
-let reds=[],radius=W/50,level=0,speed=0;
+let reds=[],radius=W/50,level=0,speed=0,particles=L.Particles(c);
 let difficulty=L.Difficulty({start:0.8,end:1.7,at:30,be:1});
 hitred=(x,y,r)=>{
-for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
-  if(hypot(x-o.x,y-o.y)<r){ snd.explosion(); particles.create(o.x,o.y); reds.splice(i,1); score++; }
-}
+  for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
+    if(hypot(x-o.x,y-o.y)<r){ snd.explosion(); particles.create(o.x,o.y); reds.splice(i,1); score++; }
+  }
 }
 function bomb(speed,points,radius,at){
 let color=Array.from({length:3},()=>floor(random()*155)+100).reduce((a,v,i)=>a+(i>0?",":"")+v,"rgb(")+")";
-let x=random()*W,y=random()*at;
-let rotation=random()*PI*2,rotationspeed=random()*0.05-0.025;
-let angle=random()*(PI/3)-PI/6,inner=random()*(2/3*radius);
-let path=new Path2D();
-path.moveTo(0,-radius);
+let x=random()*W,y=random()*at; let rotation=random()*PI*2,rotationspeed=random()*0.05-0.025; let angle=random()*(PI/3)-PI/6,inner=random()*(2/3*radius);
+let path=new Path2D(); path.moveTo(0,-radius);
 for(let i=1;i<points*2;i++){
   let r=i%2===0?radius:inner,angle=i*PI/points;
   let dx=r*sin(angle),dy=-r*cos(angle);
@@ -1007,7 +1005,7 @@ for(let i=1;i<points*2;i++){
 }
 path.closePath();
 return {speed,x,y,path,color,angle,rotation,rotationspeed};
-}//end bomb
+}
 function update(){
 if(reds.length==0){
   speed=difficulty(level++);
@@ -1019,10 +1017,12 @@ for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
   if(o.x<0)o.x=W;if(o.x>W)o.x=0;
   if(o.y>W){ particles.create(o.x,o.y); reds.splice(i,1); score--; }
 }
+particles.update();
 }
 function draw(){
 L.debug(" Level "+level+" Score "+score,c,"white");
 reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
+particles.draw();
 }
 return {update,draw};
 }//end red
