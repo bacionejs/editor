@@ -973,12 +973,12 @@ let score=0,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
 (function animation(){c.black();os.forEach(o=>o.update());os.forEach(o=>o.draw());requestAnimationFrame(animation);})();
 
 function Blue(){
-let blues=[],radius=W/15,speed=(W/FPS/2);
+let blues=[],speed=(W/FPS/2);
 addEventListener("click",function shoot({pageX:tx,pageY:ty}){ snd.rocket(); blues.push({state:0,x:W/2,y:W,tx,ty,angle:atan2(ty-W,tx-W/2)}); score--; });
 function update(){
 for(let i=blues.length-1;i>=0;i--){ let o=blues[i];
   o.x+=cos(o.angle)*speed;o.y+=sin(o.angle)*speed;
-  if(hypot(o.x-o.tx,o.y-o.ty)<10){ hit(o.x,o.y,radius); blues.splice(i,1); }
+  if(hypot(o.x-o.tx,o.y-o.ty)<10){ hit(o.x,o.y); blues.splice(i,1); }
 }
 }
 function draw(){ blues.forEach(o=>{ c.save();c.translate(o.x,o.y);c.rotate(o.angle+PI/2);c.fillStyle="lime";c.fillRect(-1,-10,2,20);c.restore(); }); }
@@ -987,9 +987,9 @@ return {update,draw};
 
 function Red(){
 let reds=[],radius=W/50,level=0,speed=0,particles=L.Particles(c),difficulty=L.Difficulty({start:0.8,end:1.7,at:30,be:1});
-hit=(x,y,r)=>{
+hit=(x,y)=>{
   for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
-    if(hypot(x-o.x,y-o.y)<r){ snd.explosion(); particles.create(o.x,o.y); reds.splice(i,1); score++; }
+    if(hypot(x-o.x,y-o.y)<radius*3){ snd.explosion(); particles.create(o.x,o.y); reds.splice(i,1); score++; }
   }
 }
 function bomb(speed,points,radius,at){
