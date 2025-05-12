@@ -990,9 +990,10 @@ let reds=[],radius=W/50,level=0,speed=0,particles=L.Particles(c),start=W/20/FPS,
 hit=(x,y)=>{
   for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
     if(hypot(x-o.x,y-o.y)<radius*3){ 
-      snd.explosion(); particles.create(o.x,o.y); reds.splice(i,1); 
+      snd.explosion(); particles.create(o.x,o.y);
       if(o.speed>speed){score+=2}else{score+=1;} 
       if(score>high.score)high={speed,score};
+      reds.splice(i,1); 
     }
   }
 }
