@@ -989,7 +989,11 @@ function Red(){
 let reds=[],radius=W/50,level=0,speed=0,particles=L.Particles(c),start=W/20/FPS,difficulty=L.Difficulty({start,end:start*2,at:10,be:start*1.5});
 hit=(x,y)=>{
   for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
-    if(hypot(x-o.x,y-o.y)<radius*3){ snd.explosion(); particles.create(o.x,o.y); reds.splice(i,1); if(o.speed>speed){score+=2}else{score+=1;} if(score>high.score)high={speed,score};}
+    if(hypot(x-o.x,y-o.y)<radius*3){ 
+      snd.explosion(); particles.create(o.x,o.y); reds.splice(i,1); 
+      if(o.speed>speed){score+=2}else{score+=1;} 
+      if(score>high.score)high={speed,score};
+    }
   }
 }
 function bomb(s){
