@@ -969,7 +969,7 @@ function gameprograms(){
 
 
 function defense(){
-let score=0,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
+let score=0,high={speed:0,score:0},hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
 (function animation(){c.black();os.forEach(o=>o.update());os.forEach(o=>o.draw());requestAnimationFrame(animation);})();
 
 function Blue(){
@@ -986,37 +986,41 @@ return {update,draw};
 }//end blue
 
 function Red(){
-let reds=[],radius=W/50,level=0,speed=0,particles=L.Particles(c),difficulty=L.Difficulty({start:0.8,end:1.7,at:30,be:1});
+let reds=[],radius=W/50,level=0,speed=0,particles=L.Particles(c),start=W/20/FPS,difficulty=L.Difficulty({start,end:start*2,at:10,be:start*1.5});
 hit=(x,y)=>{
   for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
-    if(hypot(x-o.x,y-o.y)<radius*3){ snd.explosion(); particles.create(o.x,o.y); reds.splice(i,1); score++; }
+    if(hypot(x-o.x,y-o.y)<radius*3){ snd.explosion(); particles.create(o.x,o.y); reds.splice(i,1); score++; if(score>high.score)high={speed,score};}
   }
 }
-function bomb(speed,points,radius,at){
+function bomb(s){
+let at=W*0.2,points,rotationspeed=random()*0.05-0.025;
+if(s==speed){points=13;}else{points=3;rotationspeed*=8}
 let color=Array.from({length:3},()=>floor(random()*155)+100).reduce((a,v,i)=>a+(i>0?",":"")+v,"rgb(")+")";
-let x=random()*W,y=random()*at,rotation=random()*PI*2,rotationspeed=random()*0.05-0.025,angle=random()*(PI/3)-PI/6,inner=random()*(2/3*radius);
+let x=random()*W,y=random()*at,rotation=random()*PI*2,angle=random()*(PI/3)-PI/6,inner=random()*(2/3*radius);
 let path=new Path2D(); path.moveTo(0,-radius);
 for(let i=1;i<points*2;i++){
   let r=i%2===0?radius:inner,angle=i*PI/points;
-  let dx=r*sin(angle),dy=-r*cos(angle);
-  path.lineTo(dx,dy);
+  path.lineTo(r*sin(angle),-r*cos(angle));
 }
 path.closePath();
-return {speed,x,y,path,color,angle,rotation,rotationspeed};
+return {speed:s,x,y,path,color,angle,rotation,rotationspeed};
 }
 function update(){
-if(reds.length==0 && !Red.spawning){ Red.spawning = true;
-  setTimeout(()=>{ speed = difficulty(level++); reds = Array.from({length:13},()=>bomb(speed,13,radius,W*0.2)); Red.spawning = false; }, 2000);
+if(!Red.spawning && reds.length==0){ Red.spawning = true;
+  setTimeout(()=>{ speed = difficulty(level++); reds = Array.from({length:10},()=>bomb(speed)); Red.spawning = false; }, 2000);
 }
-if(random()<(1/(FPS*9)) && !Red.spawning)reds.push(bomb(speed*2,3,radius,W*0.2));
+if(!Red.spawning && random()<(1/(FPS*9)))reds.push(bomb(speed*2));
 for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
-  o.y+=cos(o.angle)*o.speed;o.x+=sin(o.angle)*o.speed;o.rotation+=o.rotationspeed;
+  o.x+=sin(o.angle)*o.speed;o.y+=cos(o.angle)*o.speed;o.rotation+=o.rotationspeed;
   if(o.x<0)o.x=W;if(o.x>W)o.x=0; if(o.y>W){ particles.create(o.x,o.y); reds.splice(i,1); score--; }
 }
 particles.update();
 }
 function draw(){
-L.debug(" Level "+level+" Score "+score,c,"white");
+L.debug(`
+Highest: Speed ${floor(high.speed*FPS)} Score ${high.score}
+Current: Speed ${floor(speed*FPS)} Score ${score}
+`, c, "white");
 reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
 particles.draw();
 }
@@ -1421,11 +1425,6 @@ this.fillStyle=s;
 return cn;
 }
 
-function rnd(b,a=0){return floor(random()*(b-a))+a;}
-function gradient(c,b,h,a){let g=c.createLinearGradient(0,b,0,h);a.forEach(e=>g.addColorStop(...e));return g;}
-function vertices(a){return a.flatMap((_,i)=>a[i+2]-2*a[i+1]+a[i]?[i+1,a[i+1]]:[]);}
-function shape(a,s=1){return a.reduce((p,i)=>(i.length&&(p.moveTo(s*i[0],s*i[1]),i.slice(2).forEach((x,j)=>j%2||p.lineTo(s*x,s*i[j+3]))),p),new Path2D)}
-
 function Difficulty(p){
 let start=p.start,end=p.end,at=p.at,be=p.be;
 return function(x){
@@ -1433,7 +1432,18 @@ return function(x){
 }
 }
 
-function debug(v,c,color="black",size=10){let f=c.font;c.font=size+"px monospace";c.fillStyle=color;c.fillText(v,W/2,10);c.font=f;}
+function debug(v,c,color="black",size=10){
+c.textAlign="left";
+c.fillStyle=color;
+c.font=size+"px monospace";
+let lines=v.split("\n");
+lines.forEach((line,i)=>c.fillText(line,10,10+i*size*1.5));
+}
+
+function rnd(b,a=0){return floor(random()*(b-a))+a;}
+function gradient(c,b,h,a){let g=c.createLinearGradient(0,b,0,h);a.forEach(e=>g.addColorStop(...e));return g;}
+function vertices(a){return a.flatMap((_,i)=>a[i+2]-2*a[i+1]+a[i]?[i+1,a[i+1]]:[]);}
+function shape(a,s=1){return a.reduce((p,i)=>(i.length&&(p.moveTo(s*i[0],s*i[1]),i.slice(2).forEach((x,j)=>j%2||p.lineTo(s*x,s*i[j+3]))),p),new Path2D)}
 function element(e){return document.body.appendChild(document.createElement(e));}
 
 return {Particles,RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,Difficulty,element};
