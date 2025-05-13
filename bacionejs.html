@@ -1026,7 +1026,7 @@ particles.update();
 }
 function draw(){
 L.debug(`
-\uD83D\uDD04 Level ${level} Power ${power}
+\u{1F504} Level ${level} Power ${power}
 `, c, "white");
 reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
 particles.draw();
