@@ -999,7 +999,7 @@ hit=(x,y)=>{
     }
   }
 }
-function bomb(s){
+function bomb(s){ 
 let at=W*0.2,points,rotationspeed=random()*0.05-0.025;
 if(s==speed){points=13;}else{points=3;rotationspeed*=8}
 let color=Array.from({length:3},()=>floor(random()*155)+100).reduce((a,v,i)=>a+(i>0?",":"")+v,"rgb(")+")";
