@@ -974,28 +974,28 @@ let level=0,power=5,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
 
 function Blue(){
 let blues=[],speed=(W/FPS/2);
-addEventListener("click",function shoot({pageX:tx,pageY:ty}){
-  if(tx<100&&ty<50){level=0} else {snd.rocket(); blues.push({state:0,x:W/2,y:W,tx,ty,angle:atan2(ty-W,tx-W/2)}); power--; }
+addEventListener("click",({pageX:x,pageY:y})=>{
+  if(x<100&&y<50){level=0}else{snd.rocket();blues.push({state:0,x:W/2,y:W,tx:x,ty:y,angle:atan2(y-W,x-W/2)});power--; }
 });
 
 function update(){
-for(let i=blues.length-1;i>=0;i--){ let o=blues[i];
+for(let i=blues.length-1;i>=0;i--){let o=blues[i];
   o.x+=cos(o.angle)*speed;o.y+=sin(o.angle)*speed;
-  if(hypot(o.x-o.tx,o.y-o.ty)<10){ hit(o.x,o.y); blues.splice(i,1); }
+  if(hypot(o.x-o.tx,o.y-o.ty)<10){hit(o.x,o.y);blues.splice(i,1);}
 }
 }
-function draw(){ blues.forEach(o=>{ c.save();c.translate(o.x,o.y);c.rotate(o.angle+PI/2);c.fillStyle="lime";c.fillRect(-1,-10,2,20);c.restore(); }); }
+function draw(){blues.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.angle+PI/2);c.fillStyle="lime";c.fillRect(-1,-10,2,20);c.restore();});}
 return {update,draw};
 }//end blue
 
 function Red(){
 let reds=[],radius=W/50,particles=L.Particles(c),start=W/20/FPS,difficulty=L.Difficulty({start,end:start*3,at:5,be:start*2}),speed=difficulty(level);
 hit=(x,y)=>{
-  for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
-    if(hypot(x-o.x,y-o.y)<radius*3){ 
-      snd.explosion(); particles.create(o.x,o.y);
-      if(o.speed>speed){power+=2}else{power+=1;} 
-      reds.splice(i,1); 
+  for(let i=reds.length-1;i>=0;i--){let o=reds[i];
+    if(hypot(x-o.x,y-o.y)<radius*3){
+      snd.explosion();particles.create(o.x,o.y);
+      if(o.speed>speed){power+=2}else{power+=1;}
+      reds.splice(i,1);
     }
   }
 }
@@ -1004,7 +1004,7 @@ let at=W*0.2,points,rotationspeed=random()*0.05-0.025;
 if(s==speed){points=13;}else{points=3;rotationspeed*=8}
 let color=Array.from({length:3},()=>floor(random()*155)+100).reduce((a,v,i)=>a+(i>0?",":"")+v,"rgb(")+")";
 let x=random()*W,y=random()*at,rotation=random()*PI*2,angle=random()*(PI/3)-PI/6,inner=random()*(2/3*radius);
-let path=new Path2D(); path.moveTo(0,-radius);
+let path=new Path2D();path.moveTo(0,-radius);
 for(let i=1;i<points*2;i++){
   let r=i%2===0?radius:inner,angle=i*PI/points;
   path.lineTo(r*sin(angle),-r*cos(angle));
@@ -1013,20 +1013,20 @@ path.closePath();
 return {speed:s,x,y,path,color,angle,rotation,rotationspeed};
 }
 function update(){
-if(!Red.spawning && (reds.length==0 || level==0)){ Red.spawning = true; let delay=2000; if(level==0){delay=0;power=5;}
-  setTimeout(()=>{ if(power>0){speed = difficulty(level++)}; reds = Array.from({length:10},()=>bomb(speed)); Red.spawning = false; }, delay);
+if(!Red.spawning && (reds.length==0 || level==0)){Red.spawning=true;let delay=2000;if(level==0){delay=0;power=5;}
+  setTimeout(()=>{if(power>0){speed=difficulty(level++)};reds=Array.from({length:10},()=>bomb(speed));Red.spawning=false;},delay);
 }
 if(!Red.spawning && random()<(1/(FPS*9)))reds.push(bomb(speed*2));
-for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
+for(let i=reds.length-1;i>=0;i--){let o=reds[i];
   o.x+=sin(o.angle)*o.speed;o.y+=cos(o.angle)*o.speed;o.rotation+=o.rotationspeed;
-  if(o.x<0)o.x=W;if(o.x>W)o.x=0; if(o.y>W){ particles.create(o.x,o.y); reds.splice(i,1); power--; }
+  if(o.x<0)o.x=W;if(o.x>W)o.x=0;if(o.y>W){particles.create(o.x,o.y);reds.splice(i,1);power--;}
 }
 particles.update();
 }
 function draw(){
 L.debug(`
 \u{1F504} Level ${level} Power ${power}
-`, c, "white");
+`,c,"white");
 reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
 particles.draw();
 }
