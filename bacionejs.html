@@ -969,12 +969,16 @@ function gameprograms(){
 
 
 function defense(){
-let score=0,high={speed:0,score:0},hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
+let level=0,power=5,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
 (function animation(){c.black();os.forEach(o=>o.update());os.forEach(o=>o.draw());requestAnimationFrame(animation);})();
 
 function Blue(){
 let blues=[],speed=(W/FPS/2);
-addEventListener("click",function shoot({pageX:tx,pageY:ty}){ snd.rocket(); blues.push({state:0,x:W/2,y:W,tx,ty,angle:atan2(ty-W,tx-W/2)}); score--; });
+addEventListener("click",function shoot({pageX:tx,pageY:ty}){
+  if (tx <  100 && ty < 50) { level = 0; power = 5; } 
+  else {snd.rocket(); blues.push({state:0,x:W/2,y:W,tx,ty,angle:atan2(ty-W,tx-W/2)}); power--; }
+});
+
 function update(){
 for(let i=blues.length-1;i>=0;i--){ let o=blues[i];
   o.x+=cos(o.angle)*speed;o.y+=sin(o.angle)*speed;
@@ -986,13 +990,12 @@ return {update,draw};
 }//end blue
 
 function Red(){
-let reds=[],radius=W/50,level=0,speed=0,particles=L.Particles(c),start=W/20/FPS,difficulty=L.Difficulty({start,end:start*2,at:10,be:start*1.5});
+let reds=[],radius=W/50,particles=L.Particles(c),start=W/20/FPS,difficulty=L.Difficulty({start,end:start*3,at:5,be:start*2}),speed=difficulty(level);
 hit=(x,y)=>{
   for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
     if(hypot(x-o.x,y-o.y)<radius*3){ 
       snd.explosion(); particles.create(o.x,o.y);
-      if(o.speed>speed){score+=2}else{score+=1;} 
-      if(score>high.score)high={speed,score};
+      if(o.speed>speed){power+=2}else{power+=1;} 
       reds.splice(i,1); 
     }
   }
@@ -1011,20 +1014,20 @@ path.closePath();
 return {speed:s,x,y,path,color,angle,rotation,rotationspeed};
 }
 function update(){
-if(!Red.spawning && reds.length==0){ Red.spawning = true;
-  setTimeout(()=>{ speed = difficulty(level++); reds = Array.from({length:10},()=>bomb(speed)); Red.spawning = false; }, 2000);
+if(!Red.spawning && (reds.length==0 || level==0)){ Red.spawning = true;
+  setTimeout(()=>{ if(power>0){speed = difficulty(level++)}; reds = Array.from({length:10},()=>bomb(speed)); Red.spawning = false; }, 2000);
 }
 if(!Red.spawning && random()<(1/(FPS*9)))reds.push(bomb(speed*2));
 for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
   o.x+=sin(o.angle)*o.speed;o.y+=cos(o.angle)*o.speed;o.rotation+=o.rotationspeed;
-  if(o.x<0)o.x=W;if(o.x>W)o.x=0; if(o.y>W){ particles.create(o.x,o.y); reds.splice(i,1); score--; }
+  if(o.x<0)o.x=W;if(o.x>W)o.x=0; if(o.y>W){ particles.create(o.x,o.y); reds.splice(i,1); power--; }
 }
 particles.update();
 }
 function draw(){
 L.debug(`
-Highest: Speed ${floor(high.speed*FPS)} Score ${high.score}
-Current: Speed ${floor(speed*FPS)} Score ${score}
+    Restart
+Level ${level} Power ${power}
 `, c, "white");
 reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
 particles.draw();
