@@ -1014,8 +1014,8 @@ path.closePath();
 return {speed:s,x,y,path,color,angle,rotation,rotationspeed};
 }
 function update(){
-if(!Red.spawning && (reds.length==0 || level==0)){ Red.spawning = true;
-  setTimeout(()=>{ if(power>0){speed = difficulty(level++)}; reds = Array.from({length:10},()=>bomb(speed)); Red.spawning = false; }, 2000);
+if(!Red.spawning && (reds.length==0 || level==0)){ Red.spawning = true;let delay = (level == 0) ? 0 : 2000;
+  setTimeout(()=>{ if(power>0){speed = difficulty(level++)}; reds = Array.from({length:10},()=>bomb(speed)); Red.spawning = false; }, delay);
 }
 if(!Red.spawning && random()<(1/(FPS*9)))reds.push(bomb(speed*2));
 for(let i=reds.length-1;i>=0;i--){ let o=reds[i];
