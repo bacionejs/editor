@@ -969,13 +969,15 @@ function gameprograms(){
 
 
 function defense(){
-let level=0,power=5,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
+let reset=false,level=0,power=5,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
+let r=L.element("input"); r.type="range"; r.value=0; r.style.width="100%";
+r.addEventListener("input",e=>{reset=true;level=e.target.value;});
 (function animation(){c.black();os.forEach(o=>o.update());os.forEach(o=>o.draw());requestAnimationFrame(animation);})();
 
 function Blue(){
 let blues=[],speed=(W/FPS/2);
 addEventListener("click",({pageX:x,pageY:y})=>{
-  if(y<50 && x<100){level=0}else{snd.rocket();blues.push({state:0,x:W/2,y:W,tx:x,ty:y,angle:atan2(y-W,x-W/2)});power--;}
+  snd.rocket();blues.push({state:0,x:W/2,y:W,tx:x,ty:y,angle:atan2(y-W,x-W/2)});power--;
 });
 
 function update(){
@@ -989,7 +991,7 @@ return {update,draw};
 }//end blue
 
 function Red(){
-let reds=[],spawning,radius=W/50,particles=L.Particles(c),start=W/20/FPS,difficulty=L.Difficulty({start,end:start*3,at:5,be:start*2}),speed=difficulty(level);
+let reds=[],spawning,radius=W/50,particles=L.Particles(c),difficulty=L.Difficulty({start:W/30/FPS,end:W/5/FPS,at:10,be:W/15/FPS}),speed=difficulty(level);
 hit=(x,y)=>{
   for(let i=reds.length-1;i>=0;i--){let o=reds[i];
     if(hypot(x-o.x,y-o.y)<radius*3){
@@ -1013,14 +1015,16 @@ path.closePath();
 return {speed:s,x,y,path,color,angle,rotation,rotationspeed};
 }
 function update(){
-if(!spawning && (reds.length==0 || level==0)){
-  spawning=true;let delay=2000;
-  if(level==0){delay=0;power=5;}
+if(!spawning && (reds.length==0 || level==0 || reset==true)){
+  spawning=true;
   setTimeout(()=>{
-    if(power>0){speed=difficulty(level++);}
+    if(power>0 && !reset){level++;r.value=level;}
     if(power<5){power=5;};
-    reds=Array.from({length:10},()=>bomb(speed));spawning=false;
-  },delay);
+    speed=difficulty(level);
+    reds=Array.from({length:10},()=>bomb(speed));
+    spawning=false;
+    reset=false;
+  },2000);
 }
 if(!spawning && random()<(1/(FPS*9)))reds.push(bomb(speed*2));
 for(let i=reds.length-1;i>=0;i--){let o=reds[i];
@@ -1031,8 +1035,9 @@ particles.update();
 }
 function draw(){
 L.debug(`
-\u{1F504} Level ${level} Power ${power}
+Level ${level} Power ${power}
 `,c,"white");
+//Level ${level} Power ${power} Speed ${speed}
 reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
 particles.draw();
 }
