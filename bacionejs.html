@@ -970,8 +970,8 @@ function gameprograms(){
 
 function defense(){
 let reset=true,level=1,power=5,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
-let levelbar = Object.assign(L.element("input"), {type:"range",value:1,min:1}); levelbar.style.width="100%";
-levelbar.addEventListener("input",e=>{level=e.target.value;reset=true;});
+let levelbar = Object.assign(L.element("input"), {type:"range",value:1,min:1,step:0.5}); levelbar.style.width="100%";
+levelbar.addEventListener("input",e=>{level=(e.target.value-0.5)*2;reset=true;});
 (function animation(){c.black();os.forEach(o=>o.update());os.forEach(o=>o.draw());requestAnimationFrame(animation);})();
 
 function Blue(){
@@ -991,7 +991,7 @@ return {update,draw};
 }//end blue
 
 function Red(){
-let reds=[],spawning,radius=W/50,particles=L.Particles(c),ppf=W/FPS,difficulty=L.Difficulty({start:ppf/30,end:ppf/5,at:20,be:ppf/15}),speed=difficulty(level);
+let reds=[],spawning,radius=W/50,particles=L.Particles(c),ppf=W/FPS,difficulty=L.Difficulty({start:ppf/30,end:ppf/5,at:20,be:ppf/15}),speed;
 hit=(x,y)=>{
   for(let i=reds.length-1;i>=0;i--){let o=reds[i];
     if(hypot(x-o.x,y-o.y)<radius*3){
@@ -1018,7 +1018,7 @@ function update(){
 if(!spawning && (reds.length==0 || reset==true)){
   spawning=true;
   setTimeout(()=>{
-    if(power>0 && !reset){level++;levelbar.value=level;}
+    if(power>=0 && !reset){level++;levelbar.value=level;}
     if(power<5){power=5;};
     speed=difficulty(level);
     reds=Array.from({length:10},()=>bomb(speed));
