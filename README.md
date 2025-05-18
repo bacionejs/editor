@@ -9,7 +9,7 @@ Designed for those who [don't have a computer](https://www.google.com/search?q=p
 ## Installation
 - Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)
 - Open your file manager
-- Tap `bacionejs.html` to launch in Chrome
+- Click `bacionejs.html` to launch in Chrome
 - Click `Run` to play the game which contains the cursor
 
 ## Features
