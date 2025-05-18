@@ -1023,7 +1023,7 @@ function update(){
 if(!spawning && (reds.length==0 || reset==true)){
   spawning=true;
   setTimeout(()=>{
-    if(power>=0 && !reset){level++;slider.value=level;}
+    if(power>0 && !reset){level++;slider.value=level;}
     if(power<5){power=5;};
     speed=difficulty(level);
     reds=Array.from({length:10},()=>bomb(speed));
