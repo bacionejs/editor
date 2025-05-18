@@ -13,11 +13,9 @@ Designed for those who [don't have a computer](https://www.google.com/search?q=p
 - Click `Run` to play the game which contains the cursor
 
 ## Features
-- **Run**: Instant code execution  
-- **Save**: Generates a new timestamped file  
-- **Editing**: Cut, copy, paste, undo, redo  
+- **Run**: Instant code execution    
+- **Editing**: Save, cut, copy, paste, undo, redo, find/replace  
 - **Code Assistance**: Auto-complete, auto-indent, auto-comment  
-- **Rename**: Find/Replace  
 - **Themes**: Light and dark mode syntax highlighting  
 - **Highlight**: Highlights all instances of the current word  
 - **Debugging**: Displays message and positions the cursor at the error  
