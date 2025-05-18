@@ -13,10 +13,10 @@ let about=`
 
 <b>Install</b>
 <ol style=margin-left:30>\
-<li>download <a href=https://github.com/bacionejs/editor>bacionejs.html</a>
-<li>open your file manager
-<li>click bacionejs.html to run in your Chrome browser
-<li>click Run to play the Ski game
+<li>Download <a href=https://github.com/bacionejs/editor>bacionejs.html</a>
+<li>Open your file manager
+<li>Click bacionejs.html to launch in Chrome
+<li>Click Run to play the game which contains the cursor
 </ol>
 `;
 
@@ -970,8 +970,8 @@ function gameprograms(){
 
 function defense(){
 let reset=true,level=1,power=5,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
-let levelbar = Object.assign(L.element("input"), {type:"range",value:1,min:1,step:0.5}); levelbar.style.width="100%";
-levelbar.addEventListener("input",e=>{level=(e.target.value-0.5)*2;reset=true;});
+let slider = Object.assign(L.element("input"), {type:"range",value:1,min:1,step:0.5}); slider.style.width="100%";
+slider.addEventListener("input",e=>{level=(e.target.value-0.5)*2;reset=true;});
 (function animation(){c.black();os.forEach(o=>o.update());os.forEach(o=>o.draw());requestAnimationFrame(animation);})();
 
 function Blue(){
@@ -1018,7 +1018,7 @@ function update(){
 if(!spawning && (reds.length==0 || reset==true)){
   spawning=true;
   setTimeout(()=>{
-    if(power>=0 && !reset){level++;levelbar.value=level;}
+    if(power>=0 && !reset){level++;slider.value=level;}
     if(power<5){power=5;};
     speed=difficulty(level);
     reds=Array.from({length:10},()=>bomb(speed));
