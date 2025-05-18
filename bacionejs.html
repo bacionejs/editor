@@ -932,9 +932,10 @@ canvas.fill(L.shape([[x,y,...],...],scale))
 <b>Pixel to Vector</b>
 canvas.fill(L.shape(L.vertices(pixels)))
 </p><p>
-<b>Fit</b>
-L.fit(x, start, asymptote, x2, y2)
-Use the <a href=https://bacionejs.github.io/difficultyalgorithm>Fit</a> algorithm to smoothly adjust game difficulty.
+<b>Difficulty</b>
+difficulty=L.Difficulty({start,end,at,be})
+difficulty(level++)
+Use the <a href=https://bacionejs.github.io/difficultyalgorithm>Difficulty</a> algorithm to smoothly adjust game difficulty.
 </p><p>
 <b>Game Controls</b>
 Ski - Click anywhere.
