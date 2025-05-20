@@ -974,9 +974,9 @@ function gameprograms(){
 
 
 function defense(){
-let reset=true,level=1,power=5,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
-let slider = Object.assign(L.element("input"), {type:"range",value:1,min:1,step:0.5}); slider.style.width="100%";
-slider.addEventListener("input",e=>{level=(e.target.value-0.5)*2;reset=true;});
+let reset=true,power=5,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
+let level = Object.assign(L.element("input"), {type:"range",value:1,min:1,max:200}); level.style.width="100%";
+level.addEventListener("input",()=>reset=true);
 (function animation(){c.black();os.forEach(o=>o.update());os.forEach(o=>o.draw());requestAnimationFrame(animation);})();
 
 function Blue(){
@@ -1023,9 +1023,9 @@ function update(){
 if(!spawning && (reds.length==0 || reset==true)){
   spawning=true;
   setTimeout(()=>{
-    if(power>0 && !reset){level++;slider.value=level;}
+    if(power>0 && !reset){level.value++;}
     if(power<5){power=5;};
-    speed=difficulty(level);
+    speed=difficulty(level.value);
     reds=Array.from({length:10},()=>bomb(speed));
     spawning=false;
     reset=false;
@@ -1040,7 +1040,7 @@ particles.update();
 }
 function draw(){
 L.debug(`
-Level ${level} Power ${power}
+Level ${level.value} Power ${power}
 `,c,"white");
 reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
 particles.draw();
