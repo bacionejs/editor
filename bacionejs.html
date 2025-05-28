@@ -978,7 +978,7 @@ addEventListener("click",move,false);
 let snd=L.Sound();
 let cb=L.canvas(),c=L.canvas();
 let p=floor(W/20);
-let mountain=[floor(W*0.70)];
+let mountain=[];
 let landed,close,bad,played=false;
 let fuelstart=20,fuel=fuelstart;
 let my,lm,x,y,xx,yy;
@@ -992,9 +992,7 @@ let ship=rocketnone;
 init();
 
 function init(){
-let slope;
-let mx2=0;
-let lx=L.rnd(W-p);
+let lx=L.rnd(W-p),min=W*0.2,max=W*0.8;
 lm=lx+(p/2);
 played&&=((fuel=fuel<0?fuelstart:fuel>120?120:fuelstart+fuel),false);
 ship=rocketnone;
@@ -1003,17 +1001,10 @@ xx=0.0;yy=yt;
 cb.fillStyle="black";cb.fillRect(0,0,W,W);
 cb.fillStyle="white";
 for(let stars=W*W/2000;stars>0;stars--){cb.fillRect(L.rnd(W),L.rnd(W),1,1);}
-for(let mx=0;mx<W;mx++){
-  if(mx==lx){
-    slope=0;
-    mx2=lx+p;
-  }else if(mx==mx2){
-    slope=L.rnd(5,1)*(random()<0.5?-1:1);
-    mx2+=L.rnd(floor(W/10),floor(W/20));
-  }
-  if((mountain[mx]+slope)>(W-p) || (mountain[mx]+slope)<p)slope*=-1;
-  mountain[mx+1]=(mountain[mx]+slope);
-}
+for(let i=0;i<=W;i++)mountain[i]=0;
+mountain[0]=mountain[W]=L.rnd(max,min);
+L.terrain(mountain,0,W,W/3,min,max,2);
+for(let i=lx;i<lx+p;i++)mountain[i]=mountain[lx];
 cb.fillStyle=L.gradient(cb,W,-W,[[0,"hsl("+fuel+",100%,20%)"],[0.3,"white"]]);
 cb.fill(L.shape([[W,mountain.at(-1),W,W,0,W,0,mountain[0],...L.vertices(mountain)]]));
 animation();
@@ -1453,6 +1444,17 @@ return function(x){
 }
 }
 
+function terrain(arr, a, b, d, minY, maxY, decay) {
+  if (b - a < 2) return;
+  let m = (a + b) >> 1;
+  let avg = (arr[a] + arr[b]) / 2;
+  let disp = L.rnd(d, -d);
+  let y = avg + disp;
+  arr[m] = Math.max(minY, Math.min(maxY, y));
+  terrain(arr, a, m, d / decay, minY, maxY, decay);
+  terrain(arr, m, b, d / decay, minY, maxY, decay);
+}
+
 function debug(v,c,color="black",size=10){
 c.textAlign="left";
 c.fillStyle=color;
@@ -1467,7 +1469,7 @@ function vertices(a){return a.flatMap((_,i)=>a[i+2]-2*a[i+1]+a[i]?[i+1,a[i+1]]:[
 function shape(a,s=1){return a.reduce((p,i)=>(i.length&&(p.moveTo(s*i[0],s*i[1]),i.slice(2).forEach((x,j)=>j%2||p.lineTo(s*x,s*i[j+3]))),p),new Path2D)}
 function element(e){return document.body.appendChild(document.createElement(e));}
 
-return {Particles,RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,Difficulty,element};
+return {terrain,Particles,RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,Difficulty,element};
 
 };//end library
 
