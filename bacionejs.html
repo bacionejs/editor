@@ -937,9 +937,14 @@ difficulty=L.Difficulty({start,end,at,be})
 difficulty(level++)
 Use the <a href=https://bacionejs.github.io/difficultyalgorithm>Difficulty</a> algorithm to smoothly adjust game difficulty.
 </p><p>
+<b>Terrain</b>
+L.terrain(arr, minx, maxx, miny, maxy, amplitude, decay)
+</p><p>
 <b>Particles</b>
 particles=L.Particles(canvas)
 particles.create(x,y)
+particles.update()
+particles.draw()
 </p><p>
 <b>Game Controls</b>
 Ski - Click anywhere.
@@ -1074,7 +1079,7 @@ let ship=rocketnone;
 init();
 
 function init(){
-let lx=L.rnd(W-p),min=W*0.2,max=W*0.8;
+let lx=L.rnd(W-p),miny=W*0.2,maxy=W*0.8;
 lm=lx+(p/2);
 played&&=((fuel=fuel<0?fuelstart:fuel>120?120:fuelstart+fuel),false);
 ship=rocketnone;
@@ -1084,8 +1089,8 @@ cb.fillStyle="black";cb.fillRect(0,0,W,W);
 cb.fillStyle="white";
 for(let stars=W*W/2000;stars>0;stars--){cb.fillRect(L.rnd(W),L.rnd(W),1,1);}
 for(let i=0;i<=W;i++)mountain[i]=0;
-mountain[0]=mountain[W]=L.rnd(max,min);
-L.terrain(mountain,0,W,W/3,min,max,2);
+mountain[0]=mountain[W]=L.rnd(maxy,miny);
+L.terrain(mountain,0,W,miny,maxy,W/3,2);
 for(let i=lx;i<lx+p;i++)mountain[i]=mountain[lx];
 cb.fillStyle=L.gradient(cb,W,-W,[[0,"hsl("+fuel+",100%,20%)"],[0.3,"white"]]);
 cb.fill(L.shape([[W,mountain.at(-1),W,W,0,W,0,mountain[0],...L.vertices(mountain)]]));
@@ -1441,15 +1446,15 @@ return function(x){
 }
 }
 
-function terrain(arr, a, b, d, minY, maxY, decay) {
-  if (b - a < 2) return;
-  let m = (a + b) >> 1;
-  let avg = (arr[a] + arr[b]) / 2;
-  let disp = L.rnd(d, -d);
-  let y = avg + disp;
-  arr[m] = Math.max(minY, Math.min(maxY, y));
-  terrain(arr, a, m, d / decay, minY, maxY, decay);
-  terrain(arr, m, b, d / decay, minY, maxY, decay);
+function terrain(arr, minx, maxx, miny, maxy, amplitude, decay) {
+  if (maxx - minx < 2) return;
+  let midx = (minx + maxx) >> 1;
+  let avg = (arr[minx] + arr[maxx]) / 2;
+  let displacement = L.rnd(amplitude, -amplitude);
+  let y = avg + displacement;
+  arr[midx] = Math.max(miny, Math.min(maxy, y));
+  terrain(arr, minx, midx, miny, maxy, amplitude / decay, decay);
+  terrain(arr, midx, maxx, miny, maxy, amplitude / decay, decay);
 }
 
 function debug(v,c,color="black",size=10){
