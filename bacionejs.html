@@ -1036,14 +1036,12 @@ if(!spawning && (reds.length==0 || reset==true)){
 if(!spawning && random()<(1/(FPS*9)))reds.push(bomb(speed*2));
 for(let i=reds.length-1;i>=0;i--){let o=reds[i];
   o.x+=sin(o.angle)*o.speed;o.y+=cos(o.angle)*o.speed;o.rotation+=o.rotationspeed;
-  if(o.x<0)o.x=W;if(o.x>W)o.x=0;if(o.y>W){particles.create(o.x,o.y);reds.splice(i,1);power--;}
+  if(o.x<0)o.x=W;if(o.x>W)o.x=0;if(o.y>W){power--;particles.create(o.x,o.y);reds.splice(i,1);}
 }
 particles.update();
 }
 function draw(){
-L.debug(`
-Level ${level.value} Power ${power}
-`,c,"white");
+L.debug(`\nLevel ${level.value} Power ${power}`,c,"white");
 reds.forEach(o=>{c.save();c.translate(o.x,o.y);c.rotate(o.rotation);c.strokeStyle=o.color;c.stroke(o.path);c.restore();});
 particles.draw();
 }
