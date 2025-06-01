@@ -980,8 +980,7 @@ function gameprograms(){
 
 function defense(){
 let reset=true,power=5,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
-let level = Object.assign(L.element("input"), {type:"range",value:1,min:1,max:200}); level.style.width="100%";
-level.addEventListener("input",()=>reset=true);
+let level = Object.assign(L.element("input"), {type:"range",value:1,min:1,max:200}); level.style.width="100%"; level.addEventListener("input",()=>reset=true);
 (function animation(){c.black();os.forEach(o=>o.update());os.forEach(o=>o.draw());requestAnimationFrame(animation);})();
 
 function Blue(){
