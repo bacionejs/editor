@@ -1256,8 +1256,8 @@ addEventListener("pointerdown",({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
   timeout=setTimeout(()=>{interval=setInterval(()=>{board[y][x]=board[y][x]?board[y][x]-1:12; move();},500);},1000);
 },false);
 addEventListener("pointerup"  ,({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
-clearTimeout(timeout);if(interval){clearInterval(interval);interval=undefined;return;}
-move(x,y);
+  clearTimeout(timeout);if(interval){clearInterval(interval);interval=undefined;return;}
+  move(x,y);
 },false);
 
 let board=[
@@ -1295,17 +1295,14 @@ board.run((x,y)=>{c.icon(board[y][x]||"",x*p+(p*0.5),y*p+(p*0.6));});
 function pairs(){
 addEventListener("click",({pageX:x,pageY:y})=>move(floor(x/p)+floor(y/p)*rows),false);
 let rows=4,p=floor(W/rows),m,found,pair,misses=0;
-let rna=L.RandomArray((rows*rows/2),66);
-let cb=L.canvas(),c=L.canvas(p*0.4,127789);
-cb.white();
-for(let i=0;i<(rows*rows);i++){cb.strokeRect(i%rows*p,floor(i/rows)*p,p,p);}
+let cb=L.canvas();cb.white();for(let i=0;i<(rows*rows);i++){cb.strokeRect(i%rows*p,floor(i/rows)*p,p,p);}
+let c=L.canvas(p*0.4,127789),rna=L.RandomArray((rows*rows/2),66);
 init();
 
 function init(){
 found=[];pair=[];c.clear();misses=0;
 m=rna.next();m=[...m,...m];
-let r,i=m.length;
-while(i-- && ((r=L.rnd(i)),([m[r],m[i]]=[m[i],m[r]])));
+for(let i=m.length-1;i>0;i--){let r=L.rnd(i+1);[m[i],m[r]]=[m[r],m[i]];}
 }
 
 function move(i){
@@ -1316,8 +1313,7 @@ if(pair.length==2){
   else{pair.forEach(v=>c.clearRect(v%rows*p,floor(v/rows)*p,p,p));misses++;}
   pair=[];
 }
-pair.push(i);
-c.icon(m[i],i%rows*p+p*0.5,floor(i/rows)*p+p*0.6);
+pair.push(i);c.icon(m[i],i%rows*p+p*0.5,floor(i/rows)*p+p*0.6);
 }
 
 }//end pairs
