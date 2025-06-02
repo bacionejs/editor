@@ -719,7 +719,7 @@ return e;
 
 function pretty(s){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
-s=s.replace(/</g,'‹');
+s=s.replace(/</g,'\x1F');
 if(T.H!==""){
   let w=T.H;
   w=escapetext(w);
@@ -729,7 +729,7 @@ if(T.H!==""){
 }
 s=c(s,theme.pairs,`[(){}[\\]]`);
 s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
-s=s.replace(/‹/g,'&'+'#60;');
+s=s.replace(/\x1F/g,'&'+'#60;');
 return s;
 }
 
