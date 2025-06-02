@@ -100,17 +100,22 @@ syncpretty();
 }
 })();//end theme
 
-
 let rename=(function(){
 let con=element("div");
 con.style.cssText="z-index:0;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
 let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find);    fb.disabled=true; f.id="find";
 let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace); rb.disabled=true;
-function search(s){if(s==="")return -1;return T.V.slice(T.E).search("\\b"+s+"\\b");}
+function search(s){
+if(s==="")return -1;
+s=escapetext(s);
+if(/\w/.test(s))s="\\b"+s+"\\b";
+return T.V.slice(T.E).search(s);
+}
 function disable(){let d=search(f.value)==-1;fb.disabled=d;rb.disabled=d;}
 function find(){
 let i=search(f.value);if(i==-1)return;
-T.H="\\b"+f.value+"\\b";syncpretty();
+T.H=f.value;
+syncpretty();
 T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
 }
 function replace(){
@@ -124,8 +129,9 @@ if(s===undefined){//popup
   else{con.style.zIndex=0;T.S=T.E;T.focus();}
 }else{//input
   let e=document.activeElement;
-  if(s==="")e.selectionStart--;e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
-  if(e.id=="find"){T.H=e.value===""?"":"\\b"+e.value;syncpretty();disable();}
+  if(s==="")e.selectionStart--;
+  e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
+  if(e.id=="find"){T.H=e.value;syncpretty();disable();}
 }
 }
 })();//end rename
@@ -253,7 +259,7 @@ if(/\w/.test(s[i])){
   T.E=i;
 }
 if(T.S==T.E)return;
-T.H="\\b"+T.V.substring(T.S,T.E)+"\\b";
+T.H=T.V.substring(T.S,T.E);
 syncpretty();
 }
 
@@ -379,6 +385,8 @@ return s.replace(/^\/\/.*\n/gm,"");
 function striplinesfirstlast(s){
 return s.toString().replace(/^.*|.*$/g,"");
 }
+
+function escapetext(text){return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');}
 
 function currentgame(){
 let i=0,s=stripcomments(T.V),ftop,name;
@@ -711,10 +719,17 @@ return e;
 
 function pretty(s){
 let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
-s=s.replace(/</g,'&'+'#60;');
-if(T.H!==""){s=s.replace(RegExp(`(${T.H})`,'g'),`<span style=color:red;background:pink;>$1</span>`);}
+s=s.replace(/</g,'‹');
+if(T.H!==""){
+  let w=T.H;
+  w=escapetext(w);
+  if(document.activeElement.id=="find"){w="\\b"+w;}
+  else if(/\w/.test(w))                {w="\\b"+w+"\\b";}
+  s=s.replace(RegExp(`(${w})`,'g'),`<span style=color:red;background:pink;>$1</span>`);
+}
 s=c(s,theme.pairs,`[(){}[\\]]`);
 s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
+s=s.replace(/‹/g,'&'+'#60;');
 return s;
 }
 
