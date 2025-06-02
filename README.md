@@ -14,7 +14,8 @@ Designed for those who [don't have a computer](https://www.google.com/search?q=p
 
 ## Features
 - **Run**: Instant code execution    
-- **Editing**: Save, cut, copy, paste, undo, redo, find, replace  
+- **Editing**: Save, cut, copy, paste, undo, redo
+- **Search**: find, replace, incremental search
 - **Code Assistance**: Auto-complete, auto-indent, auto-comment  
 - **Themes**: Light and dark mode syntax highlighting  
 - **Highlight**: Highlights all instances of the current word  
