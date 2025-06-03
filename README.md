@@ -16,9 +16,9 @@ Designed for those who [don't have a computer](https://www.google.com/search?q=p
 - **Run**: Instant code execution    
 - **Editing**: Save, cut, copy, paste, undo, redo
 - **Search**: Replace, incremental find, highlight all
-- **Code Assistance**: Auto-complete, auto-indent, auto-comment  
+- **Code Assistance**: Auto-complete, auto-indent, auto-comment
+- **Debugging**: Displays message and positions the cursor at the error
 - **Themes**: Light and dark mode syntax highlighting
-- **Debugging**: Displays message and positions the cursor at the error  
 - **Diff**: Changes since open/save  
 - **Zoom**: Adjust text size  
 - **Fullscreen**: Expand your workspace  
