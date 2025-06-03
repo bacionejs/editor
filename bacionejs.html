@@ -349,10 +349,11 @@ fetch(url).then(r=>r.text()).then(git=>{
 }).catch(alert);
 }
 function diff(a,b,c){
-if(c==undefined){ return(diff(b,a,"<")+"\n"+diff(a,b,">"));}
+if(c===undefined){return diff(b,a,"<")+"\n"+diff(a,b,">");}
 a=stripcomments(a).split("\n");
 b=stripcomments(b).split("\n");
-return b.filter(o=>!a.includes(o))?.join("\n"+c+" ")||c+" no change";
+let lines=b.filter(o=>!a.includes(o));
+return lines.length?lines.map(line=>c+" "+line).join("\n"):c+"no change";
 }
 
 function filecontent(t=T){
