@@ -17,8 +17,7 @@ Designed for those who [don't have a computer](https://www.google.com/search?q=p
 - **Editing**: Save, cut, copy, paste, undo, redo
 - **Search**: Replace, incremental find, highlight all
 - **Code Assistance**: Auto-complete, auto-indent, auto-comment  
-- **Themes**: Light and dark mode syntax highlighting  
-- **Highlight**:   
+- **Themes**: Light and dark mode syntax highlighting
 - **Debugging**: Displays message and positions the cursor at the error  
 - **Diff**: Changes since open/save  
 - **Zoom**: Adjust text size  
