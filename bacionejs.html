@@ -1075,14 +1075,11 @@ return {update,draw};
 
 function marslander(){
 addEventListener("click",move,false);
-let snd=L.Sound();
-let cb=L.canvas(),c=L.canvas();
-let p=floor(W/20);
-let mountain=[];
-let landed,close,bad,played=false;
+let snd=L.Sound(),cb=L.canvas(),c=L.canvas(),p=floor(W/20);
+let landed,close,bad,played=false,mountain;
 let fuelstart=20,fuel=fuelstart;
 let my,lm,x,y,xx,yy;
-let yt=W/FPS/10,yd=yt/3,ya=yd/FPS,yl=yt/(3/2),xv=yt/2/4,xl=xv*2;
+let yt=W/FPS/10,yd=yt/3,ya=yd/FPS,yl=yt/(3/2),xv=yt/2/4;
 let cold=L.gradient(c,0,-p,[[.2,"skyblue"],[.8,"blue"]]);
 let hot =L.gradient(c,0,-p,[[.2,"gold"]   ,[.8,"red"]]);
 let rocketleft =L.shape([[0,0,-1,0,-2,-1,0,-4,2,-1,1,0],[-1.5,0,-2,0,-2,-0.5]],p/4);
@@ -1092,18 +1089,20 @@ let ship=rocketnone;
 init();
 
 function init(){
-let lx=L.rnd(W-p),miny=W*0.2,maxy=W*0.8;
-lm=lx+(p/2);
+let slope,next,mx2=0,lx=L.rnd(W-p);
+mountain=[floor(W*0.70)];lm=lx+(p/2);ship=rocketnone;
 played&&=((fuel=fuel<0?fuelstart:fuel>120?120:fuelstart+fuel),false);
-ship=rocketnone;
-x=L.rnd(W);y=0;
-xx=0.0;yy=yt;
-cb.fillStyle="black";cb.fillRect(0,0,W,W);
-cb.fillStyle="white";
+x=L.rnd(W);y=0;xx=0.0;yy=yt;
+cb.fillStyle="black";cb.fillRect(0,0,W,W);cb.fillStyle="white";
 for(let stars=W*W/2000;stars>0;stars--){cb.fillRect(L.rnd(W),L.rnd(W),1,1);}
-for(let i=0;i<=W;i++)mountain[i]=0;
-mountain[0]=mountain[W]=L.rnd(maxy,miny);
-L.terrain(mountain,0,W,miny,maxy,W/3,2);
+for(let mx=0;mx<W;mx++){
+  if(mx===mx2){
+    slope=L.rnd(5,1)*(random()<0.5?-1:1);
+    mx2+=L.rnd(floor(W/10),floor(W/20));
+  }
+  next=mountain[mx]+slope;if(next>W-p||next<p)slope*=-1;
+  mountain[mx+1]=mountain[mx]+slope;
+}
 for(let i=lx;i<lx+p;i++)mountain[i]=mountain[lx];
 cb.fillStyle=L.gradient(cb,W,-W,[[0,"hsl("+fuel+",100%,20%)"],[0.3,"white"]]);
 cb.fill(L.shape([[W,mountain.at(-1),W,W,0,W,0,mountain[0],...L.vertices(mountain)]]));
@@ -1117,18 +1116,13 @@ my=mountain[floor(x)];
 landed=(y>my);
 close =(y>my-p);
 if(close){yy-=(ya*0.80);xx*=0.98;}
-bad=(yl<yy || xl<abs(xx) || (p/4)<abs(x-lm));
+bad=(yl<yy || abs(x-lm)>p/4);
 if(played && landed && bad){
   fuel-=fuelstart*2;
   snd.explosion();
   ship=L.shape([Array.from({length:40},()=>L.rnd(p*2)-p)]);
 }
-c.resetTransform();
-c.clear();
-c.translate(x,y);
-c.rotate(xx/4);
-c.fillStyle=(bad?hot:cold);
-c.fill(ship);
+c.resetTransform();c.clear();c.translate(x,y);c.rotate(xx/4);c.fillStyle=(bad?hot:cold);c.fill(ship);
 if(landed){setTimeout(init,1000);return;}
 requestAnimationFrame(animation);
 }
