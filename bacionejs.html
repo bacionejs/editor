@@ -1029,10 +1029,7 @@ if(s==speed){points=13;}else{points=3;rotationspeed*=8}
 let color=Array.from({length:3},()=>floor(random()*155)+100).reduce((a,v,i)=>a+(i>0?",":"")+v,"rgb(")+")";
 let x=random()*W,y=random()*at,rotation=random()*PI*2,angle=random()*(PI/3)-PI/6,inner=random()*(2/3*radius);
 let path=new Path2D();path.moveTo(0,-radius);
-for(let i=1;i<points*2;i++){
-  let r=i%2===0?radius:inner,angle=i*PI/points;
-  path.lineTo(r*sin(angle),-r*cos(angle));
-}
+for(let i=1;i<points*2;i++){let r=i%2===0?radius:inner,angle=i*PI/points;path.lineTo(r*sin(angle),-r*cos(angle));}
 path.closePath();
 return {speed:s,x,y,path,color,angle,rotation,rotationspeed};
 }
@@ -1040,12 +1037,10 @@ function update(){
 if(!spawning && (reds.length==0 || reset==true)){
   spawning=true;
   setTimeout(()=>{
-    if(power>=0 && !reset){level.value++;}
-    if(power<5){power=5;};
+    if(power>=0 && !reset){level.value++;} if(power<5){power=5;};
     speed=difficulty(level.value);
     reds=Array.from({length:10},()=>bomb(speed));
-    spawning=false;
-    reset=false;
+    spawning=false;reset=false;
   },2000);
 }
 if(!spawning && random()<(1/(FPS*9)))reds.push(bomb(speed*2));
