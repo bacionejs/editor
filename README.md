@@ -3,7 +3,7 @@
 
 
 
-<h1><a href="https://bacionejs.github.io/editor/" style="text-decoration: none; color: inherit;">Start</a></h1>
+<h1><a href="https://bacionejs.github.io/editor/bacionejs.html" style="text-decoration: none; color: inherit;">Run</a></h1>
 
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank">
     <img src="README.jpg" width="33%" />
