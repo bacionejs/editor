@@ -994,6 +994,84 @@ function gameprograms(){
 
 
 
+
+
+function trek(){
+let hit,speed=W/FPS/5,size=W/30,offset=0,amplitude=60,freq=1/50,tilt=0.5;
+let slope=(x)=>sin((x+offset)*freq)*amplitude+(W/2)+x*tilt;
+let derivative=(x)=>amplitude*freq*cos((x+offset)*freq)+tilt;
+let c=L.canvas(size),os=[Sky(),Mountains(),Ground(),Bike(),Trees()];
+(function loop(){os.forEach(o=>o());requestAnimationFrame(loop);})();
+
+function Sky(){
+return function(){c.fillStyle=L.gradient(c,W,-W,[[0,"skyblue"],[1,"blue"]]);c.fillRect(0,0,W,W);}
+}
+
+function Mountains(){
+let shape=L.shape([[0,0,4,-6,7,-2,14,-18,18,-8,22,-16,26,-8,32,-20,40,0,0,0,0,W,40,W,40,0]],1/40);
+let ms=[{x:0,shape},{x:W,shape}];ms.speed=speed*0.2;
+return function(){
+c.fillStyle="white";
+ms.forEach(m=>{
+  m.x-=ms.speed;if(m.x<-W)m.x=W-ms.speed;
+  c.save();c.translate(m.x,W*0.7);c.scale(W,W);c.fill(m.shape);c.restore();});
+}
+}
+
+function Ground(){
+return function(){
+offset+=speed;
+c.fillStyle="tan";
+c.beginPath();c.moveTo(0,W);for(let x=0;x<W+10;x+=10)c.lineTo(x,slope(x));c.lineTo(W,W);c.closePath();
+c.fill();
+}
+}
+
+function Trees(){
+let trees=[];for(let i=0;i<3;i++)trees[i]={x:L.rnd(W*2,W)};
+return function(){
+trees.forEach(tree=>{
+  tree.x-=speed;
+  c.icon(127794,tree.x,slope(tree.x))
+  hit(tree);
+  if(tree.x<0){tree.x=L.rnd(W*2,W);tree.used=false;}
+});
+}
+}
+
+function Bike(){
+let score=0,G=9/FPS,V=-6,R=2*PI/ceil(-2*(V+G/2)/G);
+let B={x:100,y:0,angle:0,vy:0,state:1};
+addEventListener("pointerdown",()=>{if(B.state==1){B.state=2;B.vy=V;B.angle-=PI/8;}});
+addEventListener("pointerup"  ,()=>{if(B.state==2){B.state=3;}});
+hit=function(o){
+  if(abs(o.x-B.x)<5&&!o.used){
+    if(B.state==1){score--;c.icon(128165,o.x,slope(o.x));}else{score++;}
+    o.used=true;
+  }
+}
+function ace(){let d=B.angle-atan2(derivative(B.x),1);return abs(atan2(sin(d),cos(d)))<PI/4;};
+return function(){
+c.save();c.translate(B.x,B.y+size/2);c.scale(-1,1);c.rotate(-B.angle);c.icon(128692,0,0);c.restore();
+if(B.state==1){B.y=slope(B.x)-size;}
+else{B.y+=(B.vy+=G);if(B.y>=slope(B.x)-size){if(!ace()){score--;c.icon(128165,B.x,slope(B.x));}B.state=1;}}
+if(B.state==1){B.angle=atan2(derivative(B.x),1);}else if(B.state==2){B.angle-=R;}
+c.fillStyle="black";c.fillText(score,W/2,20);
+}
+}
+
+}//end trek
+
+
+
+
+
+
+
+
+
+
+
 function defense(){
 let reset=true,power=5,hit,snd=L.Sound(),c=L.canvas(),os=[Blue(),Red()];
 let level = Object.assign(L.element("input"), {type:"range",value:1,min:1,max:200}); level.addEventListener("input",()=>reset=true);
@@ -1059,6 +1137,8 @@ return {update,draw};
 }//end red
 
 }//end defense
+
+
 
 
 
@@ -1142,43 +1222,6 @@ setTimeout(()=>         ship=rocketnone,200);
 
 
 
-function ski(){
-let speed=W/FPS/3,os=[],c=L.canvas(),hit;
-c.white();
-c.fillStyle=L.gradient(c,W,0,[[.2,"blue"],[.8,"skyblue"]]);
-c.fill(L.shape([[0,0,W,W,W,0]]));
-
-os.push((function(){        // Motion Effect
-let s=floor(W/30),c=L.canvas(),lw=s/5;
-c.strokeStyle="whitesmoke";c.lineWidth=lw;c.setLineDash([s,s]);c.moveTo(0,lw);c.lineTo(W,W+lw);
-return function(){c.clear();c.lineDashOffset+=speed;c.stroke();};
-})());
-
-for(let i=0;i<2;i++)
-os.push((function(){        // Tree
-let s=floor(W/10),c=L.canvas(s),x=0;
-return function(){c.clear();x=x>0?x-speed:L.rnd(W*2,W);c.icon(hit?.(x)?128165:127794,x,x);};
-})());
-
-os.push((function(){        // Skier
-let s=floor(W/20),c=L.canvas(s),x=W/4,tgl=1,i=0,airtime=4*floor(s/speed);
-c.fillStyle="red";c.scale(-1,1);c.translate(-x,x);c.icon(9975);
-addEventListener("click",()=>i||=1,false);
-hit=function(t){return((x-s)<t && t<(x+s) && !(0<i && i<airtime));}
-function jump(){c.clearRect(-s,-s,s*2,s*2);c.translate((tgl*=-1)*(s),0);c.icon(9975);}
-return function(){if(i==1 || i==airtime){jump();}if(i==airtime){i=0;} i && i++;};
-})());
-
-(function animation(){os.forEach(o=>o?.());requestAnimationFrame(animation);})()
-
-}//end ski
-
-
-
-
-
-
-
 
 
 function monkeymaze(){
@@ -1221,6 +1264,8 @@ function draw(cn,{x,y,icon}){cn.icon(icon,x*p+(p/2),y*p+(p/2));}
 
 
 
+
+
 function snake(){
 addEventListener("click",move,false);
 let c=L.canvas();
@@ -1247,6 +1292,8 @@ function move({pageX,pageY}){d=(d==du || d==dd)?pageX<(W/2)?dl:dr:pageY<(W/2)?du
 function draw(i,color){c.fillStyle=color;c.fillRect((i%r)*p,floor(i/r)*p,p,p);}
 
 }//end snake
+
+
 
 
 
@@ -1297,6 +1344,8 @@ board.run((x,y)=>{c.icon(board[y][x]||"",x*p+(p*0.5),y*p+(p*0.6));});
 
 
 
+
+
 function pairs(){
 addEventListener("click",({pageX:x,pageY:y})=>move(floor(x/p)+floor(y/p)*rows),false);
 let rows=4,p=floor(W/rows),m,found,pair,misses=0;
@@ -1324,35 +1373,6 @@ pair.push(i);c.icon(m[i],i%rows*p+p*0.5,floor(i/rows)*p+p*0.6);
 }//end pairs
 
 
-
-
-
-
-
-
-
-function smash(){
-addEventListener("click",move);
-let rows=3,p=floor(W/rows),icon={x:0,y:0};
-let c=L.canvas(p*0.7);
-let min=700,decay=200/10,scale=decay*200,interval;
-interval=scale/decay++;
-animation();
-
-function animation(){
-icon.x=L.rnd(rows);let t=L.rnd(rows-1);icon.y=t+(t>=icon.y);
-c.white();c.icon(127875,icon.x*p+(p/2),icon.y*p+(p/2));
-L.debug(floor(min+interval),c);
-setTimeout(animation,(min+interval));
-}
-
-function move({pageX:x,pageY:y}){
-if(!(floor(x/p)==icon.x && floor(y/p)==icon.y))return;
-interval=scale/decay++;
-c.icon(128165,icon.x*p+(p/2),icon.y*p+(p/2));
-}
-
-}//end smash
 
 
 
@@ -1474,7 +1494,7 @@ return {terrain,Particles,RandomArray,Sound,canvas,gradient,rnd,shape,vertices,d
 };//end library
 
 let W=innerWidth;
-let floor=Math.floor,random=Math.random,pow=Math.pow,sin=Math.sin,cos=Math.cos,PI=Math.PI,hypot=Math.hypot,atan2=Math.atan2,abs=Math.abs;
+let floor=Math.floor,random=Math.random,pow=Math.pow,sin=Math.sin,cos=Math.cos,PI=Math.PI,hypot=Math.hypot,atan2=Math.atan2,abs=Math.abs,ceil=Math.ceil,sqrt=Math.sqrt;
 (function(sort){Array.prototype.sort=function(){return sort.call(this,(a,b)=>a-b)};})(Array.prototype.sort);//Overridden Array sort: compares numbers instead of strings
 let L=Library();
 
