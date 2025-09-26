@@ -963,10 +963,9 @@ particles.update()
 particles.draw()
 </p><p>
 <b>Game Controls</b>
-Ski - Click anywhere.
+Trek - Click anywhere.
 Defense - Click anywhere
 Pairs - Click in squares.
-Smash - Click the pumpkin.
 Monkeymaze - Click quadrants.
 Snake - Click vertical half if snake is horizontal, etc.
 Chess - Click piece and destination. Longpress to change piece.
@@ -997,7 +996,7 @@ function gameprograms(){
 
 
 function trek(){
-let hit,speed=W/FPS/5,size=W/30,offset=0,amplitude=60,freq=1/50,tilt=0.5;
+let hit,speed=W/FPS/5,size=W/30,offset=0,amplitude=60,freq=1/50,tilt=0.5,period=2*PI/freq;
 let slope=(x)=>sin((x+offset)*freq)*amplitude+(W/2)+x*tilt;
 let derivative=(x)=>amplitude*freq*cos((x+offset)*freq)+tilt;
 let c=L.canvas(size),os=[Sky(),Mountains(),Ground(),Bike(),Trees()];
@@ -1008,22 +1007,26 @@ return function(){c.fillStyle=L.gradient(c,W,-W,[[0,"skyblue"],[1,"blue"]]);c.fi
 }
 
 function Mountains(){
-let shape=L.shape([[0,0,4,-6,7,-2,14,-18,18,-8,22,-16,26,-8,32,-20,40,0,0,0,0,W,40,W,40,0]],1/40);
-let ms=[{x:0,shape},{x:W,shape}];ms.speed=speed*0.2;
+let ms=[];ms.speed=speed*0.2;
+for(let i=0;i<2;i++){
+  ms[i]=L.shape([[0,0,4,-6,7,-2,14,-18,18,-8,22,-16,26,-8,32,-20,40,0,0,0,0,W,40,W,40,0]],1/40);
+  ms[i].x=i*W;
+}
 return function(){
 c.fillStyle="white";
 ms.forEach(m=>{
   m.x-=ms.speed;if(m.x<-W)m.x=W-ms.speed;
-  c.save();c.translate(m.x,W*0.7);c.scale(W,W);c.fill(m.shape);c.restore();});
+  c.save();c.translate(m.x,W*0.7);c.scale(W,W);c.fill(m);c.restore();
+});
 }
 }
 
 function Ground(){
+let x=0,y=0,p=new Path2D();p.moveTo(0,W);for(let x=0;x<W*2;x++){p.lineTo(x,slope(x));}p.lineTo(W,W*2);
 return function(){
-offset+=speed;
-c.fillStyle="tan";
-c.beginPath();c.moveTo(0,W);for(let x=0;x<W+10;x+=10)c.lineTo(x,slope(x));c.lineTo(W,W);c.closePath();
-c.fill();
+c.fillStyle="tan";c.save();c.translate(x,y);c.fill(p);c.restore();
+offset+=speed;x-=speed;y-=speed*tilt;
+if(offset>period){offset=0;x=0;y=0;}
 }
 }
 
@@ -1041,21 +1044,21 @@ trees.forEach(tree=>{
 
 function Bike(){
 let score=0,G=9/FPS,V=-6,R=2*PI/ceil(-2*(V+G/2)/G);
-let B={x:100,y:0,angle:0,vy:0,state:1};
-addEventListener("pointerdown",()=>{if(B.state==1){B.state=2;B.vy=V;B.angle-=PI/8;}});
-addEventListener("pointerup"  ,()=>{if(B.state==2){B.state=3;}});
+let x=100,y=0,angle=0,vy=0,state=1;
+addEventListener("pointerdown",()=>{if(state==1){state=2;vy=V;angle-=PI/8;}});
+addEventListener("pointerup"  ,()=>{if(state==2){state=3;}});
 hit=function(o){
-  if(abs(o.x-B.x)<5&&!o.used){
-    if(B.state==1){score--;c.icon(128165,o.x,slope(o.x));}else{score++;}
+  if(abs(o.x-x)<5&&!o.used){
+    if(state==1){score--;c.icon(128165,o.x,slope(o.x));}else{score++;}
     o.used=true;
   }
 }
-function ace(){let d=B.angle-atan2(derivative(B.x),1);return abs(atan2(sin(d),cos(d)))<PI/4;};
+function ace(){let d=angle-atan2(derivative(x),1);return abs(atan2(sin(d),cos(d)))<PI/4;};
 return function(){
-c.save();c.translate(B.x,B.y+size/2);c.scale(-1,1);c.rotate(-B.angle);c.icon(128692,0,0);c.restore();
-if(B.state==1){B.y=slope(B.x)-size;}
-else{B.y+=(B.vy+=G);if(B.y>=slope(B.x)-size){if(!ace()){score--;c.icon(128165,B.x,slope(B.x));}B.state=1;}}
-if(B.state==1){B.angle=atan2(derivative(B.x),1);}else if(B.state==2){B.angle-=R;}
+c.save();c.translate(x,y+size/2);c.scale(-1,1);c.rotate(-angle);c.icon(128692,0,0);c.restore();
+if(state==1){y=slope(x)-size;}
+else{y+=(vy+=G);if(y>=slope(x)-size){if(!ace()){score--;c.icon(128165,x,slope(x));}state=1;}}
+if(state==1){angle=atan2(derivative(x),1);}else if(state==2){angle-=R;}
 c.fillStyle="black";c.fillText(score,W/2,20);
 }
 }
