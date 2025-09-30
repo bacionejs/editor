@@ -1308,14 +1308,14 @@ function draw(i,color){c.fillStyle=color;c.fillRect((i%r)*p,floor(i/r)*p,p,p);}
 
 function chess(){
 addEventListener("pointerdown",({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
-  timeout=setTimeout(()=>{interval=setInterval(()=>{board[y][x]=board[y][x]?board[y][x]-1:12; move();},500);},1000);
+  timeout=setTimeout(()=>{interval=setInterval(()=>{B[y][x]=B[y][x]?B[y][x]-1:12; move();},500);},1000);
 },false);
 addEventListener("pointerup"  ,({pageX:x,pageY:y})=>{x=floor(x/p);y=floor(y/p);
   clearTimeout(timeout);if(interval){clearInterval(interval);interval=undefined;return;}
   move(x,y);
 },false);
 
-let board=[
+let B=[
 [ 9,11,10, 8, 7,10,11, 9,],
 [12,12,12,12,12,12,12,12,],
 [ 0, 0, 0, 0, 0, 0, 0, 0,],
@@ -1325,16 +1325,16 @@ let board=[
 [ 6, 6, 6, 6, 6, 6, 6, 6,],
 [ 3, 5, 4, 2, 1, 4, 5, 3,],
 ];
-board.run=function(func){this.forEach((row,y)=>row.forEach((_,x)=>func(x,y)));};
+B.run=function(func){this.forEach((row,y)=>row.forEach((_,x)=>func(x,y)));};
 
-let timeout,interval,p=W/board.length,cb=L.canvas(),c=L.canvas(p,9811),tgl=1,prev;
-board.run((x,y)=>{cb.fillStyle=(x+y)%2?"green":"white";cb.fillRect(x*p,y*p,p,p);});
+let timeout,interval,p=W/B.length,cb=L.canvas(),c=L.canvas(p,9811),tgl=1,prev;
+B.run((x,y)=>{cb.fillStyle=(x+y)%2?"green":"white";cb.fillRect(x*p,y*p,p,p);});
 move();
 
 function move(x,y){
-if(x!=undefined && (!tgl || board[y][x])){(board[y][x]=(tgl^=1)?prev:((prev=board[y][x]),0));}
+if(x!=undefined && (!tgl || B[y][x])){(B[y][x]=(tgl^=1)?prev:((prev=B[y][x]),0));}
 c.clear();
-board.run((x,y)=>{c.icon(board[y][x]||"",x*p+(p*0.5),y*p+(p*0.6));});
+B.run((x,y)=>{c.icon(B[y][x]||"",x*p+(p*0.5),y*p+(p*0.6));});
 }
 
 }//end chess
