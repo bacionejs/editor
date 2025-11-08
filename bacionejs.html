@@ -963,13 +963,14 @@ particles.update()
 particles.draw()
 </p><p>
 <b>Game Controls</b>
-Trek - Click anywhere.
+Ski - Click anywhere.
+Bike - Click anywhere.
 Defense - Click anywhere
 Pairs - Click in squares.
 Monkeymaze - Click quadrants.
 Snake - Click vertical half if snake is horizontal, etc.
 Chess - Click piece and destination. Longpress to change piece.
-Marslander - Click on right or left side. To disable sound, comment snd.rocket().
+Marslander - Click on right or left side.
 </p>
 `);
 
@@ -984,6 +985,47 @@ u.addEventListener("click",diffgit);
 }//end ide
 
 function gameprograms(){
+
+
+
+
+
+
+
+
+
+
+
+function ski(){
+let speed=W/FPS/3,os=[],c=L.canvas(),hit;
+c.white();
+c.fillStyle=L.gradient(c,W,0,[[.2,"blue"],[.8,"skyblue"]]);
+c.fill(L.shape([[0,0,W,W,W,0]]));
+
+os.push((function(){        // Motion Effect
+let s=floor(W/30),c=L.canvas(),lw=s/5;
+c.strokeStyle="whitesmoke";c.lineWidth=lw;c.setLineDash([s,s]);c.moveTo(0,lw);c.lineTo(W,W+lw);
+return function(){c.clear();c.lineDashOffset+=speed;c.stroke();};
+})());
+
+for(let i=0;i<2;i++)
+os.push((function(){        // Tree
+let s=floor(W/10),c=L.canvas(s),x=0;
+return function(){c.clear();x=x>0?x-speed:L.rnd(W*2,W);c.icon(hit?.(x)?128165:127794,x,x);};
+})());
+
+os.push((function(){        // Skier
+let s=floor(W/20),c=L.canvas(s),x=W/4,tgl=1,i=0,airtime=4*floor(s/speed);
+c.fillStyle="red";c.scale(-1,1);c.translate(-x,x);c.icon(9975);
+addEventListener("click",()=>i||=1,false);
+hit=function(t){return((x-s)<t && t<(x+s) && !(0<i && i<airtime));}
+function jump(){c.clearRect(-s,-s,s*2,s*2);c.translate((tgl*=-1)*(s),0);c.icon(9975);}
+return function(){if(i==1 || i==airtime){jump();}if(i==airtime){i=0;} i && i++;};
+})());
+
+(function animation(){os.forEach(o=>o?.());requestAnimationFrame(animation);})()
+
+}//end ski
 
 
 
@@ -1063,7 +1105,7 @@ c.fillStyle="black";c.fillText(score,W/2,20);
 }
 }
 
-}//end trek
+}//end bike
 
 
 
