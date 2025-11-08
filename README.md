@@ -9,7 +9,7 @@
     <img src="README.jpg" width="33%" />
 </a>
 
-<p align="center"><img src="README.jpg" alt="App Screenshot" style="border: 8px solid black; border-top: 40px solid black; border-bottom: 60px solid black; border-radius: 35px; padding-top: 10px; padding-bottom: 10px;">
+<p align="center"><img src="README2.jpg" alt="App Screenshot" style="border: 8px solid black; border-top: 40px solid black; border-bottom: 60px solid black; border-radius: 35px; padding-top: 10px; padding-bottom: 10px;">
 </p>
 
 ## Purpose
