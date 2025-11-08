@@ -6,7 +6,9 @@
 <h1><a href="https://bacionejs.github.io/editor/bacionejs.html" style="text-decoration: none; color: inherit;">Run</a></h1>
 
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank">
-    <img src="README.jpg" width="33%" />
+    <img src="README.jpg" width="33%"
+        style="border: 8px solid black; border-top: 40px solid black; border-bottom: 60px solid black; border-radius: 35px; padding-top: 10px; padding-bottom: 10px;"
+        />
 </a>
 
 <p align="center"><img src="README2.jpg" width="33%" alt="App Screenshot" style="border: 8px solid black; border-top: 40px solid black; border-bottom: 60px solid black; border-radius: 35px; padding-top: 10px; padding-bottom: 10px;">
