@@ -460,24 +460,27 @@ view("Error").textContent=s;
 function createkeys(){
 let keys=[
 
-{r:0,c:9, f:[run],             d:"M10 5 l-9 5 v-10 l9 5"},
-{r:0,c:8, f:[save,difflocal],  d:"M10 10 h-10 M 5 9 v-8 M5 9 l-4 -4 M5 9 l4 -4"},
-{r:0,c:7, f:[zoom,fullscreen], d:"M5 0 l-4 10 M5 0 l4 10 M7 5 h-4 M7 5 l-2 5 M6 7.5 h2"},
-{r:0,c:6, f:[rename,highlight],d:"M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M4 6 l-4 4"},
-{r:0,c:5, f:[misc,theme],      d:"M5 0 l5 5 l-5 5 l-5 -5 l5 -5"},
 {r:0,c:4, f:[help,diffgit],    d:"M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2"},
-{r:1,c:9, f:[enter],           d:"M10 0 v10 h-10 l5 -5 v5"},
-{r:1,c:8, f:[backspace],       d:"M10 1 l-6 8 l-4 -4 l4 -4 l6 8"},
+{r:0,c:5, f:[misc,theme],      d:"M5 0 l5 5 l-5 5 l-5 -5 l5 -5"},
+{r:0,c:6, f:[rename,highlight],d:"M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M4 6 l-4 4"},
+{r:0,c:7, f:[zoom,fullscreen], d:"M5 0 l-4 10 M5 0 l4 10 M7 5 h-4 M7 5 l-2 5 M6 7.5 h2"},
+{r:0,c:8, f:[save,difflocal],  d:"M10 10 h-10 M 5 9 v-8 M5 9 l-4 -4 M5 9 l4 -4"},
+{r:0,c:9, f:[run],             d:"M10 5 l-9 5 v-10 l9 5"},
+{r:1,c:2, f:[complete],        d:"M5 5 h-4 v-2 h6 l2 2 l-2 2 h-6"},
+{r:1,c:3, f:[comment],         d:"M6 1 l-6 8 M10 1 l-6 8"},
+{r:1,c:4, f:[left],            d:"M1 5 h8 M1 5 l4 -4 M1 5 l4 4"},
+{r:1,c:5, f:[right],           d:"M 9 5 h-8 M9 5 l-4 -4 M9 5 l-4 4"},
+{r:1,c:6, f:[copy],            d:"M7 2 h2 v8 h-6 v-8 h4 v-2 h-6 v8 h2"},
+{r:1,c:7, f:[paste],           d:"M7 1 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2"},
+{r:1,c:8, f:[undo],            d:"M10 5 Q5 0  0 7 M0  2 v5 h5"},
+{r:1,c:9, f:[redo],            d:"M0  5 Q5 0 10 7 M10 2 v5 h-5"},
 {r:6,c:9, f:[capslock],        d:"M9 10 h-8 M1 4 l 4 -4 l4 4"},
-{r:1,c:6, f:[undo],            d:"M10 5 Q5 0  0 7 M0  2 v5 h5"},
-{r:1,c:7, f:[redo],            d:"M0  5 Q5 0 10 7 M10 2 v5 h-5"},
-{r:1,c:4, f:[copy],            d:"M7 2 h2 v8 h-6 v-8 h4 v-2 h-6 v8 h2"},
-{r:1,c:5, f:[paste],           d:"M7 1 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2"},
-{r:1,c:3, f:[right],           d:"M 9 5 h-8 M9 5 l-4 -4 M9 5 l-4 4"},
-{r:1,c:2, f:[left],            d:"M1 5 h8 M1 5 l4 -4 M1 5 l4 4"},
-{r:1,c:1, f:[comment],         d:"M6 1 l-6 8 M10 1 l-6 8"},
-{r:1,c:0, f:[complete],        d:"M5 5 h-4 v-2 h6 l2 2 l-2 2 h-6"},
+{r:7,c:8, f:[backspace],       d:"M10 1 l-6 8 l-4 -4 l4 -4 l6 8"},
+{r:7,c:9, f:[enter],           d:"M10 0 v10 h-10 l5 -5 v5"},
 
+{r:1,c:0, d:["?","?"]},
+{r:1,c:1, d:[":",":"]},
+{r:7,c:7, d:[" "," "]},
 {r:2,c:0, d:['"','"']},
 {r:2,c:1, d:[".","."]},
 {r:2,c:2, d:[";",";"]},
@@ -534,9 +537,6 @@ let keys=[
 {r:7,c:4, d:["b","B"]},
 {r:7,c:5, d:["n","N"]},
 {r:7,c:6, d:["m","M"]},
-{r:7,c:7, d:["?","?"]},
-{r:7,c:8, d:[":",":"]},
-{r:7,c:9, d:[" "," "]},
 ];
 
 keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
@@ -849,7 +849,7 @@ Swipeup toggles fullscreen.
 <b>Rename/Highlight</b>
 Find performs incremental search.
 Uses selection if active.
-Swipeup toggles highlights for all occurrences.
+Swipeup <b>toggles</b> highlights for all occurrences of word under cursor.
 Click Rename to close Rename.
 </p><p>
 <b>Misc/Themes</b>
@@ -864,11 +864,11 @@ Help is this screen.
 Click anywhere to close.
 </p><p>
 <b>Enter</b>
-Inserts a new line or cancels selection.
+Inserts a new line or cancels selection (copy).
 Retains prior indentation.
 </p><p>
 <b>Backspace</b>
-Deletes character or selection.
+Deletes character or selection (cut).
 </p><p>
 <b>Capslock (shift)</b>
 Reveals shift characters.
@@ -880,7 +880,7 @@ Restore up to 50 changes.
 Selects text or extends selection and puts it in Paste.
 Selection looks at the character to the right and then selects:
   newline: line
-  word: left,right
+  word: left,right (whole word)
   spaces: right
   blank line: next blank line
   blocks: (){}[]""
@@ -923,7 +923,7 @@ L.debug(string,canvas)
 <b>Random number</b>
 number=L.rnd(max,[min])
 </p><p>
-<b>Random biased sets</b>
+<b>Random sets</b>
 set=L.RandomArray(quantity,range)
 set.next()
 </p><p>
