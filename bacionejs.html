@@ -995,11 +995,11 @@ function gameprograms(){
 
 
 
-function trek(){
+function bike(){
 let hit,speed=W/FPS/5,size=W/30,offset=0,amplitude=60,freq=1/50,tilt=0.5,period=2*PI/freq;
 let slope=(x)=>sin((x+offset)*freq)*amplitude+(W/2)+x*tilt;
 let derivative=(x)=>amplitude*freq*cos((x+offset)*freq)+tilt;
-let c=L.canvas(size),os=[Sky(),Mountains(),Ground(),Bike(),Trees()];
+let c=L.canvas(size),os=[Sky(),Mountains(),Ground(),Player(),Trees()];
 (function loop(){os.forEach(o=>o());requestAnimationFrame(loop);})();
 
 function Sky(){
@@ -1042,7 +1042,7 @@ trees.forEach(tree=>{
 }
 }
 
-function Bike(){
+function Player(){
 let score=0,G=9/FPS,V=-6,R=2*PI/ceil(-2*(V+G/2)/G);
 let x=100,y=0,angle=0,vy=0,state=1;
 addEventListener("pointerdown",()=>{if(state==1){state=2;vy=V;angle-=PI/8;}});
