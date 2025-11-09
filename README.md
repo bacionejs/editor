@@ -8,7 +8,7 @@
 </a>
   
 ## Purpose
-Designed for those who [don't have a computer](https://www.google.com/search?q=philippines+computer+ownership) and would like to experiment with programming, BacioneJS is the most [thumb-friendly](https://youtu.be/lx6Pf-KflcQ?si=jBlJVh4iwFUp_Nj8) IDE for coding small javascript games on an android chrome phone offline; the only one with a fully [custom keyboard](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories) and the only one implemented in [standalone javascript](//github.com/search?q=standalone+javascript+ide+language%3Ahtml&type=repositories) without dependencies. These innovations reduce editing frustration, simplify installation, and enable rapid enhancements. 
+Designed for those who [don't have a computer](https://www.google.com/search?q=philippines+computer+ownership) and would like to experiment with programming, BacioneJS is the most [thumb-friendly](https://youtu.be/lx6Pf-KflcQ?si=jBlJVh4iwFUp_Nj8) IDE for coding small javascript games on an **android chrome phone offline**; the only one with a fully [custom keyboard](//github.com/search?q=ide+%22custom+keyboard%22&type=repositories) and the only one implemented in [standalone javascript](//github.com/search?q=standalone+javascript+ide+language%3Ahtml&type=repositories) without dependencies. These innovations reduce editing frustration, simplify installation, and enable rapid enhancements. 
 
 ## Installation (optional for offline use)
 - Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)
