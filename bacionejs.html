@@ -318,8 +318,8 @@ let lines=b.filter(o=>!a.includes(o));
 return lines.length?lines.map(line=>c+" "+line).join("\n"):c+"no change";
 }
 
-function rename(){
-if(rename.instance){rename.instance(); return rename.instance;}
+function rename(s){
+if(rename.instance){rename.instance(s); return rename.instance;}
 let con=element("div");
 con.style.cssText="z-index:0;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
 let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find);    fb.disabled=true; f.id="find";
@@ -353,7 +353,7 @@ if(s===undefined){//popup
   if(e.id=="find"){T.H=e.value;syncpretty();disable();}
 }
 }
-rename.instance(); return rename.instance;
+rename.instance(s); return rename.instance;
 }//end rename
 
 function view(f){
