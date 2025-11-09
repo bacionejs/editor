@@ -32,9 +32,8 @@ Variables
  * T.P - paste buffer
  * T.H - highlight
 Code layout below:
- * styles
+ * style
  * themes
- * rename
  * initialize
  * button functions
  * utils
@@ -64,7 +63,8 @@ body{background:white;}
 }
 `;//end style
 
-let theme=(function(){
+function theme(){
+if(theme.instance){theme.instance(); return theme.instance;}
 let i=0,a=[
 ["fontsizesmall"  ,[10      ,  10      ,  10           ,  8         ]],
 ["fontsizebig"    ,[15      ,  15      ,  15           ,  20        ]],
@@ -79,7 +79,7 @@ let i=0,a=[
 ["keywords"       ,["teal"  ,  "orange",  "skyblue"    ,  "lime"    ]],
 ["pairs"          ,["purple",  "brown" ,  "black"      ,  "lime"    ]],
 ];
-return function theme(){
+theme.instance=function(){
 if(i==a[0][1].length)i=0;a.forEach(a=>theme[a[0]]=a[1][i]);i++;
 let style;
 KEYS.forEach(k=>{
@@ -98,43 +98,8 @@ style.backgroundColor=theme.background;
 style.color=theme.foreground;
 syncpretty();
 }
-})();//end theme
-
-let rename=(function(){
-let con=element("div");
-con.style.cssText="z-index:0;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
-let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find);    fb.disabled=true; f.id="find";
-let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace); rb.disabled=true;
-function search(s){
-if(s==="")return -1;
-s=escapetext(s);
-if(/\w/.test(s))s="\\b"+s+"\\b";
-return T.V.slice(T.E).search(s);
-}
-function disable(){let d=search(f.value)==-1;fb.disabled=d;rb.disabled=d;}
-function find(){
-let i=search(f.value);if(i==-1)return;
-T.H=f.value;
-syncpretty();
-T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
-}
-function replace(){
-if(T.V.slice(T.S,T.E)===f.value){T.focus();T.I(r.value);}
-disable();
-find();
-}
-return function rename(s){
-if(s===undefined){//popup
-  if(con.style.zIndex==0){con.style.zIndex=9;if(T.S!=T.E){f.value=T.V.slice(T.S,T.E);T.E=T.S;disable();}f.focus();}
-  else{con.style.zIndex=0;T.S=T.E;T.focus();}
-}else{//input
-  let e=document.activeElement;
-  if(s==="")e.selectionStart--;
-  e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
-  if(e.id=="find"){T.H=e.value;syncpretty();disable();}
-}
-}
-})();//end rename
+theme.instance(); return theme.instance;
+}//end theme
 
 //////////////////////init
 let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();theme();
@@ -304,9 +269,6 @@ function paste(){
 T.I(T.P);
 }
 
-
-
-
 function enter(){
 if(T.S!=T.E){T.S=T.E;return;}
 let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/\S|\n/);
@@ -356,6 +318,76 @@ let lines=b.filter(o=>!a.includes(o));
 return lines.length?lines.map(line=>c+" "+line).join("\n"):c+"no change";
 }
 
+function rename(){
+if(rename.instance){rename.instance(); return rename.instance;}
+let con=element("div");
+con.style.cssText="z-index:0;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
+let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find);    fb.disabled=true; f.id="find";
+let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace); rb.disabled=true;
+function search(s){
+if(s==="")return -1;
+s=escapetext(s);
+if(/\w/.test(s))s="\\b"+s+"\\b";
+return T.V.slice(T.E).search(s);
+}
+function disable(){let d=search(f.value)==-1;fb.disabled=d;rb.disabled=d;}
+function find(){
+let i=search(f.value);if(i==-1)return;
+T.H=f.value;
+syncpretty();
+T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
+}
+function replace(){
+if(T.V.slice(T.S,T.E)===f.value){T.focus();T.I(r.value);}
+disable();
+find();
+}
+rename.instance=function(s){
+if(s===undefined){//popup
+  if(con.style.zIndex==0){con.style.zIndex=9;if(T.S!=T.E){f.value=T.V.slice(T.S,T.E);T.E=T.S;disable();}f.focus();}
+  else{con.style.zIndex=0;T.S=T.E;T.focus();}
+}else{//input
+  let e=document.activeElement;
+  if(s==="")e.selectionStart--;
+  e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
+  if(e.id=="find"){T.H=e.value;syncpretty();disable();}
+}
+}
+rename.instance(); return rename.instance;
+}//end rename
+
+function view(f){
+if(view.instance){return view.instance(f);}
+let a=[];
+view.instance=function(f){
+let e=a[f];
+if(e){
+  e.exists=true;
+}else{
+  e=a[f]=element("div");
+  e.style.cssText=`
+    width:100%;height:100%;
+    background:white;
+    padding:10ch 2ch 2ch 2ch;
+    touch-action:pan-x pan-y;
+    position:fixed;
+    white-space:pre-wrap;
+    overflow-y:scroll;`;
+  e.addEventListener("click",()=>view(f));
+}
+if((PRETTY.classList.toggle("unhide"),e.classList.toggle("unhide"))){
+  T.blur();
+  setTimeout(()=>{e.style.zIndex=9;},50);
+  e.style.fontSize=T.style.fontSize;
+}else{
+  T.focus();
+  e.style.zIndex=0;
+}
+return e;
+}
+return view.instance(f);
+}//end view
+
 function filecontent(t=T){
 let s="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
 if(t.editingtheeditor){
@@ -400,35 +432,6 @@ while(i<s.length){
 if(name=="" || /\W/.test(name))return undefined;
 return {name:name,ftop:ftop,fend:i,body:s.slice(ftop,i)};
 }
-
-let view=function(){//view
-let a=[];
-return function(f){
-let e=a[f];
-if(e){
-  e.exists=true;
-}else{
-  e=a[f]=element("div");
-  e.style.cssText=`
-    width:100%;height:100%;
-    background:white;
-    padding:10ch 2ch 2ch 2ch;
-    touch-action:pan-x pan-y;
-    position:fixed;
-    white-space:pre-wrap;
-    overflow-y:scroll;`;
-  e.addEventListener("click",()=>view(f));
-}
-if((PRETTY.classList.toggle("unhide"),e.classList.toggle("unhide"))){
-  T.blur();
-  setTimeout(()=>{e.style.zIndex=9;},50);
-  e.style.fontSize=T.style.fontSize;
-}else{
-  T.focus();
-  e.style.zIndex=0;
-}
-return e;
-}}();//end view
 
 function loadicons(){
 let range=r=>r.flatMap(v=>Array.from({length:v[1]-v[0]+1},(_,i)=>v[0]+i));
