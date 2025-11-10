@@ -16,7 +16,7 @@ Designed for those who [don't have a computer](https://www.google.com/search?q=p
 - Click `bacionejs.html` to launch in Chrome
 
 ## Includes several games
-- After you start the editor, click the `Run` icon to play a game (it will run whichever game **contains the cursor**)
+- After you start the editor, click the run icon to play a game (it will run whichever game **contains the cursor**)
 
 ## Help
 See the builtin help
