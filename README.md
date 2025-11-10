@@ -12,7 +12,7 @@ Designed for those who [don't have a computer](https://www.google.com/search?q=p
 standalone javascript without dependencies. These innovations reduce editing frustration, simplify installation, and enable rapid enhancements. 
 
 ## Goal
-Give people a **taste** of programming and if they like it, then they can level up to a computer.
+Give people a **taste** of programming and if they like it, then they will probably level up to a computer.
 
 ## Installation (optional for offline use)
 - Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)
