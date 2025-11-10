@@ -16,6 +16,9 @@ Designed for those who [don't have a computer](https://www.google.com/search?q=p
 - Click `bacionejs.html` to launch in Chrome
 - Click `Run` to play the game which **contains the cursor**
 
+## Help
+See the builtin help
+
 ## Features
 - **Run**: Instant code execution
 - **Debugging**: Displays message and positions the cursor at the error
