@@ -1,7 +1,7 @@
 
 
 
-<h1><a href="https://bacionejs.github.io/editor/bacionejs.html" style="text-decoration: none; color: inherit;">Run</a></h1>
+<h1><a href="https://bacionejs.github.io/editor/bacionejs.html" style="text-decoration: none; color: inherit;">Start</a></h1>
 
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank">
     <img src="README.jpg" width="33%">
@@ -14,7 +14,9 @@ Designed for those who [don't have a computer](https://www.google.com/search?q=p
 - Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)
 - Open your android file manager
 - Click `bacionejs.html` to launch in Chrome
-- Click `Run` to play the game which **contains the cursor**
+
+## Includes several games
+- After you start the editor, click the `Run` icon to play a game (it will run whichever game **contains the cursor**)
 
 ## Help
 See the builtin help
