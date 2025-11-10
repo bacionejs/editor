@@ -196,19 +196,19 @@ KEYS.filter(k=>!k.f).forEach(k=>k.e.textContent=k.d[k.d.indexOf(k.e.textContent)
 function undo(){restore(-1);}
 function redo(){restore(1);}
 let restore=function(){
-let a=[],curr=0;a.push({value:T.V,position:T.S});
+let max=50*2+1,a=[],curr=0;a.push({value:T.V,position:T.S});
 return function(direction){
 if(direction===0){//reset
   a.splice(0,Infinity,{value:T.V,position:T.S});
 }else if(direction==undefined){//add
-  if(a.at(-1)?.value===T.V)return;
-  if(a.length==50){a.shift();}else{curr++;}
-  a.splice(curr,Infinity,{value:T.V,position:T.S});
+  let value=curr%2===0?null:T.V;
+  if(a.length==max){a.splice(0,2);curr--;}else{curr++;}
+  a.splice(curr,Infinity,{value,position:T.S});
 }else{//restore
   if((direction==-1 && curr==0) || (direction==1 && curr==a.length-1))return;
-  curr+=direction;
+  curr+=(direction*2);
   T.V=a[curr].value;
-  T.S=T.E=a[curr].position;
+  T.S=T.E=a[curr-direction].position;
 }
 }}();//end restore
 
@@ -686,6 +686,7 @@ Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.sel
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
 T.I=function(t,s=T.S,e=T.E){
   if(document.activeElement==this){
+    restore();
     this.setRangeText(t,s,e,"end");
     restore();
     syncpretty();
