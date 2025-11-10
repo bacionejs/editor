@@ -594,7 +594,7 @@ for(let k of keys){
 
 let scale;
 
-function resize(){
+function resizeold(){
 let width;
 if(innerWidth/window.screen.width<0.9){
   width=((innerHeight-innerWidth)*(keys.cols/keys.rows));
@@ -606,6 +606,19 @@ if(innerWidth/window.screen.width<0.9){
 scale=Math.floor(width/keys.cols);
 keyboard.style.width=width;
 keys.filter(k=>!k.e.querySelector("svg")).forEach(k=>{k.e.style.fontSize=k.e.clientHeight*0.5;});
+keys.filter(k=> k.e.querySelector("svg")).forEach(k=>{k.e.children[0].style.width="45%";});
+}
+
+function resize(){
+let scaleByHeight = ((innerHeight - innerWidth) / keys.rows);
+let scaleByWidth = (innerWidth / keys.cols);
+let finalScale = Math.min(scaleByHeight, scaleByWidth);
+let finalHeight = finalScale * keys.rows;
+let finalWidth = finalScale * keys.cols;
+scale = finalScale;
+keyboard.style.width = `${finalWidth}px`;
+keyboard.style.height = `${finalHeight}px`;
+keys.filter(k=>!k.e.querySelector("svg")).forEach(k=>{k.e.style.fontSize = `${finalScale * 0.5}px`;});
 keys.filter(k=> k.e.querySelector("svg")).forEach(k=>{k.e.children[0].style.width="45%";});
 }
 new ResizeObserver(resize).observe(document.body);
