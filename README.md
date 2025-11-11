@@ -15,7 +15,7 @@ Give people a **taste** of programming with what they have.
 
 ## Installation (optional for offline use)
 - Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html) to your android phone/tablet
-- Open your file manager and click `bacionejs.html` to launch in Chrome
+- Open your file manager and click `bacionejs.html` to launch in chrome
 
 ## Includes several games
 After you start the editor, click the run icon to play a game (it will run whichever game **contains the cursor**)
