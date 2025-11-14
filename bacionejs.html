@@ -68,18 +68,18 @@ body{background:white;}
 function theme(){
 if(theme.instance){theme.instance(); return theme.instance;}
 let i=0,a=[
-["fontsizesmall"  ,[10      ,  10         ,  10      ,  10           ,  8         ]],
-["fontsizebig"    ,[15      ,  15         ,  15      ,  15           ,  20        ]],
-["keyroundness"   ,["20%"   ,  "20%"      ,  "20%"   ,  "20%"        ,  "50%"     ]],
-["keyborder"      ,["silver",  "none"     ,  "tan"   ,  "white"      ,  "none"    ]],
-["keybackground"  ,["white" ,  "#424242"  ,  "black" ,  "#38393D"    ,  "#38393D" ]],
-["keyforeground"  ,["black" ,  "white"    ,  "white" ,  "white"      ,  "white"   ]],
-["click"          ,["blue"  ,  "gray"     ,  "blue"  ,  "blue"       ,  "lime"    ]],
-["caret"          ,["blue"  ,  "pink"     ,  "yellow",  "blue"       ,  "white"   ]],
-["background"     ,["white" ,  "#15161B"  ,  "black" ,  "slategray"  ,  "black"   ]],
-["foreground"     ,["black" ,  "white"    ,  "tan"   ,  "whitesmoke" ,  "lime"    ]],
-["keywords"       ,["teal"  ,  "#B3EAB7"  ,  "orange",  "skyblue"    ,  "lime"    ]],
-["pairs"          ,["purple",  "#96ecff"  ,  "brown" ,  "black"      ,  "lime"    ]],
+["fontsizesmall"  ,[10      ,  10         ,  10      ,  10            ,  8         ,  8              ]],
+["fontsizebig"    ,[15      ,  15         ,  15      ,  15            ,  20        ,  20             ]],
+["keyroundness"   ,["20%"   ,  "20%"      ,  "20%"   ,  "20%"         ,  "50%"     ,  "50%"          ]],
+["keyborder"      ,["silver",  "none"     ,  "tan"   ,  "white"       ,  "none"    ,  "none"         ]],
+["keybackground"  ,["white" ,  "#424242"  ,  "black" ,  "#38393D"     ,  "#38393D" ,  "midnightblue" ]],
+["keyforeground"  ,["black" ,  "white"    ,  "white" ,  "white"       ,  "white"   ,  "pink"         ]],
+["click"          ,["blue"  ,  "gray"     ,  "blue"  ,  "blue"        ,  "lime"    ,  "pink"         ]],
+["caret"          ,["blue"  ,  "pink"     ,  "yellow",  "blue"        ,  "white"   ,  "white"        ]],
+["background"     ,["white" ,  "#15161B"  ,  "black" ,  "slategray"   ,  "black"   ,  "pink"         ]],
+["foreground"     ,["black" ,  "white"    ,  "tan"   ,  "whitesmoke"  ,  "lime"    ,  "midnightblue" ]],
+["keywords"       ,["teal"  ,  "#B3EAB7"  ,  "orange",  "skyblue"     ,  "lime"    ,  "royalblue"    ]],
+["pairs"          ,["purple",  "#96ecff"  ,  "brown" ,  "black"       ,  "lime"    ,  "indigo"       ]],
 ];
 theme.instance=function(){
 if(i==a[0][1].length)i=0;a.forEach(a=>theme[a[0]]=a[1][i]);i++;
