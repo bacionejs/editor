@@ -1,8 +1,3 @@
-🔒 If you arrived here from **Facebook** or similar external source, you must copy and paste this link into an Android **Chrome** browser:  
-```text
-https://github.com/bacionejs/editor
-```
-
 ---
 
 To run the editor, click ↴  
