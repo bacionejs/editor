@@ -8,7 +8,7 @@ Or download and run from your file manager
 
 ---
 
-## Features
+**Features**
 - **Run**: Instant code execution
 - **Debugging**: Displays message and positions the cursor at the error
 - **Editing**: Save, cut, copy, paste, undo, redo
@@ -26,7 +26,6 @@ Or download and run from your file manager
    
 ---
 
-## Alternative
 For complex needs, try [Termux/Neovim](https://github.com/bacionejs/termux).
 
 
