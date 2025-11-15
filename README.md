@@ -1,9 +1,9 @@
 <h1><a href="https://bacionejs.github.io/editor/bacionejs.html" style="text-decoration: none; color: inherit;">Start</a></h1>
-🔒 If you arrived here from **Facebook** or similar external source, you must copy and paste this link into an Android **Chrome** browser:
+🔒 If you arrived here from **Facebook** or similar external source, you must copy and paste this link into an Android **Chrome** browser:  
 ```text
 https://github.com/bacionejs/editor
 ```
-
+  
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank">
     <img src="README.jpg" width="33%">
 </a>
