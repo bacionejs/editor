@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><script>onload=()=>{ ide();function ide(){
+<meta name='viewport' content='width=device-width, initial-scale=1, interactive-widget=resizes-content'/><script>onload=()=>{ ide();function ide(){
 document.title="BacioneJS";
 let product=`<b>Bacione Javascript Editor</b><br>Integrated Development Environment`;
 let tested="Works with android chrome browser, tablet and phone";
@@ -145,7 +145,7 @@ a.click();URL.revokeObjectURL(a.href);a.remove();
 function exportgame(){
 let n=currentgame()?.name;
 if(n==undefined || n=="Library")return;
-let f="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
+let f="<meta name='viewport' content='width=device-width, initial-scale=1, interactive-widget=resizes-content'/>";
   f+="<\script>onload=()=>{ let FPS; new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(Math.floor(1000/(b-a))))))).then(r=>{FPS=r; "+n+"();});"+T.V+" }<\/script>";
 let a=element("a");
 a.hidden=true;
@@ -391,7 +391,7 @@ return view.instance(f);
 }//end view
 
 function filecontent(t=T){
-let s="<meta name='viewport' content='width=device-width, initial-scale=1'/>";
+let s="<meta name='viewport' content='width=device-width, initial-scale=1, interactive-widget=resizes-content'/>";
 if(t.editingtheeditor){
   s+="<\script>onload=()=>{ ide();function ide(){"+t.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
 }else{
