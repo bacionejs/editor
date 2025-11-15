@@ -5,7 +5,7 @@ To run the editor, click ↴
   
 ---
 
-... or download and run from your file manager 
+Or download and run from your file manager 
 
 ---
 
