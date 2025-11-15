@@ -20,13 +20,11 @@ Or download and run from your file manager
 - **Fullscreen**: Expand your workspace  
 - **Gestures**: Swipe and long-press-repeat support  
 - **Pickers**: Icon and color selectors  
-- **Configurable**: Modify the editor source within itself  
+- **Configurable**: Modify the editor source within itself ⚙️
 - **Examples**: Games included 🎮
 - **Help**: Built-in guide 📚
    
 ---
 
 For complex needs, try [Termux/Neovim](https://github.com/bacionejs/termux)
-
-
 
