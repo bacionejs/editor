@@ -10,21 +10,9 @@ To run the editor, click ↴
   
 ---
 
-## Purpose
-Designed for those who [don't have a computer](https://www.google.com/search?q=philippines+computer+ownership) and would like to **experiment** with programming **small** javascript games on an **android chrome phone offline**, BacioneJS is the most [thumb-friendly](https://youtu.be/lx6Pf-KflcQ?si=jBlJVh4iwFUp_Nj8) IDE, the only one with a fully custom keyboard and the only one implemented in standalone javascript without dependencies. These innovations reduce editing frustration, simplify installation, and enable rapid enhancements.
-
-## Goal
-Give people a **taste** of programming with what they have.
-
 ## Installation (optional for offline use)
 - Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html) to your android phone/tablet
 - Open your file manager and click `bacionejs.html` to launch in chrome
-
-## Includes several games
-After you start the editor, click the run icon to play a game (it will run whichever game **contains the cursor**)
-
-## Help
-See the builtin help, which explains the editor and gives a helloworld example.
 
 ## Features
 - **Run**: Instant code execution
@@ -39,12 +27,11 @@ See the builtin help, which explains the editor and gives a helloworld example.
 - **Gestures**: Swipe and long-press-repeat support  
 - **Pickers**: Icon and color selectors  
 - **Configurable**: Modify the editor source within itself  
-- **Examples**: Games included
-- **Help**: Built-in guide
+- **Examples**: Games included 🎮
+- **Help**: Built-in guide 📚
    
-## Limitations
-- **Security**: Chrome cannot access local resources. Instead, use programmatic graphics and sound.
-- **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
+## Alternative
+For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
 
 
 
