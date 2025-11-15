@@ -26,7 +26,7 @@ Or download and run from your file manager
    
 ---
 
-For complex needs, try [Termux/Neovim](https://github.com/bacionejs/termux).
+For complex needs, try [Termux/Neovim](https://github.com/bacionejs/termux)
 
 
 
