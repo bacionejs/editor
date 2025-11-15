@@ -51,5 +51,5 @@ See the builtin help, which explains the editor and gives a helloworld example.
 
 
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank">
-    <img src="https://repository-images.githubusercontent.com/788276995/d79e5c65-dfac-4f00-920b-84928ab534fc" width="33%">
+    <img src="https://repository-images.githubusercontent.com/788276995/d79e5c65-dfac-4f00-920b-84928ab534fc" width="100%">
 </a>
