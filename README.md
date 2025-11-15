@@ -5,7 +5,7 @@ https://github.com/bacionejs/editor
 
 ---
 
-To run the editor, click ↴
+To run the editor, click ↴  
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank">
     <img src="README.jpg" width="33%">
 </a>
