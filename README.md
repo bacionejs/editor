@@ -24,8 +24,10 @@ Or download and run from your file manager
 - **Examples**: Games included 🎮
 - **Help**: Built-in guide 📚
    
+---
+
 ## Alternative
-For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
+For complex needs, try [Termux/Neovim](https://github.com/bacionejs/termux).
 
 
 
