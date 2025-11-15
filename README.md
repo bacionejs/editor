@@ -4,10 +4,8 @@ To run the editor, click ↴
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"> <img src="https://repository-images.githubusercontent.com/788276995/5a729f8a-02e1-4c07-bb85-895e23758cee" width="100%"> </a>
   
 ---
-
-## Installation (optional for offline use)
-- Download [bacionejs.html](https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html) to your android phone/tablet
-- Open your file manager and click `bacionejs.html` to launch in chrome
+...or download and run from your file manager 
+---
 
 ## Features
 - **Run**: Instant code execution
