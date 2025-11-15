@@ -3,12 +3,16 @@
 https://github.com/bacionejs/editor
 ```
 
+---
+
 <h1><a href="https://bacionejs.github.io/editor/bacionejs.html" style="text-decoration: none; color: inherit;">👉 Open</a></h1>
   
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank">
     <img src="README.jpg" width="33%">
 </a>
   
+---
+
 ## Purpose
 Designed for those who [don't have a computer](https://www.google.com/search?q=philippines+computer+ownership) and would like to **experiment** with programming **small** javascript games on an **android chrome phone offline**, BacioneJS is the most [thumb-friendly](https://youtu.be/lx6Pf-KflcQ?si=jBlJVh4iwFUp_Nj8) IDE, the only one with a fully custom keyboard and the only one implemented in standalone javascript without dependencies. These innovations reduce editing frustration, simplify installation, and enable rapid enhancements.
 
