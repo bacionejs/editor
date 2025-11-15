@@ -48,5 +48,3 @@ See the builtin help, which explains the editor and gives a helloworld example.
 - **Security**: Chrome cannot access local resources. Instead, use programmatic graphics and sound.
 - **Alternative**: For complex needs, try [Neovim with Termux and Apache](https://github.com/bacionejs/termux).
 
-![Editor Social Image](https://github.com/bacionejs/editor/settings/og-template)
-
