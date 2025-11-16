@@ -34,7 +34,9 @@ For complex stuff, try [Termux/Neovim](https://github.com/bacionejs/termux)
 
 
 <details>
+
 <summary>📝 Press Kit Examples</summary>
+
 
 > BacioneJS is an innovative, standalone JavaScript editor and IDE designed specifically for mobile use. It stands out by featuring a fully custom, thumb-friendly keyboard and running completely offline from a single HTML file, making coding accessible to anyone with an Android phone, regardless of computer access.
 
