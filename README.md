@@ -42,11 +42,17 @@ BacioneJS is an innovative, standalone JavaScript editor and IDE designed specif
 
 ```
 
+```
+
 Developed with the mission to democratize coding, BacioneJS transforms any Android phone into a powerful, pocket-sized Integrated Development Environment (IDE). Unlike traditional mobile editors, BacioneJS requires no installation and operates entirely offline from a single bacionejs.html file. Its major innovation is the custom keyboard and logic, which simplifies the entry of code symbols and commands, eliminating the typical frustrations of mobile programming and making it the most thumb-friendly solution for developing small JavaScript games.
 
 ```
 
+```
+
 Bacione JavaScript Editor Integrated Development Environment (BacioneJS) is a unique open-source project (GPL licensed) built entirely in vanilla JavaScript with zero dependencies. This design choice ensures maximum accessibility and portability, allowing the entire IDE to run offline from a simple HTML file. BacioneJS is targeted at aspiring programmers who lack consistent access to a traditional computer, offering a full suite of features—including instant code execution, debugging, and code assistance—all optimized for a mobile touchscreen via its custom keyboard interface.
+
+```
 
 ```
 
