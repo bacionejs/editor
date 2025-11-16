@@ -171,7 +171,7 @@ The project is licensed under the GPL v3, encouraging community contribution and
 <details>
 <summary>📝 Game Article Example</summary>
 
-# A Deep Dive into BacioneJS: Deconstructing the "Defense" Game
+A Deep Dive into BacioneJS: Deconstructing the "Defense" Game
 
 Welcome, fellow JavaScript enthusiasts! In the world of web development, we often find ourselves surrounded by complex frameworks, build tools, and sprawling environments. But what if you could build and run a complete game, entirely offline, from a single HTML file on your phone? That's the promise of **BacioneJS**, a standalone, thumb-friendly JavaScript IDE designed for mobile.
 
