@@ -1,3 +1,4 @@
+
 ---
 
 To open the editor, click ↴  
@@ -25,6 +26,6 @@ Or download and open from your file manager
    
 ---
 
-For complex needs, try [Termux/Neovim](https://github.com/bacionejs/termux)
+For complex stuff, try [Termux/Neovim](https://github.com/bacionejs/termux)
 
 ---
