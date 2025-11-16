@@ -50,11 +50,8 @@ For complex stuff, try [Termux/Neovim](https://github.com/bacionejs/termux)
 
 
 
-
-
----
-
-# Kiss Your Desktop Goodbye: A Deep Dive into BacioneJS
+<details>
+<summary>📝 Article Example</summary>
 
 *In a world dominated by powerful desktop IDEs and complex build pipelines, could the future of accessible coding lie in a single, self-contained HTML file? Meet BacioneJS, a remarkable offline JavaScript IDE for your phone that's rewriting the rules of mobile development.*
 
@@ -168,3 +165,5 @@ BacioneJS is a project with a clear vision and masterful execution. It's a love 
 It may not replace your desktop VS Code setup for large-scale application development, but that's not its goal. Its purpose is to put the power of creation into the hands of anyone with a phone, to spark curiosity, and to provide a frictionless first step into the vast world of programming.
 
 The project is licensed under the GPL v3, encouraging community contribution and modification. If you've ever been frustrated by the limitations of mobile coding or are passionate about making programming more accessible, I urge you to visit the [BacioneJS GitHub repository](https://github.com/bacionejs/editor), download the `bacionejs.html` file, and give it a try. You might just be surprised by how much you can build with a "big kiss" of simplicity.
+
+</details>
