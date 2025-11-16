@@ -33,8 +33,8 @@ For complex stuff, try [Termux/Neovim](https://github.com/bacionejs/termux)
 
 
 
-
-📝 Press Kit
+<detail>
+<summary>📝 Press Kit Examples</summary>
 
 > BacioneJS is an innovative, standalone JavaScript editor and IDE designed specifically for mobile use. It stands out by featuring a fully custom, thumb-friendly keyboard and running completely offline from a single HTML file, making coding accessible to anyone with an Android phone, regardless of computer access.
 
@@ -44,7 +44,7 @@ For complex stuff, try [Termux/Neovim](https://github.com/bacionejs/termux)
 
 > Developed with the mission to democratize coding, BacioneJS transforms any Android phone into a powerful, pocket-sized Integrated Development Environment (IDE). The name "Bacione" means "big kiss" in Italian, reflecting the core philosophy of Keep It Satisfyingly Simple (KISS). This simplicity drives its design: it runs entirely offline from a single HTML file, requires zero setup, and features a revolutionary custom keyboard optimized for thumbs. At just 7 kilobytes zipped, the project delivers a full-featured IDE—proving that you get a lot for little code. By simplifying the entry of complex code symbols and commands, BacioneJS eliminates the typical frustrations of mobile programming, making coding accessible and genuinely enjoyable for beginners.
 
-
+</detail>
 
 
 
