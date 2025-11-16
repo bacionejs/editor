@@ -47,6 +47,12 @@ For complex stuff, try [Termux/Neovim](https://github.com/bacionejs/termux)
 
 > BacioneJS is not just an editor; it's a portable coding laboratory for mobile users. To ensure beginners can start immediately, the single-file IDE is pre-loaded with numerous small, runnable JavaScript games that are perfect for tinkering and learning. These basic examples include classic logic puzzles and physics simulations, such as: Chess, Snake, Pairs, Missile Defense, Monkey Maze, Mars Lander, Bike, and Ski. This integrated, hands-on environment lets developers bypass complicated setup, allowing them to instantly see how simple game mechanics work and modify the code right on their phone, completely offline.
 
+> BacioneJS is designed to bridge the digital divide for aspiring programmers in mobile-first nations. In countries like the Philippines, where up to 90% of the population lacks access to a personal computer and reliable internet, the smartphone is the primary gateway to the digital world. BacioneJS leverages this reality by transforming any Android phone into a complete, offline JavaScript IDE. Its single-file, zero-setup design means anyone can start coding games and applications with the device they already own, opening up opportunities for learning and creation that were previously out of reach.
+
+> BacioneJS directly addresses a global reality: for millions of aspiring developers, a phone is their only computer. In many parts of the world, PC ownership and consistent internet are luxuries, but mobile penetration is near-ubiquitous. By running entirely offline from a single HTML file, BacioneJS eliminates these barriers. It turns the most common personal device—the Android phone—into a powerful, thumb-friendly IDE, making it possible for anyone, anywhere, to learn JavaScript and build real projects without needing a laptop or a stable connection.
+
+> For the 90% of aspiring coders in places like the Philippines who have a phone but no PC, BacioneJS is a game-changer. It's a full-featured JavaScript IDE that runs offline in a single file, turning the device in everyone's pocket into a powerful learning and development tool. With its custom thumb-friendly keyboard and built-in game examples, it makes coding accessible to a global audience previously excluded by the need for expensive hardware and reliable internet.
+
 </details>
 
 
@@ -487,4 +493,3 @@ And there you have it—a complete, playable game in just over 60 lines of vanil
 This small game is a testament to the power and elegance of modern, dependency-free JavaScript. It demonstrates that you don't need a massive game engine to create something fun and interactive. I encourage you to open `defense` in BacioneJS, tweak the variables, change the shapes, and experiment. What happens if you make the missiles faster? Or give the player more power? Learning by doing is the best way to grow as a developer, and simple, well-structured examples like this are the perfect playground. Happy coding
 
 </details>
-
