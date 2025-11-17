@@ -506,3 +506,4 @@ This small game is a testament to the power and elegance of modern, dependency-f
 
 For complex stuff, try [Termux/Neovim](https://github.com/bacionejs/termux)
 
+---
