@@ -565,8 +565,6 @@ This small game is a testament to the power and elegance of modern, dependency-f
 
 ---
 
-<details>
-<summary>Cheatsheet</summary>
 
 1. Game Structure & Scope ⚙️
 | Syntax | Purpose | Example |
@@ -615,4 +613,3 @@ Input is handled globally by adding listeners to the window/document.
 | ({pageX:x, pageY:y}) | Destructuring the event object to quickly get mouse/touch coordinates. | addEventListener("click",({pageX:x,pageY:y})=>{...}); |
 | addEventListener("pointerdown", func) | Used for touch-friendly press/release events. | addEventListener("pointerdown",()=>{...}); |
 
-</details>
