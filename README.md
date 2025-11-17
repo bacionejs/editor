@@ -32,6 +32,9 @@ Or download and open from your file manager
 Q: This is cool and all, but programming on a phone is just not worth it. It's so inefficient. Why don't people just buy a used laptop? They're as cheap as a phone these days.  
 A: In my village, 90% have a phone but no computer or reliable internet. My solution gives them a **taste** of programming with what they have.
 
+Q: How is this better than editors on the Play store?  
+A: The built-in keyboard and efficient editing support.
+
 Q: Can I remove all the included games?  
 A: Yes, this will help make the editor more responsive  
 
