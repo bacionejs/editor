@@ -8,7 +8,9 @@ Or download and open from your file manager
 
 ---
 
-**Features**
+<details>
+<summary>Features</summary>
+
 - **Run**: instant code execution
 - **Debugging**: displays message and positions the cursor at the error
 - **Editing**: save, cut, copy, paste, undo, redo
@@ -24,6 +26,8 @@ Or download and open from your file manager
 - **Examples**: games included 🎮
 - **Help**: built-in guide 📚
    
+</details>
+
 ---
 
 <details>
