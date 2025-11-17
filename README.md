@@ -41,6 +41,9 @@ A: Yes, it is only for **small** javascript canvas games.
 Q: What does it work on?  
 A: You can open in Chrome from your Android file manager, on a phone or tablet.
 
+Q: Is it offline?  
+A: Yes, it is one html file that can run from your file manager.
+
 Q: Can I remove all the included games?  
 A: Yes, this will help make the editor more responsive.  
 
