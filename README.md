@@ -51,7 +51,10 @@ Q: Why does it save to a timestamped file?
 A: For security, browsers can't overwrite files.  
 
 Q: Did you use AI?  
-A: No, but the Press Kit is AI.
+A: Only for the lips and Press Kit.
+
+Q: What does bacione mean?  
+A: It means kiss in Italian, as in, Keep It Satisfyingly Simple.
 
 </details>
 
