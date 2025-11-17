@@ -1540,12 +1540,13 @@ return {terrain,Particles,RandomArray,Sound,canvas,gradient,rnd,shape,vertices,d
 
 };//end library
 
-  // Note: FPS is passed in from the editor
-  // ChatGpt: using this games/library code as examples, make a dinosaur jumper game in less than 200 lines
-
-let W=innerWidth;
+let W=innerWidth;//the game canvas is square so W is also used for height
 let floor=Math.floor,random=Math.random,pow=Math.pow,sin=Math.sin,cos=Math.cos,PI=Math.PI,hypot=Math.hypot,atan2=Math.atan2,abs=Math.abs,ceil=Math.ceil,sqrt=Math.sqrt;
 (function(sort){Array.prototype.sort=function(){return sort.call(this,(a,b)=>a-b)};})(Array.prototype.sort);//Overridden Array sort: compares numbers instead of strings
 let L=Library();
+  
+  // Note: FPS is passed in from the editor. You don't need to set it.
+  // Use the above helper library and variables
+
 
 }}</script>
