@@ -29,6 +29,9 @@ Or download and open from your file manager
 <details>
 <summary>FAQ</summary>
 
+Q: This is cool and all, but programming on a phone is just not worth it. It's so inefficient. Why don't people just buy a used laptop? They're as cheap as a phone these days.
+A: In my village, 90% have a phone but no computer or reliable internet. My solution gives them a **taste** of programming with what they have.
+
 Q: Can I remove all the included games?  
 A: Yes, this will help make the editor more responsive  
 
@@ -60,7 +63,7 @@ A: For security, browsers can't overwrite files.
 
 > BacioneJS directly addresses a global reality: for millions of aspiring developers, a phone is their only computer. In many parts of the world, PC ownership and consistent internet are luxuries, but mobile penetration is near-ubiquitous. By running entirely offline from a single HTML file, BacioneJS eliminates these barriers. It turns the most common personal device—the Android phone—into a powerful, thumb-friendly IDE, making it possible for anyone, anywhere, to learn JavaScript and build real projects without needing a laptop or a stable connection.
 
-> For the 90% of aspiring coders in places like the Philippines who have a phone but no PC, BacioneJS is a game-changer. It's a full-featured JavaScript IDE that runs offline in a single file, turning the device in everyone's pocket into a powerful learning and development tool. With its custom thumb-friendly keyboard and built-in game examples, it makes coding accessible to a global audience previously excluded by the need for expensive hardware and reliable internet.
+> For the 90% of aspiring coders in places like the Philippines who have a phone but no PC, BacioneJS is a game-changer. It's a full-featured JavaScript IDE that runs offline in a single file, turning the device in everyone's pocket into a powerful learning and development tool. With its custom thumb-friendly keyboard and built-in game examples, it makes coding accessible to a global audience previously excluded by the need for hardware and reliable internet.
 
 </details>
 
