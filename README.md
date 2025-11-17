@@ -80,6 +80,9 @@ A: After you start the editor, click the run icon to play a game (it will run wh
 Q: How can AI help me make a game?  
 A: Open the editor, copy all the text (games/library) and paste to ChatGpt with this prompt: `using this games/library code as examples, make a dinosaur jumper game in less than 100 lines`
 
+Q: How do I copy/paste for external?  
+A: Use long-press instead of the built-in buttons.
+
 </details>
 
 ---
