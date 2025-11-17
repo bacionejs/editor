@@ -74,6 +74,9 @@ A: Yes
 Q: Can I use external resources?  
 A: No, for security, since it runs from the file manager. Instead, use programmatic sounds and images. See the `defense` built-in game for an example.
 
+Q: How do I try the built-in games?  
+A: After you start the editor, click the run icon to play a game (it will run whichever game contains the cursor)
+
 </details>
 
 ---
