@@ -35,6 +35,12 @@ A: In my village, 90% have a phone but no computer or reliable internet. My solu
 Q: How is this better than editors on the Play store?  
 A: The built-in keyboard and efficient editing support.
 
+Q: Is it only for games?  
+A: Yes, it is only for javascript canvas games.  
+
+Q: What does it work on?  
+A: You can open in Chrome from your Android file manager, on a phone or tablet.
+
 Q: Can I remove all the included games?  
 A: Yes, this will help make the editor more responsive.  
 
