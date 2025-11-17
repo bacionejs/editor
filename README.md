@@ -50,6 +50,9 @@ A: Yes, this will help make the editor more responsive.
 Q: Why does it save to a timestamped file?  
 A: For security, browsers can't overwrite files.  
 
+Q: Did you use AI?  
+A: No, but the Press Kit is AI.
+
 </details>
 
 ---
