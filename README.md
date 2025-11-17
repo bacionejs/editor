@@ -36,7 +36,7 @@ Q: How is this better than editors on the Play store?
 A: The built-in keyboard and efficient editing support.
 
 Q: Is it only for games?  
-A: Yes, it is only for javascript canvas games.  
+A: Yes, it is only for **small* javascript canvas games.  
 
 Q: What does it work on?  
 A: You can open in Chrome from your Android file manager, on a phone or tablet.
