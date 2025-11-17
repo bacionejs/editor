@@ -323,14 +323,13 @@ let blues=[],speed=(W/FPS/2);
 *   `speed=(W/FPS/2)`: Calculates the speed of the missiles. `W` is a global variable for `innerWidth`, and `FPS` is the detected frames per second. This formula makes the missile travel across half the screen in one second, ensuring consistent speed across different devices.
 
 ```javascript
-addEventListener("click",({pageX:x,pageY:y})=>{power--;snd.rocket();blues.push({state:0,x:W/2,y:W,tx:x,ty:y,angle:atan2(y-W,x-W/2)});});
+addEventListener("click",({pageX:x,pageY:y})=>{power--;snd.rocket();blues.push({x:W/2,y:W,tx:x,ty:y,angle:atan2(y-W,x-W/2)});});
 ```
 **Line 8:** This is the player's input handler. It listens for a `click` (or tap) anywhere on the screen.
 *   `({pageX:x,pageY:y})`: Uses object destructuring to get the `x` and `y` coordinates of the click.
 *   `power--`: Firing a missile costs one power.
 *   `snd.rocket()`: Plays the rocket launch sound.
 *   `blues.push({...})`: Creates a new missile object and adds it to the `blues` array. Let's break down the object's properties:
-    *   `state:0`: An unused state variable, perhaps for future features.
     *   `x:W/2, y:W`: The missile's starting position is the bottom-center of the screen.
     *   `tx:x, ty:y`: The target coordinates (where the user clicked).
     *   `angle:atan2(y-W,x-W/2)`: This is the crucial bit of trigonometry. `Math.atan2` calculates the angle (in radians) from the missile's starting point (`W/2, W`) to the target point (`x, y`). This angle determines the missile's direction of travel.
@@ -385,7 +384,7 @@ let reds=[],spawning,radius=W/50,particles=L.Particles(c),ppf=W/FPS,difficulty=L
 *   `spawning`: A flag to prevent new waves from spawning while a wave is already being created.
 *   `radius=W/50`: Sets the base radius for the bombs, making them proportional to the screen size.
 *   `particles=L.Particles(c)`: Creates a particle system instance from the helper library, used for explosion effects.
-*   `ppf=W/FPS`: An unused variable, likely a leftover from development.
+*   `ppf=W/FPS`: Represents pixels per frame.
 *   `difficulty=L.Difficulty({...})`: This is a fascinating one. It creates a difficulty calculator using a custom algorithm from the library. It defines a curve where the bomb speed (`start`ing low, moving towards an `end` value) increases over levels. `at:20` means it takes about 20 levels to reach the `be` (before end) speed, providing a smooth difficulty ramp.
 *   `speed`: This will hold the base speed for bombs in the current level, calculated by the `difficulty` function.
 
