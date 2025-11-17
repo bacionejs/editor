@@ -209,7 +209,7 @@ let level = Object.assign(L.element("input"), {type:"range",value:1,min:1,max:20
 
 function Blue(){
 let blues=[],speed=(W/FPS/2);
-addEventListener("click",({pageX:x,pageY:y})=>{power--;snd.rocket();blues.push({state:0,x:W/2,y:W,tx:x,ty:y,angle:atan2(y-W,x-W/2)});});
+addEventListener("click",({pageX:x,pageY:y})=>{power--;snd.rocket();blues.push({x:W/2,y:W,tx:x,ty:y,angle:atan2(y-W,x-W/2)});});
 function update(){
 for(let i=blues.length-1;i>=0;i--){let o=blues[i];
   o.x+=cos(o.angle)*speed;o.y+=sin(o.angle)*speed;
