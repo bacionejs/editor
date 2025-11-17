@@ -567,6 +567,7 @@ This small game is a testament to the power and elegance of modern, dependency-f
 
 <details>
 <summary>Cheatsheet</summary>
+
 1. Game Structure & Scope ⚙️
 | Syntax | Purpose | Example |
 |---|---|---|
