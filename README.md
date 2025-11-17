@@ -36,7 +36,7 @@ Q: How is this better than editors on the Play store?
 A: The built-in keyboard and efficient editing support.
 
 Q: Can I remove all the included games?  
-A: Yes, this will help make the editor more responsive  
+A: Yes, this will help make the editor more responsive.  
 
 Q: Why does it save to a timestamped file?  
 A: For security, browsers can't overwrite files.  
