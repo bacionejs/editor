@@ -44,6 +44,9 @@ A: You can open in Chrome from your Android file manager, on a phone or tablet.
 Q: Is it offline?  
 A: Yes, it is one html file that can run from your file manager.
 
+Q: Does it use a server?  
+A: No.
+
 Q: Can I remove all the included games?  
 A: Yes, this will help make the editor more responsive.  
 
@@ -82,6 +85,9 @@ A: Open the editor, copy all the text (games/library) and paste to ChatGpt with 
 
 Q: How do I copy/paste for external?  
 A: Use long-press instead of the built-in buttons.
+
+Q: What did you use to make this?  
+A: Termux/Neovim: https://github.com/bacionejs/termux
 
 </details>
 
