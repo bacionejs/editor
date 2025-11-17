@@ -56,6 +56,21 @@ A: Only for the lips and Press Kit.
 Q: What does bacione mean?  
 A: It means kiss in Italian, as in, Keep It Satisfyingly Simple.
 
+Q: How big is it?  
+A: Without the built-in Help and Games, it is 800 lines.
+
+Q: Did you use any third-party libraries?  
+A: No.
+
+Q: Is there a Settings menu?  
+A: No, but you can edit-the-editor within the editor.
+
+Q: How do I change the default theme?  
+A: There are several themes (swipe-up on the Misc button), and to set which one is first, in edit-the-editor change `activetheme=0`
+
+Q: Is there a built-in Help  
+A: Yes
+
 </details>
 
 ---
