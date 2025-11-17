@@ -30,7 +30,15 @@ For complex stuff, try [Termux/Neovim](https://github.com/bacionejs/termux)
 
 ---
 
+<details>
+<summary>FAQ</summary>
 
+Q: Can I remove all the included games.
+A: Yes, this will help make the editor more responsive
+
+</details>
+
+---
 
 **Press Kit**
 
