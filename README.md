@@ -84,7 +84,7 @@ A: No, for security, since it runs from the file manager. Instead, use programma
 Q: How do I try the built-in games?  
 A: After you start the editor, click the run icon to play a game (it will run whichever game contains the cursor)
 
-Q: How do I stop game?  
+Q: How do I stop a game?  
 A: Click the run icon.
 
 Q: How do I copy/paste for external?  
