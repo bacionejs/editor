@@ -93,6 +93,9 @@ A: Use long-press instead of the built-in buttons.
 Q: What did you use to make this?  
 A: Termux/Neovim: https://github.com/bacionejs/termux
 
+Q: How long did it take?  
+A: One year.
+
 </details>
 
 ---
