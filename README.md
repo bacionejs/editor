@@ -567,6 +567,7 @@ This small game is a testament to the power and elegance of modern, dependency-f
 
 
 1. Game Structure & Scope ⚙️
+
 | Syntax | Purpose | Example |
 |---|---|---|
 | function gameName(){} | Defines the entire game and its local scope. | function bike(){...} |
@@ -574,6 +575,7 @@ This small game is a testament to the power and elegance of modern, dependency-f
 | (function loop(){...})(); | Starts the main game loop using an IIFE. | (function loop(){... requestAnimationFrame(loop); })(); |
 | requestAnimationFrame(loop); | Schedules the next frame for smooth animation. |  |
 | return function(){...} | The common pattern for defining a layer/object's update/draw step. | function Sky(){ return function(){ c.fillRect(0,0,W,W); }; } |
+
 2. Variables & Logic Flow 🔄
 | Syntax | Purpose | Example |
 |---|---|---|
