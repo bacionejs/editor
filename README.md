@@ -29,7 +29,7 @@ Or download and open from your file manager
 <details>
 <summary>FAQ</summary>
 
-Q: This is cool and all, but programming on a phone is just not worth it. It's so inefficient. Why don't people just buy a used laptop? They're as cheap as a phone these days.
+Q: This is cool and all, but programming on a phone is just not worth it. It's so inefficient. Why don't people just buy a used laptop? They're as cheap as a phone these days.  
 A: In my village, 90% have a phone but no computer or reliable internet. My solution gives them a **taste** of programming with what they have.
 
 Q: Can I remove all the included games?  
