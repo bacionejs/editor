@@ -37,7 +37,7 @@ Q: Can I remove all the included games?
 A: Yes, this will help make the editor more responsive  
 
 Q: Why does it save to a timestamped file?  
-A: For security, browsers can't overwrite file.  
+A: For security, browsers can't overwrite files.  
 
 </details>
 
