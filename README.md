@@ -26,10 +26,6 @@ Or download and open from your file manager
    
 ---
 
-For complex stuff, try [Termux/Neovim](https://github.com/bacionejs/termux)
-
----
-
 <details>
 <summary>FAQ</summary>
 
@@ -505,3 +501,8 @@ And there you have it—a complete, playable game in just over 60 lines of vanil
 This small game is a testament to the power and elegance of modern, dependency-free JavaScript. It demonstrates that you don't need a massive game engine to create something fun and interactive. I encourage you to open `defense` in BacioneJS, tweak the variables, change the shapes, and experiment. What happens if you make the missiles faster? Or give the player more power? Learning by doing is the best way to grow as a developer, and simple, well-structured examples like this are the perfect playground. Happy coding
 
 </details>
+
+---
+
+For complex stuff, try [Termux/Neovim](https://github.com/bacionejs/termux)
+
