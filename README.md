@@ -84,6 +84,9 @@ A: No, for security, since it runs from the file manager. Instead, use programma
 Q: How do I try the built-in games?  
 A: After you start the editor, click the run icon to play a game (it will run whichever game contains the cursor)
 
+Q: How do stop game?  
+A: Click the run icon.
+
 Q: How can AI help me make a game?  
 A: Open the editor, copy all the text (games/library) and paste to ChatGpt with this prompt: `using this games/library code as examples, make a dinosaur jumper game in less than 100 lines`
 

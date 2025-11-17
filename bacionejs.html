@@ -67,7 +67,7 @@ body{background:white;}
 
 function theme(){
 if(theme.instance){theme.instance(); return theme.instance;}
-let i=0,a=[
+let activetheme=0,a=[
 ["fontsizesmall"  ,[10      ,  10         ,  10      ,  10            ,  8         ,  8              ]],
 ["fontsizebig"    ,[15      ,  15         ,  15      ,  15            ,  20        ,  20             ]],
 ["keyroundness"   ,["20%"   ,  "20%"      ,  "20%"   ,  "20%"         ,  "50%"     ,  "50%"          ]],
@@ -82,7 +82,7 @@ let i=0,a=[
 ["pairs"          ,["purple",  "#96ecff"  ,  "brown" ,  "black"       ,  "lime"    ,  "indigo"       ]],
 ];
 theme.instance=function(){
-if(i==a[0][1].length)i=0;a.forEach(a=>theme[a[0]]=a[1][i]);i++;
+if(activetheme==a[0][1].length)activetheme=0;a.forEach(a=>theme[a[0]]=a[1][activetheme]);activetheme++;
 let style;
 KEYS.forEach(k=>{
   style=k.e.style; 
@@ -1539,6 +1539,8 @@ function element(e){return document.body.appendChild(document.createElement(e));
 return {terrain,Particles,RandomArray,Sound,canvas,gradient,rnd,shape,vertices,debug,Difficulty,element};
 
 };//end library
+
+// Note: FPS is passed in from the editor
 
 let W=innerWidth;
 let floor=Math.floor,random=Math.random,pow=Math.pow,sin=Math.sin,cos=Math.cos,PI=Math.PI,hypot=Math.hypot,atan2=Math.atan2,abs=Math.abs,ceil=Math.ceil,sqrt=Math.sqrt;
