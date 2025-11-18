@@ -100,10 +100,10 @@ A: One year.
 
 ---
 
-**Press Kit**
+**📝 Press Kit**
 
 <details>
-<summary>📝 Summary Examples</summary>
+<summary>Summary Examples</summary>
 
 > BacioneJS, for the **Purpose** of programming small javascript games on a phone offline, the **Mission** is to create the most thumb-friendly IDE in its class, and the **Goal** is to give people a taste of programming with what they have.
 
@@ -128,7 +128,7 @@ A: One year.
 
 
 <details>
-<summary>📝 Article Example</summary>
+<summary>Article Example</summary>
 
 *In a world dominated by powerful desktop IDEs and complex build pipelines, could the future of accessible coding lie in a single, self-contained HTML file? Meet BacioneJS, a remarkable offline JavaScript IDE for your phone that's rewriting the rules of mobile development.*
 
@@ -246,7 +246,7 @@ The project is licensed under the GPL v3, encouraging community contribution and
 </details>
 
 <details>
-<summary>📝 Game Article Example</summary>
+<summary>Game Article Example</summary>
 
 A Deep Dive into BacioneJS: Deconstructing the "Defense" Game
 
