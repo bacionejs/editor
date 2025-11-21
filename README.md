@@ -125,7 +125,6 @@ This document provides an in-depth technical overview of the BacioneJS editor, a
     *   [Code Structure (`gameprograms`)](#41-code-structure-gameprograms)
     *   [The `L` Helper Library](#42-the-l-helper-library)
     *   [Global Context](#43-global-context)
-5.  [Code Style and Conventions](#5-code-style-and-conventions)
 
 ---
 
@@ -281,16 +280,6 @@ Games have access to a few globals set up by the editor and the bootstrap script
 -   `L`: The helper library object.
 -   Shorthands for `Math` functions (`floor`, `random`, `sin`, etc.).
 -   A modified `Array.prototype.sort` that defaults to numeric comparison.
-
-## 5. Code Style and Conventions
-
-The codebase is heavily minified by hand for size and portability. This results in:
--   Short variable names (`T`, `s`, `e`, `i`, `a`).
--   Use of arrow functions and ternary operators to reduce lines.
--   Chaining of assignments and function calls.
--   Lack of comments within the functional code blocks. The initial large comment block serves as the main guide.
-
-While this makes the code dense, it's a deliberate design choice to keep the file size minimal.
 
 </details>
 
