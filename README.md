@@ -126,7 +126,6 @@ This document provides an in-depth technical overview of the BacioneJS editor, a
     *   [The `L` Helper Library](#42-the-l-helper-library)
     *   [Global Context](#43-global-context)
 5.  [Code Style and Conventions](#5-code-style-and-conventions)
-6.  [Potential Improvements](#6-potential-improvements)
 
 ---
 
@@ -200,7 +199,7 @@ The `createkeys()` function is a large factory that builds the keyboard from a d
 
 ### 3.1 File Handling: Save & Export
 
--   **`save()`**: Reconstructs the entire HTML document as a string using `filecontent()`. This string is then converted into a `File` object, a blob URL is created with `URL.createObjectURL`, and this URL is assigned to the `href` of a dynamically created `<a>` element. A programmatic `.click()` on this link triggers the browser's "Save As" dialog. The filename is timestamped to prevent overwriting.
+-   **`save()`**: Reconstructs the entire HTML document as a string using `filecontent()`. This string is then converted into a `File` object, a blob URL is created with `URL.createObjectURL`, and this URL is assigned to the `href` of a dynamically created `<a>` element. A programmatic `.click()` on this link triggers the browser's "Save As" dialog. The filename is timestamped because overwriting is not allowed by browsers for security reasons.
 -   **`exportgame()`**: Similar to `save()`, but it builds a minimal HTML file containing only the selected game's code, the `L` library, and a small bootstrap script to run the game on load. This creates a portable, standalone game file that can be shared.
 -   **`filecontent()`**: This is the core of the metaprogramming capability. It conditionally reconstructs the `<script>` tag based on the `T.editingtheeditor` flag:
     *   If `false` (editing games), it injects the static `ide` function's source code along with the current content of the editor (`T.V`) wrapped in `function gameprograms(){...}`.
@@ -292,13 +291,6 @@ The codebase is heavily minified by hand for size and portability. This results 
 -   Lack of comments within the functional code blocks. The initial large comment block serves as the main guide.
 
 While this makes the code dense, it's a deliberate design choice to keep the file size minimal.
-
-## 6. Potential Improvements
-
--   **System Clipboard Integration:** The editor primarily uses an internal paste buffer (`T.P`). While `T.addEventListener('paste', ...)` handles system pastes, the custom `copy` function doesn't write to the system clipboard, which can be unintuitive. The `'cut'` event listener is also tied to the internal buffer.
--   **More Robust Syntax Highlighting:** A simple regex approach can fail on complex or broken code. A more advanced tokenizer or a tiny parser would be more robust.
--   **`eval()` Usage:** The `run()` function relies on `eval()`. While sandboxed in an `iframe`, this is generally considered a security risk. A safer alternative could involve constructing the game script in a `<script>` tag within the `iframe`'s `srcdoc`.
--   **Code Readability:** The minified style makes contributions difficult. A build process that takes readable source code and minifies it into the final `bacionejs.html` file would improve maintainability.
 
 </details>
 
