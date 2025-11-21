@@ -186,7 +186,7 @@ let t=T.V.slice(s,e);
 if(t.startsWith("//")){
   T.I("",  s,s+2);T.S=T.E=e-2;
 }else{
-  T.P=t;
+  T.P=t;//retain in paste buffer for a quick "copy, comment, paste, edit, try, revert" workflow.
   T.I("//",s,s);  T.S=T.E=e+2;
 }
 }
@@ -867,6 +867,8 @@ Click anywhere to close.
 </p><p>
 <b>Copy</b>
 Begins/extends <b>selection</b> of text and puts it in Paste.
+In other words, Copy is <b>selection</b> with the side affect of setting the Paste buffer.
+To exit this mode, press enter. See below for other ways <b>selection</b> can be affected.
 Selection looks at the character to the right and then selects:
   newline: line
   word: whole word
@@ -874,8 +876,11 @@ Selection looks at the character to the right and then selects:
   blank line: next blank line
   blocks: (){}[]""
 </p><p>
+<b>Cut</b>
+There is no Cut button. Cut is a two step process: copy (selects) and then backspace deletes <b>selection</b>.
+</p><p>
 <b>Backspace</b>
-Deletes character or <b>selection</b> (cut).
+Deletes character or <b>selection</b>.
 </p><p>
 <b>Enter</b>
 Inserts a new line or cancels <b>selection</b>.
@@ -883,6 +888,10 @@ Retains prior indentation.
 </p><p>
 <b>Arrows</b>
 Moves cursor or extends <b>selection</b>.
+</p><p>
+<b>Characters</b>
+Inserts a character or replaces <b>selection</b>.
+Swipeup on alphanumeric keys is like shift.
 </p><p>
 <b>Paste</b>
 Pastes
@@ -900,10 +909,6 @@ Also puts the line in Paste.
 <b>Complete</b>
 Completes a word.
 Looks for match in current game and then elsewhere.
-</p><p>
-<b>Characters</b>
-Inserts a character or replaces selection.
-Swipeup on alphanumeric keys is like shift.
 </p><p>
 <b>Longpress</b>
 Repeats key

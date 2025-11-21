@@ -224,7 +224,7 @@ BacioneJS implements its own context-aware selection and clipboard logic.
     *   Newline -> Selects the whole line.
     *   `(` `[` `{` `"` -> Selects the entire block, using the `block()` utility function.
 -   **`paste()`**: Pastes from the internal `T.P` buffer.
--   **`comment()`**: Toggles `//` at the start of the current line. It also copies the line's content to `T.P` for a quick "comment and move" workflow.
+-   **`comment()`**: Toggles `//` at the start of the current line. It also copies the line's content to `T.P` for a quick "copy, comment, paste, edit, try, revert" workflow.
 -   **`complete()`**: A simple word completion. It finds the word to the left of the cursor and searches for a longer word that starts with it. The search order is: 1) within the current game's function body, 2) from the cursor position forward, 3) from the beginning of the file.
 
 ### 3.4 Undo/Redo System
