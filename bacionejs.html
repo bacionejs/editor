@@ -186,7 +186,7 @@ let t=T.V.slice(s,e);
 if(t.startsWith("//")){
   T.I("",  s,s+2);T.S=T.E=e-2;
 }else{
-  T.P=t;//retain in paste buffer for a quick "copy, comment, paste, edit, try, revert" workflow.
+  T.P=t;
   T.I("//",s,s);  T.S=T.E=e+2;
 }
 }
