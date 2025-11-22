@@ -185,7 +185,7 @@ The `createkeys()` function is a large factory that builds the keyboard from a d
     *   The `resize()` function, managed by a `ResizeObserver`, calculates the optimal size for the keyboard to maintain its aspect ratio while fitting on the screen. This is a crucial piece for adapting to different phone sizes and orientations.
 -   **Event Handling:**
     *   Uses `pointerdown` and `pointerup` events to be device-agnostic (touch/mouse).
-    *   **Click vs. Swipe:** It determines if a "swipe up" occurred by checking if the pointer moved significantly, triggering the secondary function/character.
+    *   **Click vs. Swipe:** It determines if a "swipe" occurred by checking if the pointer moved significantly, triggering the secondary function/character.
     *   **Long Press:** A `setTimeout` on `pointerdown` initiates a `setInterval` to repeat the key's action, enabling continuous character insertion or cursor movement. All timeouts are cleared on `pointerup` or `pointercancel`.
 
 ### 2.4 Theming System
