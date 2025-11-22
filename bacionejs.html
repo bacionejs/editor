@@ -197,9 +197,10 @@ KEYS.filter(k=>!k.f).forEach(k=>k.e.textContent=k.d[k.d.indexOf(k.e.textContent)
 
 function undo(){restore(-1);}
 function redo(){restore(1);}
-let restore=function(){
+function restore(direction){
+if(restore.instance)return restore.instance(direction);
 let max=50*2+1,a=[],curr=0;a.push(T.V);
-return function(direction){
+restore.instance=function(direction){
 if(direction===0){//reset
   a.splice(0,Infinity,T.V);
 }else if(direction==undefined){//add
@@ -210,7 +211,9 @@ if(direction===0){//reset
   T.V=a[curr+=(direction*2)];
   T.S=T.E=a[curr-direction];
 }
-}}();//end restore
+}
+return restore.instance(direction);
+}
 
 function highlight(){
 if(T.H!==""){T.H="";syncpretty();return;}
