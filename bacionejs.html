@@ -65,8 +65,7 @@ body{background:white;}
 }
 `;//end style
 
-function theme(){
-if(theme.instance){theme.instance(); return theme.instance;}
+function theme(){if(theme.instance){theme.instance(); return theme.instance;}
 let activetheme=0,a=[
 ["fontsizesmall"  ,[10      ,  10         ,  10      ,  10            ,  8         ,  8              ]],
 ["fontsizebig"    ,[15      ,  15         ,  15      ,  15            ,  20        ,  20             ]],
@@ -197,8 +196,7 @@ KEYS.filter(k=>!k.f).forEach(k=>k.e.textContent=k.d[k.d.indexOf(k.e.textContent)
 
 function undo(){restore(-1);}
 function redo(){restore(1);}
-function restore(direction){
-if(restore.instance)return restore.instance(direction);
+function restore(direction){if(restore.instance){restore.instance(direction);return;}
 let max=50*2+1,a=[],curr=0;a.push(T.V);
 restore.instance=function(direction){
 if(direction===0){//reset
@@ -211,9 +209,7 @@ if(direction===0){//reset
   T.V=a[curr+=(direction*2)];
   T.S=T.E=a[curr-direction];
 }
-}
-return restore.instance(direction);
-}
+}; restore.instance(direction);}
 
 function highlight(){
 if(T.H!==""){T.H="";syncpretty();return;}
@@ -321,8 +317,7 @@ let lines=b.filter(o=>!a.includes(o));
 return lines.length?lines.map(line=>c+" "+line).join("\n"):c+"no change";
 }
 
-function rename(s){
-if(rename.instance){rename.instance(s); return rename.instance;}
+function rename(s){if(rename.instance){rename.instance(s); return rename.instance;}
 let con=element("div");
 con.style.cssText="z-index:0;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
 let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find);    fb.disabled=true; f.id="find";
@@ -355,12 +350,9 @@ if(s===undefined){//popup
   e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
   if(e.id=="find"){T.H=e.value;syncpretty();disable();}
 }
-}
-rename.instance(s); return rename.instance;
-}//end rename
+}; rename.instance(s); return rename.instance;}//end rename
 
-function view(f){
-if(view.instance){return view.instance(f);}
+function view(f){if(view.instance){return view.instance(f);}
 let a=[];
 view.instance=function(f){
 let e=a[f];
@@ -387,9 +379,7 @@ if((PRETTY.classList.toggle("unhide"),e.classList.toggle("unhide"))){
   e.style.zIndex=0;
 }
 return e;
-}
-return view.instance(f);
-}//end view
+}; return view.instance(f); }//end view
 
 function filecontent(t=T){
 let s="<meta name='viewport' content='width=device-width, initial-scale=1, interactive-widget=resizes-content'/>";
