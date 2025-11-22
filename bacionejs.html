@@ -997,14 +997,14 @@ function gameprograms(){
 
 
 function bike(){
-let hit,speed=W/FPS/5,size=W/30,offset=0,amplitude=60,freq=1/50,tilt=0.5,period=2*PI/freq;
+let hit,speed=W/FPS/5,size=W/30,offset=0,amplitude=40,freq=1/100,tilt=0.5,period=2*PI/freq;
 let slope=(x)=>sin((x+offset)*freq)*amplitude+(W/2)+x*tilt;
 let derivative=(x)=>amplitude*freq*cos((x+offset)*freq)+tilt;
 let c=L.canvas(size),os=[Sky(),Mountains(),Ground(),Player(),Trees()];
 (function loop(){os.forEach(o=>o());requestAnimationFrame(loop);})();
 
 function Sky(){
-return function(){c.fillStyle=L.gradient(c,W,-W,[[0,"skyblue"],[1,"blue"]]);c.fillRect(0,0,W,W);}
+return function(){c.fillStyle="skyblue";c.fillRect(0,0,W,W);}
 }
 
 function Mountains(){
