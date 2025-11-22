@@ -330,7 +330,7 @@ The `restore` singleton is a state-mutator driven entirely by arguments. It perf
 
 *   **Return Strategy:**
     *   It **always returns `undefined`**.
-    *   **Reason:** Its purpose is purely to cause side effects (modifying the text area's value and selection). There is no value to return, and since it's not a multi-purpose tool like `rename` or `view`, it doesn't need to return its instance. The original `restore` function pointer in the `KEYS` array is sufficient.
+    *   **Reason:** Its purpose is purely to cause side effects (modifying the text area's value and selection). There is no value to return, and it doesn't need to return its instance because it is wrapped in the KEYS array by undo/redo.
 
     ```javascript
     // Call: Argument-driven
