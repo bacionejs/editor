@@ -122,6 +122,11 @@ This document provides an in-depth technical overview of the BacioneJS editor, a
     *   [Code Structure (`gameprograms`)](#41-code-structure-gameprograms)
     *   [The `L` Helper Library](#42-the-l-helper-library)
     *   [Global Context](#43-global-context)
+5.  [Singleton Pattern Analysis](#5-singleton-pattern-analysis)
+    *   [`theme()`](#51-theme)
+    *   [`restore(direction)`](#52-restoredirection)
+    *   [`view(f)`](#53-viewf)
+    *   [`rename(s)`](#54-renames)
 
 ---
 
@@ -278,6 +283,8 @@ Games have access to a few globals set up by the editor and the bootstrap script
 -   Shorthands for `Math` functions (`floor`, `random`, `sin`, etc.).
 -   A modified `Array.prototype.sort` that defaults to numeric comparison.
 
+## 5. Singleton Pattern Analysis
+
 All four functions—`theme`, `restore`, `view`, and `rename`—use a lazy-initialization singleton pattern. On their first invocation, they define an `instance` function attached to themselves (`theme.instance`, `restore.instance`, etc.) which contains the core logic. Subsequent calls bypass this initialization.
 
 However, their strategies for how they are called and what they return are distinctly different, tailored to their specific purposes.
@@ -286,7 +293,7 @@ Here is a breakdown of those differences.
 
 ---
 
-### 1. `theme()`
+### 5.1 `theme()`
 
 The `theme` singleton is a simple executor that also provides its own instance for the function pointer in the `KEYS` array to remain valid.
 
@@ -309,7 +316,7 @@ The `theme` singleton is a simple executor that also provides its own instance f
     // theme.instance(); return theme.instance;
     ```
 
-### 2. `restore(direction)`
+### 5.2 `restore(direction)`
 
 The `restore` singleton is a state-mutator driven entirely by arguments. It performs actions but provides no useful return value.
 
@@ -333,7 +340,7 @@ The `restore` singleton is a state-mutator driven entirely by arguments. It perf
     // if(restore.instance){restore.instance(direction);return;}
     ```
 
-### 3. `view(f)`
+### 5.3 `view(f)`
 
 The `view` singleton acts as a factory or a cache. It creates and manages multiple objects (the different view `div`s) and returns one of them based on an argument.
 
@@ -354,7 +361,7 @@ The `view` singleton acts as a factory or a cache. It creates and manages multip
     // ... inside instance ... return e;
     ```
 
-### 4. `rename(s)`
+### 5.4 `rename(s)`
 
 The `rename` singleton is the most complex, acting as both a UI toggler and an input handler. Its behavior depends on the presence of an argument.
 
