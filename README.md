@@ -454,8 +454,6 @@ The most immediate and revolutionary feature of BacioneJS is its custom, thumb-f
 
 The BacioneJS keyboard solves this by providing a purpose-built interface for code.
 
-![A conceptual view of the thumb-friendly keyboard layout]
-
 -   **Logical Layout:** All common programming symbols are available on the main layout, logically grouped for quick access.
 -   **Dedicated Function Keys:** Essential IDE actions like **Run**, **Save**, **Undo/Redo**, **Copy**, and **Paste** are single-tap buttons, not hidden menu items.
 -   **Powerful Gestures:** The keyboard is surprisingly deep. A **swipe-up** gesture on a key often reveals its shifted alternative (e.g., swipe up on `q` for `Q`) or a secondary function (e.g., swipe up on the **Save** icon to run a `diff`). A **long-press** activates a key-repeat, perfect for navigation or deleting characters.
