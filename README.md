@@ -8,8 +8,7 @@ Or download and open from your file manager
 
 ---
 
-<details>
-<summary>Features</summary>
+<details><summary>Features</summary>
 
 - **Run**: instant code execution
 - **Debugging**: displays message and positions the cursor at the error
@@ -26,12 +25,7 @@ Or download and open from your file manager
 - **Examples**: games included 🎮
 - **Help**: built-in guide 📚
    
-</details>
-
----
-
-<details>
-<summary>FAQ</summary>
+</details><details><summary>FAQ</summary>
 
 Q: This is cool and all, but programming on a phone is just not worth it. It's so inefficient. Why don't people just buy a used laptop? They're as cheap as a phone these days.  
 A: In my village, 90% have a phone but no computer or reliable internet. My solution gives them a **taste** of programming with what they have.
@@ -93,12 +87,7 @@ A: Termux/Neovim: https://github.com/bacionejs/termux
 Q: How long did it take?  
 A: One year.
 
-</details>
-
----
-
-<details>
-<summary>Developer Notes</summary>
+</details><details><summary>Developer Notes</summary>
 
 This document provides an in-depth technical overview of the BacioneJS editor, a single-file, self-contained JavaScript IDE designed for mobile devices.
 
@@ -400,8 +389,7 @@ The `rename` singleton is the most complex, acting as both a UI toggler and an i
 
 **📝 Press Kit**
 
-<details>
-<summary>Summary Examples</summary>
+<details><summary>Summary Examples</summary>
 
 > BacioneJS, for the **Purpose** of programming small javascript games on a phone offline, the **Mission** is to create the most thumb-friendly IDE in its class, and the **Goal** is to give people a taste of programming with what they have.
 
