@@ -595,6 +595,7 @@ function resize(){
 let scaleByHeight = ((innerHeight - innerWidth) / keys.rows);
 let scaleByWidth = (innerWidth / keys.cols);
 let finalScale = Math.min(scaleByHeight, scaleByWidth);
+// finalScale=300/keys.cols;//user override
 let finalHeight = finalScale * keys.rows;
 let finalWidth = finalScale * keys.cols;
 scale = finalScale;
