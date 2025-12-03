@@ -48,9 +48,6 @@ A: No.
 Q: Can I remove all the included games?  
 A: Yes, this will help make the editor more responsive.  
 
-Q: Why does it save to a timestamped file?  
-A: For security, browsers can't overwrite files.  
-
 Q: What does bacione mean?  
 A: It means kiss in Italian, as in, Keep It Satisfyingly Simple.
 
@@ -68,9 +65,6 @@ A: There are several themes (swipe-up on the Misc button), and to set which one 
 
 Q: Is there a built-in Help  
 A: Yes
-
-Q: Can I use external resources?  
-A: No, for security, since it runs from the file manager. Instead, use programmatic sounds and images. See the `defense` built-in game for an example.
 
 Q: How do I try the built-in games?  
 A: After you start the editor, click the run icon to play a game (it will run whichever game contains the cursor)
@@ -189,7 +183,7 @@ The `createkeys()` function is a large factory that builds the keyboard from a d
 
 ### 3.1 File Handling: Save & Export
 
--   **`save()`**: Reconstructs the entire HTML document as a string using `filecontent()`. This string is then converted into a `File` object, a blob URL is created with `URL.createObjectURL`, and this URL is assigned to the `href` of a dynamically created `<a>` element. A programmatic `.click()` on this link triggers the browser's "Save As" dialog. The filename is timestamped because overwriting is not allowed by browsers for security reasons.
+-   **`save()`**: Reconstructs the entire HTML document as a string using `filecontent()`. This string is then converted into a `File` object, a blob URL is created with `URL.createObjectURL`, and this URL is assigned to the `href` of a dynamically created `<a>` element. A programmatic `.click()` on this link triggers a download/save to a timestamped file.
 -   **`exportgame()`**: Similar to `save()`, but it builds a minimal HTML file containing only the selected game's code, the `L` library, and a small bootstrap script to run the game on load. This creates a portable, standalone game file that can be shared.
 -   **`filecontent()`**: This is the core of the metaprogramming capability. It conditionally reconstructs the `<script>` tag based on the `T.editingtheeditor` flag:
     *   If `false` (editing games), it injects the static `ide` function's source code along with the current content of the editor (`T.V`) wrapped in `function gameprograms(){...}`.
