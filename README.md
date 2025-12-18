@@ -18,6 +18,7 @@ Give people a **taste** of programming with what they have.
 
 </details><details><summary>Features</summary>
 
+- **Offline**: no server, no internet
 - **Run**: instant code execution
 - **Debugging**: displays message and positions the cursor at the error
 - **Editing**: save, cut, copy, paste, undo, redo
