@@ -1,7 +1,7 @@
 <meta name='viewport' content='width=device-width, initial-scale=1, interactive-widget=resizes-content'/><script>onload=()=>{ ide();function ide(){
 document.title="BacioneJS";
 let product=`<b>Bacione Javascript Editor \uD83D\uDC8B</b><br>Integrated Development Environment`;
-let tested="Works with android chrome browser, tablet and phone";
+let tested="Requires Chrome browser, tablet or phone";
 let about=`
 <b>Purpose</b> Programming small javascript games on a phone offline
 <b>Mission</b> Create the most thumb-friendly IDE in its class
@@ -22,7 +22,11 @@ let about=`
 After you start the editor, click the run icon to play a game (it will run whichever game contains the cursor)
 `;
 
-if(navigator.maxTouchPoints<2 || (!navigator.userAgent.includes("Chrome") || navigator.userAgent.includes("Edg"))){alert(tested);}
+if(!window.chrome || navigator.maxTouchPoints<2){
+  document.body.innerHTML=tested;
+  document.body.style.cssText="background:black;color:white;display:flex;justify-content:center;align-items:center;height:100vh;";
+  return;
+}
 
 /*
 Variables
