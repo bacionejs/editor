@@ -8,7 +8,7 @@ Or download and open from your file manager
 
 ---
 
-BacioneJS is a mobile-centric JavaScript editor with a custom, thumb-friendly keyboard.
+BacioneJS is a mobile-centric JavaScript IDE with a custom, thumb-friendly keyboard.
 
 ---
 
