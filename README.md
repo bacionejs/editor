@@ -18,6 +18,7 @@ Give people a **taste** of programming with what they have.
 
 </details><details><summary>Features</summary>
 
+- **Vanilla**: no third-party libraries
 - **Offline**: no server, no internet
 - **Run**: instant code execution
 - **Debugging**: displays message and positions the cursor at the error
