@@ -2,9 +2,11 @@
 ---
 
 To open, click ↴  
-<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"> <img src="https://repository-images.githubusercontent.com/788276995/040a885f-c9e7-431b-bd4f-27a9069971b6" width="100%"> </a>
 
-Or download and open from your file manager 
+<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"> <img src="https://repository-images.githubusercontent.com/788276995/040a885f-c9e7-431b-bd4f-27a9069971b6" width="100%" /> </a>
+
+Or download and open from your file manager
+
 
 ---
 
