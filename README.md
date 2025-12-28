@@ -1,22 +1,11 @@
 
----
-
-To open, click ↴  
-
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"> <img src="https://repository-images.githubusercontent.com/788276995/040a885f-c9e7-431b-bd4f-27a9069971b6" width="100%" /> </a>
 
-Or download and open from your file manager
+<details><summary>About</summary>
 
-
----
-
-BacioneJS is a mobile-centric JavaScript IDE with a custom, thumb-friendly keyboard.
-
----
-
-<details><summary>Purpose</summary>
-
-Give people a **taste** of programming with what they have.
+**What**: BacioneJS is a mobile-centric JavaScript IDE with a custom, thumb-friendly keyboard.  
+**Why**: Give people a **taste** of programming with what they have.  
+**How**: To open , click the app thumbnail, or download and run from your file manager.  
 
 </details><details><summary>Features</summary>
 
@@ -38,6 +27,4 @@ Give people a **taste** of programming with what they have.
 - **Help**: built-in guide 📚
 
  </details>  
-
----
 
