@@ -329,7 +329,8 @@ let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.te
 function search(s){
 if(s==="")return -1;
 s=escapetext(s);
-if(/\w/.test(s))s="\\b"+s+"\\b";
+// if(/\w/.test(s))s="\\b"+s+"\\b";
+if(/\w/.test(s))s="\\b"+s;
 return T.V.slice(T.E).search(s);
 }
 function disable(){let d=search(f.value)==-1;fb.disabled=d;rb.disabled=d;}
