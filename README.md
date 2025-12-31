@@ -5,7 +5,7 @@
 
 - **What**: BacioneJS is a mobile-centric JavaScript IDE with a custom, thumb-friendly keyboard.
 - **Why**: Give people a **taste** of programming with what they have.
-- **How**: To open , click the app thumbnail, or download and run from your file manager.
+- **How**: To open , click the thumbnail, or download and run from your file manager.
 
 </details><details><summary>Features</summary>
 
