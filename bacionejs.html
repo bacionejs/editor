@@ -921,9 +921,6 @@ Click anywhere to close.
 FPS=frames per second
 W=innerWidth
 </p><p>
-<b>Overridden</b>
-Array sort: compares numbers instead of strings.
-</p><p>
 <b>Variable tracking</b>
 L.debug(string,canvas)
 </p><p>
@@ -1288,7 +1285,7 @@ init();
 function init(){
 cb.white();
 c.clear();
-t.forEach((_,y,a)=>{a[y]=rna.next().sort();a[y].forEach(x=>draw(cb,{x,y,icon:127796}))});
+t.forEach((_,y,a)=>{a[y]=rna.next().sort((a,b)=>a-b);a[y].forEach(x=>draw(cb,{x,y,icon:127796}))});
 draw(cb,rnd(banana));
 draw(c,rnd(monkey));
 }
@@ -1547,7 +1544,6 @@ return {terrain,Particles,RandomArray,Sound,canvas,gradient,rnd,shape,vertices,d
 
 let W=innerWidth;//the game canvas is square so W is also used for height
 let floor=Math.floor,random=Math.random,pow=Math.pow,sin=Math.sin,cos=Math.cos,PI=Math.PI,hypot=Math.hypot,atan2=Math.atan2,abs=Math.abs,ceil=Math.ceil,sqrt=Math.sqrt;
-(function(sort){Array.prototype.sort=function(){return sort.call(this,(a,b)=>a-b)};})(Array.prototype.sort);//Overridden Array sort: compares numbers instead of strings
 let L=Library();
   
   // Note: FPS is passed in from the editor. You don't need to set it.
