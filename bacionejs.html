@@ -109,8 +109,8 @@ syncpretty();
 theme();
 rename();
 view();
-restore();
 let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
+restore();
 theme();
 let FPS;new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(Math.floor(1000/(b-a))))))).then(r=>FPS=r);
 //////////////////////init
@@ -216,7 +216,9 @@ if(direction===0){//reset
   if((direction==-1 && curr==0) || (direction==1 && curr==a.length-1))return;
   T.V=a[curr+=(direction*2)];
   T.S=T.E=a[curr-direction];
-}}}
+}
+}
+}
 
 function highlight(){
 if(T.H!==""){T.H="";syncpretty();return;}
