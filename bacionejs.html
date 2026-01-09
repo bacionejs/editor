@@ -1032,7 +1032,7 @@ if(offset>period){offset=0;x=0;y=0;}
 }
 
 function Trees(){
-let trees=[];for(let i=0;i<3;i++)trees[i]={x:L.rnd(W*2,W)};
+let trees=Array.from({length:3},()=>({x:L.rnd(W*2,W)}));
 return function(){
 trees.forEach(tree=>{
   tree.x-=speed;
