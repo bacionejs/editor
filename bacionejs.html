@@ -22,18 +22,8 @@ let about=`
 After you start the editor, click the run icon to play a game (it will run whichever game contains the cursor)
 `;
 
-// let u=navigator.userAgent;if(!u.includes("Android")||u.includes("Firefox"))return document.body.innerHTML=tested;
-return document.body.innerHTML = 
-  "userAgent: " + navigator.userAgent + "<br>" +
-  "platform: " + navigator.platform + "<br>" +
-  "language: " + navigator.language + "<br>" +
-  "languages: " + navigator.languages.join(", ") + "<br>" +
-  "cookieEnabled: " + navigator.cookieEnabled + "<br>" +
-  "onLine: " + navigator.onLine + "<br>" +
-  "hardwareConcurrency: " + navigator.hardwareConcurrency + "<br>" +
-  "deviceMemory: " + navigator.deviceMemory + "<br>" +
-  "maxTouchPoints: " + navigator.maxTouchPoints + "<br>" +
-  "vendor: " + navigator.vendor;
+if(navigator.maxTouchPoints<2||navigator.userAgent.includes("Firefox"))return document.body.innerHTML=tested;
+
 /*
 Variables
  * T   - text element
