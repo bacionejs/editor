@@ -1008,16 +1008,13 @@ return function(){c.fillStyle="skyblue";c.fillRect(0,0,W,W);}
 }
 
 function Mountains(){
-let ms=[];ms.speed=speed*0.2;
-for(let i=0;i<2;i++){
-  ms[i]=L.shape([[0,0,1,-2,2,-1,3,-4,4,-2,5,-3,6,-1,8,-5,10,0,0,0,0,W,10,W,10,0]],1/10);
-  ms[i].x=i*W;
-}
+let ms=Array.from({length:2},(_,i)=>{let m=L.shape([[0,0,1,-2,2,-1,3,-4,4,-2,5,-3,6,-1,8,-5,10,0,0,0,0,W,10,W,10,0]],1/10);m.x=i*W;return m});
+ms.speed=speed*0.2;
 return function(){
 c.fillStyle="white";
 ms.forEach(m=>{
   m.x-=ms.speed;if(m.x<-W)m.x=W-ms.speed;
-  c.save();c.translate(m.x,W*0.7);c.scale(W,W);c.fill(m);c.restore();
+  c.reset();c.translate(m.x,W*0.7);c.scale(W,W);c.fill(m);
 });
 }
 }
@@ -1025,7 +1022,7 @@ ms.forEach(m=>{
 function Ground(){
 let x=0,y=0,p=new Path2D();p.moveTo(0,W);for(let x=0;x<W*2;x++){p.lineTo(x,slope(x));}p.lineTo(W,W*2);
 return function(){
-c.fillStyle="tan";c.save();c.translate(x,y);c.fill(p);c.restore();
+c.fillStyle="tan";c.reset();c.translate(x,y);c.fill(p);
 offset+=speed;x-=speed;y-=speed*tilt;
 if(offset>period){offset=0;x=0;y=0;}
 }
@@ -1056,11 +1053,11 @@ hit=function(o){
 }
 function ace(){let d=angle-atan2(derivative(x),1);return abs(atan2(sin(d),cos(d)))<PI/4;};
 return function(){
-c.save();c.translate(x,y+size/2);c.scale(-1,1);c.rotate(-angle);c.icon(128692,0,0);c.restore();
+c.reset();c.translate(x,y+size/2);c.scale(-1,1);c.rotate(-angle);c.icon(128692,0,0);
 if(state==1){y=slope(x)-size;}
 else{y+=(vy+=G);if(y>=slope(x)-size){if(!ace()){score--;c.icon(128165,x,slope(x));}state=1;}}
 if(state==1){angle=atan2(derivative(x),1);}else if(state==2){angle-=R;}
-c.fillStyle="black";c.fillText(score,W/2,20);
+c.reset();c.fillStyle="black";c.fillText(score,W/2,20);
 }
 }
 
@@ -1486,9 +1483,8 @@ cn.textBaseline="middle";
 cn.font=font+'px monospace';
 cn.iconstart=iconstart;
 cn.icon=function(n,x=0,y=0){this.fillText((n==="")?"":String.fromCodePoint(this.iconstart+n),x,y);}
-cn.clear=function(){
-this.clearRect(0,0,this.canvas.width,this.canvas.height);
-}
+cn.clear=function(){this.clearRect(0,0,this.canvas.width,this.canvas.height);}
+cn.reset=function(){this.setTransform(1,0,0,1,0,0);}
 cn.white=function(){
 let s=this.fillStyle;
 this.fillStyle="white";this.fillRect(0,0,this.canvas.width,this.canvas.height);
