@@ -1,7 +1,7 @@
 <meta name='viewport' content='width=device-width, initial-scale=1, interactive-widget=resizes-content'/><script>onload=()=>{ ide();function ide(){
 document.title="BacioneJS";
 let product=`<b>Bacione Javascript Editor \uD83D\uDC8B</b><br>Integrated Development Environment`;
-let tested="Requires Chrome browser, tablet or phone";
+let tested="Tested on Android Chrome";
 let about=`
 <b>Purpose</b> Programming small javascript games on a phone offline
 <b>Mission</b> Create the most thumb-friendly IDE in its class
@@ -22,11 +22,7 @@ let about=`
 After you start the editor, click the run icon to play a game (it will run whichever game contains the cursor)
 `;
 
-if(!window.chrome || navigator.maxTouchPoints<2){
-  document.body.innerHTML=tested;
-  document.body.style.cssText="background:black;color:white;display:flex;justify-content:center;align-items:center;height:100vh;";
-  return;
-}
+let u=navigator.userAgent;if(!u.includes("Android")||u.includes("Firefox"))return document.body.innerHTML=tested;
 
 /*
 Variables
@@ -109,8 +105,8 @@ syncpretty();
 theme();
 rename();
 view();
-let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
 restore();
+let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
 theme();
 let FPS;new Promise(r=>setTimeout(r,500)).then(()=>new Promise(r=>requestAnimationFrame(a=>requestAnimationFrame(b=>r(Math.floor(1000/(b-a))))))).then(r=>FPS=r);
 //////////////////////init
@@ -205,7 +201,8 @@ KEYS.filter(k=>!k.f).forEach(k=>k.e.textContent=k.d[k.d.indexOf(k.e.textContent)
 function undo(){restore(-1);}
 function redo(){restore(1);}
 function restore(){
-let max=50*2+1,a=[],curr=0;a.push(T.V);
+let max=50*2+1,a=[],curr=0;
+a.push(striplinesfirstlast(gameprograms));
 restore=function(direction){
 if(direction===0){//reset
   a.splice(0,Infinity,T.V);
