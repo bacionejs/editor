@@ -1485,16 +1485,9 @@ cn.iconstart=iconstart;
 cn.icon=function(n,x=0,y=0){this.fillText((n==="")?"":String.fromCodePoint(this.iconstart+n),x,y);}
 cn.clear=function(){this.clearRect(0,0,this.canvas.width,this.canvas.height);}
 cn.reset=cn.resetTransform.bind(cn);
-cn.white=function(){
-let s=this.fillStyle;
-this.fillStyle="white";this.fillRect(0,0,this.canvas.width,this.canvas.height);
-this.fillStyle=s;
-}
-cn.black=function(){
-let s=this.fillStyle;
-this.fillStyle="black";this.fillRect(0,0,this.canvas.width,this.canvas.height);
-this.fillStyle=s;
-}
+function fill(color){let s=cn.fillStyle;cn.fillStyle=color;cn.fillRect(0,0,cn.canvas.width,cn.canvas.height);cn.fillStyle=s;}
+cn.white=function(){fill("white");}
+cn.black=function(){fill("black");}
 return cn;
 }
 
