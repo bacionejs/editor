@@ -1053,7 +1053,8 @@ hit=function(o){
 }
 function ace(){let d=angle-atan2(derivative(x),1);return abs(atan2(sin(d),cos(d)))<PI/4;};
 return function(){
-c.reset();c.translate(x,y+size/2);c.scale(-1,1);c.rotate(-angle);c.icon(128692,0,0);
+// c.reset();c.translate(x,y+size/2);c.scale(-1,1);c.rotate(-angle);c.icon(128692,0,0);
+c.reset();c.translate(x,y+size/2);c.scale(-1,1);c.rotate(-angle);c.fillText(String.fromCodePoint(0x1F6B4,0x200D,0x2642,0xFE0F),0,0);
 if(state==1){y=slope(x)-size;}
 else{y+=(vy+=G);if(y>=slope(x)-size){if(!ace()){score--;c.icon(128165,x,slope(x));}state=1;}}
 if(state==1){angle=atan2(derivative(x),1);}else if(state==2){angle-=R;}
