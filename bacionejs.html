@@ -1,8 +1,10 @@
-<meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1, interactive-widget=resizes-content'><script>onload=()=>{ ide();function ide(){
+<meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'>
+<script>onload=()=>{ide();function ide(){
 document.title="BacioneJS";
-let product=`<b>Bacione Javascript Editor \uD83D\uDC8B</b><br>Integrated Development Environment`;
-let tested="Tested on Android Chrome";
+let tested="Only works on modern android chromium-based browsers";
 let about=`
+<b>Bacione Javascript Editor \uD83D\uDC8B</b><br>Integrated Development Environment
+
 <b>Purpose</b> Programming small javascript games on a phone offline
 <b>Mission</b> Create the most thumb-friendly IDE in its class
 <b>Goal</b>    Give people a taste of programming with what they have
@@ -10,60 +12,147 @@ let about=`
 <b>Github</b>  github.com/bacionejs/editor
 <b>License</b> GPL
 
-
-
 <b>Installation</b>
-<ol style=margin-left:30>\
+<ol style=margin-left:30>
 <li>Download <a href=https://github.com/bacionejs/editor>bacionejs.html</a> to your android phone/tablet
 <li>Open your file manager and click bacionejs.html to launch in chrome
 </ol>
-
 <b>Includes several games</b>
 After you start the editor, click the run icon to play a game (it will run whichever game contains the cursor)
 `;
 
-if(navigator.maxTouchPoints<2||navigator.userAgent.includes("Firefox"))return document.body.innerHTML=tested;
+if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){alert(tested)}
+onerror=(m,_,l,c)=>{let f=document.querySelector("iframe"),v=view("Error"),s=`${m}\nline: ${l}\ncol: ${c}`;f&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus());v.textContent=s};
+element("style").textContent=` *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}`;
+rename(); view(); restore(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys(); theme();
+function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
+function striplinesfirstlast(s){return s.toString().replace(/^.*|.*$/g,"");}
+function escapetext(text){return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');}
+function element(tag,p=document.body,c="",v=""){let e=p.appendChild(document.createElement(tag));if(c)e.className=c;if(v)e.textContent=v;return e;}
+function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+function capslock(){KEYS.forEach(k => k.f || (k.e.textContent = k.d[k.d.indexOf(k.e.textContent) ^ 1]));}
+function enter(){if(T.S!=T.E) return T.S=T.E;let s=T.V, i=s.lastIndexOf("\n",T.S-1)+1, m=s.slice(i,T.S).match(/^\s*/);T.I("\n"+(m?m[0]:""));}
+function backspace(){let S=T.S,E=T.E;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(T.V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1;}
+function block(a,i,s){let p={ "(": ")", "{": "}", "[": "]", '"': '"' };if(i==undefined)return a in p;let b=p[a],c=1;while(c>0&&++i<s.length)c+=s[i]==a?1:s[i]==b?-1:0;return i;}
+function currentgame(){let s=T.V,c=T.S,m,r=/\b(\w+)\s*\(.*?\)\s*\{/g;for(;m=r.exec(s);){let i=m.index,b=i+m[0].length,e=block("{",b,s);if(i>c)break;if(c<=e)return{name:m[1],ftop:b,fend:e,body:s.slice(b,e)}}}
+function highlight(){let s=T.V,i=T.E;T.H?T.H="":(/\w/.test(s[i])&&(T.S==i&&(i=s.slice(0,i).search(/\w+$/))>=0&&(T.S=i),T.E=T.S+s.slice(T.S).search(/\W/)),T.S!=T.E&&(T.H=s.slice(T.S,T.E)));syncpretty()}
+function left(){arrow(-1)}function right(){arrow(1)} function arrow(d){let i=T.E+d,s=T.V;if(i>=0&&i<=s.length){if(T.S==T.E)T.S=T.E=i;else T.P=s.slice(T.S,T.E=i)}}
+function zoom(){let {fontsizesmall:s, fontsizebig:b}=theme;T.style.fontSize=PRETTY.style.fontSize=(parseInt(T.style.fontSize)==s?b:s)+"px";setTimeout(()=>T.blur(T.focus()),200);}
+function paste(){T.I(T.P);}
 
-/*
-Variables
- * T   - text element
- * T.V - value
- * T.I - inserts text
- * T.S - selection start
- * T.E - selection end
- * T.P - paste buffer
- * T.H - highlight
-Code layout below:
- * style
- * themes
- * initialize
- * button functions
- * utils
- * error listener
- * keyboard
- * textarea
- * misc
- * help
- * games
- * library
-*/
+function view(){let a=[];view=function(f){let e=a[f];
+if(e){e.exists=true;}else{e=a[f]=element("div");e.style.cssText=`width:100%;height:100%;background:white;padding:2rem;position:fixed;white-space:pre-wrap;overflow:auto;`;e.addEventListener("click",()=>view(f));}
+if((PRETTY.classList.toggle("unhide"),e.classList.toggle("unhide"))){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);e.style.fontSize=T.style.fontSize;}else{T.focus();e.style.zIndex=0;}
+return e;
+}}
 
-element("style").textContent=`
-*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}
-body{background:white;}
-::selection{background:yellow;color:red;}
-@media print{
-  div,p,li,ul{break-inside:avoid;}
-  body{visibility:hidden;height:99%;}
-  a:visited{color:blue;}
-  .unhide{
-    visibility:visible;
-    white-space:pre-wrap !important;
-    position:static !important;
-    overflow:visible !important;
-  }
+function run(){
+let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus(); if(!g?.name||g.name=="Library")return;
+f=element("iframe"); f.style.cssText="width:100vw;height:100vw;position:fixed;z-index:9";f.contentWindow.eval(T.V+g.name+"()"); T.blur();
 }
-`;//end style
+
+function save(){
+let u=URL,a=element("a"),h=a.href=u.createObjectURL(new File([filecontent()],""));
+a.download=timestamp()+"bacionejs.html",a.click(),u.revokeObjectURL(h),a.remove();
+}
+
+function filecontent(){
+let s="<meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'>";
+s+="<\script>onload=()=>{ide();"+ide+"\n\nfunction gameprograms(){"+T.V+"}}<\/script>";
+return s;
+}
+
+function zoom(){
+let s=theme.fontsizesmall, b=theme.fontsizebig, z=parseInt(T.style.fontSize)==s?b:s;
+T.style.fontSize=PRETTY.style.fontSize=z+"px";
+setTimeout(()=>T.blur(T.focus()),200);
+}
+
+function complete(){
+let s=T.V,c=T.S,i=c,w,f=currentgame()?.ftop||0;while(--i>=0&&/\w|\./.test(s[i]));w=s.slice(i+1,c);if(!w)return;
+let res=[...s.slice(f).replace(/"[^"]*"|\/\/.*$/gm,"").matchAll("\\b"+w+"\\w*")].find(m=>m[0]!=w);if(res)T.I(res[0].slice(w.length));
+}
+
+function comment(){
+let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e);
+t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s));
+T.S=T.E=T.V.indexOf("\n",s)+1;
+}
+
+function copy(){
+let s=T.V, i=T.E, v=s[i], w=/\w/;
+if(w.test(v)){if(T.S==i) while(--i>=0 && w.test(s[i]));T.S=i+1, i=T.E;while(++i<s.length && w.test(s[i]));T.E=i;
+} else if(v==" ") {while(s[++i]==" ");T.E=i;
+} else if(v=="\n") {(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);
+} else if(block(v)) {let b=block(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1;
+} else T.E++;T.P=s.slice(T.S,T.E);
+}
+
+function restore(){
+let m=101,a=[striplinesfirstlast(gameprograms)],c=0;
+restore=d=>{
+  if(d==0)a.splice(0,Infinity,T.V);
+  else if(d==null){a.length==m?(a.splice(0,2),c--):c++;a.splice(c,Infinity,c%2?T.S:T.V);
+  }else{if((d<0&&c>0)||(d>0&&c<a.length-1)){T.V=a[c+=d*2];T.S=T.E=a[c-d];}
+  }
+}} function undo(){restore(-1)} function redo(){restore(1)}
+
+function rename(){
+let con=element("div"),f=element("input",con),fb=element("button",con),r=element("input",con),rb=element("button",con);
+con.style.cssText="z-index:0;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;";
+f.inputMode=r.inputMode="none"; f.id="find"; fb.textContent="Find"; rb.textContent="Replace";
+fb.onclick=()=>find(); rb.onclick=()=>replace(); fb.disabled=rb.disabled=true;
+let search=s=>s?T.V.slice(T.E).search(escapetext(s).replace(/^(\w)/,"\\b$1")):-1;
+let disable=()=>fb.disabled=rb.disabled=search(f.value)==-1;
+let find=()=>{let i=search(f.value);if(i<0)return;T.H=f.value;syncpretty();T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length};
+let replace=()=>(T.V.slice(T.S,T.E)==f.value&&(T.focus(),T.I(r.value)),disable(),find());
+rename=s=>{
+  if(s==null){
+    let z=con.style.zIndex==0; con.style.zIndex=z?9:0;
+    z?(T.S!=T.E&&(f.value=T.V.slice(T.S,T.E),T.E=T.S,disable()),f.focus()):(T.S=T.E,T.focus());
+  }else{
+    let e=document.activeElement; if(s=="")e.selectionStart--;
+    e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
+    e.id=="find"&&(T.H=e.value,syncpretty(),disable());
+  }
+}}
+
+function createtextarea(){
+let T=element("textarea");
+T.addEventListener('scroll',function(){PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft;});
+T.addEventListener('paste', function(ev){ev.preventDefault();T.I(ev.clipboardData.getData('text'));});
+T.addEventListener('cut',   function(ev){ev.preventDefault();ev.clipboardData.setData("text",T.P);});
+Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
+Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
+Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
+T.I=function(t,s=T.S,e=T.E){
+  if(document.activeElement==this){restore();this.setRangeText(t,s,e,"end");restore();syncpretty();
+  }else{rename(t);}
+}
+T.P="";T.H="";T.inputMode="none";T.spellcheck=false;
+{let s=T.style;s.height="100%";s.width="100%";s.padding=`10ch 2ch 100vh 2ch`;s.position="fixed";s.touchAction="pan-x pan-y";s.overflow="auto";s.whiteSpace="nowrap";s.zIndex=2;s.backgroundColor="transparent";s.color="transparent";}
+T.value=striplinesfirstlast(gameprograms);T.S=T.E=T.V.indexOf("{")+1;T.focus();
+return T;
+}
+function createpretty(){
+  let e=element("div");e.className="unhide";
+  {let s=e.style;s.height="100%";s.width="100%";s.padding=`10ch 2ch 100vh 2ch`;s.position="fixed";s.touchAction="pan-x pan-y";s.overflow="auto";s.whiteSpace="pre";s.wordWrap="break-word";s.zIndex=1;}
+  return e;
+}
+function pretty(s){
+  let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
+  s=s.replace(/</g,'\x1F');
+  if(T.H!==""){
+    let w=T.H;w=escapetext(w);
+    if(document.activeElement.id=="find"){w="\\b"+w;}
+    else if(/\w/.test(w))                {w="\\b"+w+"\\b";}
+    s=s.replace(RegExp(`(${w})`,'g'),`<span style=color:red;background:pink;>$1</span>`);
+  }
+  s=c(s,theme.pairs,`[(){}[\\]]`);
+  s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
+  s=s.replace(/\x1F/g,'&'+'#60;');
+  return s;
+} function syncpretty(){PRETTY.innerHTML=pretty(T.V)+"\n";}
 
 function theme(){
 let activetheme=0,a=[
@@ -81,395 +170,29 @@ let activetheme=0,a=[
 ["pairs"          ,["purple",  "#96ecff"  ,  "brown" ,  "black"       ,  "lime"    ,  "indigo"       ]],
 ];
 theme=function(){
-if(activetheme==a[0][1].length)activetheme=0;a.forEach(a=>theme[a[0]]=a[1][activetheme]);activetheme++;
-let style;
+activetheme%=a[0][1].length;a.forEach(r=>theme[r[0]]=r[1][activetheme]);activetheme++;
+let s;
 KEYS.forEach(k=>{
-  style=k.e.style; 
-  style.borderRadius=theme.keyroundness;
-  style.border=theme.keyborder=="none"?"none":`2px outset ${theme.keyborder}`;
-  style.backgroundColor=theme.keybackground;
-  style.color=theme.keyforeground;k.e.querySelector("path")?.style.setProperty("stroke",theme.keyforeground);
+  s=k.e.style;
+  s.borderRadius=theme.keyroundness;
+  s.border=theme.keyborder=="none"?"none":`2px outset ${theme.keyborder}`;
+  s.backgroundColor=theme.keybackground;
+  s.color=theme.keyforeground;k.e.querySelector("path")?.style.setProperty("stroke",theme.keyforeground);
 });
-style=T.style;
-style.fontSize=theme.fontsizesmall;
-style.caretColor=theme.caret;
-style=PRETTY.style;
-style.fontSize=theme.fontsizesmall;
-style.backgroundColor=theme.background;
-style.color=theme.foreground;
+s=T.style;s.fontSize=theme.fontsizesmall;s.caretColor=theme.caret;
+s=PRETTY.style;s.fontSize=theme.fontsizesmall;s.backgroundColor=theme.background;s.color=theme.foreground;
 syncpretty();
 }
-}
-
-//////////////////////init
-theme();
-rename();
-view();
-restore();
-let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
-theme();
-//////////////////////init
-
-function run(){
-if(T.editingtheeditor)return;
-let ifra=document.querySelector("iframe");
-if(ifra){
-  ifra.remove();
-  T.focus();
-}else{
-  let n=currentgame()?.name;
-  if(n==undefined || n=="Library")return;
-  ifra=element("iframe");
-  let style=ifra.style;
-  style.border=1;
-  style.width=innerWidth;
-  style.height=innerWidth;
-  style.position="fixed";
-  style.backgroundColor="pink";
-  ifra.contentWindow.eval(`${T.V}${n}()`);
-  T.blur();
-  setTimeout(()=>{style.zIndex=9;},50);
-}
-}
-
-function save(){
-let s=filecontent();
-if(s==T.sincesaved)return alert("No changes to save");
-T.sincesaved=s;
-if(T.editingtheeditor)alert("Open the new IDE to see changes. If it is broken, open a prior IDE.");
-let a=element("a");
-a.hidden=true;
-a.href=URL.createObjectURL(new File([s],""));
-a.download=timestamp()+"bacionejs.html";
-a.click();URL.revokeObjectURL(a.href);a.remove();
-}
-
-function exportgame(){
-let n=currentgame()?.name;
-if(n==undefined || n=="Library")return;
-let f="<meta charset='UTF-8'><meta name='viewport' content='width=device-width'/><\script>onload=()=>{"+n+"();"+T.V+"}<\/script>";
-let a=element("a");
-a.hidden=true;
-a.href=URL.createObjectURL(new File([f],""));
-a.download=timestamp()+n+".html";
-a.click();
-URL.revokeObjectURL(a.href);a.remove();a=undefined;
-}
-
-function zoom(){
-let t=T.style;
-let p=PRETTY.style;
-t.fontSize=p.fontSize=parseInt(t.fontSize)==theme.fontsizesmall?theme.fontsizebig:theme.fontsizesmall;
-setTimeout(()=>{T.blur();T.focus();},200);
-}
-
-function fullscreen(){
-document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
-}
-
-function complete(){
-let word,wordlength,ftop,found,first=0,last=-1,i=T.S;
-while((--i>=0) && /[a-zA-Z0-9.]/.test(T.V[i]));
-word=T.V.slice(i+1,T.S),wordlength=word.length;if(wordlength==0)return;
-ftop=T.editingtheeditor?1:currentgame()?.ftop;
-let look=(s,e,a)=>[...(T.V.slice(s,e).replaceAll(/"([^"]*)"|\/\/.*$/gm,"").matchAll("\\b"+word+"\\w*"))].at(a)?.[0];
-for(let f of [[ftop,T.S-wordlength-1,last],[T.S,Infinity,first],[0,ftop,last]]){
-  if((found=look(...f))!=undefined)break;
-}
-if(found==undefined)return;
-T.I(found.slice(wordlength));
-}
-
-function comment(){
-let s=T.V.lastIndexOf("\n",T.S-1)+1;
-let e=T.V.indexOf("\n",T.S)+1;
-let t=T.V.slice(s,e);
-if(t.startsWith("//")){
-  T.I("",  s,s+2);T.S=T.E=e-2;
-}else{
-  T.P=t;
-  T.I("//",s,s);  T.S=T.E=e+2;
-}
-}
-
-function capslock(){
-KEYS.filter(k=>!k.f).forEach(k=>k.e.textContent=k.d[k.d.indexOf(k.e.textContent)^1]);
-}
-
-function undo(){restore(-1);}
-function redo(){restore(1);}
-function restore(){
-let max=50*2+1,a=[],curr=0;
-a.push(striplinesfirstlast(gameprograms));
-restore=function(direction){
-if(direction===0){//reset
-  a.splice(0,Infinity,T.V);
-}else if(direction==undefined){//add
-  if(a.length==max){a.splice(0,2);curr--;}else{curr++;}
-  a.splice(curr,Infinity,curr%2===0?T.V:T.S);
-}else{//restore
-  if((direction==-1 && curr==0) || (direction==1 && curr==a.length-1))return;
-  T.V=a[curr+=(direction*2)];
-  T.S=T.E=a[curr-direction];
-}
-}
-}
-
-function highlight(){
-if(T.H!==""){T.H="";syncpretty();return;}
-let s=T.V,i=T.E;
-if(/\w/.test(s[i])){
-  if(T.S===T.E){
-    while(--i>=0 && /\w/.test(s[i]));
-    T.S=i+1;
-  }
-  while(++i<s.length && /\w/.test(s[i]));
-  T.E=i;
-}
-if(T.S==T.E)return;
-T.H=T.V.substring(T.S,T.E);
-syncpretty();
-}
-
-function copy(){
-let s=T.V,i=T.E;
-if(/\w/.test(s[i])){//select word
-  if(T.S===T.E){
-    while(--i>=0 && /\w/.test(s[i]));
-    T.S=i+1;
-  }
-  while(++i<s.length && /\w/.test(s[i]));
-  T.E=i;
-}else if(s[i]==" "){//spaces
-  while(++i<s.length && / /.test(s[i]));
-  T.E=i;
-}else if((i==0 || s[i-1]=="\n") && s[i]=="\n"){//paragraph
-  T.S++;
-  i=s.indexOf("\n\n",i+1);
-  T.E=i+2;
-}else if(s[i]=="\n" && T.S==T.E){//line
-  T.E++;
-  while(--i>0 && !/\n/.test(s[i]));
-  T.S=i+1;
-}else if(block(s[i])){//block
-  let i2=i;
-  i=block(s[i],i,s);
-  if(s.slice(i2,i).includes("\n")){//multiline block
-    T.S=1+s.lastIndexOf("\n",T.S-1);
-    i=1+s.indexOf("\n",i);
-  }else{
-    i++;
-  }
-  while("\n"==s[i] && i++);
-  T.E=i;
-}else{
-  T.E++;
-}
-T.P=T.V.slice(T.S,T.E);
-}//end copy
-
-function paste(){
-T.I(T.P);
-}
-
-function enter(){
-if(T.S!=T.E){T.S=T.E;return;}
-let i=T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S+1).search(/\S|\n/);
-if(i==-1)i=0;
-T.I("\n"+" ".repeat(i));
-}
-
-function backspace(){
-if(T.S==T.E){//normal
-  T.S>0 && T.I("",T.S-1);
-}else{//selection is active
-  if(/\n/.test(T.V.slice(T.S,T.E))){//it was a line cut
-    T.I("");T.S=T.E=T.V.indexOf("\n",T.E)+1;//so probable not pasting in same place
-  }else{
-    T.I("");
-  }
-}
-}
-
-function left(){arrow(-1);}
-function right(){ arrow(1); }
-function arrow(direction){
-let i=T.E;
-i+=direction;
-if(i<0 || i>T.V.length){return;}
-if(T.S==T.E){T.S=T.E=i;}//normal
-else{T.P=T.V.slice(T.S,T.E=i);}//selection is active
-}
-
-function difflocal(){
-let s="Diff:";
-s+="\n\nSince saved:\n" +diff(T.sincesaved, filecontent());
-s+="\n\nSince opened:\n"+diff(T.sinceopened,filecontent());
-view("Diff").textContent=s;
-}
-function diffgit(){
-let url="https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html";
-fetch(url).then(r=>r.text()).then(git=>{
-  view("Diff").textContent="Diff "+url+":\n"+diff(git,T.sinceopened);
-}).catch(alert);
-}
-function diff(a,b,c){
-if(c===undefined){return diff(b,a,"<")+"\n"+diff(a,b,">");}
-a=stripcomments(a).split("\n");
-b=stripcomments(b).split("\n");
-let lines=b.filter(o=>!a.includes(o));
-return lines.length?lines.map(line=>c+" "+line).join("\n"):c+"no change";
-}
-
-function rename(){
-let con=element("div");
-con.style.cssText="z-index:0;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;"
-let f=element("input",con), fb=element("button",con); f.inputMode="none";  fb.textContent="Find";    fb.addEventListener("click",find);    fb.disabled=true; f.id="find";
-let r=element("input",con), rb=element("button",con); r.inputMode="none";  rb.textContent="Replace"; rb.addEventListener("click",replace); rb.disabled=true;
-function search(s){
-if(s==="")return -1;
-s=escapetext(s);
-// if(/\w/.test(s))s="\\b"+s+"\\b";
-if(/\w/.test(s))s="\\b"+s;
-return T.V.slice(T.E).search(s);
-}
-function disable(){let d=search(f.value)==-1;fb.disabled=d;rb.disabled=d;}
-function find(){
-let i=search(f.value);if(i==-1)return;
-T.H=f.value;
-syncpretty();
-T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length;
-}
-function replace(){
-if(T.V.slice(T.S,T.E)===f.value){T.focus();T.I(r.value);}
-disable();
-find();
-}
-rename=function(s){
-if(s===undefined){//popup
-  if(con.style.zIndex==0){con.style.zIndex=9;if(T.S!=T.E){f.value=T.V.slice(T.S,T.E);T.E=T.S;disable();}f.focus();}
-  else{con.style.zIndex=0;T.S=T.E;T.focus();}
-}else{//input
-  let e=document.activeElement;
-  if(s==="")e.selectionStart--;
-  e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
-  if(e.id=="find"){T.H=e.value;syncpretty();disable();}
-}
-}
-}//end rename
-
-function view(){
-let a=[];
-view=function(f){
-let e=a[f];
-if(e){
-  e.exists=true;
-}else{
-  e=a[f]=element("div");
-  e.style.cssText=`
-    width:100%;height:100%;
-    background:white;
-    padding:10ch 2ch 2ch 2ch;
-    touch-action:pan-x pan-y;
-    position:fixed;
-    white-space:pre-wrap;
-    overflow-y:scroll;`;
-  e.addEventListener("click",()=>view(f));
-}
-if((PRETTY.classList.toggle("unhide"),e.classList.toggle("unhide"))){
-  T.blur();
-  setTimeout(()=>{e.style.zIndex=9;},50);
-  e.style.fontSize=T.style.fontSize;
-}else{
-  T.focus();
-  e.style.zIndex=0;
-}
-return e;
-}; 
-}//end view
-
-function filecontent(t=T){
-let s="<meta name='viewport' content='width=device-width, initial-scale=1, interactive-widget=resizes-content'/>";
-if(t.editingtheeditor){
-  s+="<\script>onload=()=>{ ide();function ide(){"+t.V+"}//end ide\n\n"+gameprograms+"}<\/script>";
-}else{
-  s+="<\script>onload=()=>{ ide();"+ide+"//end ide\n\nfunction gameprograms(){"+t.V+"}}<\/script>";
-}
-return s;
-}
-
-function block(a,i,s){
-let pairs={"(":")","{":"}","[":"]",'"':'"'};
-if(i==undefined){return a in pairs;}
-let cnt=1,b=pairs[a];
-while(++i<s.length && (cnt+=s[i]===b?-1:s[i]===a?1:0));
-return i;
-}
-
-function timestamp(){
-let time=new Date();
-return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");
-}
-
-function stripcomments(s){
-return s.replace(/^\/\/.*\n/gm,"");
-}
-
-function striplinesfirstlast(s){
-return s.toString().replace(/^.*|.*$/g,"");
-}
-
-function escapetext(text){return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');}
-
-function currentgame(){
-let i=0,s=stripcomments(T.V),ftop,name;
-while(i<s.length){
-  ftop=i=s.indexOf("{",i)+1;
-  name=s.slice(s.lastIndexOf(" ",i)+1,s.lastIndexOf("(",i));
-  i=block("{",i,s);
-  if(i>=T.S)break;
-}
-if(name=="" || /\W/.test(name))return undefined;
-return {name:name,ftop:ftop,fend:i,body:s.slice(ftop,i)};
-}
-
-function loadicons(){
-let range=r=>r.flatMap(v=>Array.from({length:v[1]-v[0]+1},(_,i)=>v[0]+i));
-let measure=element("span");measure.style.visibility="hidden";
-let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
-measure.remove();
-return icons;
-}
-
-function element(e,p){
-if(p) return             p.appendChild(document.createElement(e));
-else  return document.body.appendChild(document.createElement(e));
-}
-
-window.addEventListener("error",(ev)=>{//error
-let s=ev.message+"\nline: "+ev.lineno+"\ncolumn: "+ev.colno;
-let ifra=document.querySelector("iframe");
-if(ifra){
-  ifra.remove();
-  if(!(stripcomments(T.V).match(/[(){}[\]"]/g).length%2==0)){
-    s+=`\nMatching [](){}"": failed`;
-  }
-  T.S=T.E=T.V.split("\n",ev.lineno-1).join("\n").length+ev.colno;
-  T.focus();
-}
-view("Error").textContent=s;
-},false);//end error
+} theme();
 
 function createkeys(){
 let keys=[
-
-{r:0,c:4, f:[help,diffgit],    d:"M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2"},
+{r:0,c:4, f:[help],            d:"M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2"},
 {r:0,c:5, f:[misc,theme],      d:"M5 0 l5 5 l-5 5 l-5 -5 l5 -5"},
 {r:0,c:6, f:[rename,highlight],d:"M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M4 6 l-4 4"},
 {r:0,c:7, f:[zoom,fullscreen], d:"M5 0 l-4 10 M5 0 l4 10 M7 5 h-4 M7 5 l-2 5 M6 7.5 h2"},
-{r:0,c:8, f:[save,difflocal],  d:"M10 10 h-10 M 5 9 v-8 M5 9 l-4 -4 M5 9 l4 -4"},
+{r:0,c:8, f:[save],            d:"M10 10 h-10 M 5 9 v-8 M5 9 l-4 -4 M5 9 l4 -4"},
 {r:0,c:9, f:[run],             d:"M10 5 l-9 5 v-10 l9 5"},
-
 {r:1,c:2, f:[left],            d:"M1 5 h8 M1 5 l4 -4 M1 5 l4 4"},
 {r:1,c:3, f:[right],           d:"M 9 5 h-8 M9 5 l-4 -4 M9 5 l-4 4"},
 {r:1,c:4, f:[copy],            d:"M7 2 h2 v8 h-6 v-8 h4 v-2 h-6 v8 h2"},
@@ -478,441 +201,69 @@ let keys=[
 {r:1,c:7, f:[redo],            d:"M0  5 Q5 0 10 7 M10 2 v5 h-5"},
 {r:1,c:8, f:[comment],         d:"M6 1 l-6 8 M10 1 l-6 8"},
 {r:1,c:9, f:[complete],        d:"M5 5 h-4 v-2 h6 l2 2 l-2 2 h-6"},
-
 {r:6,c:9, f:[capslock],        d:"M9 10 h-8 M1 4 l 4 -4 l4 4"},
 {r:7,c:8, f:[backspace],       d:"M10 1 l-6 8 l-4 -4 l4 -4 l6 8"},
 {r:7,c:9, f:[enter],           d:"M10 0 v10 h-10 l5 -5 v5"},
 {r:7,c:7, d:[" "," "]},
-
-{r:1,c:0, d:["?","?"]},
-{r:1,c:1, d:['"','"']},
-
-{r:2,c:0, d:["(","("]},
-{r:2,c:1, d:[")",")"]},
-{r:2,c:2, d:["{","{"]},
-{r:2,c:3, d:["}","}"]},
-{r:2,c:4, d:["[","["]},
-{r:2,c:5, d:["]","]"]},
-{r:2,c:6, d:[",",","]},
-{r:2,c:7, d:[";",";"]},
-{r:2,c:8, d:[".","."]},
-{r:2,c:9, d:[":",":"]},
-
-{r:3,c:0, d:["&","&"]},
-{r:3,c:1, d:["|","|"]},
-{r:3,c:2, d:["+","+"]},
-{r:3,c:3, d:["-","-"]},
-{r:3,c:4, d:["=","="]},
-{r:3,c:5, d:["!","!"]},
-{r:3,c:6, d:["<","<"]},
-{r:3,c:7, d:[">",">"]},
-{r:3,c:8, d:["*","*"]},
-{r:3,c:9, d:["/","/"]},
-{r:4,c:0, d:["1","\\"]},
-{r:4,c:1, d:["2","`"]},
-{r:4,c:2, d:["3","'"]},
-{r:4,c:3, d:["4","@"]},
-{r:4,c:4, d:["5","#"]},
-{r:4,c:5, d:["6","_"]},
-{r:4,c:6, d:["7","%"]},
-{r:4,c:7, d:["8","~"]},
-{r:4,c:8, d:["9","^"]},
-{r:4,c:9, d:["0","$"]},
-{r:5,c:0, d:["q","Q"]},
-{r:5,c:1, d:["w","W"]},
-{r:5,c:2, d:["e","E"]},
-{r:5,c:3, d:["r","R"]},
-{r:5,c:4, d:["t","T"]},
-{r:5,c:5, d:["y","Y"]},
-{r:5,c:6, d:["u","U"]},
-{r:5,c:7, d:["i","I"]},
-{r:5,c:8, d:["o","O"]},
-{r:5,c:9, d:["p","P"]},
-{r:6,c:0, d:["a","A"]},
-{r:6,c:1, d:["s","S"]},
-{r:6,c:2, d:["d","D"]},
-{r:6,c:3, d:["f","F"]},
-{r:6,c:4, d:["g","G"]},
-{r:6,c:5, d:["h","H"]},
-{r:6,c:6, d:["j","J"]},
-{r:6,c:7, d:["k","K"]},
-{r:6,c:8, d:["l","L"]},
-{r:7,c:0, d:["z","Z"]},
-{r:7,c:1, d:["x","X"]},
-{r:7,c:2, d:["c","C"]},
-{r:7,c:3, d:["v","V"]},
-{r:7,c:4, d:["b","B"]},
-{r:7,c:5, d:["n","N"]},
-{r:7,c:6, d:["m","M"]},
+{r:1,c:0, d:["?","?"]},  {r:1,c:1, d:['"','"']},
+{r:2,c:0, d:["(","("]},  {r:2,c:1, d:[")",")"]}, {r:2,c:2, d:["{","{"]}, {r:2,c:3, d:["}","}"]}, {r:2,c:4, d:["[","["]}, {r:2,c:5, d:["]","]"]}, {r:2,c:6, d:[",",","]}, {r:2,c:7, d:[";",";"]}, {r:2,c:8, d:[".","."]}, {r:2,c:9, d:[":",":"]},
+{r:3,c:0, d:["&","&"]},  {r:3,c:1, d:["|","|"]}, {r:3,c:2, d:["+","+"]}, {r:3,c:3, d:["-","-"]}, {r:3,c:4, d:["=","="]}, {r:3,c:5, d:["!","!"]}, {r:3,c:6, d:["<","<"]}, {r:3,c:7, d:[">",">"]}, {r:3,c:8, d:["*","*"]}, {r:3,c:9, d:["/","/"]},
+{r:4,c:0, d:["1","\\"]}, {r:4,c:1, d:["2","`"]}, {r:4,c:2, d:["3","'"]}, {r:4,c:3, d:["4","@"]}, {r:4,c:4, d:["5","#"]}, {r:4,c:5, d:["6","_"]}, {r:4,c:6, d:["7","%"]}, {r:4,c:7, d:["8","~"]}, {r:4,c:8, d:["9","^"]}, {r:4,c:9, d:["0","$"]},
+{r:5,c:0, d:["q","Q"]},  {r:5,c:1, d:["w","W"]}, {r:5,c:2, d:["e","E"]}, {r:5,c:3, d:["r","R"]}, {r:5,c:4, d:["t","T"]}, {r:5,c:5, d:["y","Y"]}, {r:5,c:6, d:["u","U"]}, {r:5,c:7, d:["i","I"]}, {r:5,c:8, d:["o","O"]}, {r:5,c:9, d:["p","P"]},
+{r:6,c:0, d:["a","A"]},  {r:6,c:1, d:["s","S"]}, {r:6,c:2, d:["d","D"]}, {r:6,c:3, d:["f","F"]}, {r:6,c:4, d:["g","G"]}, {r:6,c:5, d:["h","H"]}, {r:6,c:6, d:["j","J"]}, {r:6,c:7, d:["k","K"]}, {r:6,c:8, d:["l","L"]},
+{r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
-
-keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;
-keys.rows=keys.reduce((a,k)=>(a>k.r)?a:k.r,0)+1;
-
-function sv(shape) {
-let NS = "http://www.w3.org/2000/svg";
-let s = document.createElementNS(NS, "svg");
-let p = s.appendChild(document.createElementNS(NS, "path"));
-p.setAttribute("d", shape);
-p.setAttribute("fill", "none");
-p.setAttribute("stroke-width", 1);
-p.setAttribute("vector-effect", "non-scaling-stroke");
-s.setAttribute("viewBox", "0 0 10 10");
-return s;
+keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;keys.rows=keys.reduce((a,k)=>(a>k.r)?a:k.r,0)+1;
+let keyboard=element("div");keyboard.oncontextmenu=_=>false;{let s=keyboard.style;
+s.backgroundColor=`rgb(100 110 120/ 20%)`;s.border="1px solid black";s.borderRadius="5% 0 0 0";s.touchAction="none";s.userSelect="none";s.position="fixed";s.display="grid";s.gap="1%";s.zIndex=3;
+s.bottom=0;s.right=0;s.aspectRatio=keys.cols/keys.rows;s.gridTemplateColumns=`repeat(${keys.cols},1fr)`;s.gridTemplateRows=`repeat(${keys.rows},1fr)`;}
+for(let k of keys){let e=k.e=element("div",keyboard);
+  k.f?(e.appendChild(sv(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];Object.assign(e.style,{display:"flex",justifyContent:"center",alignItems:"center",lineHeight:1,gridColumn:k.c+1,gridRow:k.r+1});
 }
-
-let keyboard=element("div");
-let style;
-style=keyboard.style;
-style.backgroundColor=`rgb(100 110 120/ 20%)`;
-style.border="1px solid black";
-style.borderRadius="5% 0 0 0";
-style.touchAction="none";
-style.userSelect="none";
-style.position="fixed";
-style.display="grid";
-style.gap="1%";
-style.zIndex=3;
-style.bottom=0;
-style.right=0;
-style.aspectRatio=keys.cols/keys.rows;
-style.gridTemplateColumns=`repeat(${keys.cols},1fr)`;
-style.gridTemplateRows=   `repeat(${keys.rows},1fr)`;
-
-for(let k of keys){
-  k.e=element("div",keyboard);
-  if(k.f){
-    k.e.appendChild(sv(k.d));
-    k.name=k.f[0].name;
-  }else{
-    k.e.textContent=(k.d[0]);
-  }
-  style=k.e.style;
-  style.display="flex";
-  style.justifyContent="center";
-  style.alignItems="center";
-  style.lineHeight=1;
-  style.gridColumn=k.c+1;
-  style.gridRow=   k.r+1;
-}
-
-let scale;
-
-function resize(){
-let scaleByHeight = ((innerHeight - innerWidth) / keys.rows);
-let scaleByWidth = (innerWidth / keys.cols);
-let finalScale = Math.min(scaleByHeight, scaleByWidth);
-// finalScale=300/keys.cols;//user override
-let finalHeight = finalScale * keys.rows;
-let finalWidth = finalScale * keys.cols;
-scale = finalScale;
-keyboard.style.width = `${finalWidth}px`;
-keyboard.style.height = `${finalHeight}px`;
-keys.filter(k=>!k.e.querySelector("svg")).forEach(k=>{k.e.style.fontSize = `${finalScale * 0.5}px`;});
-keys.filter(k=> k.e.querySelector("svg")).forEach(k=>{k.e.children[0].style.width="45%";});
-}
-new ResizeObserver(resize).observe(document.body);
-
-keys.clicked=(ev)=>{
-  let r=Math.floor((ev.y-ev.currentTarget.offsetTop)/(scale));
-  let c=Math.floor((ev.x-ev.currentTarget.offsetLeft)/(scale));
-  return keys.find(k=>k.r==r && k.c==c);
-}
-
 keyboard.timeout=[];
-function clear(t){while(t.length && clearTimeout(t.pop()));}
+function clear(t){while(t.length&&clearTimeout(t.pop()));}
 let repeattimeout=500,repeatinterval=100;
-keyboard.addEventListener("pointerdown",(ev)=>{
-  ev.preventDefault();
-  let k=keys.clicked(ev);
-  keys.prev=k;
-  if(keys.prev==undefined)return;
-  if(k.name=="save" || k.name=="capslock")return;//prevent loop
-  keyboard.timeout.push(setTimeout(()=>{keyboard.timeout.push(setInterval(()=>{//longpress repeater
-    if(k.f){
-      k.f[0]();
-    }else{
-      T.I(k.e.textContent);
-    }
-  },repeatinterval));},repeattimeout));
-},false);
-
-keyboard.addEventListener("pointercancel",()=>clear(keyboard.timeout),false);//hack: fingers>2 will not trigger pointerup
-keyboard.addEventListener("pointerup",(ev)=>{
-  ev.preventDefault();
-  clear(keyboard.timeout);
-  let k=keys.clicked(ev);
-  if(keys.prev==undefined)return;
-  if(k!=undefined && keys.prev.r==k.r && keys.prev.c==k.c){//normal
-    if(k.f){
-      k.f[0]();
-    }else{
-      T.I(k.e.textContent);
-    }
-  }else{//swipeup
-    if(keys.prev.d[1]==undefined && keys.prev.f==undefined)return;
-    k=keys.prev;
-    if(k.f){
-      k.f[1]?.();
-    }else{
-      T.I(k.d[1]);
-    }
-  }
-  k.e.style.backgroundColor=theme.click;
-  setTimeout(()=>k.e.style.backgroundColor=theme.keybackground,200);
-},false);
-
+keyboard.onpointercancel=()=>clear(keyboard.timeout)
+keyboard.onpointerdown=(ev)=>{
+  ev.preventDefault();let k=keys.clicked(ev);keys.prev=k;
+  if(keys.prev==undefined)return;if(k.name=="save"||k.name=="capslock")return;
+  keyboard.timeout.push(setTimeout(()=>{keyboard.timeout.push(setInterval(()=>{if(k.f){k.f[0]();}else{T.I(k.e.textContent);}},repeatinterval));},repeattimeout));
+}
+keyboard.onpointerup=(ev)=>{
+  ev.preventDefault();clear(keyboard.timeout);let k=keys.clicked(ev),p=keys.prev;if(!p)return;
+  let t=(k&&p.r==k.r&&p.c==k.c)?k:p;let swipe=t==p&&k!=p;
+  if(t.f){let func=swipe?t.f[1]:t.f[0];if(func)func();}else{let char=swipe?t.d[1]:t.e.textContent;if(char!=null)T.I(char);}
+  p.e.style.backgroundColor=theme.click;
+  setTimeout(()=>p.e.style.backgroundColor=theme.keybackground,200);
+}
+let scale;
+function resize(){
+  scale=Math.min((innerHeight-innerWidth)/keys.rows,innerWidth/keys.cols);
+  keyboard.style.width=scale*keys.cols+"px";keyboard.style.height=scale*keys.rows+"px";
+  keys.forEach(k=>k.f?(k.e.firstChild.style.width="45%"):(k.e.style.fontSize=scale*0.5+"px"));
+}new ResizeObserver(resize).observe(document.body);
+keys.clicked=(ev)=>{let r=Math.floor((ev.y-ev.currentTarget.offsetTop)/(scale));let c=Math.floor((ev.x-ev.currentTarget.offsetLeft)/(scale));return keys.find(k=>k.r==r&&k.c==c);}
+function sv(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" vector-effect="non-scaling-stroke"/>`;return s;}
 return keys;
-}//end createkeys
-
-function createtextarea(){
-let T=element("textarea");
-T.addEventListener('scroll',function(){PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft;});
-T.addEventListener('paste', function(ev){ev.preventDefault();T.I(ev.clipboardData.getData('text'));});
-//T.addEventListener('copy',   function(ev){ev.preventDefault();ev.clipboardData.setData("text",document.getSelection().toString());});
-T.addEventListener('cut',   function(ev){ev.preventDefault();ev.clipboardData.setData("text",T.P);});
-Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
-Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
-Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
-T.I=function(t,s=T.S,e=T.E){
-  if(document.activeElement==this){
-    restore();
-    this.setRangeText(t,s,e,"end");
-    restore();
-    syncpretty();
-  }else{
-    rename(t);
-  }
-}
-T.editingtheeditor=false;
-T.P="";
-T.H="";
-T.inputMode="none";
-//T.addEventListener("contextmenu",e=>e.preventDefault());
-T.spellcheck=false;
-let style=T.style;
-style.height="100%";
-style.width="100%";
-// style.padding=`10ch 2ch ${innerHeight} 2ch`;
-style.padding=`10ch 2ch 100vh 2ch`;
-style.position="fixed"
-style.backgroundColor="transparent";
-style.color="transparent";
-style.touchAction="pan-x pan-y";
-style.zIndex=2;
-style.overflow="auto";
-style.whiteSpace="nowrap";
-
-T.value=striplinesfirstlast(gameprograms);
-T.sinceopened=T.sincesaved=filecontent(T);
-T.S=T.E=T.V.indexOf("{")+1;
-T.focus();
-return T;
-}//end createtextarea
-
-function createpretty(){
-let e=element("div");
-e.className="unhide";
-let style=e.style;
-style.height="100%";
-style.width="100%";
-// style.padding=`10ch 2ch ${innerHeight} 2ch`;
-style.padding=`10ch 2ch 100vh 2ch`;
-style.position="fixed"
-style.touchAction="pan-x pan-y";
-style.zIndex=1;
-style.overflow="auto";
-style.whiteSpace="pre";
-style.wordWrap="break-word";
-return e;
-}//end createpretty
-
-function pretty(s){
-let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
-s=s.replace(/</g,'\x1F');
-if(T.H!==""){
-  let w=T.H;
-  w=escapetext(w);
-  if(document.activeElement.id=="find"){w="\\b"+w;}
-  else if(/\w/.test(w))                {w="\\b"+w+"\\b";}
-  s=s.replace(RegExp(`(${w})`,'g'),`<span style=color:red;background:pink;>$1</span>`);
-}
-s=c(s,theme.pairs,`[(){}[\\]]`);
-s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
-s=s.replace(/\x1F/g,'&'+'#60;');
-return s;
-}
-
-function syncpretty(){
-PRETTY.innerHTML=pretty(T.V)+"\n";
 }
 
 function misc(){
-let e=view("Misc");if(e.exists)return;
-let icons=loadicons();
-e.style.overflowWrap="anywhere";
-let con,c;
-con=element("div",e);
-con.insertAdjacentHTML("beforeend","<br><label>Export Game  </label>");
-c=element("button",con);c.textContent="ok"
-c.addEventListener("click",exportgame);
-con=element("div",e);
-con.insertAdjacentHTML("beforeend","<br><label>Edit the Editor  </label>");
-c=element("button",con);c.textContent="off"
-c.addEventListener("click",e=>{
-  if(filecontent()!=T.sinceopened){alert("To switch between games and editor, first save and open the new IDE"); return;}
-  if(T.editingtheeditor){
-    e.target.textContent="off";T.editingtheeditor=false;
-    T.V=striplinesfirstlast(gameprograms);
-    T.S=T.E=T.V.indexOf("{")+1;
-  }else{
-    e.target.textContent="on";T.editingtheeditor=true;
-    T.V=striplinesfirstlast(ide);
-    T.S=T.E=0;
-  }
-  T.focus();
-  restore(0);
-});
-con=element("div",e);
-con.insertAdjacentHTML("beforeend","<br><label>Color Picker  </label>");
-c=element("input",con);c.type="color";c.value="#0000ff";
-c.addEventListener("change",(e)=>T.P=e.target.value,false);
-con=element("div",e);
-con.insertAdjacentHTML("beforeend","<br>Icon Picker<br>");
-c=element("div",con);c.style.fontSize=30;
-c.insertAdjacentHTML("beforeend",icons);
-c.addEventListener("click",(e)=>T.P=e.target.textContent.codePointAt(0),false);
-icons=undefined;
-}//end misc
+let e=view("Misc");if(e.exists)return; let c,icons=loadicons(); e.style.overflowWrap="anywhere";
+c=element("input",e);c.type="color"; c.onchange=(e)=>T.P=e.target.value; c=element("div",e);  c.innerHTML=icons; c.onclick=(e)=>T.P=e.target.textContent; icons=undefined;
+function loadicons(){
+  let range=r=>r.flatMap(v=>Array.from({length:v[1]-v[0]+1},(_,i)=>v[0]+i)); let measure=element("span");measure.style.visibility="hidden";
+  let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
+  measure.remove(); return icons;
+}}
 
 function help(){
-let e=view("Help"); if(e.exists)return;
-element("div",e).insertAdjacentHTML("beforeend",
-`
-<p>
-${product}
-${about}
-</p>
-`);
-
-let con=element("div",e);
-con.insertAdjacentHTML("beforeend", "<b>Buttons</b><br><br>");
-KEYS.filter(k=>k.f).forEach(k=>{
-  let e=con.appendChild(k.e.querySelector("svg").cloneNode(true));
-  e.querySelector("path").style.stroke="black";
-  e.style.width=10;
-  con.insertAdjacentHTML("beforeend"," "+k.name.replace(/^./,c=>c.toUpperCase())+"<br><br>");
-});
-
-element("div",e).insertAdjacentHTML("beforeend",
-`
-<p>
-<b>Run</b>
-Runs the game which contains the cursor.
-Also stops the game.
-</p><p>
-<b>Save/Diff</b>
-Saves to a timestamped file.
-The file contains your games AND the Editor.
-Swipeup shows changes you have made.
-</p><p>
-<b>Zoom/Fullscreen</b>
-Toggles font size.
-Swipeup toggles fullscreen.
-</p><p>
-<b>Rename/Highlight</b>
-Find performs incremental search.
-Uses selection if active.
-Swipeup <b>toggles</b> highlights for all occurrences of the word under the cursor.
-Click Rename to close Rename.
-</p><p>
-<b>Misc/Themes</b>
-Export-Game removes the editor and will run in any browser.
-Color-Picker and Icon-Picker put a code in Paste.
-Edit-the-Editor enables changes to the editor source code, such as colors, new buttons, etc.
-Swipeup toggles theme: light, dark, gray, retro
-Click anywhere to close.
-</p><p>
-<b>Help</b>
-Help is this screen.
-Click anywhere to close.
-</p><p>
-<b>Paste</b>
-Pastes the content of the Paste buffer.
-</p><p>
-<b>Copy</b>
-Begins or extends the <b>selection</b> of text and puts it in the Paste buffer.
-In other words, Copy is <b>selection</b> with the side affect of setting the Paste buffer.
-To exit this mode, press enter.
-Selection looks at the character to the right and then selects:
-  newline: line
-  word: whole word
-  spaces: right
-  blank line: next blank line
-  blocks: (){}[]""
-</p><p>
-<b>Cut</b>
-There is no Cut button. Cut is a two step process: 
-1. Click the Copy button to perform text <b>selection</b>, which sets the Paste buffer.
-2. Click the Backspace button, which deletes the text <b>selection</b>.
-</p><p>
-<b>Backspace</b>
-Deletes character or <b>selection</b>.
-</p><p>
-<b>Enter</b>
-Inserts a new line or cancels <b>selection</b>.
-Retains prior indentation.
-</p><p>
-<b>Arrows</b>
-Moves cursor or extends <b>selection</b>.
-</p><p>
-<b>Characters</b>
-Inserts a character or replaces <b>selection</b>.
-Swipeup on alphanumeric keys is like shift.
-</p><p>
-<b>Capslock (shift)</b>
-Reveals shift characters.
-</p><p>
-<b>Restore (Undo/Redo)</b>
-Restore up to 50 changes.
-</p><p>
-<b>Comment</b>
-Toggles comments for the current line.
-Also puts the line in Paste.
-</p><p>
-<b>Complete</b>
-Completes a word.
-Looks for match in current game and then elsewhere.
-</p><p>
-<b>Longpress</b>
-Repeats key
-</p><p>
-<b>Errors</b>
-Runtime errors display an error message and automatically jumps to the error in code.
-Click anywhere to close.
-</p><p>
-</p>
-`);
-
-let u=element("a",e);
-u.textContent="Github Updates";
-u.style.color = "blue";
-u.style.textDecoration = "underline";
-u.addEventListener("click",diffgit);
-
-}//end help
-
-}//end ide
-
-
-
-
-
-
-
-
-
-
+let e=view("Help"); if(e.exists)return; let con=element("div",e);
+con.innerHTML=`<p>${about}</p><br><b>Buttons</b><br><br>`;
+KEYS.filter(k=>k.f).forEach(k=>{ let s = k.e.querySelector("svg").cloneNode(true); s.style.width = 10; s.querySelector("path").style.stroke = "black"; con.innerHTML+=s.outerHTML+" "+k.name+"<br><br>" });
+con.innerHTML+=`.Run.Runs the game which contains the cursor.Also stops the game.Save.Saves to a timestamped file.The file contains your games AND the Editor.Zoom.Toggles font size.Rename.Find performs incremental search and replace.Uses selection if active.Misc.Color-Picker and Icon-Picker put your selection in Paste.Help.Help is this screen.Paste.Pastes the content of the Paste buffer.Copy.Begins or extends the selection of text and puts it in the Paste buffer.In other words, Copy is selection with the side affect of setting the Paste buffer.To exit this mode, press enter.Selection looks at the character to the right and then selects, newline: line, word: whole word, spaces: right, blank line: next blank line, blocks: (){}[]"".Cut.There is no Cut button.Cut is a two step process: 1: Click the Copy button to perform text selection, which sets the Paste buffer, 2: Click the Backspace button, which deletes the text selection.Backspace.Deletes character or selection.Enter.Inserts a new line or cancels selection.Retains prior indentation.Arrows.Moves cursor or extends selection.Characters.Inserts a character or replaces selection.Capslock.Reveals shift characters.Undo.Restore up to 50 changes.Comment.Toggles comments for the current line.Also puts the line in Paste.Complete.Completes a word.Longpress.Repeats key.Errors.Runtime errors display an error message and automatically jumps to the error in code.Swipeup.The following actions are taken if you swipeup on a button, Zoom: toggles fullscreen, Rename: toggles highlights for all occurrences of the word under the cursor, Misc: toggles themes, Alphanumeric: inserts shift characters.Close.To close or toggle something, click or swipe it again.
+`.split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("")
+}
+}
 function gameprograms(){
 
 
@@ -936,7 +287,7 @@ return {o,get j(){return st!=1},reset:()=>(st=1,vy=0),update(dt){let gy=slope(o.
   X.save();X.translate(o.x,o.y);X.rotate(o.a);X.scale(-1,1);X.font="40px serif";X.textAlign="center";X.textBaseline="middle";X.fillText("🚴",0,0);X.restore()
 }}}
 
-function Trees(){let A=[]; 
+function Trees(){let A=[];
 return {reset:()=>A=Array.from({length:3},(_,i)=>({x:W+i*(W/2),u:0})),update(dt){X.save();X.font="40px serif";X.textAlign="center";X.textBaseline="bottom";
   A.forEach(t=>{t.x-=SPEED*100*dt;t.x<-40&&(t.x=W+rnd()*200,t.u=0);X.fillText("🌲",t.x,slope(t.x));!t.u&&abs(t.x-BIKE.o.x)<30&&(t.u=1,BIKE.j?HISTORY.add(1):(HISTORY.add(-1),SHAKE.set()))});X.restore()
 }}}
@@ -959,12 +310,11 @@ function Sky(){return{update:()=>(X.fillStyle="skyblue",X.fillRect(-W,-H,W*3,H*3
 
 
 
-
 function defense(){
 let {random:rnd,sin,cos,atan2,min,max,PI,hypot,floor}=Math,L=Library(),{X,W,H}=L;
 let SHAKE=L.Shake(X),HISTORY=L.History(X),SND=L.Sound(),PARTICLES=L.Particles(X),SPACE=Space(),EARTH=Earth(),scene=[SHAKE,Ground(),SPACE,EARTH,PARTICLES,HISTORY];
 
-(init=()=>{let prev=0,dt;scene.forEach(o=>o.reset?.());(loop=curr=>{if(EARTH.hp<0)return init(); 
+(init=()=>{let prev=0,dt;scene.forEach(o=>o.reset?.());(loop=curr=>{if(EARTH.hp<0)return init();
   dt=min(.1,(curr-prev)/1000)||0;prev=curr; X.fillStyle="black";X.fillRect(0,0,W,H);X.save();scene.forEach(o=>o.update(dt));X.restore(); requestAnimationFrame(loop)
 })(0)})();
 
@@ -1001,8 +351,8 @@ function asteroid(x,y,r1,r2,p=5){let a=PI/p;X.beginPath();X.moveTo(x,y-r1);for(l
 
 function Library(){
 function element(tag){return document.body.appendChild(document.createElement(tag));}
-let {random:rnd,sin,cos,atan2,min,max,PI}=Math;
-oncontextmenu=_=>false; 
+let {random:rnd,sin,cos}=Math;
+oncontextmenu=_=>false;
 element("style").textContent="*{margin:0;padding:0;}canvas{touch-action:none;display:block}";
 let X=element("canvas").getContext("2d",{alpha:false});
 let W=innerWidth,H=innerHeight;
@@ -1013,29 +363,27 @@ function shape2(a,s=1){return a.reduce((p,i)=>(i.length&&(p.moveTo(s*i[0],s*i[1]
 function History(X){let A=[];return{get score(){return A[0]},add:v=>A[0]+=v,reset(){A.unshift(0)},update(){X.fillStyle="white";X.font="10px monospace";["Score",...A].forEach((v,i)=>X.fillText(v,20,i*12+60))}}}
 function Difficulty(p){let start=p.start,end=p.end,at=p.at,be=p.be;return function(x){return end-(end-start)*((end-be)/(end-start))**(x/at);}}
 function Shake(X){let s=0;return{set:()=>s=40,update:(dt)=>s&&(s=.02**dt*s|0,X.translate((rnd()-.5)*s,(rnd()-.5)*s))}}
-
 function Sound(){let b=new AudioContext(); [.2,1].forEach((v,i)=>(b[i+1]=b.createBuffer(1,b.sampleRate*v,b.sampleRate)).getChannelData(0).forEach((_,i,a)=>a[i]=rnd()*2-1))
 return {
   rocket:()=>{let s=b.createBufferSource();s.buffer=b[1];s.connect(b.destination);s.start()},
   explosion:()=>{let s=b.createBufferSource(),g=b.createGain(),f=b.createBiquadFilter();s.buffer=b[2];g.gain.value=8;f.type="lowpass";f.frequency.value=300;g.gain.linearRampToValueAtTime(0,b.currentTime+1);s.connect(f).connect(g).connect(b.destination);s.start()}
 }}
-
 function Particles(X){let A=[];
 return {add(x,y){for(let i=60;i--;){let a=rnd()*7,s=rnd()*4+1;A.push({x,y,v:cos(a)*s,w:sin(a)*s,l:1})}}, update(dt){
   A=A.filter(p=>(p.l-=.8*dt)>0); A.forEach(p=>{p.x+=p.v;p.y+=p.w+=.1;X.fillStyle=`hsla(${p.l*60},100%,50%,${p.l})`;X.beginPath();X.arc(p.x,p.y,2,0,7);X.fill()})
 }}}
-
 return {X,W,H,scroll,shape,shape2,History,Difficulty,Shake,Sound,Particles}
 }
 
+
+
+
+
+
+
+
+
+
 }
-
-
-
-
-
-
-
-
 
 }</script>

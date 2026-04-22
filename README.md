@@ -1,5 +1,4 @@
 
-<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://repository-images.githubusercontent.com/788276995/040a885f-c9e7-431b-bd4f-27a9069971b6" width="100%" /></a>
 
 BacioneJS is a mobile-centric JavaScript IDE with a custom, thumb-friendly keyboard, to give people a **taste** of programming with what they have.  
 
@@ -13,12 +12,10 @@ BacioneJS is a mobile-centric JavaScript IDE with a custom, thumb-friendly keybo
 - **Search**: replace, incremental find, highlight all
 - **Code Assistance**: auto-complete, auto-indent, auto-comment
 - **Themes**: light and dark mode syntax highlighting
-- **Diff**: changes since open/save
 - **Zoom**: adjust text size
 - **Fullscreen**: expand your workspace
 - **Gestures**: swipe and long-press-repeat support
 - **Pickers**: icon and color selectors
-- **Configurable**: modify the editor source within itself ⚙️
 - **Examples**: games included 🎮
 - **Help**: built-in guide 📚
 
