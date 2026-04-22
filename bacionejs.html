@@ -3,7 +3,8 @@
 document.title="BacioneJS";
 let tested="Only works on modern android chromium-based browsers";
 let about=`
-<b>Bacione Javascript Editor \uD83D\uDC8B</b><br>Integrated Development Environment
+<b>Bacione Javascript Editor \uD83D\uDC8B</b>
+Integrated Development Environment
 
 <b>Purpose</b> Programming small javascript games on a phone offline
 <b>Mission</b> Create the most thumb-friendly IDE in its class
@@ -21,10 +22,12 @@ let about=`
 After you start the editor, click the run icon to play a game (it will run whichever game contains the cursor)
 `;
 
-if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){alert(tested)}
 onerror=(m,_,l,c)=>{let f=document.querySelector("iframe"),v=view("Error"),s=`${m}\nline: ${l}\ncol: ${c}`;f&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus());v.textContent=s};
+if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){alert(tested)}
+
+theme(); pretty(); rename(); view(); restore(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys(); theme();
+
 element("style").textContent=` *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}`;
-rename(); view(); restore(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys(); theme();
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
 function striplinesfirstlast(s){return s.toString().replace(/^.*|.*$/g,"");}
 function escapetext(text){return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');}
@@ -121,7 +124,7 @@ function createtextarea(){
 let T=element("textarea");
 T.addEventListener('scroll',function(){PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft;});
 T.addEventListener('paste', function(ev){ev.preventDefault();T.I(ev.clipboardData.getData('text'));});
-T.addEventListener('cut',   function(ev){ev.preventDefault();ev.clipboardData.setData("text",T.P);});
+T.oncut=_=>false;
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
@@ -134,25 +137,56 @@ T.P="";T.H="";T.inputMode="none";T.spellcheck=false;
 T.value=striplinesfirstlast(gameprograms);T.S=T.E=T.V.indexOf("{")+1;T.focus();
 return T;
 }
+
 function createpretty(){
   let e=element("div");e.className="unhide";
   {let s=e.style;s.height="100%";s.width="100%";s.padding=`10ch 2ch 100vh 2ch`;s.position="fixed";s.touchAction="pan-x pan-y";s.overflow="auto";s.whiteSpace="pre";s.wordWrap="break-word";s.zIndex=1;}
   return e;
 }
-function pretty(s){
-  let c=(s,color,match)=>s.replace(RegExp(`(${match})`,'g'),`<span style=color:${color}>$1</span>`);
-  s=s.replace(/</g,'\x1F');
-  if(T.H!==""){
-    let w=T.H;w=escapetext(w);
-    if(document.activeElement.id=="find"){w="\\b"+w;}
-    else if(/\w/.test(w))                {w="\\b"+w+"\\b";}
-    s=s.replace(RegExp(`(${w})`,'g'),`<span style=color:red;background:pink;>$1</span>`);
-  }
-  s=c(s,theme.pairs,`[(){}[\\]]`);
-  s=c(s,theme.keywords,`\\b(function|let|if|else|for|forEach|while|true|false|this|return|undefined)\\b`);
-  s=s.replace(/\x1F/g,'&'+'#60;');
-  return s;
-} function syncpretty(){PRETTY.innerHTML=pretty(T.V)+"\n";}
+
+function pretty(){
+let cache={},lt=/</g,m=/[a-z]+\b|[(){}[\]]/g;
+pretty=function(s){return s.replace(lt,'&lt;').replace(m,x=>cache[x]||x)};
+pretty.update = () => {
+  let k = new Set(), w = gameprograms.toString().match(/[a-z]+\b/g) || [], span = '<span style=color:', end = '</span>';
+  if (theme.keywords) { for (let x of w) { try { eval('let ' + x) } catch (i) { k.add(x) } } }
+  cache = {};
+  if (theme.pairs) "(){}[\]".split('').forEach(p => cache[p] = span + theme.pairs + '>' + p + end);
+  if (theme.keywords) k.forEach(word => cache[word] = span + theme.keywords + '>' + word + end);
+}}
+
+function syncpretty() { if (!theme.keywords && !theme.pairs) { PRETTY.innerHTML = T.V.replace(/</g, '&lt;') + "\n"; } else { PRETTY.innerHTML = pretty(T.V) + "\n"; } }
+
+function theme(){
+let activetheme=0,a=[
+["fontsizesmall"  ,[10      ,   6         ,  10      ,  10            ,  8         ,  8              ]],
+["fontsizebig"    ,[15      ,  15         ,  15      ,  15            ,  20        ,  20             ]],
+["keyroundness"   ,["20%"   ,  "20%"      ,  "20%"   ,  "20%"         ,  "50%"     ,  "50%"          ]],
+["keyborder"      ,["silver",  "black"    ,  "tan"   ,  "white"       ,  "none"    ,  "none"         ]],
+["keybackground"  ,["white" ,  "#424242"  ,  "black" ,  "#38393D"     ,  "#38393D" ,  "midnightblue" ]],
+["keyforeground"  ,["black" ,  "white"    ,  "white" ,  "white"       ,  "white"   ,  "pink"         ]],
+["click"          ,["blue"  ,  "gray"     ,  "blue"  ,  "blue"        ,  "lime"    ,  "pink"         ]],
+["caret"          ,["blue"  ,  "pink"     ,  "yellow",  "blue"        ,  "white"   ,  "white"        ]],
+["background"     ,["white" ,  "#15161B"  ,  "black" ,  "slategray"   ,  "black"   ,  "pink"         ]],
+["foreground"     ,["black" ,  "white"    ,  "tan"   ,  "whitesmoke"  ,  "lime"    ,  "midnightblue" ]],
+["keywords"       ,["teal"  ,  "#B3EAB7"  ,  "orange",  "skyblue"     ,  ""        ,  "royalblue"    ]],
+["pairs"          ,["purple",  "#96ecff"  ,  "brown" ,  "black"       ,  ""        ,  "indigo"       ]],
+];
+theme=function(){
+activetheme%=a[0][1].length;a.forEach(r=>theme[r[0]]=r[1][activetheme]);activetheme++;
+let s;
+KEYS.forEach(k=>{
+  s=k.e.style;
+  s.borderRadius=theme.keyroundness;
+  s.border=theme.keyborder=="none"?"none":`2px outset ${theme.keyborder}`;
+  s.backgroundColor=theme.keybackground;
+  s.color=theme.keyforeground;k.e.querySelector("path")?.style.setProperty("stroke",theme.keyforeground);
+});
+s=T.style;s.fontSize=theme.fontsizesmall;s.caretColor=theme.caret;
+s=PRETTY.style;s.fontSize=theme.fontsizesmall;s.backgroundColor=theme.background;s.color=theme.foreground;
+pretty.update();
+syncpretty();
+}}
 
 function createkeys(){
 let keys=[
@@ -215,37 +249,6 @@ keys.clicked=(ev)=>{let r=Math.floor((ev.y-ev.currentTarget.offsetTop)/(scale));
 function sv(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" vector-effect="non-scaling-stroke"/>`;return s;}
 return keys;
 }
-
-function theme(){
-let activetheme=0,a=[
-["fontsizesmall"  ,[10      ,   6         ,  10      ,  10            ,  8         ,  8              ]],
-["fontsizebig"    ,[15      ,  15         ,  15      ,  15            ,  20        ,  20             ]],
-["keyroundness"   ,["20%"   ,  "20%"      ,  "20%"   ,  "20%"         ,  "50%"     ,  "50%"          ]],
-["keyborder"      ,["silver",  "black"    ,  "tan"   ,  "white"       ,  "none"    ,  "none"         ]],
-["keybackground"  ,["white" ,  "#424242"  ,  "black" ,  "#38393D"     ,  "#38393D" ,  "midnightblue" ]],
-["keyforeground"  ,["black" ,  "white"    ,  "white" ,  "white"       ,  "white"   ,  "pink"         ]],
-["click"          ,["blue"  ,  "gray"     ,  "blue"  ,  "blue"        ,  "lime"    ,  "pink"         ]],
-["caret"          ,["blue"  ,  "pink"     ,  "yellow",  "blue"        ,  "white"   ,  "white"        ]],
-["background"     ,["white" ,  "#15161B"  ,  "black" ,  "slategray"   ,  "black"   ,  "pink"         ]],
-["foreground"     ,["black" ,  "white"    ,  "tan"   ,  "whitesmoke"  ,  "lime"    ,  "midnightblue" ]],
-["keywords"       ,["teal"  ,  "#B3EAB7"  ,  "orange",  "skyblue"     ,  "lime"    ,  "royalblue"    ]],
-["pairs"          ,["purple",  "#96ecff"  ,  "brown" ,  "black"       ,  "lime"    ,  "indigo"       ]],
-];
-theme=function(){
-activetheme%=a[0][1].length;a.forEach(r=>theme[r[0]]=r[1][activetheme]);activetheme++;
-let s;
-KEYS.forEach(k=>{
-  s=k.e.style;
-  s.borderRadius=theme.keyroundness;
-  s.border=theme.keyborder=="none"?"none":`2px outset ${theme.keyborder}`;
-  s.backgroundColor=theme.keybackground;
-  s.color=theme.keyforeground;k.e.querySelector("path")?.style.setProperty("stroke",theme.keyforeground);
-});
-s=T.style;s.fontSize=theme.fontsizesmall;s.caretColor=theme.caret;
-s=PRETTY.style;s.fontSize=theme.fontsizesmall;s.backgroundColor=theme.background;s.color=theme.foreground;
-syncpretty();
-}
-} theme();
 
 function misc(){
 let e=view("Misc");if(e.exists)return; let c,icons=loadicons(); e.style.overflowWrap="anywhere";
