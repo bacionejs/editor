@@ -146,7 +146,15 @@ function createpretty(){
 
 function pretty(){
 let cache={},lt=/</g,m=/[a-z]+\b|[(){}[\]]/g;
-pretty=function(s){return s.replace(lt,'&lt;').replace(m,x=>cache[x]||x)};
+pretty=function(s){
+  if(T.H!==""){
+    let w=T.H;w=escapetext(w);
+    if(document.activeElement.id=="find"){w="\\b"+w;}
+    else if(/\w/.test(w))                {w="\\b"+w+"\\b";}
+    s=s.replace(RegExp(`(${w})`,'g'),`<span style=color:red;background:pink;>$1</span>`);
+  }else s=s.replace(lt,'&lt;').replace(m,x=>cache[x]||x)
+  return s;
+};
 pretty.update = () => {
   let k = new Set(), w = gameprograms.toString().match(/[a-z]+\b/g) || [], span = '<span style=color:', end = '</span>';
   if (theme.keywords) { for (let x of w) { try { eval('let ' + x) } catch (i) { k.add(x) } } }
