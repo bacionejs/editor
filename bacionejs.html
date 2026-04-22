@@ -58,7 +58,7 @@ a.download=timestamp()+"bacionejs.html",a.click(),u.revokeObjectURL(h),a.remove(
 
 function filecontent(){
 let s="<meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'>";
-s+="<\script>onload=()=>{ide();"+ide+"\n\nfunction gameprograms(){"+T.V+"}}<\/script>";
+s+="\n<\script>onload=()=>{ide();"+ide+"\n\nfunction gameprograms(){"+T.V+"}\n\n}<\/script>\n";
 return s;
 }
 
@@ -264,7 +264,6 @@ con.innerHTML+=`.Run.Runs the game which contains the cursor.Also stops the game
 `.split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("")
 }
 }
-
 
 function gameprograms(){
 
