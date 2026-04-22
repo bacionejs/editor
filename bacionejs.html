@@ -154,37 +154,6 @@ function pretty(s){
   return s;
 } function syncpretty(){PRETTY.innerHTML=pretty(T.V)+"\n";}
 
-function theme(){
-let activetheme=0,a=[
-["fontsizesmall"  ,[10      ,   6         ,  10      ,  10            ,  8         ,  8              ]],
-["fontsizebig"    ,[15      ,  15         ,  15      ,  15            ,  20        ,  20             ]],
-["keyroundness"   ,["20%"   ,  "20%"      ,  "20%"   ,  "20%"         ,  "50%"     ,  "50%"          ]],
-["keyborder"      ,["silver",  "black"    ,  "tan"   ,  "white"       ,  "none"    ,  "none"         ]],
-["keybackground"  ,["white" ,  "#424242"  ,  "black" ,  "#38393D"     ,  "#38393D" ,  "midnightblue" ]],
-["keyforeground"  ,["black" ,  "white"    ,  "white" ,  "white"       ,  "white"   ,  "pink"         ]],
-["click"          ,["blue"  ,  "gray"     ,  "blue"  ,  "blue"        ,  "lime"    ,  "pink"         ]],
-["caret"          ,["blue"  ,  "pink"     ,  "yellow",  "blue"        ,  "white"   ,  "white"        ]],
-["background"     ,["white" ,  "#15161B"  ,  "black" ,  "slategray"   ,  "black"   ,  "pink"         ]],
-["foreground"     ,["black" ,  "white"    ,  "tan"   ,  "whitesmoke"  ,  "lime"    ,  "midnightblue" ]],
-["keywords"       ,["teal"  ,  "#B3EAB7"  ,  "orange",  "skyblue"     ,  "lime"    ,  "royalblue"    ]],
-["pairs"          ,["purple",  "#96ecff"  ,  "brown" ,  "black"       ,  "lime"    ,  "indigo"       ]],
-];
-theme=function(){
-activetheme%=a[0][1].length;a.forEach(r=>theme[r[0]]=r[1][activetheme]);activetheme++;
-let s;
-KEYS.forEach(k=>{
-  s=k.e.style;
-  s.borderRadius=theme.keyroundness;
-  s.border=theme.keyborder=="none"?"none":`2px outset ${theme.keyborder}`;
-  s.backgroundColor=theme.keybackground;
-  s.color=theme.keyforeground;k.e.querySelector("path")?.style.setProperty("stroke",theme.keyforeground);
-});
-s=T.style;s.fontSize=theme.fontsizesmall;s.caretColor=theme.caret;
-s=PRETTY.style;s.fontSize=theme.fontsizesmall;s.backgroundColor=theme.background;s.color=theme.foreground;
-syncpretty();
-}
-} theme();
-
 function createkeys(){
 let keys=[
 {r:0,c:4, f:[help],            d:"M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2"},
@@ -247,6 +216,37 @@ function sv(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg"
 return keys;
 }
 
+function theme(){
+let activetheme=0,a=[
+["fontsizesmall"  ,[10      ,   6         ,  10      ,  10            ,  8         ,  8              ]],
+["fontsizebig"    ,[15      ,  15         ,  15      ,  15            ,  20        ,  20             ]],
+["keyroundness"   ,["20%"   ,  "20%"      ,  "20%"   ,  "20%"         ,  "50%"     ,  "50%"          ]],
+["keyborder"      ,["silver",  "black"    ,  "tan"   ,  "white"       ,  "none"    ,  "none"         ]],
+["keybackground"  ,["white" ,  "#424242"  ,  "black" ,  "#38393D"     ,  "#38393D" ,  "midnightblue" ]],
+["keyforeground"  ,["black" ,  "white"    ,  "white" ,  "white"       ,  "white"   ,  "pink"         ]],
+["click"          ,["blue"  ,  "gray"     ,  "blue"  ,  "blue"        ,  "lime"    ,  "pink"         ]],
+["caret"          ,["blue"  ,  "pink"     ,  "yellow",  "blue"        ,  "white"   ,  "white"        ]],
+["background"     ,["white" ,  "#15161B"  ,  "black" ,  "slategray"   ,  "black"   ,  "pink"         ]],
+["foreground"     ,["black" ,  "white"    ,  "tan"   ,  "whitesmoke"  ,  "lime"    ,  "midnightblue" ]],
+["keywords"       ,["teal"  ,  "#B3EAB7"  ,  "orange",  "skyblue"     ,  "lime"    ,  "royalblue"    ]],
+["pairs"          ,["purple",  "#96ecff"  ,  "brown" ,  "black"       ,  "lime"    ,  "indigo"       ]],
+];
+theme=function(){
+activetheme%=a[0][1].length;a.forEach(r=>theme[r[0]]=r[1][activetheme]);activetheme++;
+let s;
+KEYS.forEach(k=>{
+  s=k.e.style;
+  s.borderRadius=theme.keyroundness;
+  s.border=theme.keyborder=="none"?"none":`2px outset ${theme.keyborder}`;
+  s.backgroundColor=theme.keybackground;
+  s.color=theme.keyforeground;k.e.querySelector("path")?.style.setProperty("stroke",theme.keyforeground);
+});
+s=T.style;s.fontSize=theme.fontsizesmall;s.caretColor=theme.caret;
+s=PRETTY.style;s.fontSize=theme.fontsizesmall;s.backgroundColor=theme.background;s.color=theme.foreground;
+syncpretty();
+}
+} theme();
+
 function misc(){
 let e=view("Misc");if(e.exists)return; let c,icons=loadicons(); e.style.overflowWrap="anywhere";
 c=element("input",e);c.type="color"; c.onchange=(e)=>T.P=e.target.value; c=element("div",e);  c.innerHTML=icons; c.onclick=(e)=>T.P=e.target.textContent; icons=undefined;
@@ -264,6 +264,8 @@ con.innerHTML+=`.Run.Runs the game which contains the cursor.Also stops the game
 `.split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("")
 }
 }
+
+
 function gameprograms(){
 
 
