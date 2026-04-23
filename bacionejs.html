@@ -140,7 +140,7 @@ return T;
 
 function createpretty(){
   let e=element("div");e.className="unhide";
-  {let s=e.style;s.height="100%";s.width="100%";s.padding=`10ch 2ch 100vh 2ch`;s.position="fixed";s.touchAction="pan-x pan-y";s.overflow="auto";s.whiteSpace="pre";s.wordWrap="break-word";s.zIndex=1;}
+  {let s=e.style;s.pointerEvents="none"; s.height="100%";s.width="100%";s.padding=`10ch 2ch 100vh 2ch`;s.position="fixed";s.touchAction="pan-x pan-y";s.overflow="auto";s.whiteSpace="pre";s.wordWrap="break-word";s.zIndex=1;}
   return e;
 }
 
@@ -228,9 +228,13 @@ keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;keys.rows=keys.reduce((a,k)=>(a>
 let keyboard=element("div");keyboard.oncontextmenu=_=>false;{let s=keyboard.style;
 s.backgroundColor=`rgb(100 110 120/ 20%)`;s.border="1px solid black";s.borderRadius="5% 0 0 0";s.touchAction="none";s.userSelect="none";s.position="fixed";s.display="grid";s.gap="1%";s.zIndex=3;
 s.bottom=0;s.right=0;s.aspectRatio=keys.cols/keys.rows;s.gridTemplateColumns=`repeat(${keys.cols},1fr)`;s.gridTemplateRows=`repeat(${keys.rows},1fr)`;}
+
 for(let k of keys){let e=k.e=element("div",keyboard);
-  k.f?(e.appendChild(sv(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];Object.assign(e.style,{display:"flex",justifyContent:"center",alignItems:"center",lineHeight:1,gridColumn:k.c+1,gridRow:k.r+1});
+  e.ref = k; k.f?(e.appendChild(sv(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];Object.assign(e.style,{display:"flex",justifyContent:"center",alignItems:"center",lineHeight:1,gridColumn:k.c+1,gridRow:k.r+1});
 }
+
+keys.clicked = (ev) => { let el = document.elementFromPoint(ev.clientX, ev.clientY); return el?.closest('div')?.ref; };
+
 keyboard.timeout=[];
 function clear(t){while(t.length&&clearTimeout(t.pop()));}
 let repeattimeout=500,repeatinterval=100;
@@ -247,16 +251,18 @@ keyboard.onpointerup=(ev)=>{
   p.e.style.backgroundColor=theme.click;
   setTimeout(()=>p.e.style.backgroundColor=theme.keybackground,200);
 }
+
 let scale;
 function resize(){
   scale=Math.min((innerHeight-innerWidth)/keys.rows,innerWidth/keys.cols);
   keyboard.style.width=scale*keys.cols+"px";keyboard.style.height=scale*keys.rows+"px";
   keys.forEach(k=>k.f?(k.e.firstChild.style.width="45%"):(k.e.style.fontSize=scale*0.5+"px"));
 }new ResizeObserver(resize).observe(document.body);
-keys.clicked=(ev)=>{let r=Math.floor((ev.y-ev.currentTarget.offsetTop)/(scale));let c=Math.floor((ev.x-ev.currentTarget.offsetLeft)/(scale));return keys.find(k=>k.r==r&&k.c==c);}
-function sv(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" vector-effect="non-scaling-stroke"/>`;return s;}
-return keys;
-}
+
+
+function sv(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" vector-effect="non-scaling-stroke"/>`;return s;}return keys;
+
+}//createkeys
 
 function misc(){
 let e=view("Misc");if(e.exists)return; let c,icons=loadicons(); e.style.overflowWrap="anywhere";
