@@ -25,7 +25,9 @@ After you start the editor, click the run icon to play a game (it will run which
 onerror=(m,_,l,c)=>{let f=document.querySelector("iframe"),v=view("Error"),s=`${m}\nline: ${l}\ncol: ${c}`;f&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus());v.textContent=s};
 if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){alert(tested)}
 
-theme(); pretty(); rename(); view(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys(); theme();
+theme(); pretty(); rename(); view(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
+if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
+function init(s){T.V=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 
 element("style").textContent=` *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}`;
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
@@ -41,6 +43,8 @@ function currentgame(){let s=T.V,c=T.S,m,r=/\b(\w+)\s*\(.*?\)\s*\{/g;for(;m=r.ex
 function highlight(){let s=T.V,i=T.E;T.H?T.H="":(/\w/.test(s[i])&&(T.S==i&&(i=s.slice(0,i).search(/\w+$/))>=0&&(T.S=i),T.E=T.S+s.slice(T.S).search(/\W/)),T.S!=T.E&&(T.H=s.slice(T.S,T.E)));syncpretty()}
 function left(){arrow(-1)}function right(){arrow(1)} function arrow(d){let i=T.E+d,s=T.V;if(i>=0&&i<=s.length){if(T.S==T.E)T.S=T.E=i;else T.P=s.slice(T.S,T.E=i)}}
 function zoom(){let {fontsizesmall:s, fontsizebig:b}=theme;T.style.fontSize=PRETTY.style.fontSize=(parseInt(T.style.fontSize)==s?b:s)+"px";setTimeout(()=>T.blur(T.focus()),200);}
+function save(){ let u=URL,a=element("a"),h=a.href=u.createObjectURL(new File([filecontent()],"")); a.download=timestamp()+"bacionejs.html",a.click(),u.revokeObjectURL(h),a.remove(); }
+function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
 function paste(){T.I(T.P);}
 
 function view(){let a=[];view=function(f){let e=a[f];
@@ -54,32 +58,15 @@ let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.
 f=element("iframe"); f.style.cssText="width:100vw;height:100vw;position:fixed;z-index:9";f.contentWindow.eval(T.V+g.name+"()"); T.blur();
 }
 
-function save(){
-let u=URL,a=element("a"),h=a.href=u.createObjectURL(new File([filecontent()],""));
-a.download=timestamp()+"bacionejs.html",a.click(),u.revokeObjectURL(h),a.remove();
-}
-
 function filecontent(){
 let s="<meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'>";
-s+="\n<\script>onload=()=>{ide();"+ide+"\n\nfunction gameprograms(){"+T.V+"}\n\n}<\/script>\n";
+s+="\n<\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n";
 return s;
-}
-
-function zoom(){
-let s=theme.fontsizesmall, b=theme.fontsizebig, z=parseInt(T.style.fontSize)==s?b:s;
-T.style.fontSize=PRETTY.style.fontSize=z+"px";
-setTimeout(()=>T.blur(T.focus()),200);
 }
 
 function complete(){
 let s=T.V,c=T.S,i=c,w,f=currentgame()?.ftop||0;while(--i>=0&&/\w|\./.test(s[i]));w=s.slice(i+1,c);if(!w)return;
 let res=[...s.slice(f).replace(/"[^"]*"|\/\/.*$/gm,"").matchAll("\\b"+w+"\\w*")].find(m=>m[0]!=w);if(res)T.I(res[0].slice(w.length));
-}
-
-function comment(){
-let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e);
-t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s));
-T.S=T.E=T.V.indexOf("\n",s)+1;
 }
 
 function copy(){
@@ -91,14 +78,9 @@ if(w.test(v)){if(T.S==i) while(--i>=0 && w.test(s[i]));T.S=i+1, i=T.E;while(++i<
 } else T.E++;T.P=s.slice(T.S,T.E);
 }
 
-function restore(){
-let h=[],i=-1;
-restore=d=>{
-  let s={v:T.V,s:T.S,e:T.E};
-  if(d==null){ if(h[i]?.v==s.v)return; h.splice(++i,Infinity,s); if(h.length>50)h.shift(),i--;
-  }else{ i=Math.max(0,Math.min(h.length-1,i+d)); let state=h[i]; if(state)T.V=state.v,T.S=T.E=state.s; }
-}; restore();
-} function undo() { restore(-1); } function redo() { restore(1); }
+function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
+if(d==null){if(h[i]?.v==s.v)return;h.splice(++i,Infinity,s);if(h.length>50)h.shift(),i--;}else{i=Math.max(0,Math.min(h.length-1,i+d));let S=h[i];if(S)T.V=S.v,T.S=T.E=S.s;}
+};restore();}function undo(){restore(-1);}function redo(){restore(1);}
 
 function rename(){
 let con=element("div"),f=element("input",con),fb=element("button",con),r=element("input",con),rb=element("button",con);
@@ -110,62 +92,44 @@ let disable=()=>fb.disabled=rb.disabled=search(f.value)==-1;
 let find=()=>{let i=search(f.value);if(i<0)return;T.H=f.value;syncpretty();T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length};
 let replace=()=>(T.V.slice(T.S,T.E)==f.value&&(T.focus(),T.I(r.value)),disable(),find());
 rename=s=>{
-  if(s==null){
-    let z=con.style.zIndex==0; con.style.zIndex=z?9:0;
-    z?(T.S!=T.E&&(f.value=T.V.slice(T.S,T.E),T.E=T.S,disable()),f.focus()):(T.S=T.E,T.focus());
-  }else{
-    let e=document.activeElement; if(s=="")e.selectionStart--;
-    e.setRangeText(s,e.selectionStart,e.selectionEnd,"end");
-    e.id=="find"&&(T.H=e.value,syncpretty(),disable());
-  }
+  if(s==null){ let z=con.style.zIndex==0; con.style.zIndex=z?9:0; z?(T.S!=T.E&&(f.value=T.V.slice(T.S,T.E),T.E=T.S,disable()),f.focus()):(T.S=T.E,T.focus());
+  }else{ let e=document.activeElement; if(s=="")e.selectionStart--; e.setRangeText(s,e.selectionStart,e.selectionEnd,"end"); e.id=="find"&&(T.H=e.value,syncpretty(),disable()); }
 }}
 
 function createtextarea(){
 let T=element("textarea");
+T.oncut=_=>false;
 T.addEventListener('scroll',function(){PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft;});
 T.addEventListener('paste', function(ev){ev.preventDefault();T.I(ev.clipboardData.getData('text'));});
-T.oncut=_=>false;
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
-T.I=function(t,s=T.S,e=T.E){
-  if(document.activeElement==this){restore();this.setRangeText(t,s,e,"end");restore();syncpretty();
-  }else{rename(t);}
-}
+T.I=function(t,s=T.S,e=T.E){ if(document.activeElement==this){restore();this.setRangeText(t,s,e,"end");restore();syncpretty(); }else{rename(t);} }
 T.P="";T.H="";T.inputMode="none";T.spellcheck=false;
 {let s=T.style;s.height="100%";s.width="100%";s.padding=`10ch 2ch 100vh 2ch`;s.position="fixed";s.touchAction="pan-x pan-y";s.overflow="auto";s.whiteSpace="nowrap";s.zIndex=2;s.backgroundColor="transparent";s.color="transparent";}
-T.value=striplinesfirstlast(gameprograms);T.S=T.E=T.V.indexOf("{")+1;T.focus();
 return T;
 }
 
 function createpretty(){
-  let e=element("div");e.className="unhide";
-  {let s=e.style;s.pointerEvents="none"; s.height="100%";s.width="100%";s.padding=`10ch 2ch 100vh 2ch`;s.position="fixed";s.touchAction="pan-x pan-y";s.overflow="auto";s.whiteSpace="pre";s.wordWrap="break-word";s.zIndex=1;}
-  return e;
+let e=element("div");e.className="unhide";
+{let s=e.style;s.pointerEvents="none"; s.height="100%";s.width="100%";s.padding=`10ch 2ch 100vh 2ch`;s.position="fixed";s.touchAction="pan-x pan-y";s.overflow="auto";s.whiteSpace="pre";s.wordWrap="break-word";s.zIndex=1;}
+return e;
 }
 
 function pretty(){
-let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
-pretty = function(s) {
-  if (T.H !== "") {
-    s = s.replace(/</g, ''); 
-    let w = escapetext(T.H);
-    if (w == "<") w = '';
-    if (document.activeElement.id == "find") w = "\\b" + w; else if (/\w/.test(w)) w = "\\b" + w + "\\b";
-    s = s.replace(RegExp(`(${w})`, 'gi'), `<span style=color:red;background:pink;>$1</span>`);
-    return s.replace(/[a-z]+\b|[(){}[\]]|/gi, x => { if (x == '') return "&lt;"; return cache[x] || x; });
+let w,cache={},m=/[a-z]+\b|[(){}[\]]|</g;
+pretty=function(s){
+  if(T.H!==""){
+    s=s.replace(/</g,'');w=escapetext(T.H);if(w=="<")w=''; if(document.activeElement.id=="find")w="\\b"+w;else if(/\w/.test(w))w="\\b"+w+"\\b";
+    s=s.replace(RegExp(`(${w})`,'gi'),`<span style=color:red;background:pink;>$1</span>`);
+    return s.replace(/[a-z]+\b|[(){}[\]]|/gi,x=>{if(x=='')return "&lt;";return cache[x]||x;});
   }
-  return s.replace(m, x => x == "<" ? "&lt;" : (cache[x] || x));
-};
-pretty.update = () => {
-  let k = new Set(), w = gameprograms.toString().match(/[a-z]+\b/g) || [], span = '<span style=color:', end = '</span>';
-  if (theme.keywords) { for (let x of w) { try { eval('let ' + x) } catch (i) { k.add(x) } } }
-  cache = {};
-  if (theme.pairs) "(){}[\]".split('').forEach(p => cache[p] = span + theme.pairs + '>' + p + end);
-  if (theme.keywords) k.forEach(word => cache[word] = span + theme.keywords + '>' + word + end);
-}}
-
-function syncpretty() { if (!theme.keywords && !theme.pairs) { PRETTY.innerHTML = T.V.replace(/</g,'\x3C') + "\n"; } else { PRETTY.innerHTML = pretty(T.V) + "\n"; } }
+  return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x));
+}
+pretty.update=()=>{
+  let k=new Set(),w=T.V.match(/[a-z]+\b/g)||[],span='<span style=color:',end='</span>'; if(theme.keywords){for(let x of w){try{eval('let '+x)}catch(i){k.add(x)}}}
+  cache={};if(theme.pairs)"(){}[\]".split('').forEach(p=>cache[p]=span+theme.pairs+'>'+p+end);if(theme.keywords)k.forEach(word=>cache[word]=span+theme.keywords+'>'+word+end);
+}} function syncpretty() { if (!theme.keywords && !theme.pairs) { PRETTY.innerHTML = T.V.replace(/</g,'\x3C') + "\n"; } else { PRETTY.innerHTML = pretty(T.V) + "\n"; } }
 
 function theme(){
 let activetheme=0,a=[
@@ -187,15 +151,11 @@ activetheme%=a[0][1].length;a.forEach(r=>theme[r[0]]=r[1][activetheme]);activeth
 let s;
 KEYS.forEach(k=>{
   s=k.e.style;
-  s.borderRadius=theme.keyroundness;
-  s.border=theme.keyborder=="none"?"none":`2px outset ${theme.keyborder}`;
-  s.backgroundColor=theme.keybackground;
+  s.borderRadius=theme.keyroundness; s.border=theme.keyborder=="none"?"none":`2px outset ${theme.keyborder}`; s.backgroundColor=theme.keybackground;
   s.color=theme.keyforeground;k.e.querySelector("path")?.style.setProperty("stroke",theme.keyforeground);
 });
-s=T.style;s.fontSize=theme.fontsizesmall;s.caretColor=theme.caret;
-s=PRETTY.style;s.fontSize=theme.fontsizesmall;s.backgroundColor=theme.background;s.color=theme.foreground;
-pretty.update();
-syncpretty();
+s=T.style;s.fontSize=theme.fontsizesmall;s.caretColor=theme.caret; s=PRETTY.style;s.fontSize=theme.fontsizesmall;s.backgroundColor=theme.background;s.color=theme.foreground;
+pretty.update(); syncpretty();
 }}
 
 function misc(){
@@ -208,8 +168,7 @@ function loadicons(){
 }}
 
 function help(){
-let e=view("Help"); if(e.exists)return; let con=element("div",e);
-con.innerHTML=`<p>${about}</p><br><b>Buttons</b><br><br>`;
+let e=view("Help"); if(e.exists)return; let con=element("div",e); con.innerHTML=`<p>${about}</p><br><b>Buttons</b><br><br>`;
 KEYS.filter(k=>k.f).forEach(k=>{ let s = k.e.querySelector("svg").cloneNode(true); s.style.width = 10; s.querySelector("path").style.stroke = "black"; con.innerHTML+=s.outerHTML+" "+k.name+"<br><br>" });
 con.innerHTML+=`.Run.Runs the game which contains the cursor.Also stops the game.Save.Saves to a timestamped file.The file contains your games AND the Editor.Zoom.Toggles font size.Rename.Find performs incremental search and replace.Uses selection if active.Misc.Color-Picker and Icon-Picker put your selection in Paste.Help.Help is this screen.Paste.Pastes the content of the Paste buffer.Copy.Begins or extends the selection of text and puts it in the Paste buffer.In other words, Copy is selection with the side affect of setting the Paste buffer.To exit this mode, press enter.Selection looks at the character to the right and then selects, newline: line, word: whole word, spaces: right, blank line: next blank line, blocks: (){}[]"".Cut.There is no Cut button.Cut is a two step process: 1: Click the Copy button to perform text selection, which sets the Paste buffer, 2: Click the Backspace button, which deletes the text selection.Backspace.Deletes character or selection.Enter.Inserts a new line or cancels selection.Retains prior indentation.Arrows.Moves cursor or extends selection.Characters.Inserts a character or replaces selection.Capslock.Reveals shift characters.Undo.Restore up to 50 changes.Comment.Toggles comments for the current line.Also puts the line in Paste.Complete.Completes a word.Longpress.Repeats key.Errors.Runtime errors display an error message and automatically jumps to the error in code.Swipeup.The following actions are taken if you swipeup on a button, Zoom: toggles fullscreen, Rename: toggles highlights for all occurrences of the word under the cursor, Misc: toggles themes, Alphanumeric: inserts shift characters.Close.To close or toggle something, click or swipe it again.
 `.split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("")
@@ -270,10 +229,8 @@ keyboard.onpointerup=(ev)=>{
   setTimeout(()=>p.e.style.backgroundColor=theme.keybackground,200);
 }
 
-let scale;
 function resize(){
-  scale=Math.min((innerHeight-innerWidth)/keys.rows,innerWidth/keys.cols);
-  keyboard.style.width=scale*keys.cols+"px";keyboard.style.height=scale*keys.rows+"px";
+  let scale=Math.min((innerHeight-innerWidth)/keys.rows,innerWidth/keys.cols); keyboard.style.width=scale*keys.cols+"px";keyboard.style.height=scale*keys.rows+"px";
   keys.forEach(k=>k.f?(k.e.firstChild.style.width="45%"):(k.e.style.fontSize=scale*0.5+"px"));
 }new ResizeObserver(resize).observe(document.body);
 
@@ -283,126 +240,6 @@ return keys;
 }//createkeys
 }
 
-function gameprograms(){
-
-
-
-
-
-
-
-
-
-function bike(){
-let {random:rnd,sin,cos,atan2,min,max,PI,abs,ceil}=Math,L=Library(),{X,W,H}=L;
-let SHAKE=L.Shake(X),HISTORY=L.History(X),BIKE=Bike(),TREES=Trees(),scene=[SHAKE,Sky(),Mountains(),Ground(),TREES,BIKE,HISTORY];
-let SPEED=W/300,OFFSET=0,slope,deriv; {let freq=1/100,amp=40,tilt=.5; slope=x=>sin((x+OFFSET)*freq)*amp+(H*.7)+x*tilt,deriv=x=>amp*freq*cos((x+OFFSET)*freq)+tilt;}
-
-(init=()=>{let prev=0;OFFSET=0;scene.forEach(o=>o.reset?.());(loop=curr=>{let dt=min(.1,(curr-prev)/1000)||0;prev=curr;X.save();scene.forEach(o=>o.update(dt));X.restore();requestAnimationFrame(loop)})(0)})();
-
-function Bike(){let o={x:80,y:0,a:0},vy=0,st=1,angle=()=>atan2(deriv(o.x),1); onpointerdown=()=>st==1&&(st=2,vy=-450,o.a-=PI/8);onpointerup=()=>st==2&&(st=3);
-return {o,get j(){return st!=1},reset:()=>(st=1,vy=0),update(dt){let gy=slope(o.x)-20,d=o.a-angle();
-  st==1?(o.y=gy,o.a=angle()):(vy+=600*dt,o.y+=vy*dt,st==2&&(o.a-=5*dt),o.y>=gy&&(abs(atan2(sin(d),cos(d)))>=PI/4&&(HISTORY.add(-1),SHAKE.set()),st=1,vy=0,o.y=gy));
-  X.save();X.translate(o.x,o.y);X.rotate(o.a);X.scale(-1,1);X.font="40px serif";X.textAlign="center";X.textBaseline="middle";X.fillText("🚴",0,0);X.restore()
-}}}
-
-function Trees(){let A=[];
-return {reset:()=>A=Array.from({length:3},(_,i)=>({x:W+i*(W/2),u:0})),update(dt){X.save();X.font="40px serif";X.textAlign="center";X.textBaseline="bottom";
-  A.forEach(t=>{t.x-=SPEED*100*dt;t.x<-40&&(t.x=W+rnd()*200,t.u=0);X.fillText("🌲",t.x,slope(t.x));!t.u&&abs(t.x-BIKE.o.x)<30&&(t.u=1,BIKE.j?HISTORY.add(1):(HISTORY.add(-1),SHAKE.set()))});X.restore()
-}}}
-
-function Mountains(){let w=W*.8,m=L.shape2([[0,0,1,-2,2,-1,3,-4,4,-2,5,-3,6,-1,8,-7,10,0,0,0,0,W,10,W,10,0]]),ms=Array.from({length:ceil(W/w)+1},(_,i)=>({x:i*w}));
-return {update(dt){X.fillStyle="white";ms.forEach(p=>{p.x-=SPEED*20*dt;p.x<-w&&(p.x+=w*ms.length);X.save(); X.translate(p.x, H*.7); X.scale(w/10,w/10); X.fill(m); X.restore();})
-}}}
-
-
-function Ground(){return{update(dt){OFFSET+=SPEED*100*dt;X.fillStyle="tan";X.beginPath();X.moveTo(0,H);for(let x=0;x<=W;x+=10)X.lineTo(x,slope(x));X.lineTo(W,H);X.fill()}}}
-function Sky(){return{update:()=>(X.fillStyle="skyblue",X.fillRect(-W,-H,W*3,H*3))}}
-
-}
-
-
-
-
-
-
-
-
-
-function defense(){
-let {random:rnd,sin,cos,atan2,min,max,PI,hypot,floor}=Math,L=Library(),{X,W,H}=L;
-let SHAKE=L.Shake(X),HISTORY=L.History(X),SND=L.Sound(),PARTICLES=L.Particles(X),SPACE=Space(),EARTH=Earth(),scene=[SHAKE,Ground(),SPACE,EARTH,PARTICLES,HISTORY];
-
-(init=()=>{let prev=0,dt;scene.forEach(o=>o.reset?.());(loop=curr=>{if(EARTH.hp<0)return init();
-  dt=min(.1,(curr-prev)/1000)||0;prev=curr; X.fillStyle="black";X.fillRect(0,0,W,H);X.save();scene.forEach(o=>o.update(dt));X.restore(); requestAnimationFrame(loop)
-})(0)})();
-
-function Earth(){
-let B=[],hp=10;addEventListener("click",({clientX:x,clientY:y})=>{hp>0&&(B.push({x:W/2,y:H-40,tx:x,ty:y,a:atan2(y-(H-40),x-W/2)}),SND.rocket())});
-return {B,get hp(){return hp},damage:()=>(hp--,SHAKE.set()),reset:()=>hp=10,update(dt){
-  X.fillStyle="lime";B.forEach((b,i)=>{ b.x+=cos(b.a)*700*dt;b.y+=sin(b.a)*700*dt; X.fillRect(b.x-2,b.y-2,4,4); if(hypot(b.x-b.tx,b.y-b.ty)<15){SPACE.hit(b.x,b.y);B.splice(i,1)} })
-}}}
-
-function Space(){
-let R=[],level=L.Difficulty({start:0.8,end:15,at:250,be:3}),spawn=(s=2)=>({x:rnd()*W,y:-20,s,a:rnd()*.4-.2,c:`hsl(${rnd()*360},70%,50%)`,r:15+rnd()*10,ir:7+rnd()*5,rot:0});
-return {hit(x,y){for(let i=R.length-1;i>=0;i--){let r=R[i];if(hypot(x-r.x,y-r.y)<45){SND.explosion();PARTICLES.add(r.x,r.y);HISTORY.add(1);R.splice(i,1)}}},reset:()=>R=[],update(dt){
-  (rnd()<.02*level(HISTORY.score))&&R.push(spawn(1+level(HISTORY.score)/5));
-  R.forEach((r,i)=>{
-    r.y+=r.s*70*dt;r.x+=sin(r.a)*r.s*30*dt;r.rot+=r.s*dt;
-    X.save();X.translate(r.x,r.y);X.rotate(r.rot);X.strokeStyle=r.c;X.lineWidth=2;asteroid(0,0,r.r,r.ir);X.stroke();X.restore();
-    if(r.y>H-40){EARTH.damage();PARTICLES.add(r.x,r.y);R.splice(i,1)}
-  })
-}}}
-
-function Ground(){return {update:()=>(X.fillStyle=`hsl(${EARTH.hp*12},70%,40%)`,X.fillRect(0,H-40,W,40))}}
-function asteroid(x,y,r1,r2,p=5){let a=PI/p;X.beginPath();X.moveTo(x,y-r1);for(let i=1;i<p*2;i++){let r=i%2?r2:r1;X.lineTo(x+cos(i*a-PI/2)*r,y+sin(i*a-PI/2)*r)}X.closePath()}
-
-}
-
-
-
-
-
-
-
-
-
-
-function Library(){
-function element(tag){return document.body.appendChild(document.createElement(tag));}
-let {random:rnd,sin,cos}=Math;
-oncontextmenu=_=>false;
-element("style").textContent="*{margin:0;padding:0;}canvas{touch-action:none;display:block}";
-let X=element("canvas").getContext("2d",{alpha:false});
-let W=innerWidth,H=innerHeight;
-{let c=X.canvas,s=c.style,d=devicePixelRatio;c.width=W*d;c.height=H*d;s.width=W+"px";s.height=H+"px";X.setTransform(d,0,0,d,0,0);}
-function scroll(A,dt,spawn){for(let o of A)o.y+=H/3*dt,o.y>H&&spawn?.(o)}
-function shape(a){let p=new Path2D();for(let m of [1,-1]){p.moveTo(m*a[0][0],a[0][1]);for(let i=1;i<a.length;i++)p.bezierCurveTo(m*a[i][0],a[i][1],m*a[i][2],a[i][3],m*a[i][4],a[i][5]);}return p;}
-function shape2(a,s=1){return a.reduce((p,i)=>(i.length&&(p.moveTo(s*i[0],s*i[1]),i.slice(2).forEach((x,j)=>j%2||p.lineTo(s*x,s*i[j+3]))),p),new Path2D)}
-function History(X){let A=[];return{get score(){return A[0]},add:v=>A[0]+=v,reset(){A.unshift(0)},update(){X.fillStyle="white";X.font="10px monospace";["Score",...A].forEach((v,i)=>X.fillText(v,20,i*12+60))}}}
-function Difficulty(p){let start=p.start,end=p.end,at=p.at,be=p.be;return function(x){return end-(end-start)*((end-be)/(end-start))**(x/at);}}
-function Shake(X){let s=0;return{set:()=>s=40,update:(dt)=>s&&(s=.02**dt*s|0,X.translate((rnd()-.5)*s,(rnd()-.5)*s))}}
-function Sound(){let b=new AudioContext(); [.2,1].forEach((v,i)=>(b[i+1]=b.createBuffer(1,b.sampleRate*v,b.sampleRate)).getChannelData(0).forEach((_,i,a)=>a[i]=rnd()*2-1))
-return {
-  rocket:()=>{let s=b.createBufferSource();s.buffer=b[1];s.connect(b.destination);s.start()},
-  explosion:()=>{let s=b.createBufferSource(),g=b.createGain(),f=b.createBiquadFilter();s.buffer=b[2];g.gain.value=8;f.type="lowpass";f.frequency.value=300;g.gain.linearRampToValueAtTime(0,b.currentTime+1);s.connect(f).connect(g).connect(b.destination);s.start()}
-}}
-function Particles(X){let A=[];
-return {add(x,y){for(let i=60;i--;){let a=rnd()*7,s=rnd()*4+1;A.push({x,y,v:cos(a)*s,w:sin(a)*s,l:1})}}, update(dt){
-  A=A.filter(p=>(p.l-=.8*dt)>0); A.forEach(p=>{p.x+=p.v;p.y+=p.w+=.1;X.fillStyle=`hsla(${p.l*60},100%,50%,${p.l})`;X.beginPath();X.arc(p.x,p.y,2,0,7);X.fill()})
-}}}
-return {X,W,H,scroll,shape,shape2,History,Difficulty,Shake,Sound,Particles}
-}
-
-
-
-
-
-
-
-
-
-
-}
+function GAMEPROGRAMS(){return "\n\n\n\n\n\n\n\n\nfunction bike(){\nlet {random:rnd,sin,cos,atan2,min,PI,abs,ceil}=Math,L=Library(),{X,W,H}=L;\nlet SHAKE=L.Shake(X),HISTORY=L.History(X),BIKE=Bike(),TREES=Trees(),scene=[SHAKE,Sky(),Mountains(),Ground(),TREES,BIKE,HISTORY];\nlet SPEED=W/300,OFFSET=0,slope,deriv; {let freq=1/100,amp=40,tilt=.5; slope=x=>sin((x+OFFSET)*freq)*amp+(H*.7)+x*tilt,deriv=x=>amp*freq*cos((x+OFFSET)*freq)+tilt;}\n\n(init=()=>{let prev=0;OFFSET=0;scene.forEach(o=>o.reset?.());(loop=curr=>{let dt=min(.1,(curr-prev)/1000)||0;prev=curr;X.save();scene.forEach(o=>o.update(dt));X.restore();requestAnimationFrame(loop)})(0)})();\n\nfunction Bike(){let o={x:80,y:0,a:0},vy=0,st=1,angle=()=>atan2(deriv(o.x),1); onpointerdown=()=>st==1&&(st=2,vy=-450,o.a-=PI/8);onpointerup=()=>st==2&&(st=3);\nreturn {o,get j(){return st!=1},reset:()=>(st=1,vy=0),update(dt){let gy=slope(o.x)-20,d=o.a-angle();\n  st==1?(o.y=gy,o.a=angle()):(vy+=600*dt,o.y+=vy*dt,st==2&&(o.a-=5*dt),o.y>=gy&&(abs(atan2(sin(d),cos(d)))>=PI/4&&(HISTORY.add(-1),SHAKE.set()),st=1,vy=0,o.y=gy));\n  X.save();X.translate(o.x,o.y);X.rotate(o.a);X.scale(-1,1);X.font=\"40px serif\";X.textAlign=\"center\";X.textBaseline=\"middle\";X.fillText(\"🚴\",0,0);X.restore()\n}}}\n\nfunction Trees(){let A=[];\nreturn {reset:()=>A=Array.from({length:3},(_,i)=>({x:W+i*(W/2),u:0})),update(dt){X.save();X.font=\"40px serif\";X.textAlign=\"center\";X.textBaseline=\"bottom\";\n  A.forEach(t=>{t.x-=SPEED*100*dt;t.x<-40&&(t.x=W+rnd()*200,t.u=0);X.fillText(\"🌲\",t.x,slope(t.x));!t.u&&abs(t.x-BIKE.o.x)<30&&(t.u=1,BIKE.j?HISTORY.add(1):(HISTORY.add(-1),SHAKE.set()))});X.restore()\n}}}\n\nfunction Mountains(){let w=W*.8,m=L.shape2([[0,0,1,-2,2,-1,3,-4,4,-2,5,-3,6,-1,8,-7,10,0,0,0,0,W,10,W,10,0]]),ms=Array.from({length:ceil(W/w)+1},(_,i)=>({x:i*w}));\nreturn {update(dt){X.fillStyle=\"white\";ms.forEach(p=>{p.x-=SPEED*20*dt;p.x<-w&&(p.x+=w*ms.length);X.save(); X.translate(p.x, H*.7); X.scale(w/10,w/10); X.fill(m); X.restore();})\n}}}\n\n\nfunction Ground(){return{update(dt){OFFSET+=SPEED*100*dt;X.fillStyle=\"tan\";X.beginPath();X.moveTo(0,H);for(let x=0;x<=W;x+=10)X.lineTo(x,slope(x));X.lineTo(W,H);X.fill()}}}\nfunction Sky(){return{update:()=>(X.fillStyle=\"skyblue\",X.fillRect(-W,-H,W*3,H*3))}}\n\n}\n\n\n\n\n\n\n\n\n\nfunction defense(){\nlet {random:rnd,sin,cos,atan2,min,PI,hypot}=Math,L=Library(),{X,W,H}=L;\nlet SHAKE=L.Shake(X),HISTORY=L.History(X),SND=L.Sound(),PARTICLES=L.Particles(X),SPACE=Space(),EARTH=Earth(),scene=[SHAKE,Ground(),SPACE,EARTH,PARTICLES,HISTORY];\n\n(init=()=>{let prev=0,dt;scene.forEach(o=>o.reset?.());(loop=curr=>{if(EARTH.hp<0)return init();\n  dt=min(.1,(curr-prev)/1000)||0;prev=curr; X.fillStyle=\"black\";X.fillRect(0,0,W,H);X.save();scene.forEach(o=>o.update(dt));X.restore(); requestAnimationFrame(loop)\n})(0)})();\n\nfunction Earth(){\nlet B=[],hp=10;addEventListener(\"click\",({clientX:x,clientY:y})=>{hp>0&&(B.push({x:W/2,y:H-40,tx:x,ty:y,a:atan2(y-(H-40),x-W/2)}),SND.rocket())});\nreturn {B,get hp(){return hp},damage:()=>(hp--,SHAKE.set()),reset:()=>hp=10,update(dt){\n  X.fillStyle=\"lime\";B.forEach((b,i)=>{ b.x+=cos(b.a)*700*dt;b.y+=sin(b.a)*700*dt; X.fillRect(b.x-2,b.y-2,4,4); if(hypot(b.x-b.tx,b.y-b.ty)<15){SPACE.hit(b.x,b.y);B.splice(i,1)} })\n}}}\n\nfunction Space(){\nlet R=[],level=L.Difficulty({start:0.8,end:15,at:250,be:3}),spawn=(s=2)=>({x:rnd()*W,y:-20,s,a:rnd()*.4-.2,c:`hsl(${rnd()*360},70%,50%)`,r:15+rnd()*10,ir:7+rnd()*5,rot:0});\nreturn {hit(x,y){for(let i=R.length-1;i>=0;i--){let r=R[i];if(hypot(x-r.x,y-r.y)<45){SND.explosion();PARTICLES.add(r.x,r.y);HISTORY.add(1);R.splice(i,1)}}},reset:()=>R=[],update(dt){\n  (rnd()<.02*level(HISTORY.score))&&R.push(spawn(1+level(HISTORY.score)/5));\n  R.forEach((r,i)=>{\n    r.y+=r.s*70*dt;r.x+=sin(r.a)*r.s*30*dt;r.rot+=r.s*dt;\n    X.save();X.translate(r.x,r.y);X.rotate(r.rot);X.strokeStyle=r.c;X.lineWidth=2;asteroid(0,0,r.r,r.ir);X.stroke();X.restore();\n    if(r.y>H-40){EARTH.damage();PARTICLES.add(r.x,r.y);R.splice(i,1)}\n  })\n}}}\n\nfunction Ground(){return {update:()=>(X.fillStyle=`hsl(${EARTH.hp*12},70%,40%)`,X.fillRect(0,H-40,W,40))}}\nfunction asteroid(x,y,r1,r2,p=5){let a=PI/p;X.beginPath();X.moveTo(x,y-r1);for(let i=1;i<p*2;i++){let r=i%2?r2:r1;X.lineTo(x+cos(i*a-PI/2)*r,y+sin(i*a-PI/2)*r)}X.closePath()}\n\n}\n\n\n\n\n\n\n\n\n\n\nfunction Library(){\nfunction element(tag){return document.body.appendChild(document.createElement(tag));}\nlet {random:rnd,sin,cos}=Math;\noncontextmenu=_=>false;\nelement(\"style\").textContent=\"*{margin:0;padding:0;}canvas{touch-action:none;display:block}\";\nlet X=element(\"canvas\").getContext(\"2d\",{alpha:false});\nlet W=innerWidth,H=innerHeight;\n{let c=X.canvas,s=c.style,d=devicePixelRatio;c.width=W*d;c.height=H*d;s.width=W+\"px\";s.height=H+\"px\";X.setTransform(d,0,0,d,0,0);}\nfunction scroll(A,dt,spawn){for(let o of A)o.y+=H/3*dt,o.y>H&&spawn?.(o)}\nfunction shape(a){let p=new Path2D();for(let m of [1,-1]){p.moveTo(m*a[0][0],a[0][1]);for(let i=1;i<a.length;i++)p.bezierCurveTo(m*a[i][0],a[i][1],m*a[i][2],a[i][3],m*a[i][4],a[i][5]);}return p;}\nfunction shape2(a,s=1){return a.reduce((p,i)=>(i.length&&(p.moveTo(s*i[0],s*i[1]),i.slice(2).forEach((x,j)=>j%2||p.lineTo(s*x,s*i[j+3]))),p),new Path2D)}\nfunction History(X){let A=[];return{get score(){return A[0]},add:v=>A[0]+=v,reset(){A.unshift(0)},update(){X.fillStyle=\"white\";X.font=\"10px monospace\";[\"Score\",...A].forEach((v,i)=>X.fillText(v,20,i*12+60))}}}\nfunction Difficulty(p){let start=p.start,end=p.end,at=p.at,be=p.be;return function(x){return end-(end-start)*((end-be)/(end-start))**(x/at);}}\nfunction Shake(X){let s=0;return{set:()=>s=40,update:(dt)=>s&&(s=.02**dt*s|0,X.translate((rnd()-.5)*s,(rnd()-.5)*s))}}\nfunction Sound(){let b=new AudioContext(); [.2,1].forEach((v,i)=>(b[i+1]=b.createBuffer(1,b.sampleRate*v,b.sampleRate)).getChannelData(0).forEach((_,i,a)=>a[i]=rnd()*2-1))\nreturn {\n  rocket:()=>{let s=b.createBufferSource();s.buffer=b[1];s.connect(b.destination);s.start()},\n  explosion:()=>{let s=b.createBufferSource(),g=b.createGain(),f=b.createBiquadFilter();s.buffer=b[2];g.gain.value=8;f.type=\"lowpass\";f.frequency.value=300;g.gain.linearRampToValueAtTime(0,b.currentTime+1);s.connect(f).connect(g).connect(b.destination);s.start()}\n}}\nfunction Particles(X){let A=[];\nreturn {add(x,y){for(let i=60;i--;){let a=rnd()*7,s=rnd()*4+1;A.push({x,y,v:cos(a)*s,w:sin(a)*s,l:1})}}, update(dt){\n  A=A.filter(p=>(p.l-=.8*dt)>0); A.forEach(p=>{p.x+=p.v;p.y+=p.w+=.1;X.fillStyle=`hsla(${p.l*60},100%,50%,${p.l})`;X.beginPath();X.arc(p.x,p.y,2,0,7);X.fill()})\n}}}\nreturn {X,W,H,scroll,shape,shape2,History,Difficulty,Shake,Sound,Particles}\n}\n\n\n\n\n\n\n\n\n\n\n"}
 
 }</script>
