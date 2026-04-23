@@ -121,8 +121,8 @@ let w,cache={},m=/[a-z]+\b|[(){}[\]]|</g;
 pretty=function(s){
   if(T.H!==""){
     s=s.replace(/</g,'');w=escapetext(T.H);if(w=="<")w=''; if(document.activeElement.id=="find")w="\\b"+w;else if(/\w/.test(w))w="\\b"+w+"\\b";
-    s=s.replace(RegExp(`(${w})`,'gi'),`<span style=color:red;background:pink;>$1</span>`);
-    return s.replace(/[a-z]+\b|[(){}[\]]|/gi,x=>{if(x=='')return "&lt;";return cache[x]||x;});
+    s=s.replace(RegExp(`(${w})`,'g'),`<span style=color:red;background:pink;>$1</span>`);
+    return s.replace(/[a-z]+\b|[(){}[\]]|/g,x=>{if(x=='')return "&lt;";return cache[x]||x;});
   }
   return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x));
 }
