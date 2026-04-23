@@ -25,7 +25,7 @@ After you start the editor, click the run icon to play a game (it will run which
 onerror=(m,_,l,c)=>{let f=document.querySelector("iframe"),v=view("Error"),s=`${m}\nline: ${l}\ncol: ${c}`;f&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus());v.textContent=s};
 if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){alert(tested)}
 
-theme(); pretty(); rename(); view(); restore(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys(); theme();
+theme(); pretty(); rename(); view(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys(); theme();
 
 element("style").textContent=` *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}`;
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
@@ -92,13 +92,13 @@ if(w.test(v)){if(T.S==i) while(--i>=0 && w.test(s[i]));T.S=i+1, i=T.E;while(++i<
 }
 
 function restore(){
-let m=101,a=[striplinesfirstlast(gameprograms)],c=0;
+let h=[],i=-1;
 restore=d=>{
-  if(d==0)a.splice(0,Infinity,T.V);
-  else if(d==null){a.length==m?(a.splice(0,2),c--):c++;a.splice(c,Infinity,c%2?T.S:T.V);
-  }else{if((d<0&&c>0)||(d>0&&c<a.length-1)){T.V=a[c+=d*2];T.S=T.E=a[c-d];}
-  }
-}} function undo(){restore(-1)} function redo(){restore(1)}
+  let s={v:T.V,s:T.S,e:T.E};
+  if(d==null){ if(h[i]?.v==s.v)return; h.splice(++i,Infinity,s); if(h.length>50)h.shift(),i--;
+  }else{ i=Math.max(0,Math.min(h.length-1,i+d)); let state=h[i]; if(state)T.V=state.v,T.S=T.E=state.s; }
+}; restore();
+} function undo() { restore(-1); } function redo() { restore(1); }
 
 function rename(){
 let con=element("div"),f=element("input",con),fb=element("button",con),r=element("input",con),rb=element("button",con);
