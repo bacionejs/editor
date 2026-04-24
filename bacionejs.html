@@ -24,6 +24,7 @@ function zoom(){let {fontsizesmall:s, fontsizebig:b}=theme;T.style.fontSize=PRET
 function save(){ let u=URL,a=element("a"),h=a.href=u.createObjectURL(new File([filecontent()],"")); a.download=timestamp()+"bacionejs.html",a.click(),u.revokeObjectURL(h),a.remove(); }
 function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
 function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;return{start,end,word:s.slice(start,end)};}
+function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);T.focus();}
 function paste(){T.I(T.P);}
 
 function view(){let a=[];view=function(f){let e=a[f];
@@ -51,13 +52,6 @@ let res=[...s.slice(f).replace(/"[^"]*"|\/\/.*$/gm,"").matchAll("\\b"+w+"\\w*")]
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
 if(d==null){if(h[i]?.v==s.v)return;h.splice(++i,Infinity,s);if(h.length>50)h.shift(),i--;}else{i=Math.max(0,Math.min(h.length-1,i+d));let S=h[i];if(S)T.V=S.v,T.S=T.E=S.s;}
 };restore();}function undo(){restore(-1);}function redo(){restore(1);}
-
-function replace() {
-let g = currentgame(); if (!g || !T.P || !T.R) return;
-let s = g.body.split(T.P).join(T.R);
-T.V = T.V.slice(0, g.ftop) + s + T.V.slice(g.fend);
-T.focus();
-}
 
 function copy(){
 let s=T.V, i=T.E, v=s[i], w=/\w/;T.R="";
