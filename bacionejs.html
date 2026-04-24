@@ -25,6 +25,7 @@ function save(){ let u=URL,a=element("a"),h=a.href=u.createObjectURL(new File([f
 function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
 function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;return{start,end,word:s.slice(start,end)};}
 function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);T.focus();}
+function find(){let{V:s,S:a,E:e}=T,w=a-e?s.slice(a,e):(r=word(s,a)).word?(T.S=r.start,T.E=r.end,0):0;if(w){let n=s.indexOf(w,e);~n||(n=s.indexOf(w,0));~n&&(T.S=n,T.E=n+w.length)}}
 function paste(){T.I(T.P);}
 
 function view(){let a=[];view=function(f){let e=a[f];
@@ -61,12 +62,6 @@ if(w.test(v)){let r = word(s, i); T.S = r.start; T.E = r.end;
 } else if(block(v)) {let b=block(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1;
 } else {T.E++;} 
 T.P=s.slice(T.S,T.E);
-}
-
-function find(){
-let s=T.V,w,r,n;
-if(T.S!==T.E){ w=s.slice(T.S,T.E); }else{ r=word(s,T.S); if(!r.word)return; T.S=r.start;T.E=r.end; return; }
-n=s.indexOf(w,T.E); if(n===-1)n=s.indexOf(w,0); if(n!==-1){ T.S=n; T.E=n+w.length; }
 }
 
 function createtextarea(){
