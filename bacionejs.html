@@ -1,38 +1,18 @@
 <meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'>
 <script>onload=()=>{ide();function ide(){
-document.title="BacioneJS";
-let tested="Only works on modern android chromium-based browsers";
-let about=`
-<b>Bacione Javascript Editor \uD83D\uDC8B</b>
-Integrated Development Environment
-
-<b>Purpose</b> Programming small javascript games on a phone offline
-<b>Mission</b> Create the most thumb-friendly IDE in its class
-<b>Goal</b>    Give people a taste of programming with what they have
-<b>Tested</b>  ${tested}
-<b>Github</b>  github.com/bacionejs/editor
-<b>License</b> GPL
-
-<b>Installation</b>
-<ol style=margin-left:30>
-<li>Download <a href=https://github.com/bacionejs/editor>bacionejs.html</a> to your android phone/tablet
-<li>Open your file manager and click bacionejs.html to launch in chrome
-</ol>
-<b>Includes several games</b>
-After you start the editor, click the run icon to play a game (it will run whichever game contains the cursor)
-`;
+document.title="\uD83D\uDC8B BacioneJS";
+let about=`.Bacione Javascript Editor \uD83D\uDC8B.Integrated Development Environment.Github.bacionejs/editor, GPL license.`;
 
 onerror=(m,_,l,c)=>{let f=document.querySelector("iframe"),v=view("Error"),s=`${m}\nline: ${l}\ncol: ${c}`;f&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus());v.textContent=s};
-if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){alert(tested)}
+if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){alert("Only works on modern android chromium-based browsers")}
 
 theme(); pretty(); view(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
 if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
 function init(s){T.V=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 
 element("style").textContent=` *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;   border:none;outline:none;line-height:1.2}`;
-function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
-function escapetext(text){return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');}
 function element(tag,p=document.body,c="",v=""){let e=p.appendChild(document.createElement(tag));if(c)e.className=c;if(v)e.textContent=v;return e;}
+function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
 function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
 function capslock(){KEYS.forEach(k => k.f || (k.e.textContent = k.d[k.d.indexOf(k.e.textContent) ^ 1]));}
 function enter(){T.S!=T.E?T.S=T.E:T.I("\n"+T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S).match(/^\s*/))}
@@ -85,7 +65,8 @@ if(w.test(v)){let r = word(s, i); T.S = r.start; T.E = r.end;
 } else if(v==" ") {while(s[++i]==" ");T.E=i;
 } else if(v=="\n") {(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);
 } else if(block(v)) {let b=block(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1;
-} else T.E++;T.P=s.slice(T.S,T.E);
+} else {T.E++;} 
+T.P=s.slice(T.S,T.E);
 }
 
 function find(){
@@ -159,10 +140,10 @@ function loadicons(){
 }}
 
 function help(){
-let e=view("Help"); if(e.exists)return; let con=element("div",e); con.innerHTML=`<p>${about}</p><br><b>Buttons</b><br><br>`;
-KEYS.filter(k=>k.f).forEach(k=>{ let s = k.e.querySelector("svg").cloneNode(true); s.style.width = 10; s.querySelector("path").style.stroke = "black"; con.innerHTML+=s.outerHTML+" "+k.name+"<br><br>" });
-con.innerHTML+=`.Run.Runs the game which contains the cursor.Also stops the game.Save.Saves to a timestamped file.The file contains your games AND the Editor.Zoom.Toggles font size.Misc.Color-Picker and Icon-Picker put your selection in Paste.Help.Help is this screen.Paste.Pastes the content of the Paste buffer.Copy.Begins or extends the selection of text and puts it in the Paste buffer.In other words, Copy is selection with the side affect of setting the Paste buffer.To exit this mode, press enter.Selection looks at the character to the right and then selects, newline: line, word: whole word, spaces: right, blank line: next blank line, blocks: (){}[]"".Cut.There is no Cut button.Cut is a two step process: 1: Click the Copy button to perform text selection, which sets the Paste buffer, 2: Click the Backspace button, which deletes the text selection.Find.Find word under cursor.Replace.To replace a word, click Copy and start typing and then swipeup on Paste to replace all.Close.To close or toggle something, click or swipe it again.Backspace.Deletes character or selection.Enter.Inserts a new line or cancels selection.Retains prior indentation.Arrows.Moves cursor or extends selection.Characters.Inserts a character or replaces selection.Capslock.Reveals shift characters.Undo.Restore up to 50 changes.Comment.Toggles comments for the current line.Also puts the line in Paste.Complete.Completes a word.Longpress.Repeats key.Errors.Runtime errors display an error message and automatically jumps to the error in code.Swipeup.The following actions are taken if you swipeup on a button, Paste: replace all, Zoom: toggles fullscreen, Misc: toggles themes, Alphanumeric: inserts shift characters.
+let e=view("Help"); if(e.exists)return; let con=element("div",e);
+con.innerHTML+=`${about}.Run.Runs the game which contains the cursor.Also stops the game.Save.Saves to a timestamped file.The file contains your games AND the Editor.Zoom.Toggles font size.Misc.Color-Picker and Icon-Picker put your selection in Paste.Help.Help is this screen.Paste.Pastes the content of the Paste buffer.Copy.Begins or extends the selection of text and puts it in the Paste buffer.In other words, Copy is selection with the side affect of setting the Paste buffer.To exit this mode, press enter.Selection looks at the character to the right and then selects, newline: line, word: whole word, spaces: right, blank line: next blank line, blocks: (){}[]"".Cut.There is no Cut button.Cut is a two step process: 1: Click the Copy button to perform text selection, which sets the Paste buffer, 2: Click the Backspace button, which deletes the text selection.Find.Find word under cursor.Replace.To replace a word, click Copy and start typing and then swipeup on Paste to replace all.Close.To close or toggle something, click or swipe it again.Backspace.Deletes character or selection.Enter.Inserts a new line or cancels selection.Retains prior indentation.Arrows.Moves cursor or extends selection.Characters.Inserts a character or replaces selection.Capslock.Reveals shift characters.Undo.Restore up to 50 changes.Comment.Toggles comments for the current line.Also puts the line in Paste.Complete.Completes a word.Longpress.Repeats key.Errors.Runtime errors display an error message and automatically jumps to the error in code.Swipeup.The following actions are taken if you swipeup on a button, Paste: replace all, Zoom: toggles fullscreen, Misc: toggles themes, Alphanumeric: inserts shift characters.
 `.split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("")
+KEYS.filter(k=>k.f).forEach(k=>{ let s = k.e.querySelector("svg").cloneNode(true); s.style.width = 10; s.querySelector("path").style.stroke = "black"; con.innerHTML+=s.outerHTML+" "+k.name+"<br><br>" });
 }
 
 function createkeys(){
