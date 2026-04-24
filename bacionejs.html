@@ -29,9 +29,8 @@ theme(); pretty(); view(); let T=createtextarea(),PRETTY=createpretty(),KEYS=cre
 if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
 function init(s){T.V=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 
-element("style").textContent=` *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;}`;
+element("style").textContent=` *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;   border:none;outline:none;line-height:1.2}`;
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
-function striplinesfirstlast(s){return s.toString().replace(/^.*|.*$/g,"");}
 function escapetext(text){return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');}
 function element(tag,p=document.body,c="",v=""){let e=p.appendChild(document.createElement(tag));if(c)e.className=c;if(v)e.textContent=v;return e;}
 function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
@@ -40,10 +39,11 @@ function enter(){T.S!=T.E?T.S=T.E:T.I("\n"+T.V.slice(T.V.lastIndexOf("\n",T.S-1)
 function backspace(){let S=T.S,E=T.E;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(T.V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1;}
 function block(a,i,s){let p={ "(": ")", "{": "}", "[": "]", '"': '"' };if(i==undefined)return a in p;let b=p[a],c=1;while(c>0&&++i<s.length)c+=s[i]==a?1:s[i]==b?-1:0;return i;}
 function currentgame(){let s=T.V,c=T.S,m,r=/\b(\w+)\s*\(.*?\)\s*\{/g;for(;m=r.exec(s);){let i=m.index,b=i+m[0].length,e=block("{",b,s);if(i>c)break;if(c<=e)return{name:m[1],ftop:b,fend:e,body:s.slice(b,e)}}}
-function left(){arrow(-1)}function right(){arrow(1)} function arrow(d){let i=T.E+d,s=T.V;if(i>=0&&i<=s.length){if(T.S==T.E)T.S=T.E=i;else T.P=s.slice(T.S,T.E=i)}}
+function arrow(d){let i=T.E+d,s=T.V;if(i>=0&&i<=s.length){if(T.S==T.E)T.S=T.E=i;else T.P=s.slice(T.S,T.E=i)}}function left(){arrow(-1)}function right(){arrow(1)} 
 function zoom(){let {fontsizesmall:s, fontsizebig:b}=theme;T.style.fontSize=PRETTY.style.fontSize=(parseInt(T.style.fontSize)==s?b:s)+"px";setTimeout(()=>T.blur(T.focus()),200);}
 function save(){ let u=URL,a=element("a"),h=a.href=u.createObjectURL(new File([filecontent()],"")); a.download=timestamp()+"bacionejs.html",a.click(),u.revokeObjectURL(h),a.remove(); }
 function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
+function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;return{start,end,word:s.slice(start,end)};}
 function paste(){T.I(T.P);}
 
 function view(){let a=[];view=function(f){let e=a[f];
@@ -54,7 +54,7 @@ return e;
 
 function run(){
 let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus(); if(!g?.name||g.name=="Library")return;
-f=element("iframe"); f.style.cssText="width:100vw;height:100vw;position:fixed;z-index:9";f.contentWindow.eval(T.V+g.name+"()"); T.blur();
+f=element("iframe"); f.style.cssText="width:100vw;height:100vw;position:fixed;z-index:9";  f.setAttribute("scrolling", "no"); f.contentWindow.eval(T.V+g.name+"()"); T.blur();
 }
 
 function filecontent(){
@@ -72,21 +72,26 @@ function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
 if(d==null){if(h[i]?.v==s.v)return;h.splice(++i,Infinity,s);if(h.length>50)h.shift(),i--;}else{i=Math.max(0,Math.min(h.length-1,i+d));let S=h[i];if(S)T.V=S.v,T.S=T.E=S.s;}
 };restore();}function undo(){restore(-1);}function redo(){restore(1);}
 
+function replace() {
+let g = currentgame(); if (!g || !T.P || !T.R) return;
+let s = g.body.split(T.P).join(T.R);
+T.V = T.V.slice(0, g.ftop) + s + T.V.slice(g.fend);
+T.focus();
+}
+
 function copy(){
-T.R="";
-let s=T.V, i=T.E, v=s[i], w=/\w/;
-if(w.test(v)){if(T.S==i) while(--i>=0 && w.test(s[i]));T.S=i+1, i=T.E;while(++i<s.length && w.test(s[i]));T.E=i;
+let s=T.V, i=T.E, v=s[i], w=/\w/;T.R="";
+if(w.test(v)){let r = word(s, i); T.S = r.start; T.E = r.end;
 } else if(v==" ") {while(s[++i]==" ");T.E=i;
 } else if(v=="\n") {(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);
 } else if(block(v)) {let b=block(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1;
 } else T.E++;T.P=s.slice(T.S,T.E);
 }
 
-function replace() {
-let g = currentgame(); if (!g || !T.P || !T.R) return;
-let s = g.body.split(T.P).join(T.R);
-T.V = T.V.slice(0, g.ftop) + s + T.V.slice(g.fend);
-T.focus();
+function find(){
+let s=T.V,w,r,n;
+if(T.S!==T.E){ w=s.slice(T.S,T.E); }else{ r=word(s,T.S); if(!r.word)return; T.S=r.start;T.E=r.end; return; }
+n=s.indexOf(w,T.E); if(n===-1)n=s.indexOf(w,0); if(n!==-1){ T.S=n; T.E=n+w.length; }
 }
 
 function createtextarea(){
@@ -99,13 +104,13 @@ Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.sel
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
 T.I=function(t,s=T.S,e=T.E){restore();T.R+=t;this.setRangeText(t,s,e,"end");restore();syncpretty();}
 T.R="";T.P="";T.inputMode="none";T.spellcheck=false;
-{let s=T.style;s.height="100%";s.width="100%";s.padding=`10ch 2ch 100vh 2ch`;s.position="fixed";s.touchAction="pan-x pan-y";s.overflow="auto";s.whiteSpace="nowrap";s.zIndex=2;s.backgroundColor="transparent";s.color="transparent";}
+T.style.cssText=`width:100%;height:100%;padding:10ch 2ch 100vh 2ch;position:fixed;touch-action:pan-x pan-y;overflow:auto;white-space:nowrap;z-index:2;background:transparent;color:transparent;`;
 return T;
 }
 
 function createpretty(){
-let e=element("div");e.className="unhide";
-{let s=e.style;s.pointerEvents="none"; s.height="100%";s.width="100%";s.padding=`10ch 2ch 100vh 2ch`;s.position="fixed";s.touchAction="pan-x pan-y";s.overflow="auto";s.whiteSpace="pre";s.wordWrap="break-word";s.zIndex=1;}
+let e = element("div", document.body, "unhide");
+e.style.cssText = `width:100%;height:100%;padding:10ch 2ch 100vh 2ch;position:fixed;touch-action:pan-x pan-y;overflow:auto;white-space:pre;word-wrap:break-word;z-index:1;pointer-events:none;`;
 return e;
 }
 
@@ -156,14 +161,15 @@ function loadicons(){
 function help(){
 let e=view("Help"); if(e.exists)return; let con=element("div",e); con.innerHTML=`<p>${about}</p><br><b>Buttons</b><br><br>`;
 KEYS.filter(k=>k.f).forEach(k=>{ let s = k.e.querySelector("svg").cloneNode(true); s.style.width = 10; s.querySelector("path").style.stroke = "black"; con.innerHTML+=s.outerHTML+" "+k.name+"<br><br>" });
-con.innerHTML+=`.Run.Runs the game which contains the cursor.Also stops the game.Save.Saves to a timestamped file.The file contains your games AND the Editor.Zoom.Toggles font size.Misc.Color-Picker and Icon-Picker put your selection in Paste.Help.Help is this screen.Paste.Pastes the content of the Paste buffer.Copy.Begins or extends the selection of text and puts it in the Paste buffer.In other words, Copy is selection with the side affect of setting the Paste buffer.To exit this mode, press enter.Selection looks at the character to the right and then selects, newline: line, word: whole word, spaces: right, blank line: next blank line, blocks: (){}[]"".Cut.There is no Cut button.Cut is a two step process: 1: Click the Copy button to perform text selection, which sets the Paste buffer, 2: Click the Backspace button, which deletes the text selection.Replace.To replace a word, click Copy and start typing and then swipeup on Paste to replace all.Close.To close or toggle something, click or swipe it again.Backspace.Deletes character or selection.Enter.Inserts a new line or cancels selection.Retains prior indentation.Arrows.Moves cursor or extends selection.Characters.Inserts a character or replaces selection.Capslock.Reveals shift characters.Undo.Restore up to 50 changes.Comment.Toggles comments for the current line.Also puts the line in Paste.Complete.Completes a word.Longpress.Repeats key.Errors.Runtime errors display an error message and automatically jumps to the error in code.Swipeup.The following actions are taken if you swipeup on a button, Paste: replace all, Zoom: toggles fullscreen, Misc: toggles themes, Alphanumeric: inserts shift characters.
+con.innerHTML+=`.Run.Runs the game which contains the cursor.Also stops the game.Save.Saves to a timestamped file.The file contains your games AND the Editor.Zoom.Toggles font size.Misc.Color-Picker and Icon-Picker put your selection in Paste.Help.Help is this screen.Paste.Pastes the content of the Paste buffer.Copy.Begins or extends the selection of text and puts it in the Paste buffer.In other words, Copy is selection with the side affect of setting the Paste buffer.To exit this mode, press enter.Selection looks at the character to the right and then selects, newline: line, word: whole word, spaces: right, blank line: next blank line, blocks: (){}[]"".Cut.There is no Cut button.Cut is a two step process: 1: Click the Copy button to perform text selection, which sets the Paste buffer, 2: Click the Backspace button, which deletes the text selection.Find.Find word under cursor.Replace.To replace a word, click Copy and start typing and then swipeup on Paste to replace all.Close.To close or toggle something, click or swipe it again.Backspace.Deletes character or selection.Enter.Inserts a new line or cancels selection.Retains prior indentation.Arrows.Moves cursor or extends selection.Characters.Inserts a character or replaces selection.Capslock.Reveals shift characters.Undo.Restore up to 50 changes.Comment.Toggles comments for the current line.Also puts the line in Paste.Complete.Completes a word.Longpress.Repeats key.Errors.Runtime errors display an error message and automatically jumps to the error in code.Swipeup.The following actions are taken if you swipeup on a button, Paste: replace all, Zoom: toggles fullscreen, Misc: toggles themes, Alphanumeric: inserts shift characters.
 `.split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("")
 }
 
 function createkeys(){
 let keys=[
-{r:0,c:5, f:[help],            d:"M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2"},
-{r:0,c:6, f:[misc,theme],      d:"M5 0 l5 5 l-5 5 l-5 -5 l5 -5"},
+{r:0,c:4, f:[help],            d:"M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2"},
+{r:0,c:5, f:[misc,theme],      d:"M5 0 l5 5 l-5 5 l-5 -5 l5 -5"},
+{r:0,c:6, f:[find],            d:"M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M4 6 l-4 4"},
 {r:0,c:7, f:[zoom,fullscreen], d:"M5 0 l-4 10 M5 0 l4 10 M7 5 h-4 M7 5 l-2 5 M6 7.5 h2"},
 {r:0,c:8, f:[save],            d:"M10 10 h-10 M 5 9 v-8 M5 9 l-4 -4 M5 9 l4 -4"},
 {r:0,c:9, f:[run],             d:"M10 5 l-9 5 v-10 l9 5"},
