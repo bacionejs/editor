@@ -25,7 +25,7 @@ After you start the editor, click the run icon to play a game (it will run which
 onerror=(m,_,l,c)=>{let f=document.querySelector("iframe"),v=view("Error"),s=`${m}\nline: ${l}\ncol: ${c}`;f&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus());v.textContent=s};
 if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){alert(tested)}
 
-theme(); pretty(); rename(); view(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
+theme(); pretty(); view(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
 if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
 function init(s){T.V=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 
@@ -40,7 +40,6 @@ function enter(){T.S!=T.E?T.S=T.E:T.I("\n"+T.V.slice(T.V.lastIndexOf("\n",T.S-1)
 function backspace(){let S=T.S,E=T.E;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(T.V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1;}
 function block(a,i,s){let p={ "(": ")", "{": "}", "[": "]", '"': '"' };if(i==undefined)return a in p;let b=p[a],c=1;while(c>0&&++i<s.length)c+=s[i]==a?1:s[i]==b?-1:0;return i;}
 function currentgame(){let s=T.V,c=T.S,m,r=/\b(\w+)\s*\(.*?\)\s*\{/g;for(;m=r.exec(s);){let i=m.index,b=i+m[0].length,e=block("{",b,s);if(i>c)break;if(c<=e)return{name:m[1],ftop:b,fend:e,body:s.slice(b,e)}}}
-function highlight(){let s=T.V,i=T.E;T.H?T.H="":(/\w/.test(s[i])&&(T.S==i&&(i=s.slice(0,i).search(/\w+$/))>=0&&(T.S=i),T.E=T.S+s.slice(T.S).search(/\W/)),T.S!=T.E&&(T.H=s.slice(T.S,T.E)));syncpretty()}
 function left(){arrow(-1)}function right(){arrow(1)} function arrow(d){let i=T.E+d,s=T.V;if(i>=0&&i<=s.length){if(T.S==T.E)T.S=T.E=i;else T.P=s.slice(T.S,T.E=i)}}
 function zoom(){let {fontsizesmall:s, fontsizebig:b}=theme;T.style.fontSize=PRETTY.style.fontSize=(parseInt(T.style.fontSize)==s?b:s)+"px";setTimeout(()=>T.blur(T.focus()),200);}
 function save(){ let u=URL,a=element("a"),h=a.href=u.createObjectURL(new File([filecontent()],"")); a.download=timestamp()+"bacionejs.html",a.click(),u.revokeObjectURL(h),a.remove(); }
@@ -69,7 +68,12 @@ let s=T.V,c=T.S,i=c,w,f=currentgame()?.ftop||0;while(--i>=0&&/\w|\./.test(s[i]))
 let res=[...s.slice(f).replace(/"[^"]*"|\/\/.*$/gm,"").matchAll("\\b"+w+"\\w*")].find(m=>m[0]!=w);if(res)T.I(res[0].slice(w.length));
 }
 
+function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
+if(d==null){if(h[i]?.v==s.v)return;h.splice(++i,Infinity,s);if(h.length>50)h.shift(),i--;}else{i=Math.max(0,Math.min(h.length-1,i+d));let S=h[i];if(S)T.V=S.v,T.S=T.E=S.s;}
+};restore();}function undo(){restore(-1);}function redo(){restore(1);}
+
 function copy(){
+T.R="";
 let s=T.V, i=T.E, v=s[i], w=/\w/;
 if(w.test(v)){if(T.S==i) while(--i>=0 && w.test(s[i]));T.S=i+1, i=T.E;while(++i<s.length && w.test(s[i]));T.E=i;
 } else if(v==" ") {while(s[++i]==" ");T.E=i;
@@ -78,23 +82,12 @@ if(w.test(v)){if(T.S==i) while(--i>=0 && w.test(s[i]));T.S=i+1, i=T.E;while(++i<
 } else T.E++;T.P=s.slice(T.S,T.E);
 }
 
-function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
-if(d==null){if(h[i]?.v==s.v)return;h.splice(++i,Infinity,s);if(h.length>50)h.shift(),i--;}else{i=Math.max(0,Math.min(h.length-1,i+d));let S=h[i];if(S)T.V=S.v,T.S=T.E=S.s;}
-};restore();}function undo(){restore(-1);}function redo(){restore(1);}
-
-function rename(){
-let con=element("div"),f=element("input",con),fb=element("button",con),r=element("input",con),rb=element("button",con);
-con.style.cssText="z-index:0;position:fixed;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:8px;top:0;right:0;height:10vh;";
-f.inputMode=r.inputMode="none"; f.id="find"; fb.textContent="Find"; rb.textContent="Replace";
-fb.onclick=()=>find(); rb.onclick=()=>replace(); fb.disabled=rb.disabled=true;
-let search=s=>s?T.V.slice(T.E).search(escapetext(s).replace(/^(\w)/,"\\b$1")):-1;
-let disable=()=>fb.disabled=rb.disabled=search(f.value)==-1;
-let find=()=>{let i=search(f.value);if(i<0)return;T.H=f.value;syncpretty();T.E=T.S=T.E+i;T.blur();T.focus();T.E=T.S+f.value.length};
-let replace=()=>(T.V.slice(T.S,T.E)==f.value&&(T.focus(),T.I(r.value)),disable(),find());
-rename=s=>{
-  if(s==null){ let z=con.style.zIndex==0; con.style.zIndex=z?9:0; z?(T.S!=T.E&&(f.value=T.V.slice(T.S,T.E),T.E=T.S,disable()),f.focus()):(T.S=T.E,T.focus());
-  }else{ let e=document.activeElement; if(s=="")e.selectionStart--; e.setRangeText(s,e.selectionStart,e.selectionEnd,"end"); e.id=="find"&&(T.H=e.value,syncpretty(),disable()); }
-}}
+function replace() {
+let g = currentgame(); if (!g || !T.P || !T.R) return;
+let s = g.body.split(T.P).join(T.R);
+T.V = T.V.slice(0, g.ftop) + s + T.V.slice(g.fend);
+T.focus();
+}
 
 function createtextarea(){
 let T=element("textarea");
@@ -104,8 +97,8 @@ T.addEventListener('paste', function(ev){ev.preventDefault();T.I(ev.clipboardDat
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
-T.I=function(t,s=T.S,e=T.E){ if(document.activeElement==this){restore();this.setRangeText(t,s,e,"end");restore();syncpretty(); }else{rename(t);} }
-T.P="";T.H="";T.inputMode="none";T.spellcheck=false;
+T.I=function(t,s=T.S,e=T.E){restore();T.R+=t;this.setRangeText(t,s,e,"end");restore();syncpretty();}
+T.R="";T.P="";T.inputMode="none";T.spellcheck=false;
 {let s=T.style;s.height="100%";s.width="100%";s.padding=`10ch 2ch 100vh 2ch`;s.position="fixed";s.touchAction="pan-x pan-y";s.overflow="auto";s.whiteSpace="nowrap";s.zIndex=2;s.backgroundColor="transparent";s.color="transparent";}
 return T;
 }
@@ -117,19 +110,12 @@ return e;
 }
 
 function pretty(){
-let w,cache={},m=/[a-z]+\b|[(){}[\]]|</g;
-pretty=function(s){
-  if(T.H!==""){
-    s=s.replace(/</g,'');w=escapetext(T.H);if(w=="<")w=''; if(document.activeElement.id=="find")w="\\b"+w;else if(/\w/.test(w))w="\\b"+w+"\\b";
-    s=s.replace(RegExp(`(${w})`,'g'),`<span style=color:red;background:pink;>$1</span>`);
-    return s.replace(/[a-z]+\b|[(){}[\]]|/g,x=>{if(x=='')return "&lt;";return cache[x]||x;});
-  }
-  return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x));
-}
+let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
+pretty=function(s){ return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x)); }
 pretty.update=()=>{
   let k=new Set(),w=T.V.match(/[a-z]+\b/g)||[],span='<span style=color:',end='</span>'; if(theme.keywords){for(let x of w){try{eval('let '+x)}catch(i){k.add(x)}}}
   cache={};if(theme.pairs)"(){}[\]".split('').forEach(p=>cache[p]=span+theme.pairs+'>'+p+end);if(theme.keywords)k.forEach(word=>cache[word]=span+theme.keywords+'>'+word+end);
-}} function syncpretty() { if (!theme.keywords && !theme.pairs) { PRETTY.innerHTML = T.V.replace(/</g,'\x3C') + "\n"; } else { PRETTY.innerHTML = pretty(T.V) + "\n"; } }
+}} function syncpretty() { if (!theme.keywords && !theme.pairs) { PRETTY.innerHTML = T.V.replace(/</g,'&lt;') + "\n"; } else { PRETTY.innerHTML = pretty(T.V) + "\n"; } }
 
 function theme(){
 let activetheme=0,a=[
@@ -170,22 +156,21 @@ function loadicons(){
 function help(){
 let e=view("Help"); if(e.exists)return; let con=element("div",e); con.innerHTML=`<p>${about}</p><br><b>Buttons</b><br><br>`;
 KEYS.filter(k=>k.f).forEach(k=>{ let s = k.e.querySelector("svg").cloneNode(true); s.style.width = 10; s.querySelector("path").style.stroke = "black"; con.innerHTML+=s.outerHTML+" "+k.name+"<br><br>" });
-con.innerHTML+=`.Run.Runs the game which contains the cursor.Also stops the game.Save.Saves to a timestamped file.The file contains your games AND the Editor.Zoom.Toggles font size.Rename.Find performs incremental search and replace.Uses selection if active.Misc.Color-Picker and Icon-Picker put your selection in Paste.Help.Help is this screen.Paste.Pastes the content of the Paste buffer.Copy.Begins or extends the selection of text and puts it in the Paste buffer.In other words, Copy is selection with the side affect of setting the Paste buffer.To exit this mode, press enter.Selection looks at the character to the right and then selects, newline: line, word: whole word, spaces: right, blank line: next blank line, blocks: (){}[]"".Cut.There is no Cut button.Cut is a two step process: 1: Click the Copy button to perform text selection, which sets the Paste buffer, 2: Click the Backspace button, which deletes the text selection.Backspace.Deletes character or selection.Enter.Inserts a new line or cancels selection.Retains prior indentation.Arrows.Moves cursor or extends selection.Characters.Inserts a character or replaces selection.Capslock.Reveals shift characters.Undo.Restore up to 50 changes.Comment.Toggles comments for the current line.Also puts the line in Paste.Complete.Completes a word.Longpress.Repeats key.Errors.Runtime errors display an error message and automatically jumps to the error in code.Swipeup.The following actions are taken if you swipeup on a button, Zoom: toggles fullscreen, Rename: toggles highlights for all occurrences of the word under the cursor, Misc: toggles themes, Alphanumeric: inserts shift characters.Close.To close or toggle something, click or swipe it again.
+con.innerHTML+=`.Run.Runs the game which contains the cursor.Also stops the game.Save.Saves to a timestamped file.The file contains your games AND the Editor.Zoom.Toggles font size.Misc.Color-Picker and Icon-Picker put your selection in Paste.Help.Help is this screen.Paste.Pastes the content of the Paste buffer.Copy.Begins or extends the selection of text and puts it in the Paste buffer.In other words, Copy is selection with the side affect of setting the Paste buffer.To exit this mode, press enter.Selection looks at the character to the right and then selects, newline: line, word: whole word, spaces: right, blank line: next blank line, blocks: (){}[]"".Cut.There is no Cut button.Cut is a two step process: 1: Click the Copy button to perform text selection, which sets the Paste buffer, 2: Click the Backspace button, which deletes the text selection.Replace.To replace a word, click Copy and start typing and then swipeup on Paste to replace all.Close.To close or toggle something, click or swipe it again.Backspace.Deletes character or selection.Enter.Inserts a new line or cancels selection.Retains prior indentation.Arrows.Moves cursor or extends selection.Characters.Inserts a character or replaces selection.Capslock.Reveals shift characters.Undo.Restore up to 50 changes.Comment.Toggles comments for the current line.Also puts the line in Paste.Complete.Completes a word.Longpress.Repeats key.Errors.Runtime errors display an error message and automatically jumps to the error in code.Swipeup.The following actions are taken if you swipeup on a button, Paste: replace all, Zoom: toggles fullscreen, Misc: toggles themes, Alphanumeric: inserts shift characters.
 `.split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("")
 }
 
 function createkeys(){
 let keys=[
-{r:0,c:4, f:[help],            d:"M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2"},
-{r:0,c:5, f:[misc,theme],      d:"M5 0 l5 5 l-5 5 l-5 -5 l5 -5"},
-{r:0,c:6, f:[rename,highlight],d:"M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6 M4 6 l-4 4"},
+{r:0,c:5, f:[help],            d:"M6 5 v5 h-2 v-5 h2 M6 3 h-2 v-2 h2 v2"},
+{r:0,c:6, f:[misc,theme],      d:"M5 0 l5 5 l-5 5 l-5 -5 l5 -5"},
 {r:0,c:7, f:[zoom,fullscreen], d:"M5 0 l-4 10 M5 0 l4 10 M7 5 h-4 M7 5 l-2 5 M6 7.5 h2"},
 {r:0,c:8, f:[save],            d:"M10 10 h-10 M 5 9 v-8 M5 9 l-4 -4 M5 9 l4 -4"},
 {r:0,c:9, f:[run],             d:"M10 5 l-9 5 v-10 l9 5"},
 {r:1,c:2, f:[left],            d:"M1 5 h8 M1 5 l4 -4 M1 5 l4 4"},
 {r:1,c:3, f:[right],           d:"M 9 5 h-8 M9 5 l-4 -4 M9 5 l-4 4"},
 {r:1,c:4, f:[copy],            d:"M7 2 h2 v8 h-6 v-8 h4 v-2 h-6 v8 h2"},
-{r:1,c:5, f:[paste],           d:"M7 1 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2"},
+{r:1,c:5, f:[paste,replace],   d:"M7 1 h2 v9 h-8 v-9 h2 v1 h4 v-1 h-1 v-1 h-2 v1 h-2"},
 {r:1,c:6, f:[undo],            d:"M10 5 Q5 0  0 7 M0  2 v5 h5"},
 {r:1,c:7, f:[redo],            d:"M0  5 Q5 0 10 7 M10 2 v5 h-5"},
 {r:1,c:8, f:[comment],         d:"M6 1 l-6 8 M10 1 l-6 8"},
