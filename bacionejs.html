@@ -117,7 +117,7 @@ let e=view("Misc");if(e.exists)return; let c,icons=loadicons(); e.style.overflow
 c=element("input",e);c.type="color"; c.onchange=(e)=>T.P=e.target.value; c=element("div",e);  c.innerHTML=icons; c.onclick=(e)=>T.P=e.target.textContent; icons=undefined;
 function loadicons(){
   let range=r=>r.flatMap(v=>Array.from({length:v[1]-v[0]+1},(_,i)=>v[0]+i)); let measure=element("span");measure.style.visibility="hidden";
-  let icons=range([[9711,10100],[127744,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
+  let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
   measure.remove(); return icons;
 }}
 
