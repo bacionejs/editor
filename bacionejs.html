@@ -12,6 +12,7 @@ function init(s){T.V=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 
 element("style").textContent=` *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;   border:none;outline:none;line-height:1.2}`;
 function element(tag,p=document.body,c="",v=""){let e=p.appendChild(document.createElement(tag));if(c)e.className=c;if(v)e.textContent=v;return e;}
+function paste(){T.I(T.P);}
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
 function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
 function capslock(){KEYS.forEach(k => k.f || (k.e.textContent = k.d[k.d.indexOf(k.e.textContent) ^ 1]));}
@@ -21,22 +22,34 @@ function block(a,i,s){let p={ "(": ")", "{": "}", "[": "]", '"': '"' };if(i==und
 function currentgame(){let s=T.V,c=T.S,m,r=/\b(\w+)\s*\(.*?\)\s*\{/g;for(;m=r.exec(s);){let i=m.index,b=i+m[0].length,e=block("{",b,s);if(i>c)break;if(c<=e)return{name:m[1],ftop:b,fend:e,body:s.slice(b,e)}}}
 function arrow(d){let i=T.E+d,s=T.V;if(i>=0&&i<=s.length){if(T.S==T.E)T.S=T.E=i;else T.P=s.slice(T.S,T.E=i)}}function left(){arrow(-1)}function right(){arrow(1)} 
 function zoom(){let {fontsizesmall:s, fontsizebig:b}=theme;T.style.fontSize=PRETTY.style.fontSize=(parseInt(T.style.fontSize)==s?b:s)+"px";setTimeout(()=>T.blur(T.focus()),200);}
-function save(){ let u=URL,a=element("a"),h=a.href=u.createObjectURL(new File([filecontent()],"")); a.download=timestamp()+"bacionejs.html",a.click(),u.revokeObjectURL(h),a.remove(); }
+function save(){Object.assign(document.querySelector("a")||element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+".html"}).click();}
 function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
 function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;return{start,end,word:s.slice(start,end)};}
 function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);T.focus();}
 function find(){let{V:s,S:a,E:e}=T,w=a-e?s.slice(a,e):(r=word(s,a)).word?(T.S=r.start,T.E=r.end,0):0;if(w){let n=s.indexOf(w,e);~n||(n=s.indexOf(w,0));~n&&(T.S=n,T.E=n+w.length)}}
-function paste(){T.I(T.P);}
+function stacktext(p){return "position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;touch-action:pan-x pan-y;overflow:auto;white-space:pre;z-index:"+p+(p&&";background:transparent;color:transparent;")}
+function createpretty(){let e=element("div",document.body);e.style.cssText=stacktext(0);e.style.pointerEvents="none";return e;}
+
+function createtextarea(){
+let T=element("textarea");
+T.oncut=_=>0; T.onscroll=_=>{PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft}; T.onpaste=e=>{e.preventDefault();T.I(e.clipboardData.getData('text'))};
+Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
+Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
+Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
+T.I=function(t,s=T.S,e=T.E){restore();T.R+=t;this.setRangeText(t,s,e,"end");restore();syncpretty();}
+T.R="";T.P="";T.inputMode="none";T.spellcheck=false;T.style.cssText=stacktext(1);
+return T;
+}
 
 function view(){let a=[];view=function(f){let e=a[f];
-if(e){e.exists=true;}else{e=a[f]=element("div");e.style.cssText=`width:100%;height:100%;background:white;padding:2rem;position:fixed;white-space:pre-wrap;overflow:auto;`;e.addEventListener("click",()=>view(f));}
-if((PRETTY.classList.toggle("unhide"),e.classList.toggle("unhide"))){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);e.style.fontSize=T.style.fontSize;}else{T.focus();e.style.zIndex=0;}
+if(e){e.exists=true;}else{e=a[f]=element("div");e.style.cssText="position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow:auto;";e.onclick=()=>view(f);}
+if((e.classList.toggle("unhide"))){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);e.style.fontSize=T.style.fontSize;}else{T.focus();e.style.zIndex=-1;}
 return e;
 }}
 
 function run(){
 let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus(); if(!g?.name||g.name=="Library")return;
-f=element("iframe"); f.style.cssText="width:100vw;height:100vw;position:fixed;z-index:9";  f.setAttribute("scrolling", "no"); f.contentWindow.eval(T.V+g.name+"()"); T.blur();
+f=element("iframe"); f.style.cssText="position:fixed;width:100vw;height:100vw;z-index:9";  f.setAttribute("scrolling", "no"); f.contentWindow.eval(T.V+g.name+"()"); T.blur();
 }
 
 function filecontent(){
@@ -62,26 +75,6 @@ if(w.test(v)){let r = word(s, i); T.S = r.start; T.E = r.end;
 } else if(block(v)) {let b=block(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1;
 } else {T.E++;} 
 T.P=s.slice(T.S,T.E);
-}
-
-function createtextarea(){
-let T=element("textarea");
-T.oncut=_=>false;
-T.addEventListener('scroll',function(){PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft;});
-T.addEventListener('paste', function(ev){ev.preventDefault();T.I(ev.clipboardData.getData('text'));});
-Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
-Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
-Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
-T.I=function(t,s=T.S,e=T.E){restore();T.R+=t;this.setRangeText(t,s,e,"end");restore();syncpretty();}
-T.R="";T.P="";T.inputMode="none";T.spellcheck=false;
-T.style.cssText=`width:100%;height:100%;padding:10ch 2ch 100vh 2ch;position:fixed;touch-action:pan-x pan-y;overflow:auto;white-space:nowrap;z-index:2;background:transparent;color:transparent;`;
-return T;
-}
-
-function createpretty(){
-let e = element("div", document.body, "unhide");
-e.style.cssText = `width:100%;height:100%;padding:10ch 2ch 100vh 2ch;position:fixed;touch-action:pan-x pan-y;overflow:auto;white-space:pre;word-wrap:break-word;z-index:1;pointer-events:none;`;
-return e;
 }
 
 function pretty(){
