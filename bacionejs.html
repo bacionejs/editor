@@ -6,7 +6,7 @@ let about=`.Bacione Javascript Editor \uD83D\uDC8B.Integrated Development Enviro
 onerror=(m,_,l,c)=>{let f=document.querySelector("iframe"),v=view("Error"),s=`${m}\nline: ${l}\ncol: ${c}`;f&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus());v.textContent=s};
 if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){alert("Only works on modern android chromium-based browsers")}
 
-theme(); pretty(); view(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
+theme(); pretty(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
 if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
 function init(s){T.V=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 
@@ -43,11 +43,11 @@ T.R="";T.P="";T.inputMode="none";T.spellcheck=false;T.style.cssText=stacktext(1)
 return T;
 }
 
-function view(){let a=[];view=function(f){let e=a[f];
-if(e){e.exists=true;}else{e=a[f]=element("div");e.style.cssText="position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow:auto;";e.onclick=()=>view(f);}
+function view(f){let e=(view.a||(view.a=[]))[f];
+if(e){e.exists=true;}else{e=view.a[f]=element("div");e.style.cssText="position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow:auto;";e.onclick=()=>view(f);}
 if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);e.style.fontSize=T.style.fontSize;}else{T.focus();e.style.zIndex=-1;}
 return e;
-}}
+}
 
 function run(){
 let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus(); if(!g?.name||g.name=="Library")return;
