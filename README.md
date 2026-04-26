@@ -8,7 +8,8 @@ BacioneJS is a mobile-centric JavaScript IDE with a custom, thumb-friendly keybo
 - **Offline**: no server, no internet
 - **Editing**: save, cut, copy, paste, undo, redo
 - **Run**: instant code execution
-- **Debugging**: displays message and positions the cursor at the error
+- **Debugging**: clicking Run, displays message and positions the cursor at the runtime error
+- **Linting**: typing turns Run button red if there are syntax errors
 - **Code Assistance**: rename, auto-complete, auto-indent, auto-comment
 - **Themes**: light and dark
 - **Pickers**: icon and color selectors

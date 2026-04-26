@@ -29,6 +29,8 @@ function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,
 function find(){let{V:s,S:a,E:e}=T,w=a-e?s.slice(a,e):(r=word(s,a)).word?(T.S=r.start,T.E=r.end,0):0;if(w){let n=s.indexOf(w,e);~n||(n=s.indexOf(w,0));~n&&(T.S=n,T.E=n+w.length)}}
 function stacktext(p){return "position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;touch-action:pan-x pan-y;overflow:auto;white-space:pre;z-index:"+p+(p&&";background:transparent;color:transparent;")}
 function createpretty(){let e=element("div",document.body);e.style.cssText=stacktext(0);e.style.pointerEvents="none";return e;}
+function syncpretty(){PRETTY.innerHTML=(theme.keywords||theme.pairs?pretty(T.V):T.V.replace(/</g,'&lt;'))+"\n";lint();}
+function lint(f){let l=lint,v=1;try{new Function(T.V)}catch(e){v=0}if(v!=l.s||f)(l.k=l.k||KEYS.find(k=>k.name=="run").e).style.backgroundColor=(l.s=v)?theme.keybackground:"red"}
 
 function createtextarea(){
 let T=element("textarea");
@@ -83,7 +85,7 @@ pretty=function(s){ return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x)); }
 pretty.update=()=>{
   let k=new Set(),w=T.V.match(/[a-z]+\b/g)||[],span='<span style=color:',end='</span>'; if(theme.keywords){for(let x of w){try{eval('let '+x)}catch(i){k.add(x)}}}
   cache={};if(theme.pairs)"(){}[\]".split('').forEach(p=>cache[p]=span+theme.pairs+'>'+p+end);if(theme.keywords)k.forEach(word=>cache[word]=span+theme.keywords+'>'+word+end);
-}} function syncpretty() { if (!theme.keywords && !theme.pairs) { PRETTY.innerHTML = T.V.replace(/</g,'&lt;') + "\n"; } else { PRETTY.innerHTML = pretty(T.V) + "\n"; } }
+}} 
 
 function theme(){
 let activetheme=0,a=[
