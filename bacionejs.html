@@ -30,7 +30,7 @@ function find(){let{V:s,S:a,E:e}=T,w=a-e?s.slice(a,e):(r=word(s,a)).word?(T.S=r.
 function stacktext(p){return "position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;touch-action:pan-x pan-y;overflow:auto;white-space:pre;z-index:"+p+(p&&";background:transparent;color:transparent;")}
 function createpretty(){let e=element("div",document.body);e.style.cssText=stacktext(0);e.style.pointerEvents="none";return e;}
 function syncpretty(){PRETTY.innerHTML=(theme.keywords||theme.pairs?pretty(T.V):T.V.replace(/</g,'&lt;'))+"\n";lint();}
-function lint(f){let l=lint,v=1;try{new Function(T.V)}catch(e){v=0}if(v!=l.s||f)(l.k=l.k||KEYS.find(k=>k.name=="run").e).style.backgroundColor=(l.s=v)?theme.keybackground:"red"}
+function lint(){let v=1;try{eval(T.V)}catch(e){v=0}(lint.s=lint.s||KEYS.find(k=>k.name=="run").e.style).backgroundColor=v?theme.keybackground:"red"}
 
 function createtextarea(){
 let T=element("textarea");
