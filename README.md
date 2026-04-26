@@ -13,7 +13,7 @@ BacioneJS is a mobile-centric JavaScript IDE with a custom, thumb-friendly keybo
 - **Code Assistance**: rename, auto-complete, auto-indent, auto-comment
 - **Pickers**: icon and color selectors
 - **Gestures**: swipe and long-press-repeat support
-- **Themes**, **Zoom** and **Fullscreen**
+- **Syntax Highlighting**, **Themes**, **Zoom** and **Fullscreen**
 - **Examples**: games included 🎮
 - **Help**: built-in guide 📚
 
