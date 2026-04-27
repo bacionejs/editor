@@ -30,6 +30,7 @@ function stacktext(p){return "position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;
 function createpretty(){let e=element("div",document.body);e.style.cssText=stacktext(0);e.style.pointerEvents="none";return e;}
 function syncpretty(){PRETTY.innerHTML=(theme.keywords||theme.pairs?pretty(T.V):T.V.replace(/</g,'&lt;'));lint();}
 function lint(){let v=1;try{eval(T.V)}catch(e){v=0}(lint.s=lint.s||KEYS.find(k=>k.name=="run").e.style).backgroundColor=v?theme.keybackground:"red"}
+function reserved(){let k=new Set(T.V.match(/[a-z]+\b/g)||[]); for(let w of k){try{eval('let '+w);k.delete(w)}catch(_){}}return k;}
 
 function createtextarea(){
 let T=element("textarea");
@@ -81,9 +82,7 @@ T.P=s.slice(T.S,T.E);
 function pretty(){
 let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
 pretty=function(s){ return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x)); }
-pretty.init=()=>{
-  let span='<span style=color:',end='</span>',k=new Set(T.V.match(/[a-z]+\b/g)||[]); for(let w of k){try{eval('let '+w);k.delete(w)}catch(_){}}cache={};
-  [..."(){}[\]",...k].forEach(v=>{cache[v]=span+("(){}[\]".includes(v)?theme.pairs:theme.keywords)+'>'+v+end;});
+pretty.init=()=>{cache={};[..."(){}[\]",...reserved()].forEach(v=>{cache[v]='<span style=color:'+("(){}[\]".includes(v)?theme.pairs:theme.keywords)+'>'+v+'</span>';});
 }} 
 
 function theme(){
