@@ -49,6 +49,12 @@ if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);}else{T.focus();
 return e;
 }
 
+function pretty(){
+let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
+pretty=function(s){ return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x)); }
+pretty.init=()=>{cache={};[..."(){}[\]",...reserved()].forEach(v=>{cache[v]='<span style=color:'+("(){}[\]".includes(v)?theme.pairs:theme.keywords)+'>'+v+'</span>';});
+}} 
+
 function misc(){
 let e=view("Misc");if(e.exists)return; let c,icons=loadicons(); e.style.overflowWrap="anywhere";
 c=element("input",e);c.type="color"; c.onchange=(e)=>T.P=e.target.value; c=element("div",e);  c.innerHTML=icons; c.onclick=(e)=>T.P=e.target.textContent; icons=undefined;
@@ -57,12 +63,6 @@ function loadicons(){
   let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
   measure.remove(); return icons;
 }}
-
-function pretty(){
-let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
-pretty=function(s){ return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x)); }
-pretty.init=()=>{cache={};[..."(){}[\]",...reserved()].forEach(v=>{cache[v]='<span style=color:'+("(){}[\]".includes(v)?theme.pairs:theme.keywords)+'>'+v+'</span>';});
-}} 
 
 function help(){
 let e=view("Help"); if(e.exists)return; let con=element("div",e);
