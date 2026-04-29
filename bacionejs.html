@@ -43,12 +43,6 @@ function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
 if(d==null){if(h[i]?.v==s.v)return;h.splice(++i,Infinity,s);if(h.length>50)h.shift(),i--;}else{i=Math.max(0,Math.min(h.length-1,i+d));let S=h[i];if(S)T.V=S.v,T.S=T.E=S.s;}
 };restore();}function undo(){restore(-1);}function redo(){restore(1);}
 
-function pretty(){
-let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
-pretty=function(s){ return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x)); }
-pretty.init=()=>{cache={};[..."(){}[\]",...reserved()].forEach(v=>{cache[v]='<span style=color:'+("(){}[\]".includes(v)?theme.pairs:theme.keywords)+'>'+v+'</span>';});
-}} 
-
 function view(f){let e=(view.a||(view.a=[]))[f];
 if(e){e.exists=true;}else{e=view.a[f]=element("div");e.style.cssText="position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow:auto;";e.onclick=()=>view(f);}
 if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);}else{T.focus();e.style.zIndex=-1;}
@@ -74,6 +68,12 @@ T.I=function(t,s=T.S,e=T.E){restore();T.R+=t;this.setRangeText(t,s,e,"end");rest
 T.R="";T.P="";T.inputMode="none";T.spellcheck=false;T.style.cssText=stacktext(1);
 return T;
 }
+
+function pretty(){
+let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
+pretty=function(s){ return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x)); }
+pretty.init=()=>{cache={};[..."(){}[\]",...reserved()].forEach(v=>{cache[v]='<span style=color:'+("(){}[\]".includes(v)?theme.pairs:theme.keywords)+'>'+v+'</span>';});
+}} 
 
 function help(){
 let e=view("Help"); if(e.exists)return; let con=element("div",e);
