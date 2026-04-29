@@ -29,8 +29,59 @@ function find(){let{V:s,S:a,E:e}=T,w=a-e?s.slice(a,e):(r=word(s,a)).word?(T.S=r.
 function stacktext(p){return "position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;touch-action:pan-x pan-y;overflow:auto;white-space:pre;z-index:"+p+(p&&";background:transparent;color:transparent;")}
 function createpretty(){let e=element("div",document.body);e.style.cssText=stacktext(0);e.style.pointerEvents="none";return e;}
 function syncpretty(){PRETTY.innerHTML=(theme.keywords||theme.pairs?pretty(T.V):T.V.replace(/</g,'&lt;'));lint();}
-function lint(){let v=1;try{eval(T.V)}catch(e){v=0}(lint.s=lint.s||KEYS.find(k=>k.name=="run").e.style).backgroundColor=v?theme.keybackground:"red"}
+function lint(){let v=1;try{eval(T.V)}catch(e){v=0}(lint.s=lint.s||KEYS.find(k=>k.name=="run").e.style).backgroundColor=v?theme.background:"red"}
 function reserved(){let k=new Set(T.V.match(/[a-z]+\b/g)||[]); for(let w of k){try{eval('let '+w);k.delete(w)}catch(_){}}return k;}
+
+function run(){
+let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus(); if(!g?.name||g.name=="Library")return;
+f=element("iframe"); f.style.cssText="position:fixed;width:100vw;height:100vw;z-index:9";  f.setAttribute("scrolling", "no"); f.contentWindow.eval(T.V+g.name+"()"); T.blur();
+}
+
+function copy(){
+let s=T.V, i=T.E, v=s[i], w=/\w/;T.R="";
+if(w.test(v)){let r = word(s, i); T.S = r.start; T.E = r.end;
+} else if(v==" ") {while(s[++i]==" ");T.E=i;
+} else if(v=="\n") {(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);
+} else if(block(v)) {let b=block(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1;
+} else {T.E++;} 
+T.P=s.slice(T.S,T.E);
+}
+
+function complete(){
+let s=T.V,c=T.S,i=c,w,f=currentgame()?.ftop||0;while(--i>=0&&/\w|\./.test(s[i]));w=s.slice(i+1,c);if(!w)return;
+let res=[...s.slice(f).replace(/"[^"]*"|\/\/.*$/gm,"").matchAll("\\b"+w+"\\w*")].find(m=>m[0]!=w);if(res)T.I(res[0].slice(w.length));
+}
+
+function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
+if(d==null){if(h[i]?.v==s.v)return;h.splice(++i,Infinity,s);if(h.length>50)h.shift(),i--;}else{i=Math.max(0,Math.min(h.length-1,i+d));let S=h[i];if(S)T.V=S.v,T.S=T.E=S.s;}
+};restore();}function undo(){restore(-1);}function redo(){restore(1);}
+
+function pretty(){
+let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
+pretty=function(s){ return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x)); }
+pretty.init=()=>{cache={};[..."(){}[\]",...reserved()].forEach(v=>{cache[v]='<span style=color:'+("(){}[\]".includes(v)?theme.pairs:theme.keywords)+'>'+v+'</span>';});
+}} 
+
+function view(f){let e=(view.a||(view.a=[]))[f];
+if(e){e.exists=true;}else{e=view.a[f]=element("div");e.style.cssText="position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow:auto;";e.onclick=()=>view(f);}
+if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);e.style.fontSize=T.style.fontSize;}else{T.focus();e.style.zIndex=-1;}
+return e;
+}
+
+function filecontent(){
+let s="<meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'>";
+s+="\n<\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n";
+return s;
+}
+
+function misc(){
+let e=view("Misc");if(e.exists)return; let c,icons=loadicons(); e.style.overflowWrap="anywhere";
+c=element("input",e);c.type="color"; c.onchange=(e)=>T.P=e.target.value; c=element("div",e);  c.innerHTML=icons; c.onclick=(e)=>T.P=e.target.textContent; icons=undefined;
+function loadicons(){
+  let range=r=>r.flatMap(v=>Array.from({length:v[1]-v[0]+1},(_,i)=>v[0]+i)); let measure=element("span");measure.style.visibility="hidden";
+  let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
+  measure.remove(); return icons;
+}}
 
 function createtextarea(){
 let T=element("textarea");
@@ -43,90 +94,33 @@ T.R="";T.P="";T.inputMode="none";T.spellcheck=false;T.style.cssText=stacktext(1)
 return T;
 }
 
-function view(f){let e=(view.a||(view.a=[]))[f];
-if(e){e.exists=true;}else{e=view.a[f]=element("div");e.style.cssText="position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow:auto;";e.onclick=()=>view(f);}
-if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);e.style.fontSize=T.style.fontSize;}else{T.focus();e.style.zIndex=-1;}
-return e;
-}
-
-function run(){
-let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus(); if(!g?.name||g.name=="Library")return;
-f=element("iframe"); f.style.cssText="position:fixed;width:100vw;height:100vw;z-index:9";  f.setAttribute("scrolling", "no"); f.contentWindow.eval(T.V+g.name+"()"); T.blur();
-}
-
-function filecontent(){
-let s="<meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'>";
-s+="\n<\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n";
-return s;
-}
-
-function complete(){
-let s=T.V,c=T.S,i=c,w,f=currentgame()?.ftop||0;while(--i>=0&&/\w|\./.test(s[i]));w=s.slice(i+1,c);if(!w)return;
-let res=[...s.slice(f).replace(/"[^"]*"|\/\/.*$/gm,"").matchAll("\\b"+w+"\\w*")].find(m=>m[0]!=w);if(res)T.I(res[0].slice(w.length));
-}
-
-function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
-if(d==null){if(h[i]?.v==s.v)return;h.splice(++i,Infinity,s);if(h.length>50)h.shift(),i--;}else{i=Math.max(0,Math.min(h.length-1,i+d));let S=h[i];if(S)T.V=S.v,T.S=T.E=S.s;}
-};restore();}function undo(){restore(-1);}function redo(){restore(1);}
-
-function copy(){
-let s=T.V, i=T.E, v=s[i], w=/\w/;T.R="";
-if(w.test(v)){let r = word(s, i); T.S = r.start; T.E = r.end;
-} else if(v==" ") {while(s[++i]==" ");T.E=i;
-} else if(v=="\n") {(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);
-} else if(block(v)) {let b=block(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1;
-} else {T.E++;} 
-T.P=s.slice(T.S,T.E);
-}
-
-function pretty(){
-let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
-pretty=function(s){ return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x)); }
-pretty.init=()=>{cache={};[..."(){}[\]",...reserved()].forEach(v=>{cache[v]='<span style=color:'+("(){}[\]".includes(v)?theme.pairs:theme.keywords)+'>'+v+'</span>';});
-}} 
-
-function theme(){
-let activetheme=0,a=[
-["fontsizesmall"  ,[10      ,   6         ,  10      ,  10            ,  8         ,  8              ]],
-["fontsizebig"    ,[15      ,  15         ,  15      ,  15            ,  20        ,  20             ]],
-["keyroundness"   ,["20%"   ,  "20%"      ,  "20%"   ,  "20%"         ,  "50%"     ,  "50%"          ]],
-["keyborder"      ,["silver",  "black"    ,  "tan"   ,  "white"       ,  "none"    ,  "none"         ]],
-["keybackground"  ,["white" ,  "#424242"  ,  "black" ,  "#38393D"     ,  "#38393D" ,  "midnightblue" ]],
-["keyforeground"  ,["black" ,  "white"    ,  "white" ,  "white"       ,  "white"   ,  "pink"         ]],
-["click"          ,["blue"  ,  "gray"     ,  "blue"  ,  "blue"        ,  "lime"    ,  "pink"         ]],
-["caret"          ,["blue"  ,  "pink"     ,  "yellow",  "blue"        ,  "white"   ,  "white"        ]],
-["background"     ,["white" ,  "#15161B"  ,  "black" ,  "slategray"   ,  "black"   ,  "pink"         ]],
-["foreground"     ,["black" ,  "white"    ,  "tan"   ,  "whitesmoke"  ,  "lime"    ,  "midnightblue" ]],
-["keywords"       ,["teal"  ,  "#B3EAB7"  ,  "orange",  "skyblue"     ,  ""        ,  "royalblue"    ]],
-["pairs"          ,["purple",  "#96ecff"  ,  "brown" ,  "black"       ,  ""        ,  "indigo"       ]],
-];
-theme=function(){
-activetheme%=a[0][1].length;a.forEach(r=>theme[r[0]]=r[1][activetheme]);activetheme++;
-let s;
-KEYS.forEach(k=>{
-  s=k.e.style;
-  s.borderRadius=theme.keyroundness; s.border=theme.keyborder=="none"?"none":`2px outset ${theme.keyborder}`; s.backgroundColor=theme.keybackground;
-  s.color=theme.keyforeground;k.e.querySelector("path")?.style.setProperty("stroke",theme.keyforeground);
-});
-s=T.style;s.fontSize=theme.fontsizesmall;s.caretColor=theme.caret; s=PRETTY.style;s.fontSize=theme.fontsizesmall;s.backgroundColor=theme.background;s.color=theme.foreground;
-pretty.init(); syncpretty();
-}}
-
-function misc(){
-let e=view("Misc");if(e.exists)return; let c,icons=loadicons(); e.style.overflowWrap="anywhere";
-c=element("input",e);c.type="color"; c.onchange=(e)=>T.P=e.target.value; c=element("div",e);  c.innerHTML=icons; c.onclick=(e)=>T.P=e.target.textContent; icons=undefined;
-function loadicons(){
-  let range=r=>r.flatMap(v=>Array.from({length:v[1]-v[0]+1},(_,i)=>v[0]+i)); let measure=element("span");measure.style.visibility="hidden";
-  let icons=range([[9711,10100],[127744,128764],[128992,130000]]).filter(v=>((measure.innerHTML=String.fromCodePoint(v)) && measure.offsetWidth>8)).reduce((a,v)=>a+"<x>"+String.fromCodePoint(v)+"</x>","");
-  measure.remove(); return icons;
-}}
-
 function help(){
 let e=view("Help"); if(e.exists)return; let con=element("div",e);
 con.innerHTML+=`${about}.Run.Runs or stops the game which contains the cursor.Save.Saves games AND editor to a timestamped file.Zoom.Toggles font size.Misc.Color-Picker and Icon-Picker put your selection in the Paste buffer.Help.Help is this screen.Paste.Inserts the contents of the Paste buffer.Copy.Begins or extends the selection of text and puts it in the Paste buffer.Selection looks at the character to the right and then selects: newline->line, word->whole word, spaces->right, blank line->next blank line, blocks->(){}[]"".To exit this mode, press enter.Cut.Click Copy and Backspace.Find.Find word under cursor.Rename.Click Copy, type new name and swipe on Paste to replace all.Close.To close or toggle something, click or swipe it again.Backspace.Deletes character or selection.Enter.Inserts a newline or cancels selection.Retains prior indentation.Arrows.Moves cursor or extends selection.Characters.Inserts a character or replaces selection.Capslock.Shows shift characters.Alternatively, you can swipe on alphanumeric keys.Undo.Restore up to 50 changes.Comment.Toggles comments and puts the line in the Paste buffer.Complete.Completes a word.Longpress.Repeats key.Debugging.Displays message and positions the cursor at the runtime error.Linting.Turns the Run button red if there are syntax errors.Fullscreen.Swipe on Zoom button.Themes.Swipe on Misc button..Buttons.
 `.split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("")
 KEYS.filter(k=>k.f).forEach(k=>{ let s = k.e.querySelector("svg").cloneNode(true); s.style.width = 10; s.querySelector("path").style.stroke = "black"; con.innerHTML+=s.outerHTML+" "+k.name+"<br><br>" });
 }
+
+function theme(){
+let c=1,a=[
+["borderRadius"   ,["20%"   ,  "20%"      ,  "50%"     ]],
+["border"         ,["silver",  "black"    ,  ""        ]],
+["background"     ,["white" ,  "#424242"  ,  "#38393D" ]],
+["color"          ,["black" ,  "white"    ,  "white"   ]],
+["click"          ,["blue"  ,  "gray"     ,  "lime"    ]],
+["fontsizesmall"  ,[10      ,   6         ,  8         ]],
+["fontsizebig"    ,[15      ,  15         ,  20        ]],
+["caret"          ,["blue"  ,  "pink"     ,  "white"   ]],
+["bbackground"    ,["white" ,  "#15161B"  ,  "black"   ]],
+["foreground"     ,["black" ,  "white"    ,  "lime"    ]],
+["keywords"       ,["teal"  ,  "#B3EAB7"  ,  ""        ]],
+["pairs"          ,["purple",  "#96ecff"  ,  ""        ]],
+];
+theme=()=>{
+  c%=a[0][1].length; a.map(([k,v])=>theme[k]=k=="border"&&v[c]?`2px outset ${v[c]}`:v[c]); c++; KEYS.map(({e:{style:s}})=>a.slice(0,4).forEach(([k])=>s[k]=theme[k]));
+  Object.assign(T.style,{fontSize:theme.fontsizesmall,caretColor:theme.caret}); Object.assign(PRETTY.style,{fontSize:theme.fontsizesmall,background:theme.bbackground,color:theme.foreground});
+  pretty.init(); syncpretty();
+}}
 
 function createkeys(){
 let keys=[
@@ -180,7 +174,7 @@ keyboard.onpointerup=(ev)=>{
   let t=(k&&p.r==k.r&&p.c==k.c)?k:p;let swipe=t==p&&k!=p;
   if(t.f){let func=swipe?t.f[1]:t.f[0];if(func)func();}else{let char=swipe?t.d[1]:t.e.textContent;if(char!=null)T.I(char);}
   p.e.style.backgroundColor=theme.click;
-  setTimeout(()=>p.e.style.backgroundColor=theme.keybackground,200);
+  setTimeout(()=>p.e.style.backgroundColor=theme.background,200);
 }
 
 function resize(){
@@ -188,7 +182,7 @@ function resize(){
   keys.forEach(k=>k.f?(k.e.firstChild.style.width="45%"):(k.e.style.fontSize=scale*0.5+"px"));
 }new ResizeObserver(resize).observe(document.body);
 
-function sv(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" vector-effect="non-scaling-stroke"/>`;return s;}
+function sv(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" stroke="currentColor" vector-effect="non-scaling-stroke"/>`;return s;}
 
 return keys;
 }//createkeys
