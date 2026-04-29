@@ -9,7 +9,7 @@ theme(); pretty(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys(
 if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
 function init(s){T.V=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 
-element("style").textContent=` *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;   border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red;}`;
+element("style").textContent=` *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;   border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red;}`;
 function element(tag,p=document.body,c="",v=""){let e=p.appendChild(document.createElement(tag));if(c)e.className=c;if(v)e.textContent=v;return e;}
 function paste(){T.I(T.P);}
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
@@ -51,7 +51,7 @@ pretty.init=()=>{cache={};[..."(){}[\]",...reserved()].forEach(v=>{cache[v]='<sp
 
 function view(f){let e=(view.a||(view.a=[]))[f];
 if(e){e.exists=true;}else{e=view.a[f]=element("div");e.style.cssText="position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow:auto;";e.onclick=()=>view(f);}
-if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);}else{T.focus();e.style.zIndex=-1;}
+if(e.toggle^=1){T.blur();e.style.zIndex=9;}else{T.focus();e.style.zIndex=-1;}
 return e;
 }
 
