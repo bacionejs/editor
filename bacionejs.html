@@ -51,7 +51,7 @@ pretty.init=()=>{cache={};[..."(){}[\]",...reserved()].forEach(v=>{cache[v]='<sp
 
 function view(f){let e=(view.a||(view.a=[]))[f];
 if(e){e.exists=true;}else{e=view.a[f]=element("div");e.style.cssText="position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow:auto;";e.onclick=()=>view(f);}
-if(e.toggle^=1){T.blur();e.style.zIndex=9;}else{T.focus();e.style.zIndex=-1;}
+if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);}else{T.focus();e.style.zIndex=-1;}
 return e;
 }
 
