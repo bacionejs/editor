@@ -31,11 +31,9 @@ function createpretty(){let e=element("div",document.body);e.style.cssText=stack
 function syncpretty(){PRETTY.innerHTML=(theme.keywords||theme.pairs?pretty(T.V):T.V.replace(/</g,'&lt;'));lint();}
 function lint(){let v=1;try{eval(T.V)}catch(e){v=0}(lint.s=lint.s||KEYS.find(k=>k.name=="run").e.style).backgroundColor=v?theme.background:"red"}
 function reserved(){let k=new Set(T.V.match(/[a-z]+\b/g)||[]); for(let w of k){try{eval('let '+w);k.delete(w)}catch(_){}}return k;}
-
-function run(){
-let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus(); if(!g?.name||g.name=="Library")return;
-f=element("iframe"); f.style.cssText="position:fixed;width:100vw;height:100vw;z-index:9";  f.setAttribute("scrolling", "no"); f.contentWindow.eval(T.V+g.name+"()"); T.blur();
-}
+function iframe(){let f=element("iframe");f.style.cssText="position:fixed;width:100vw;aspect-ratio:1;z-index:9";f.contentDocument.documentElement.style.overflow="hidden";return f}
+function run(){let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus();if(!g||g.name=="Library")return;f=iframe();f.contentWindow.eval(T.V+g.name+"()");T.blur()}
+function complete(){let w;(w=(T.V.slice(0,T.S).match(/\w+$/)||[])[0])&&T.I(((T.V.match(RegExp("\\b"+w+"\\w*"))||[])[0]||"").slice(w.length))}
 
 function copy(){
 let s=T.V, i=T.E, v=s[i], w=/\w/;T.R="";
@@ -45,11 +43,6 @@ if(w.test(v)){let r = word(s, i); T.S = r.start; T.E = r.end;
 } else if(block(v)) {let b=block(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1;
 } else {T.E++;} 
 T.P=s.slice(T.S,T.E);
-}
-
-function complete(){
-let s=T.V,c=T.S,i=c,w,f=currentgame()?.ftop||0;while(--i>=0&&/\w|\./.test(s[i]));w=s.slice(i+1,c);if(!w)return;
-let res=[...s.slice(f).replace(/"[^"]*"|\/\/.*$/gm,"").matchAll("\\b"+w+"\\w*")].find(m=>m[0]!=w);if(res)T.I(res[0].slice(w.length));
 }
 
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
