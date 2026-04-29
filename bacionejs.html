@@ -1,4 +1,4 @@
-<meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'>
+<meta charset='UTF-8'>
 <script>onload=()=>{ide();function ide(){
 document.title="\uD83D\uDC8B BacioneJS"; let about=`Bacione Javascript Editor.Integrated Development Environment.Github./bacionejs/editor, GPL license`;
 
@@ -37,6 +37,7 @@ function pair(a,i,s){let p={ "(": ")", "{": "}", "[": "]", '"': '"' };if(i==unde
 function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;T.S=start;T.E=end;return s.slice(start,end);}
 function line(s,i){(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);}
 function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
+function filecontent(){return "<meta charset='UTF-8'>\n<\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n"}
 
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
 if(d==null){if(h[i]?.v==s.v)return;h.splice(++i,Infinity,s);if(h.length>50)h.shift(),i--;}else{i=Math.max(0,Math.min(h.length-1,i+d));let S=h[i];if(S)T.V=S.v,T.S=T.E=S.s;}
@@ -52,12 +53,6 @@ function view(f){let e=(view.a||(view.a=[]))[f];
 if(e){e.exists=true;}else{e=view.a[f]=element("div");e.style.cssText="position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow:auto;";e.onclick=()=>view(f);}
 if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);e.style.fontSize=T.style.fontSize;}else{T.focus();e.style.zIndex=-1;}
 return e;
-}
-
-function filecontent(){
-let s="<meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'>";
-s+="\n<\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n";
-return s;
 }
 
 function misc(){
