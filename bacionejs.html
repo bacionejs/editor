@@ -58,17 +58,6 @@ function loadicons(){
   measure.remove(); return icons;
 }}
 
-function createtextarea(){
-let T=element("textarea");
-T.oncut=_=>0; T.onscroll=_=>{PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft}; T.onpaste=e=>{e.preventDefault();T.I(e.clipboardData.getData('text'))};
-Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
-Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
-Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
-T.I=function(t,s=T.S,e=T.E){restore();T.R+=t;this.setRangeText(t,s,e,"end");restore();syncpretty();}
-T.R="";T.P="";T.inputMode="none";T.spellcheck=false;T.style.cssText=stacktext(1);
-return T;
-}
-
 function pretty(){
 let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
 pretty=function(s){ return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x)); }
@@ -102,6 +91,17 @@ theme=()=>{
   Object.assign(T.style,{fontSize:theme.fontsizesmall,caretColor:theme.caret}); Object.assign(PRETTY.style,{fontSize:theme.fontsizesmall,background:theme.bbackground,color:theme.foreground});
   pretty.init(); syncpretty();
 }}
+
+function createtextarea(){
+let T=element("textarea");
+T.oncut=_=>0; T.onscroll=_=>{PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft}; T.onpaste=e=>{e.preventDefault();T.I(e.clipboardData.getData('text'))};
+Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
+Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
+Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
+T.I=function(t,s=T.S,e=T.E){restore();T.R+=t;this.setRangeText(t,s,e,"end");restore();syncpretty();}
+T.R="";T.P="";T.inputMode="none";T.spellcheck=false;T.style.cssText=stacktext(1);
+return T;
+}
 
 function createkeys(){
 let keys=[
