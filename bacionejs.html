@@ -61,7 +61,7 @@ function style(){element("style").textContent=`
 }
 
 function theme(){
-let c=1,a=[
+let i=1,a=[
 ["borderRadius"   ,["20%"     ,  "20%"      ,  "50%"     ]],
 ["border"         ,["silver"  ,  "black"    ,  ""        ]],
 ["background"     ,["white"   ,  "#424242"  ,  "#38393D" ]],
@@ -76,7 +76,7 @@ let c=1,a=[
 ["pairs"          ,["purple"  ,  "#96ecff"  ,  ""        ]],
 ];
 theme=()=>{
-  c%=a[0][1].length; a.map(([k,v])=>theme[k]=k=="border"&&v[c]?`2px outset ${v[c]}`:v[c]); c++; KEYS.map(({e:{style:s}})=>a.slice(0,4).forEach(([k])=>s[k]=theme[k]));
+  i%=a[0][1].length; a.map(([k,v])=>theme[k]=k=="border"&&v[i]?`2px outset ${v[i]}`:v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,4).forEach(([k])=>s[k]=theme[k]));
   Object.assign(T.style,{fontSize:theme.fontsizesmall,caretColor:theme.caret}); Object.assign(PRETTY.style,{fontSize:theme.fontsizesmall,background:theme.bbackground,color:theme.foreground});
   pretty.init(special().reduce((a,v)=>(a[v]='<span style=color:'+( "(){}[]".includes(v)?theme.pairs:theme.keywords )+'>'+v+'</span>',a),{})); syncpretty();
 }}
