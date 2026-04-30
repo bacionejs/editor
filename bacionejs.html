@@ -110,6 +110,8 @@ let keys=[
 {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
 
+function sv(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" stroke="currentColor" vector-effect="non-scaling-stroke"/>`;return s;}
+new ResizeObserver(()=>{let s=Math.min((innerHeight-innerWidth)/8,innerWidth/10);keyboard.style.width=s*10;keys.map(k=>k.f?k.e.firstChild.style.width="50%":k.e.style.fontSize=s/2)}).observe(document.body)
 keys.clicked = (ev) => { let el = document.elementFromPoint(ev.clientX, ev.clientY); return el?.closest('div')?.ref; };
 let keyboard=element("div",document.body,"keyboard");keyboard.oncontextmenu=_=>false;
 for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref = k; k.f?(e.appendChild(sv(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
@@ -129,13 +131,6 @@ keyboard.onpointerup=ev=>{
   if(t.f)(f=t.f[s?1:0])&&f(); else(c=s?t.d[1]:t.e.textContent)!=null&&T.I(c);
   p.e.style.backgroundColor=theme.click; setTimeout(_=>p.e.style.backgroundColor=theme.background,200);
 }
-
-function resize(){
-  let scale=Math.min((innerHeight-innerWidth)/8,innerWidth/10); keyboard.style.width=scale*10;keyboard.style.height=scale*8;
-  keys.forEach(k=>k.f?(k.e.firstChild.style.width="45%"):(k.e.style.fontSize=scale*0.5+"px"));
-}new ResizeObserver(resize).observe(document.body);
-
-function sv(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" stroke="currentColor" vector-effect="non-scaling-stroke"/>`;return s;}
 
 return keys;
 }//createkeys
