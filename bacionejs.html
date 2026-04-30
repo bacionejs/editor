@@ -9,7 +9,6 @@ theme(); pretty(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys(
 if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
 function init(s){T.V=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 
-element("style").textContent=` *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;   border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red;}`;
 function element(tag,p=document.body,c="",v=""){let e=p.appendChild(document.createElement(tag));if(c)e.className=c;if(v)e.textContent=v;return e;}
 function paste(){T.I(T.P);}
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
@@ -38,16 +37,12 @@ function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))st
 function line(s,i){(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);}
 function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
 function filecontent(){return "<meta charset='UTF-8'>\n<\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n"}
+function view(f){let e=view[f];if(e){e.exists=true;}else{e=view[f]=element("div",document.body,"view");e.onclick=()=>view(f);}toggle(e);return e;}
+function toggle(e){if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);}else{T.focus();e.style.zIndex=-1;}}
 
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
 if(d==null){if(h[i]?.v==s.v)return;h.splice(++i,Infinity,s);if(h.length>50)h.shift(),i--;}else{i=Math.max(0,Math.min(h.length-1,i+d));let S=h[i];if(S)T.V=S.v,T.S=T.E=S.s;}
 };restore();}function undo(){restore(-1);}function redo(){restore(1);}
-
-function view(f){let e=(view.a||(view.a=[]))[f];
-if(e){e.exists=true;}else{e=view.a[f]=element("div");e.style.cssText="font-size:.8rem;position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow:auto;";e.onclick=()=>view(f);}
-if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);}else{T.focus();e.style.zIndex=-1;}
-return e;
-}
 
 function pretty(){
 let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
@@ -70,6 +65,11 @@ con.innerHTML+=`${about}.Run.Runs or stops the game which contains the cursor.Sa
 `.split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("")
 KEYS.filter(k=>k.f).forEach(k=>{ let s = k.e.querySelector("svg").cloneNode(true); s.style.width = 10; s.querySelector("path").style.stroke = "black"; con.innerHTML+=s.outerHTML+" "+k.name+"<br><br>" });
 }
+
+element("style").textContent=`
+*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;   border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red;}
+.view{font-size:.4rem;position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow:auto}
+`;
 
 function theme(){
 let c=1,a=[
