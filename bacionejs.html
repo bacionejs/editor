@@ -49,12 +49,6 @@ function undo(){restore(-1);}function redo(){restore(1);}
 function help(){let e=view("Help"); if(e.exists)return; let c=element("div",e);c.innerHTML+=(about+HELP()+buttons()).split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("");}
 function buttons(){let s;return KEYS.filter(k=>k.f).map(k=>(s=k.e.querySelector("svg").cloneNode(1),s.style.width=10,(s.querySelector("path")).style.stroke="black",s.outerHTML+" "+k.name+".")).join("")}
 
-function style(){element("style").textContent=`
-*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red}
-.view{font-size:.8rem;position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;touch-action:pan-y}
-`;
-}
-
 function theme(){
 let i=1,a=[
 ["borderRadius"   ,["20%"     ,  "20%"      ,  "50%"     ]],
@@ -117,33 +111,27 @@ let keys=[
 ];
 
 keys.clicked = (ev) => { let el = document.elementFromPoint(ev.clientX, ev.clientY); return el?.closest('div')?.ref; };
-keys.cols=keys.reduce((a,k)=>(a>k.c)?a:k.c,0)+1;keys.rows=keys.reduce((a,k)=>(a>k.r)?a:k.r,0)+1;
-let keyboard=element("div");keyboard.oncontextmenu=_=>false;
-{let s=keyboard.style; s.backgroundColor=`rgb(100 110 120/ 20%)`;s.border="1px solid black";s.borderRadius="5% 0 0 0";s.touchAction="none";s.userSelect="none";s.position="fixed";s.display="grid";s.gap="1%";s.zIndex=3;
-s.bottom=0;s.right=0;s.aspectRatio=keys.cols/keys.rows;s.gridTemplateColumns=`repeat(${keys.cols},1fr)`;s.gridTemplateRows=`repeat(${keys.rows},1fr)`;}
-for(let k of keys){let e=k.e=element("div",keyboard);
-  e.ref = k; k.f?(e.appendChild(sv(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];Object.assign(e.style,{display:"flex",justifyContent:"center",alignItems:"center",lineHeight:1,gridColumn:k.c+1,gridRow:k.r+1});
-}
+let keyboard=element("div",document.body,"keyboard");keyboard.oncontextmenu=_=>false;
+for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref = k; k.f?(e.appendChild(sv(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
 
 keyboard.timeout=[];
 function clear(t){while(t.length&&clearTimeout(t.pop()));}
 let repeattimeout=500,repeatinterval=100;
 keyboard.onpointercancel=()=>clear(keyboard.timeout)
+
 keyboard.onpointerdown=(ev)=>{
-  ev.preventDefault();let k=keys.clicked(ev);keys.prev=k;
-  if(keys.prev==undefined)return;if(k.name=="save"||k.name=="capslock")return;
+  ev.preventDefault();let k=keys.clicked(ev);keys.prev=k; if(keys.prev==undefined)return;
   keyboard.timeout.push(setTimeout(()=>{keyboard.timeout.push(setInterval(()=>{if(k.f){k.f[0]();}else{T.I(k.e.textContent);}},repeatinterval));},repeattimeout));
 }
-keyboard.onpointerup=(ev)=>{
-  ev.preventDefault();clear(keyboard.timeout);let k=keys.clicked(ev),p=keys.prev;if(!p)return;
-  let t=(k&&p.r==k.r&&p.c==k.c)?k:p;let swipe=t==p&&k!=p;
-  if(t.f){let func=swipe?t.f[1]:t.f[0];if(func)func();}else{let char=swipe?t.d[1]:t.e.textContent;if(char!=null)T.I(char);}
-  p.e.style.backgroundColor=theme.click;
-  setTimeout(()=>p.e.style.backgroundColor=theme.background,200);
+
+keyboard.onpointerup=ev=>{
+  clear(keyboard.timeout); let k=keys.clicked(ev),p=keys.prev,t,f,c,s; if(!p)return; t=k==p?k:p; s=k!=p;
+  if(t.f)(f=t.f[s?1:0])&&f(); else(c=s?t.d[1]:t.e.textContent)!=null&&T.I(c);
+  p.e.style.backgroundColor=theme.click; setTimeout(_=>p.e.style.backgroundColor=theme.background,200);
 }
 
 function resize(){
-  let scale=Math.min((innerHeight-innerWidth)/keys.rows,innerWidth/keys.cols); keyboard.style.width=scale*keys.cols+"px";keyboard.style.height=scale*keys.rows+"px";
+  let scale=Math.min((innerHeight-innerWidth)/8,innerWidth/10); keyboard.style.width=scale*10+"px";keyboard.style.height=scale*8+"px";
   keys.forEach(k=>k.f?(k.e.firstChild.style.width="45%"):(k.e.style.fontSize=scale*0.5+"px"));
 }new ResizeObserver(resize).observe(document.body);
 
@@ -151,6 +139,14 @@ function sv(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg"
 
 return keys;
 }//createkeys
+
+function style(){element("style").textContent=`
+*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red}
+.view{font-size:.8rem;position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;touch-action:pan-y}
+.keyboard{background-color:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;display:grid;gap:1%;z-index:3;bottom:0;right:0;grid-template-columns:repeat(10,1fr)}
+.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1}
+`;
+}
 
 function HELP(){return `.Run.Runs or stops the game which contains the cursor.Save.Saves games AND editor to a timestamped file.Zoom.Toggles font size.Misc.Color-Picker and Icon-Picker put your selection in the Paste buffer.Help.Help is this screen.Paste.Inserts the contents of the Paste buffer.Copy.Begins or extends the selection of text and puts it in the Paste buffer.Depending on what is to the right, selects: word, line, paragraph or pairs.To exit this mode, press enter.Cut.Click Copy and Backspace.Find.Find word under cursor.Rename.Click Copy, type new name and swipe on Paste to replace all.Close.To close or toggle something, click or swipe it again.Backspace.Deletes character or selection.Enter.Inserts a newline or cancels selection.Retains prior indentation.Arrows.Moves cursor or extends selection.Characters.Inserts a character or replaces selection.Capslock.Shows shift characters.Alternatively, you can swipe on alphanumeric keys.Undo.Restore up to 50 changes.Comment.Toggles comments and puts the line in the Paste buffer.Complete.Completes a word.Longpress.Repeats key.Debugging.Displays message and positions the cursor at the runtime error.Linting.Turns the Run button red if there are syntax errors.Fullscreen.Swipe on Zoom button.Themes.Swipe on Misc button..Buttons.`
 }
