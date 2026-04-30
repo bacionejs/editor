@@ -25,7 +25,6 @@ function stacktext(p){return "position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;
 function createpretty(){let e=element("div",document.body);e.style.cssText=stacktext(0);e.style.pointerEvents="none";return e;}
 function syncpretty(){PRETTY.innerHTML=(theme.keywords||theme.pairs?pretty(T.V):T.V.replace(/</g,'&lt;'));lint();}
 function lint(){let v=1;try{eval(T.V)}catch(e){v=0}(lint.s??=KEYS.find(k=>k.name=="run").e.style).backgroundColor=v?theme.background:"red"}
-function reserved(){let k=new Set(T.V.match(/[a-z]+\b/g)||[]); for(let w of k){try{eval('let '+w);k.delete(w)}catch(_){}}return k;}
 function iframe(){let f=element("iframe");f.style.cssText="position:fixed;width:100vw;aspect-ratio:1;z-index:9";f.contentDocument.documentElement.style.overflow="hidden";return f}
 function run(){let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus();if(!g||g.name=="Library")return;f=iframe();f.contentWindow.eval(T.V+g.name+"()");T.blur()}
 function complete(){let w;(w=(T.V.slice(0,T.S).match(/\w+$/)||[])[0])&&T.I(((T.V.match(RegExp("\\b"+w+"\\w*"))||[])[0]||"").slice(w.length))}
@@ -39,16 +38,13 @@ function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.las
 function filecontent(){return "<meta charset='UTF-8'>\n<\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n"}
 function view(f){let e=view[f];if(e){e.exists=true;}else{e=view[f]=element("div",document.body,"view");e.onclick=()=>view(f);}toggle(e);return e;}
 function toggle(e){if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);}else{T.focus();e.style.zIndex=-1;}}
+function special(){let k=new Set(T.V.match(/[a-z]+\b/g)||[]); for(let w of k){try{eval('let '+w);k.delete(w)}catch(_){}}return [..."(){}[\]",...k]}
+function pretty(){let cache,m=/[a-z]+\b|[(){}[\]]|</g;pretty=function(s){return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x));};pretty.init=(c)=>cache=c;} 
 
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S,e:T.E};
 if(d==null){if(h[i]?.v==s.v)return;h.splice(++i,Infinity,s);if(h.length>50)h.shift(),i--;}else{i=Math.max(0,Math.min(h.length-1,i+d));let S=h[i];if(S)T.V=S.v,T.S=T.E=S.s;}
 };restore();}function undo(){restore(-1);}function redo(){restore(1);}
 
-function pretty(){
-let cache={},m=/[a-z]+\b|[(){}[\]]|</g;
-pretty=function(s){ return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x)); }
-pretty.init=()=>{cache={};[..."(){}[\]",...reserved()].forEach(v=>{cache[v]='<span style=color:'+("(){}[\]".includes(v)?theme.pairs:theme.keywords)+'>'+v+'</span>';});
-}} 
 
 function misc(){
 let e=view("Misc");if(e.exists)return; let c,icons=loadicons(); e.style.overflowWrap="anywhere";
@@ -90,7 +86,7 @@ let c=1,a=[
 theme=()=>{
   c%=a[0][1].length; a.map(([k,v])=>theme[k]=k=="border"&&v[c]?`2px outset ${v[c]}`:v[c]); c++; KEYS.map(({e:{style:s}})=>a.slice(0,4).forEach(([k])=>s[k]=theme[k]));
   Object.assign(T.style,{fontSize:theme.fontsizesmall,caretColor:theme.caret}); Object.assign(PRETTY.style,{fontSize:theme.fontsizesmall,background:theme.bbackground,color:theme.foreground});
-  pretty.init(); syncpretty();
+  pretty.init(special().reduce((a,v)=>(a[v]='<span style=color:'+( "(){}[]".includes(v)?theme.pairs:theme.keywords )+'>'+v+'</span>',a),{})); syncpretty();
 }}
 
 function createtextarea(){
