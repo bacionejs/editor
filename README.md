@@ -12,9 +12,9 @@ BacioneJS is a mobile-centric JavaScript IDE with a custom, thumb-friendly keybo
 - **Linting**: turns the Run button red if there are syntax errors
 - **Pickers**: icon and color selectors
 - **Gestures**: swipe and long-press-repeat support
-- **Syntax Highlighting**, **Themes**, **Zoom** and **Fullscreen**
 - **Vanilla**: no third-party libraries
 - **Offline**: no server, no internet
+- **Syntax Highlighting**, **Themes**, **Zoom** and **Fullscreen**
 - **Games** 🎮 and **Guide** 📚 included
 
  </details>
