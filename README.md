@@ -4,7 +4,7 @@ BacioneJS is a mobile-centric JavaScript IDE with a custom, thumb-friendly keybo
 
 <details><summary>Features</summary>
 
-- **Thumb-friendly**: custom, phone-centric keyboard
+- **Thumb-friendly**: custom keyboard
 - **Run**: instant code execution
 - **Editing**: save, cut, copy, paste, undo, redo
 - **Code Assistance**: rename, auto-complete, auto-indent, auto-comment
