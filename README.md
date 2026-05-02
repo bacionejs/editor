@@ -4,17 +4,17 @@ BacioneJS is a mobile-centric JavaScript IDE with a custom, thumb-friendly keybo
 
 <details><summary>Features</summary>
 
-- **Vanilla**: no third-party libraries
-- **Offline**: no server, no internet
 - **Thumb-friendly**: custom, phone-centric keyboard
-- **Editing**: save, cut, copy, paste, undo, redo
 - **Run**: instant code execution
+- **Editing**: save, cut, copy, paste, undo, redo
+- **Code Assistance**: rename, auto-complete, auto-indent, auto-comment
 - **Debugging**: displays message and positions the cursor at the runtime error
 - **Linting**: turns the Run button red if there are syntax errors
-- **Code Assistance**: rename, auto-complete, auto-indent, auto-comment
 - **Pickers**: icon and color selectors
 - **Gestures**: swipe and long-press-repeat support
 - **Syntax Highlighting**, **Themes**, **Zoom** and **Fullscreen**
+- **Vanilla**: no third-party libraries
+- **Offline**: no server, no internet
 - **Games** 🎮 and **Guide** 📚 included
 
  </details>
