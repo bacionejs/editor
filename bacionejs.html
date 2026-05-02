@@ -21,8 +21,6 @@ function zoom(){let {fontsizesmall:s, fontsizebig:b}=theme;T.style.fontSize=PRET
 function save(){Object.assign(document.querySelector("a")||element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+"bacionejs.html"}).click();}
 function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
 function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);T.focus();}
-function stacktext(p){return "position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;touch-action:pan-x pan-y;overflow:auto;white-space:pre;z-index:"+p+(p&&";background:transparent;color:transparent;")}
-function createpretty(){let e=element("div",document.body);e.style.cssText=stacktext(0);e.style.pointerEvents="none";return e;}
 function syncpretty(){PRETTY.innerHTML=(theme.keywords||theme.pairs?pretty(T.V):T.V.replace(/</g,'&lt;'));lint();}
 function lint(){let v=1;try{eval(T.V)}catch(e){v=0}(lint.s??=KEYS.find(k=>k.name=="run").e.style).backgroundColor=v?theme.background:"red"}
 function iframe(){let f=element("iframe");f.style.cssText="position:fixed;width:100vw;aspect-ratio:1;z-index:9";f.contentDocument.documentElement.style.overflow="hidden";return f}
@@ -48,6 +46,7 @@ function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S};d==null?(h[i]?.
 function undo(){restore(-1);}function redo(){restore(1);}
 function help(){let e=view("Help"); if(e.exists)return; let c=element("div",e);c.innerHTML+=(about+HELP()+buttons()).split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("");}
 function buttons(){let s;return KEYS.filter(k=>k.f).map(k=>(s=k.e.querySelector("svg").cloneNode(1),s.style.width=10,(s.querySelector("path")).style.stroke="black",s.outerHTML+" "+k.name+".")).join("")}
+function createpretty(){let e=element("div",document.body,"text");e.style.cssText="z-index:0;pointer-events:none";return e;}
 
 function theme(){
 let i=0,a=[
@@ -71,13 +70,13 @@ theme=()=>{
 }}
 
 function createtextarea(){
-let T=element("textarea");
+let T=element("textarea",document.body,"text");
 T.oncut=_=>0; T.onscroll=_=>{PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft}; T.onpaste=e=>{e.preventDefault();T.I(e.clipboardData.getData('text'))};
 Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;syncpretty();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
 T.I=function(t,s=T.S,e=T.E){restore();T.R+=t;this.setRangeText(t,s,e,"end");restore();syncpretty();}
-T.R="";T.P="";T.inputMode="none";T.spellcheck=false;T.style.cssText=stacktext(1);
+T.R="";T.P="";T.inputMode="none";T.spellcheck=false;T.style.cssText="z-index:1;background:transparent;color:transparent";
 return T;
 }
 
@@ -138,6 +137,7 @@ return keys;
 function style(){element("style").textContent=`
 *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red}
 .view{font-size:.8rem;position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;touch-action:pan-y}
+.text{position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent}
 .keyboard{background-color:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;display:grid;z-index:3;bottom:0;right:0;grid-template-columns:repeat(10,1fr)}
 .keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1}
 `;
