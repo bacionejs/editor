@@ -36,17 +36,18 @@ function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.las
 function filecontent(){return "<meta charset='UTF-8'>\n<\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n"}
 function view(f){let e=view[f];if(e){e.exists=true;}else{e=view[f]=element("div",document.body,"view");e.onclick=()=>view(f);}toggle(e);return e;}
 function toggle(e){if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);}else{T.focus();e.style.zIndex=-1;}}
-function special(){let k=new Set(T.V.match(/[a-z]+\b/g)||[]); for(let w of k){try{eval('let '+w);k.delete(w)}catch(_){}}return [..."(){}[\]",...k]}
-function pretty(){let cache,m=/[a-z]+\b|[(){}[\]]|</g;pretty=function(s){return s.replace(m,x=>x=="<"?"&lt;":(cache[x]||x));};pretty.init=(c)=>cache=c;} 
 function misc(){let e=view("Misc");if(e.exists)return; let c;c=element("input",e);c.type="color";c.onchange=(e)=>T.P=e.target.value; c=element("div",e);c.innerHTML=loadicons();c.onclick=(e)=>T.P=e.target.textContent;}
 function loadicons(){return ranges().map(c=>String.fromCodePoint(c)).map(c=>tofu(c)?`<x>${c}</x>`:"").filter(Boolean).join``;}
 function ranges(){return [[9711,10100],[127744,128764],[128992,130000]].flatMap(([a,b])=>Array.from({length:b-a+1},(_,i)=>a+i))}
-function tofu(c){if(!tofu.ctx){tofu.ctx=document.createElement("canvas").getContext("2d");tofu.tofuWidth=tofu.ctx.measureText("\uffff").width;}return tofu.ctx.measureText(c).width!==tofu.tofuWidth;}
+function tofu(c){if(!tofu.X){tofu.X=document.createElement("canvas").getContext("2d");tofu.width=tofu.X.measureText("\uffff").width;}return tofu.X.measureText(c).width!==tofu.width;}
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S};d==null?(h[i]?.v!=s.v&&h.splice(++i,Infinity,s),h.length>50&&(h.shift(),--i)):(i=Math.max(0,Math.min(h.length-1,i+d)),h[i]&&(T.V=h[i].v,T.S=T.E=h[i].s))};restore()}
 function undo(){restore(-1);}function redo(){restore(1);}
 function help(){let e=view("Help"); if(e.exists)return; let c=element("div",e);c.innerHTML+=(about+HELP()+buttons()).split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("");}
-function buttons(){let s;return KEYS.filter(k=>k.f).map(k=>(s=k.e.querySelector("svg").cloneNode(1),s.style.width=10,(s.querySelector("path")).style.stroke="black",s.outerHTML+" "+k.name+".")).join("")}
+function buttons(){let s;return KEYS.filter(k=>k.f).map(k=>(s=k.e.querySelector("svg").cloneNode(1),s.style.width=10,s.querySelector("path").style.stroke="black",s.outerHTML+" "+k.name+".")).join("")}
 function createpretty(){let e=element("div",document.body,"text");e.style.cssText="z-index:0;pointer-events:none";return e;}
+function svg(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" stroke="currentColor" vector-effect="non-scaling-stroke"/>`;return s;}
+function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=s=>s.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty.init=()=>{c=color().reduce((a,[v,c])=>(a[v]=`<span style=color:${c}>${v}</span>`,a),{})}}
+function color(){return[..."(){}[]"].map(v=>[v,theme.pairs]).concat([...new Set(T.V.match(/[a-z]+\b/g)||[])].filter(w=>{try{eval('let '+w)}catch{return 1}}).map(v=>[v,theme.keywords]))}
 
 function theme(){
 let i=0,a=[
@@ -66,7 +67,7 @@ let i=0,a=[
 theme=()=>{
   i%=a[0][1].length; a.map(([k,v])=>theme[k]=k=="border"&&v[i]?`2px outset ${v[i]}`:v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,4).forEach(([k])=>s[k]=theme[k]));
   Object.assign(T.style,{fontSize:theme.fontsizesmall,caretColor:theme.caret}); Object.assign(PRETTY.style,{fontSize:theme.fontsizesmall,background:theme.bbackground,color:theme.foreground});
-  pretty.init(special().reduce((a,v)=>(a[v]='<span style=color:'+( "(){}[]".includes(v)?theme.pairs:theme.keywords )+'>'+v+'</span>',a),{})); syncpretty();
+  pretty.init(); syncpretty();
 }}
 
 function createtextarea(){
@@ -109,11 +110,10 @@ let keys=[
 {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
 
-function sv(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" stroke="currentColor" vector-effect="non-scaling-stroke"/>`;return s;}
 new ResizeObserver(()=>{let s=Math.min((innerHeight-innerWidth)/8,innerWidth/10);keyboard.style.width=s*10;keys.map(k=>k.f?k.e.firstChild.style.width="50%":k.e.style.fontSize=s/2)}).observe(document.body)
 keys.clicked = (ev) => { let el = document.elementFromPoint(ev.clientX, ev.clientY); return el?.closest('div')?.ref; };
 let keyboard=element("div",document.body,"keyboard");keyboard.oncontextmenu=_=>false;
-for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref = k; k.f?(e.appendChild(sv(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
+for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref = k; k.f?(e.appendChild(svg(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
 
 keyboard.timeout=[];
 function clear(t){while(t.length&&clearTimeout(t.pop()));}
