@@ -6,8 +6,8 @@ BacioneJS is a mobile-centric JavaScript IDE, to give people a **taste** of prog
 
 - thumb-friendly custom keyboard
 - run code instantly
-- save, cut, copy, paste, undo, redo
-- rename, auto-complete, auto-indent, auto-comment
+- save, cut, copy, paste, undo, redo, rename
+- auto-complete, auto-indent, auto-comment
 - debugging, linting
 - icon and color selectors
 - swipe and long-press-repeat
