@@ -49,7 +49,7 @@ function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=s=>s.replace(m,x=>x=="
 function* color(){for(let v of "(){}[]")yield [v,theme.pairs];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,theme.keywords]}}}
 
 function theme(){
-let i=0,a=[
+let i=1,a=[
 ["borderRadius"   ,["20%"     ,  "20%"      ,  "50%"     ]],
 ["border"         ,["silver"  ,  "black"    ,  ""        ]],
 ["background"     ,["white"   ,  "#424242"  ,  "#38393D" ]],
