@@ -2,7 +2,7 @@
 
 BacioneJS is a mobile-centric JavaScript IDE, to give people a **taste** of programming with what they have.  
 
-**only 150 lines of code**
+**🪶 only 150 lines of code**
 
 <details><summary>Features</summary>
 
