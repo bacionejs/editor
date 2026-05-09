@@ -46,7 +46,7 @@ function createpretty(){let e=element("div",document.body,"text");e.style.cssTex
 function svg(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" stroke="currentColor" vector-effect="non-scaling-stroke"/>`;return s;}
 function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=s=>s.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty.init=()=>{c={};for(let [v,k] of color())c[v]=`<span style=color:${k}>${v}</span>`;}}
 function* color(){for(let v of "(){}[]")yield [v,theme.pairs];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,theme.keywords]}}}
-function zoom(init=false){if(!init)zoom.big=!zoom.big;let{fontsizesmall:s,fontsizebig:b}=theme;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?b:s);T.focus();}
+function zoom(init=false){if(!init)zoom.big=!zoom.big;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"0.5rem":"1.0rem");T.focus();}
 
 function theme(){
 let i=0,a=[
@@ -55,8 +55,6 @@ let i=0,a=[
 ["background"     ,["white"   ,  "#424242"  ,  "#38393D" ]],
 ["color"          ,["black"   ,  "white"    ,  "yellow"  ]],
 ["click"          ,["blue"    ,  "gray"     ,  "lime"    ]],
-["fontsizesmall"  ,["1.0rem"  ,  "1.0rem"   ,  "1.0rem"  ]],
-["fontsizebig"    ,["0.5rem"  ,  "0.5rem"   ,  "0.5rem"  ]],
 ["caret"          ,["blue"    ,  "pink"     ,  "white"   ]],
 ["bbackground"    ,["white"   ,  "#15161B"  ,  "black"   ]],
 ["foreground"     ,["black"   ,  "white"    ,  "lime"    ]],
