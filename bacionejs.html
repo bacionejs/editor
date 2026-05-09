@@ -17,7 +17,6 @@ function capslock(){KEYS.forEach(k => k.f || (k.e.textContent = k.d[k.d.indexOf(
 function enter(){T.S!=T.E?T.S=T.E:T.I("\n"+T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S).match(/^\s*/))}
 function backspace(){let S=T.S,E=T.E;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(T.V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1;}
 function arrow(d){let i=T.E+d,s=T.V;if(i>=0&&i<=s.length){if(T.S==T.E)T.S=T.E=i;else T.P=s.slice(T.S,T.E=i)}}function left(){arrow(-1)}function right(){arrow(1)} 
-function zoom(){let {fontsizesmall:s, fontsizebig:b}=theme;T.style.fontSize=PRETTY.style.fontSize=(parseInt(T.style.fontSize)==s?b:s)+"px";setTimeout(()=>T.blur(T.focus()),200);}
 function save(){Object.assign(document.querySelector("a")||element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+"bacionejs.html"}).click();}
 function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
 function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);T.focus();}
@@ -47,6 +46,7 @@ function createpretty(){let e=element("div",document.body,"text");e.style.cssTex
 function svg(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" stroke="currentColor" vector-effect="non-scaling-stroke"/>`;return s;}
 function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=s=>s.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty.init=()=>{c={};for(let [v,k] of color())c[v]=`<span style=color:${k}>${v}</span>`;}}
 function* color(){for(let v of "(){}[]")yield [v,theme.pairs];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,theme.keywords]}}}
+function zoom(init=false){if(!init)zoom.big=!zoom.big;let{fontsizesmall:s,fontsizebig:b}=theme;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?b:s);setTimeout(()=>T.blur(T.focus()),200);}
 
 function theme(){
 let i=0,a=[
@@ -55,8 +55,8 @@ let i=0,a=[
 ["background"     ,["white"   ,  "#424242"  ,  "#38393D" ]],
 ["color"          ,["black"   ,  "white"    ,  "yellow"  ]],
 ["click"          ,["blue"    ,  "gray"     ,  "lime"    ]],
-["fontsizesmall"  ,[16        ,  16         ,  16        ]],
-["fontsizebig"    ,[24        ,  24         ,  24        ]],
+["fontsizesmall"  ,["1.0rem"  ,  "1.0rem"   ,  "1.0rem"  ]],
+["fontsizebig"    ,["0.5rem"  ,  "0.5rem"   ,  "0.5rem"  ]],
 ["caret"          ,["blue"    ,  "pink"     ,  "white"   ]],
 ["bbackground"    ,["white"   ,  "#15161B"  ,  "black"   ]],
 ["foreground"     ,["black"   ,  "white"    ,  "lime"    ]],
@@ -65,8 +65,7 @@ let i=0,a=[
 ];
 theme=()=>{
   i%=a[0][1].length; a.map(([k,v])=>theme[k]=k=="border"&&v[i]?`2px outset ${v[i]}`:v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,4).forEach(([k])=>s[k]=theme[k]));
-  Object.assign(T.style,{fontSize:theme.fontsizesmall,caretColor:theme.caret}); Object.assign(PRETTY.style,{fontSize:theme.fontsizesmall,background:theme.bbackground,color:theme.foreground});
-  pretty.init(); syncpretty();
+  zoom(1); Object.assign(T.style,{caretColor:theme.caret}); Object.assign(PRETTY.style,{background:theme.bbackground,color:theme.foreground}); pretty.init(); syncpretty();
 }}
 
 function createtextarea(){
