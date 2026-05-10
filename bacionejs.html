@@ -7,7 +7,7 @@ if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){aler
 
 style(); theme(); pretty(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
 if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
-function init(s){T.V=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
+function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 
 function element(tag,p=document.body,c="",v=""){let e=p.appendChild(document.createElement(tag));if(c)e.className=c;if(v)e.textContent=v;return e;}
 function paste(){T.I(T.P);}
@@ -20,7 +20,6 @@ function arrow(d){let i=T.E+d,s=T.V;if(i>=0&&i<=s.length){if(T.S==T.E)T.S=T.E=i;
 function save(){Object.assign(document.querySelector("a")||element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+"bacionejs.html"}).click();}
 function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
 function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);T.focus();}
-function syncpretty(){PRETTY.innerHTML=(theme.keywords||theme.pairs?pretty(T.V):T.V.replace(/</g,'&lt;'));lint();}
 function lint(){let v=1;try{eval(T.V)}catch(e){v=0}(lint.s??=KEYS.find(k=>k.name=="run").e.style).backgroundColor=v?theme.background:"red"}
 function iframe(){let f=element("iframe");f.style.cssText="position:fixed;width:100vw;aspect-ratio:1;z-index:9";f.contentDocument.documentElement.style.overflow="hidden";return f}
 function run(){let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus();if(!g||g.name=="Library")return;f=iframe();f.contentWindow.eval(T.V+g.name+"()");T.blur()}
@@ -46,23 +45,23 @@ function createpretty(){let e=element("div",document.body,"text");e.style.cssTex
 function svg(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" stroke="currentColor" vector-effect="non-scaling-stroke"/>`;return s;}
 function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=s=>s.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty.init=()=>{c={};for(let [v,k] of color())c[v]=`<span style=color:${k}>${v}</span>`;}}
 function* color(){for(let v of "(){}[]")yield [v,theme.pairs];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,theme.keywords]}}}
-function zoom(init=false){if(!init)zoom.big=!zoom.big;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"0.5rem":"1.0rem");T.focus();}
+function zoom(init=false){if(!init)zoom.big^=1;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"0.5rem":"1.0rem");T.focus();}
+function syncpretty(){PRETTY.innerHTML=pretty(T.V);lint();}
 
 function theme(){
 let i=0,a=[
-["borderRadius"   ,["20%"     ,  "20%"      ,  "50%"     ]],
-["border"         ,["silver"  ,  "black"    ,  ""        ]],
-["background"     ,["white"   ,  "#424242"  ,  "#38393D" ]],
-["color"          ,["black"   ,  "white"    ,  "yellow"  ]],
-["click"          ,["blue"    ,  "gray"     ,  "lime"    ]],
-["caret"          ,["blue"    ,  "pink"     ,  "white"   ]],
-["bbackground"    ,["white"   ,  "#15161B"  ,  "black"   ]],
-["foreground"     ,["black"   ,  "white"    ,  "lime"    ]],
-["keywords"       ,["teal"    ,  "#B3EAB7"  ,  ""        ]],
-["pairs"          ,["purple"  ,  "#96ecff"  ,  ""        ]],
+["border"         ,["silver"  ,  "black"    ]],
+["background"     ,["white"   ,  "#424242"  ]],
+["color"          ,["black"   ,  "white"    ]],
+["click"          ,["blue"    ,  "gray"     ]],
+["caret"          ,["blue"    ,  "pink"     ]],
+["bbackground"    ,["white"   ,  "#15161B"  ]],
+["foreground"     ,["black"   ,  "white"    ]],
+["keywords"       ,["teal"    ,  "#B3EAB7"  ]],
+["pairs"          ,["purple"  ,  "#96ecff"  ]],
 ];
 theme=()=>{
-  i%=a[0][1].length; a.map(([k,v])=>theme[k]=k=="border"&&v[i]?`2px outset ${v[i]}`:v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,4).forEach(([k])=>s[k]=theme[k]));
+  i%=a[0][1].length; a.map(([k,v])=>theme[k]=k=="border"&&v[i]?`2px outset ${v[i]}`:v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,3).forEach(([k])=>s[k]=theme[k]));
   zoom(1); Object.assign(T.style,{caretColor:theme.caret}); Object.assign(PRETTY.style,{background:theme.bbackground,color:theme.foreground}); pretty.init(); syncpretty();
 }}
 
@@ -135,7 +134,7 @@ function style(){element("style").textContent=`
 .view{position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;touch-action:pan-y}
 .text{position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent}
 .keyboard{background-color:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;display:grid;z-index:3;bottom:0;right:0;grid-template-columns:repeat(10,1fr)}
-.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1}
+.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;border-radius:20%}
 `;
 }
 
