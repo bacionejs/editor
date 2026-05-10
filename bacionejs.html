@@ -61,7 +61,7 @@ let i=0,a=[
 ["pairs"          ,["purple"  ,  "#96ecff"  ]],
 ];
 theme=()=>{
-  i%=a[0][1].length; a.map(([k,v])=>theme[k]=k=="border"&&v[i]?`2px outset ${v[i]}`:v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,3).forEach(([k])=>s[k]=theme[k]));
+  i%=a[0][1].length; a.map(([k,v])=>theme[k]=k=="border"?`2px outset ${v[i]}`:v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,3).forEach(([k])=>s[k]=theme[k]));
   zoom(1); Object.assign(T.style,{caretColor:theme.caret}); Object.assign(PRETTY.style,{background:theme.bbackground,color:theme.foreground}); pretty.init(); syncpretty();
 }}
 
