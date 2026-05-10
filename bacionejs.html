@@ -1,14 +1,12 @@
 <meta charset='UTF-8'>
 <script>onload=()=>{ide();function ide(){
 document.title="\uD83D\uDC8B BacioneJS"; let about=`Bacione Javascript Editor.Integrated Development Environment.Github./bacionejs/editor, GPL license`;
-
 onerror=(m,_,l,c)=>{let f=document.querySelector("iframe"),v=view("Error"),s=`${m}\nline: ${l}\ncol: ${c}`;f&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus());v.textContent=s};
 if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){alert("Only works on modern android chromium-based browsers")}
-
 style(); theme(); pretty(); let T=createtextarea(),PRETTY=createpretty(),KEYS=createkeys();
 if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
-function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 
+function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 function element(tag,p=document.body,c="",v=""){let e=p.appendChild(document.createElement(tag));if(c)e.className=c;if(v)e.textContent=v;return e;}
 function paste(){T.I(T.P);}
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
@@ -48,23 +46,6 @@ function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=s=>s.replace(m,x=>x=="
 function* color(){for(let v of "(){}[]")yield [v,theme.pairs];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,theme.keywords]}}}
 function syncpretty(){PRETTY.innerHTML=pretty(T.V);lint();}
 
-function theme(){
-let i=0,a=[
-["border-color"   ,["silver"  ,  "black"    ]],
-["background"     ,["white"   ,  "#424242"  ]],
-["color"          ,["black"   ,  "white"    ]],
-["click"          ,["blue"    ,  "gray"     ]],
-["caret"          ,["blue"    ,  "pink"     ]],
-["bbackground"    ,["white"   ,  "#15161B"  ]],
-["foreground"     ,["black"   ,  "white"    ]],
-["keywords"       ,["teal"    ,  "#B3EAB7"  ]],
-["pairs"          ,["purple"  ,  "#96ecff"  ]],
-];
-theme=()=>{
-  i%=a[0][1].length; a.map(([k,v])=>theme[k]=v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,3).forEach(([k])=>s[k]=theme[k]));
-  zoom(1); Object.assign(T.style,{caretColor:theme.caret}); Object.assign(PRETTY.style,{background:theme.bbackground,color:theme.foreground}); pretty.init(); syncpretty();
-}}
-
 function createtextarea(){
 let T=element("textarea",document.body,"text");
 T.oncut=_=>0; T.onscroll=_=>{PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft}; T.onpaste=e=>{e.preventDefault();T.I(e.clipboardData.getData('text'))};
@@ -95,8 +76,7 @@ let keys=[
 {r:6,c:9, f:[capslock],        d:"M9 10 h-8 M1 4 l 4 -4 l4 4"},
 {r:7,c:8, f:[backspace],       d:"M10 1 l-6 8 l-4 -4 l4 -4 l6 8"},
 {r:7,c:9, f:[enter],           d:"M10 0 v10 h-10 l5 -5 v5"},
-{r:7,c:7, d:[" "," "]},
-{r:1,c:0, d:["?","?"]},  {r:1,c:1, d:['"','"']},
+{r:7,c:7, d:[" "," "]},  {r:1,c:0, d:["?","?"]},  {r:1,c:1, d:['"','"']},
 {r:2,c:0, d:["(","("]},  {r:2,c:1, d:[")",")"]}, {r:2,c:2, d:["{","{"]}, {r:2,c:3, d:["}","}"]}, {r:2,c:4, d:["[","["]}, {r:2,c:5, d:["]","]"]}, {r:2,c:6, d:[",",","]}, {r:2,c:7, d:[";",";"]}, {r:2,c:8, d:[".","."]}, {r:2,c:9, d:[":",":"]},
 {r:3,c:0, d:["&","&"]},  {r:3,c:1, d:["|","|"]}, {r:3,c:2, d:["+","+"]}, {r:3,c:3, d:["-","-"]}, {r:3,c:4, d:["=","="]}, {r:3,c:5, d:["!","!"]}, {r:3,c:6, d:["<","<"]}, {r:3,c:7, d:[">",">"]}, {r:3,c:8, d:["*","*"]}, {r:3,c:9, d:["/","/"]},
 {r:4,c:0, d:["1","\\"]}, {r:4,c:1, d:["2","`"]}, {r:4,c:2, d:["3","'"]}, {r:4,c:3, d:["4","@"]}, {r:4,c:4, d:["5","#"]}, {r:4,c:5, d:["6","_"]}, {r:4,c:6, d:["7","%"]}, {r:4,c:7, d:["8","~"]}, {r:4,c:8, d:["9","^"]}, {r:4,c:9, d:["0","$"]},
@@ -128,6 +108,23 @@ keyboard.onpointerup=ev=>{
 
 return keys;
 }//createkeys
+
+function theme(){
+let i=0,a=[
+["border-color"   ,["silver"  ,  "black"    ]],
+["background"     ,["white"   ,  "#424242"  ]],
+["color"          ,["black"   ,  "white"    ]],
+["click"          ,["blue"    ,  "gray"     ]],
+["caret"          ,["blue"    ,  "pink"     ]],
+["back"           ,["white"   ,  "#15161B"  ]],
+["fore"           ,["black"   ,  "white"    ]],
+["keywords"       ,["teal"    ,  "#B3EAB7"  ]],
+["pairs"          ,["purple"  ,  "#96ecff"  ]],
+];
+theme=()=>{
+  i%=a[0][1].length; a.map(([k,v])=>theme[k]=v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,3).forEach(([k])=>s[k]=theme[k]));
+  zoom(1); T.style.caretColor=theme.caret; Object.assign(PRETTY.style,{background:theme.back,color:theme.fore}); pretty.init(); syncpretty();
+}}
 
 function style(){element("style").textContent=`
 *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red}
