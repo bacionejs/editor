@@ -41,8 +41,8 @@ function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S};d==null?(h[i]?.
 function undo(){restore(-1);}function redo(){restore(1);}
 function help(){let e=view("Help"); if(e.exists)return; let c=element("div",e);c.innerHTML+=(about+HELP()+buttons()).split(".").map((p)=>p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>").join("");}
 function buttons(){let s;return KEYS.filter(k=>k.f).map(k=>(s=k.e.querySelector("svg").cloneNode(1),s.style.width=10,s.querySelector("path").style.stroke="black",s.outerHTML+" "+k.name+".")).join("")}
-function createpretty(){let e=element("div",document.body,"text");e.style.cssText="z-index:0;pointer-events:none";return e;}
 function svg(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 10 10");s.innerHTML=`<path d="${d}" fill="none" stroke-width="1" stroke="currentColor" vector-effect="non-scaling-stroke"/>`;return s;}
+function createpretty(){let e=element("div",document.body,"text");e.style.cssText="z-index:0;pointer-events:none";return e;}
 function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=s=>s.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty.init=()=>{c={};for(let [v,k] of color())c[v]=`<span style=color:${k}>${v}</span>`;}}
 function* color(){for(let v of "(){}[]")yield [v,theme.pairs];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,theme.keywords]}}}
 function zoom(init=false){if(!init)zoom.big^=1;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"0.5rem":"1.0rem");T.focus();}
@@ -50,7 +50,7 @@ function syncpretty(){PRETTY.innerHTML=pretty(T.V);lint();}
 
 function theme(){
 let i=0,a=[
-["border"         ,["silver"  ,  "black"    ]],
+["border-color"   ,["silver"  ,  "black"    ]],
 ["background"     ,["white"   ,  "#424242"  ]],
 ["color"          ,["black"   ,  "white"    ]],
 ["click"          ,["blue"    ,  "gray"     ]],
@@ -61,7 +61,7 @@ let i=0,a=[
 ["pairs"          ,["purple"  ,  "#96ecff"  ]],
 ];
 theme=()=>{
-  i%=a[0][1].length; a.map(([k,v])=>theme[k]=k=="border"?`2px outset ${v[i]}`:v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,3).forEach(([k])=>s[k]=theme[k]));
+  i%=a[0][1].length; a.map(([k,v])=>theme[k]=v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,3).forEach(([k])=>s[k]=theme[k]));
   zoom(1); Object.assign(T.style,{caretColor:theme.caret}); Object.assign(PRETTY.style,{background:theme.bbackground,color:theme.foreground}); pretty.init(); syncpretty();
 }}
 
@@ -134,7 +134,7 @@ function style(){element("style").textContent=`
 .view{position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;touch-action:pan-y}
 .text{position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent}
 .keyboard{background-color:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;display:grid;z-index:3;bottom:0;right:0;grid-template-columns:repeat(10,1fr)}
-.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;border-radius:20%}
+.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;border-radius:20%;border:2px outset}
 `;
 }
 
