@@ -42,7 +42,7 @@ function createpretty(){let e=element("div",document.body,"text");e.style.cssTex
 function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=s=>s.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty.init=()=>{c={};for(let [v,k] of color())c[v]=`<span style=color:${k}>${v}</span>`;}}
 function* color(){for(let v of "(){}[]")yield [v,theme.pairs];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,theme.keywords]}}}
 function syncpretty(){PRETTY.innerHTML=pretty(T.V);lint();}
-function svg(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","0 0 11 11");s.innerHTML=`<path d="${d}" fill="none" stroke="currentColor"/>`;return s;}
+function svg(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","-1 -1 12 12");s.innerHTML=`<path d="${d}" fill="none" stroke="currentColor"/>`;return s;}
 function help(){let e=view("Help");if(e.exists)return;let c=element("div",e);c.innerHTML=(about+HELP()).split(".").reduce((a,p)=>a+(p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>"),"")}
 
 function createtextarea(){
