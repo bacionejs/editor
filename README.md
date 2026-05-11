@@ -13,7 +13,7 @@ BacioneJS is a mobile-centric JavaScript IDE, to give people a **taste** of prog
 - debugging, linting
 - icon and color selectors
 - swipe and long-press-repeat
-- syntax highlighting, themes, zoom and fullscreen
+- syntax highlighting, themes, zoom, fullscreen
 - no third-party libraries, no server, no internet
 - games 🎮 and guide 📚 included
 
