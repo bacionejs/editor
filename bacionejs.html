@@ -18,7 +18,6 @@ function arrow(d){let i=T.E+d,s=T.V;if(i>=0&&i<=s.length){if(T.S==T.E)T.S=T.E=i;
 function save(){Object.assign(document.querySelector("a")||element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+"bacionejs.html"}).click();}
 function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
 function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);T.focus();}
-function lint(){let v=1;try{eval(T.V)}catch(e){v=0}(lint.s??=KEYS.find(k=>k.name=="run").e.style).backgroundColor=v?theme.background:"red"}
 function iframe(){let f=element("iframe");f.style.cssText="position:fixed;width:100vw;aspect-ratio:1;z-index:9";f.contentDocument.documentElement.style.overflow="hidden";return f}
 function run(){let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus();if(!g||g.name=="Library")return;f=iframe();f.contentWindow.eval(T.V+g.name+"()");T.blur()}
 function complete(){let w;(w=(T.V.slice(0,T.S).match(/\w+$/)||[])[0])&&T.I(((T.V.match(RegExp("\\b"+w+"\\w*"))||[])[0]||"").slice(w.length))}
@@ -44,6 +43,7 @@ function* color(){for(let v of "(){}[]")yield [v,theme.pairs];for(let w of new S
 function syncpretty(){PRETTY.innerHTML=pretty(T.V);lint();}
 function svg(d){let s=document.createElementNS("http://www.w3.org/2000/svg","svg");s.setAttribute("viewBox","-1 -1 12 12");s.innerHTML=`<path d="${d}" fill="none" stroke="currentColor"/>`;return s;}
 function help(){let e=view("Help");if(e.exists)return;let c=element("div",e);c.innerHTML=(about+HELP()).split(".").reduce((a,p)=>a+(p.includes(" ")?"<br>"+p:"<br><br><b>"+p+"</b>"),"")}
+function lint(){let v=0;try{eval(T.V)}catch(e){v=1}(lint.e??=KEYS.find(k=>k.name=="run").e.style).background=v?"red":theme.background}
 
 function createtextarea(){
 let T=element("textarea",document.body,"text");
@@ -102,7 +102,7 @@ keyboard.onpointerdown=(ev)=>{
 keyboard.onpointerup=ev=>{
   clear(keyboard.timeout); let k=keys.clicked(ev),p=keys.prev,t,f,c,s; if(!p)return; t=k==p?k:p; s=k!=p;
   if(t.f)(f=t.f[s?1:0])&&f(); else(c=s?t.d[1]:t.e.textContent)!=null&&T.I(c);
-  p.e.style.backgroundColor=theme.click; setTimeout(_=>p.e.style.backgroundColor=theme.background,200);
+  p.e.style.background=theme.click; setTimeout(_=>p.e.style.background=theme.background,200);
 }
 
 return keys;
@@ -129,7 +129,7 @@ function style(){element("style").textContent=`
 *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red}
 .view{position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;touch-action:pan-y} .view svg{width:1rem !important;}
 .text{position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent}
-.keyboard{background-color:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;display:grid;z-index:3;bottom:0;right:0;grid-template-columns:repeat(10,1fr)}
+.keyboard{background:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;display:grid;z-index:3;bottom:0;right:0;grid-template-columns:repeat(10,1fr)}
 .keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;border-radius:20%;border:2px outset}
 `;
 }
