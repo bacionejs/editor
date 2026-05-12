@@ -93,7 +93,7 @@ function clear(t){while(t.length&&clearTimeout(t.pop()));}
 let repeattimeout=500,repeatinterval=100;
 keyboard.onpointercancel=()=>clear(keyboard.timeout)
 
-keyboard.onpointerdown=(ev)=>{
+keyboard.onpointerdown=ev=>{
   ev.preventDefault();let k=keys.clicked(ev);keys.prev=k; if(keys.prev==undefined)return;
   keyboard.timeout.push(setTimeout(()=>{keyboard.timeout.push(setInterval(()=>{if(k.f){k.f[0]();}else{T.I(k.e.textContent);}},repeatinterval));},repeattimeout));
 }
