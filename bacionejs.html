@@ -7,7 +7,7 @@ style(); theme(); pretty(); let T=createtextarea(),PRETTY=createpretty(),KEYS=cr
 if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
 
 function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
-function element(tag,p,c=""){let e=(p||document.body).appendChild(document.createElement(tag));if(c)e.className=c;return e;}
+function element(tag,p,c="",o){let e=(p||document.body).appendChild(document.createElement(tag));if(c)e.className=c;if(o)Object.assign(e,o);return e;}
 function paste(){T.I(T.P);}
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
 function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
@@ -28,20 +28,20 @@ function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))st
 function line(s,i){(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);}
 function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
 function filecontent(){return "<meta charset='UTF-8'>\n<\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n"}
-function view(f){let e=view[f];if(e){e.exists=true;}else{e=view[f]=element("div","","view");e.onclick=()=>view(f);}toggleview(e);return e;}
-function toggleview(e){if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);}else{T.focus();e.style.zIndex=-1;}}
-function misc(){let e=view("Misc");if(e.exists)return; let c;c=element("input",e);c.type="color";c.onchange=(e)=>T.P=e.target.value; c=element("div",e);c.innerHTML=loadicons();c.onclick=(e)=>T.P=e.target.textContent;}
-function loadicons(){return [[9711,10100],[127744,128764],[128992,130000]].flatMap(([a,b])=>Array.from({length:b-a+1},(_,i)=>a+i)).map(c=>String.fromCodePoint(c)).map(c=>tofu(c)?`<x>${c}</x>`:"").filter(Boolean).join``;}
-function tofu(c){let x=document.createElement("canvas").getContext("2d"),w=x.measureText("\uffff").width;tofu=c=>x.measureText(c).width!==w;return tofu(c)}
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S};d==null?(h[i]?.v!=s.v&&h.splice(++i,Infinity,s),h.length>50&&(h.shift(),--i)):(i=Math.max(0,Math.min(h.length-1,i+d)),h[i]&&(T.V=h[i].v,T.S=T.E=h[i].s))};restore()}
 function undo(){restore(-1);}function redo(){restore(1);}
 function zoom(init=false){if(!init)zoom.big^=1;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"0.5rem":"1.0rem");}
-function createpretty(){let e=element("div","","text");e.style.cssText="z-index:0;pointer-events:none";return e;}
+function createpretty(){return element("div","","text",{style:{zIndex:0,pointerEvents:"none"}})}
 function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=s=>s.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty.init=()=>{c={};for(let [v,k] of color())c[v]=`<span style=color:${k}>${v}</span>`;}}
 function* color(){for(let v of "(){}[]")yield [v,theme.pairs];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,theme.keywords]}}}
 function syncpretty(){PRETTY.innerHTML=pretty(T.V);lint();}
-function help(){let e=view("Help");if(e.exists)return;element("div",e).innerHTML=about+HELP().split(".").reduce((a,p)=>a+(p.includes(" ")?"\n"+p:"\n\n<b>"+p+"</b>"),"")}
 function lint(){let v=0;try{eval(T.V)}catch(e){v=1}(lint.e??=KEYS.find(k=>k.name=="run").e.style).background=v?"red":theme.background}
+function view(f){let e=view[f];if(e){e.exists=true;}else{e=view[f]=element("div","","view",{onclick:()=>view(f)});}toggleview(e);return e;}
+function toggleview(e){if(e.toggle^=1){T.blur();setTimeout(()=>{e.style.zIndex=9;},50);}else{T.focus();e.style.zIndex=-1;}}
+function help(){let e=view("Help");if(e.exists)return; e.innerHTML=about+HELP().split(".").reduce((a,p)=>a+(p.includes(" ")?"\n"+p:"\n\n<b>"+p+"</b>"),"")}
+function misc(){let e=view("Misc");if(e.exists)return; element("input",e,"",{type:"color",onchange:(e)=>T.P=e.target.value}); element("div",e,"",{innerHTML:loadicons(),onclick:(e)=>T.P=e.target.textContent});}
+function loadicons(){return [[9711,10100],[127744,128764],[128992,130000]].flatMap(([a,b])=>Array.from({length:b-a+1},(_,i)=>a+i)).map(c=>String.fromCodePoint(c)).map(c=>tofu(c)?`<x>${c}</x>`:"").filter(Boolean).join``;}
+function tofu(c){let x=document.createElement("canvas").getContext("2d"),w=x.measureText("\uffff").width;tofu=c=>x.measureText(c).width!==w;return tofu(c)}
 function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<svg viewBox="-1 -1 12 12"><path d="${d}" fill="none" stroke="currentColor"/></svg>`}).firstChild}
 
 function createtextarea(){
