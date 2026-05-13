@@ -1,6 +1,6 @@
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://repository-images.githubusercontent.com/788276995/040a885f-c9e7-431b-bd4f-27a9069971b6" width="100%" /></a>
 
-BacioneJS is a thumb-friendly JavaScript IDE, to give people a taste of programming with what they have. **Only 150 lines of code 🪶**
+BacioneJS is a thumb-friendly JavaScript IDE, to give people a taste of programming with what they have. Only 150 lines of code 🪶
 
 <details><summary>Features</summary>
 
