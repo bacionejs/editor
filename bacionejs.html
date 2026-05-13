@@ -31,7 +31,7 @@ function filecontent(){return "<meta charset='UTF-8'>\n<\script>onload=()=>{ide(
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S};d==null?(h[i]?.v!=s.v&&h.splice(++i,Infinity,s),h.length>50&&(h.shift(),--i)):(i=Math.max(0,Math.min(h.length-1,i+d)),h[i]&&(T.V=h[i].v,T.S=T.E=h[i].s))};restore()}
 function undo(){restore(-1);}function redo(){restore(1);}
 function zoom(init=false){if(!init)zoom.big^=1;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"0.5rem":"1.0rem");}
-function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=_=>PRETTY.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty.init=()=>{c={};for(let [v,k] of color())c[v]=`<span style=color:${k}>${v}</span>`; pretty();}}
+function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=()=>PRETTY.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty.init=()=>{c={};for(let [v,k] of color())c[v]=`<span style=color:${k}>${v}</span>`;}}
 function* color(){for(let v of "(){}[]")yield [v,theme.pairs];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,theme.keywords]}}}
 function lint(){let v=0;try{eval(T.V)}catch(e){v=1}(lint.e??=KEYS.find(k=>k.name=="run").e.style).background=v?"red":theme.background}
 function view(f){let e=view[f];if(e){e.exists=true;}else{e=view[f]=element("div","","view",{onclick:()=>view(f)});}setTimeout(()=>{e.style.visibility=(e.toggle^=1)?"visible":"hidden";T.focus();},50);return e;}
@@ -43,8 +43,8 @@ function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<
 
 function createtextarea(){
 let T=element("textarea","","text");
-T.oncut=_=>0; T.onscroll=_=>{PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft}; T.onpaste=e=>{e.preventDefault();T.I(e.clipboardData.getData('text'))};
-Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;}});
+T.oncut=()=>0; T.onscroll=()=>{PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft}; T.onpaste=e=>{e.preventDefault();T.I(e.clipboardData.getData('text'))};
+Object.defineProperty(T,"V",{get(){return this.value;},          set(v){this.value=v;pretty();lint();}});
 Object.defineProperty(T,"S",{get(){return this.selectionStart;}, set(v){this.selectionStart=v;}});
 Object.defineProperty(T,"E",{get(){return this.selectionEnd;},   set(v){this.selectionEnd=v;}});
 T.I=function(t,s=T.S,e=T.E){restore();T.R+=t;this.setRangeText(t,s,e,"end");restore();pretty();lint();}
@@ -82,7 +82,7 @@ let keys=[
 
 new ResizeObserver(()=>{let s=Math.min((innerHeight-innerWidth)/8,innerWidth/10);keyboard.style.width=s*10;keys.map(k=>k.f?k.e.firstChild.style.width="50%":k.e.style.fontSize=s/2)}).observe(document.body)
 keys.clicked = (ev) => { let el = document.elementFromPoint(ev.clientX, ev.clientY); return el?.closest('div')?.ref; };
-let keyboard=element("div","","keyboard");keyboard.oncontextmenu=_=>false;
+let keyboard=element("div","","keyboard");keyboard.oncontextmenu=()=>false;
 for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref = k; k.f?(e.appendChild(svg(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
 
 keyboard.timeout=[];
@@ -98,7 +98,7 @@ keyboard.onpointerdown=ev=>{
 keyboard.onpointerup=ev=>{
   clear(keyboard.timeout); let k=keys.clicked(ev),p=keys.prev,t,f,c,s; if(!p)return; t=k==p?k:p; s=k!=p;
   if(t.f)(f=t.f[s?1:0])&&f(); else(c=s?t.d[1]:t.e.textContent)!=null&&T.I(c);
-  p.e.style.background=theme.click; setTimeout(_=>p.e.style.background=theme.background,200);
+  p.e.style.background=theme.click; setTimeout(()=>p.e.style.background=theme.background,200);
 }
 
 return keys;
@@ -118,7 +118,7 @@ let i=0,a=[
 ];
 theme=()=>{
   i%=a[0][1].length; a.map(([k,v])=>theme[k]=v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,3).forEach(([k])=>s[k]=theme[k]));
-  T.style.caretColor=theme.caret; Object.assign(PRETTY.style,{background:theme.back,color:theme.fore}); pretty.init(); zoom(1);
+  T.style.caretColor=theme.caret; Object.assign(PRETTY.style,{background:theme.back,color:theme.fore}); pretty.init(); pretty(); zoom(1);
 }}
 
 function style(){element("style").textContent=`
