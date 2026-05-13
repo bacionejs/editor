@@ -7,7 +7,7 @@
 - custom keyboard
 - run, save, cut, copy, paste, undo, redo, rename
 - auto-select, auto-complete, auto-indent, auto-comment
-- debugging, linting, syntax highlighting, themes, zoom, fullscreen
+- debugging, validation, syntax highlighting, themes, zoom, fullscreen
 - icon and color selectors
 - no third-party libraries, no server, no internet
 - games 🎮 and guide 📚 included
