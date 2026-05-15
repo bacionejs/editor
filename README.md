@@ -4,7 +4,7 @@
 
 <details><summary>Features</summary>
 
-- thumb-friendly keyboard
+- custom thumb-friendly keyboard
 - run, save, cut, copy, paste, undo, redo, rename
 - auto-select, auto-complete, auto-indent, auto-comment
 - debugging, validation, highlighting, themes, zoom, fullscreen
