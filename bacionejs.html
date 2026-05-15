@@ -122,7 +122,7 @@ theme=()=>{
 }}
 
 function style(){element("style").textContent=`
-*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red}
+*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red} html{overscroll-behavior:none}
 .view{visibility:hidden;position:fixed;inset:0;background:white;padding:2rem;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;touch-action:pan-y} .view>svg{width:1rem !important;}
 .text{position:fixed;inset:0;padding:10ch 2ch 100vh 2ch;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent}
 .keyboard{background:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;display:grid;bottom:0;right:0;grid-template-columns:repeat(10,1fr)}
