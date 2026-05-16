@@ -20,7 +20,7 @@ function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+
 function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);}
 function run(){let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus();if(!g||g.name=="Library")return;f=element("iframe");f.contentWindow.eval(T.V+g.name+"()");T.blur()}
 function complete(){let w,{V,S}=T;(w=(V.slice(0,S).match(/\w+$/)||[])[0])&&T.I(((V.match(RegExp("\\b"+w+"\\w*"))||[])[0]||"").slice(w.length))}
-function find(){let{V,S,E}=T,w=S-E?V.slice(S,E):word(V,S);if(w){let n=V.indexOf(w,E);~n||(n=V.indexOf(w,0));~n&&(T.S=n,T.E=n+w.length)}}
+function find(){let{V,S,E}=T,w=S===E?word(V,S):V.slice(S,E);if(w){let n=V.indexOf(w,E);~n||(n=V.indexOf(w,0));~n&&(T.S=n,T.E=n+w.length)}}
 function currentgame(){let {V,S}=T,m,r=/\b(\w+)\s*\(.*?\)\s*\{/g;for(;m=r.exec(V);){let i=m.index,b=i+m[0].length,e=pair("{",b,V);if(i>S)break;if(S<=e)return{name:m[1],ftop:b,fend:e,body:V.slice(b,e)}}}
 function copy(){let {V,E}=T,v=V[E];T.R="";/\w/.test(v)?word(V,E):v=="\n"?line(V,E):pair(v)?block(v,E,V):T.E++;T.P=T.V.slice(T.S,T.E);}
 function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
