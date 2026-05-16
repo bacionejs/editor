@@ -2,7 +2,7 @@
 <script>onload=()=>{ide();function ide(){
 document.title="\uD83D\uDC8B BacioneJS"; let about=`Bacione Javascript Editor\ngithub.com/bacionejs/editor\nGPL license`;
 onerror=(m,_,l,c)=>{let f=document.querySelector("iframe"),v=view("Error"),s=`${m}\nline: ${l}\ncol: ${c}`;f&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus());v.textContent=s};
-if((navigator.maxTouchPoints||0)<2 || /Firefox/i.test(navigator.userAgent)){alert("Only works on modern mobile chromium-based browsers")}
+if((navigator.maxTouchPoints||0)<2 || /firefox/i.test(navigator.userAgent)){alert("Only works on modern mobile chromium-based browsers")}
 style(); theme(); pretty(); let PRETTY=element("div","","text"),T=createtextarea(),KEYS=createkeys();
 if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
 
