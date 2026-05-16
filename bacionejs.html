@@ -12,21 +12,21 @@ function paste(){T.I(T.P);}
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
 function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
 function capslock(){KEYS.forEach(k => k.f || (k.e.textContent = k.d[k.d.indexOf(k.e.textContent) ^ 1]));}
-function enter(){T.S!=T.E?T.S=T.E:T.I("\n"+T.V.slice(T.V.lastIndexOf("\n",T.S-1)+1,T.S).match(/^\s*/))}
-function backspace(){let S=T.S,E=T.E;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(T.V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1;}
-function arrow(d){let i=T.E+d,s=T.V;if(i>=0&&i<=s.length){if(T.S==T.E)T.S=T.E=i;else T.P=s.slice(T.S,T.E=i)}}function left(){arrow(-1)}function right(){arrow(1)} 
+function enter(){let {S,E,V}=T;T.S!=E?T.S=E:T.I("\n"+V.slice(V.lastIndexOf("\n",S-1)+1,S).match(/^\s*/))}
+function backspace(){let {S,E,V}=T;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1;}
+function arrow(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;else T.P=V.slice(S,T.E=i)}}function left(){arrow(-1)}function right(){arrow(1)} 
 function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+"bacionejs.html"}).click();}
 function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
 function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);}
 function run(){let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus();if(!g||g.name=="Library")return;f=element("iframe");f.contentWindow.eval(T.V+g.name+"()");T.blur()}
-function complete(){let w;(w=(T.V.slice(0,T.S).match(/\w+$/)||[])[0])&&T.I(((T.V.match(RegExp("\\b"+w+"\\w*"))||[])[0]||"").slice(w.length))}
-function currentgame(){let s=T.V,c=T.S,m,r=/\b(\w+)\s*\(.*?\)\s*\{/g;for(;m=r.exec(s);){let i=m.index,b=i+m[0].length,e=pair("{",b,s);if(i>c)break;if(c<=e)return{name:m[1],ftop:b,fend:e,body:s.slice(b,e)}}}
-function find(){let{V:s,S:a,E:e}=T,w=a-e?s.slice(a,e):word(s,a);if(w){let n=s.indexOf(w,e);~n||(n=s.indexOf(w,0));~n&&(T.S=n,T.E=n+w.length)}}
-function copy(){let s=T.V,i=T.E,v=s[i];T.R="";/\w/.test(v)?word(s,i):v=="\n"?line(s,i):pair(v)?block(v,i,s):T.E++;T.P=s.slice(T.S,T.E);}
-function pair(a,i,s){let p={ "(": ")", "{": "}", "[": "]", '"': '"' };if(i==undefined)return a in p;let b=p[a],c=1;while(c>0&&++i<s.length)c+=s[i]==a?1:s[i]==b?-1:0;return i;}
+function complete(){let w,{V,S}=T;(w=(V.slice(0,S).match(/\w+$/)||[])[0])&&T.I(((V.match(RegExp("\\b"+w+"\\w*"))||[])[0]||"").slice(w.length))}
+function find(){let{V,S,E}=T,w=S-E?V.slice(S,E):word(V,S);if(w){let n=V.indexOf(w,E);~n||(n=V.indexOf(w,0));~n&&(T.S=n,T.E=n+w.length)}}
+function currentgame(){let {V,S}=T,m,r=/\b(\w+)\s*\(.*?\)\s*\{/g;for(;m=r.exec(V);){let i=m.index,b=i+m[0].length,e=pair("{",b,V);if(i>S)break;if(S<=e)return{name:m[1],ftop:b,fend:e,body:V.slice(b,e)}}}
+function copy(){let {V,E}=T,v=V[E];T.R="";/\w/.test(v)?word(V,E):v=="\n"?line(V,E):pair(v)?block(v,E,V):T.E++;T.P=T.V.slice(T.S,T.E);}
+function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
+function pair(v,i,s){let p={ "(": ")", "{": "}", "[": "]", '"': '"' };if(i==undefined)return v in p;let b=p[v],c=1;while(c>0&&++i<s.length)c+=s[i]==v?1:s[i]==b?-1:0;return i;}
 function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;T.S=start;T.E=end;return s.slice(start,end);}
 function line(s,i){(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);}
-function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
 function filecontent(){return "<meta charset='UTF-8'><meta name='viewport' content='width=device-width'>\n<\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n"}
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S};d==null?(h[i]?.v!=s.v&&h.splice(++i,Infinity,s),h.length>50&&(h.shift(),--i)):(i=Math.max(0,Math.min(h.length-1,i+d)),h[i]&&(T.V=h[i].v,T.S=T.E=h[i].s))};restore()}
 function undo(){restore(-1);}function redo(){restore(1);}
