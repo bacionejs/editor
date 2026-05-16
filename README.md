@@ -5,10 +5,9 @@
 <details><summary>Features</summary>
 
 - custom thumb-friendly keyboard
-- run, save, cut, copy, paste, undo, redo, rename
+- run, rename, save, cut, copy, paste, undo, redo
 - auto-select, auto-complete, auto-indent, auto-comment
 - debugging, validation, highlighting, themes, zoom, fullscreen
-- icon and color selectors
 - no third-party libraries, no server, no internet
 - games 🎮 and guide 📚 included
 
