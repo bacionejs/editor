@@ -2,7 +2,7 @@
 <script>onload=()=>{ide();function ide(){
 document.title="\uD83D\uDC8B BacioneJS"; let about=`Bacione Javascript Editor\ngithub.com/bacionejs/editor\nGPL license`;
 onerror=(m,_,l,c)=>{let f=document.querySelector("iframe"),v=view("Error"),s=`${m}\nline: ${l}\ncol: ${c}`;f&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus());v.textContent=s};
-if((navigator.maxTouchPoints||0)<2 || /firefox/i.test(navigator.userAgent)){alert("Only works on modern mobile chromium-based browsers")}
+if((navigator.maxTouchPoints||0)<2){alert("Designed for touch screens")}
 style(); theme(); pretty(); let PRETTY=element("div","","text"),T=createtextarea(),KEYS=createkeys();
 if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(code=>{init(code)})}
 
@@ -18,7 +18,7 @@ function arrow(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;el
 function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+"bacionejs.html"}).click();}
 function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
 function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);}
-function run(){let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus();if(!g||g.name=="Library")return;f=element("iframe");f.contentWindow.eval(T.V+g.name+"()");T.blur()}
+function run(){let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus();if(!g||g.name=="Library")return;f=element("iframe");setTimeout(()=>f.contentWindow.eval(T.V+g.name+"()"),50);T.blur()}
 function complete(){let w,{V,S}=T;(w=(V.slice(0,S).match(/\w+$/)||[])[0])&&T.I(((V.match(RegExp("\\b"+w+"\\w*"))||[])[0]||"").slice(w.length))}
 function find(){let{V,S,E}=T,w=S===E?word(V,S):V.slice(S,E);if(w){let n=V.indexOf(w,E);~n||(n=V.indexOf(w,0));~n&&(T.S=n,T.E=n+w.length)}}
 function currentgame(){let {V,S}=T,m,r=/\b(\w+)\s*\(.*?\)\s*\{/g;for(;m=r.exec(V);){let i=m.index,b=i+m[0].length,e=pair("{",b,V);if(i>S)break;if(S<=e)return{name:m[1],ftop:b,fend:e,body:V.slice(b,e)}}}
@@ -36,10 +36,13 @@ function* color(){for(let v of "(){}[]")yield [v,theme.pairs];for(let w of new S
 function lint(){let v=0;try{eval(T.V)}catch(e){v=1}(lint.e??=KEYS.find(k=>k.name=="run").e.style).background=v?"red":theme.background}
 function view(f){let e=view[f];if(e){e.exists=true;}else{e=view[f]=element("div","","view",{onclick:()=>view(f)});}setTimeout(()=>{e.style.visibility=(e.toggle^=1)?"visible":"hidden";T.focus();},50);return e;}
 function help(){let e=view("Help");if(e.exists)return; e.innerHTML=about+HELP().split(".").reduce((a,p)=>a+(p.includes(" ")?"\n"+p:"\n\n<b>"+p+"</b>"),"")}
-function misc(){let e=view("Misc");if(e.exists)return; element("input",e,"",{type:"color",onchange:(e)=>T.P=e.target.value}); element("div",e,"",{innerHTML:loadicons(),onclick:(e)=>T.P=e.target.textContent});}
-function loadicons(){return [[9711,10100],[127744,128764],[128992,130000]].flatMap(([a,b])=>Array.from({length:b-a+1},(_,i)=>a+i)).map(c=>String.fromCodePoint(c)).map(c=>tofu(c)?`<x>${c}</x>`:"").filter(Boolean).join``;}
-function tofu(c){let x=document.createElement("canvas").getContext("2d"),w=x.measureText("\uffff").width;tofu=c=>x.measureText(c).width!==w;return tofu(c)}
 function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<svg viewBox="-1 -1 12 12"><path d="${d}" fill="none" stroke="currentColor"/></svg>`}).firstChild}
+
+function misc(){let e=view("Misc");if(e.exists)return;element("input",e,"",{type:"color",onchange:e=>T.P=e.target.value});icons(element("div",e,"",{onclick:e=>T.P=e.target.textContent}))}
+function icons(e){render(e,[[9711,10100],[127744,128764],[128992,130000]].flatMap(([a,b])=>Array.from({length:b-a+1},(_,i)=>a+i)))}
+function render(e,a,n=1){let c=a.splice(0,n);c.length&&(e.innerHTML+=c.map(c=>String.fromCodePoint(c)).map(c=>tofu(c)?`<x>${c}</x>`:"").join(""),requestAnimationFrame(()=>render(e,a,n<30?n+1:30)))}
+function tofu(c){let x=document.createElement("canvas").getContext("2d"),d=v=>(x.canvas.width=x.canvas.width,x.fillText(v,0,0),x.canvas.toDataURL()),t=d("\uffff");return(tofu=c=>d(c)!==t)(c);}
+
 
 function createtextarea(){
 let T=element("textarea","","text");
