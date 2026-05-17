@@ -13,3 +13,4 @@
 
  </details>
 
+<img width="1200" height="804" alt="buttons" src="https://github.com/user-attachments/assets/f29bd5a0-859f-43b6-be5a-42cbdd841ece" />
