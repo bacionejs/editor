@@ -2,7 +2,7 @@
 
 
 
-📝 BacioneJS is the most thumb-friendly JavaScript IDE in its class.  
+💋 BacioneJS is the most thumb-friendly JavaScript IDE in its class.  
 - No third-party libraries · server · internet  
 - Custom thumb-friendly keyboard  
 - Only 150 lines of code  
