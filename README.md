@@ -1,6 +1,12 @@
 <img width="180" alt="Screenshot_2026-05-17-22-52-34-293_com android chrome-edit" src="https://github.com/user-attachments/assets/587a9bf0-26fa-4cef-a628-2f32afed191f" />
 
+<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/587a9bf0-26fa-4cef-a628-2f32afed191f" width="180" /></a>
 
+
+
+
+
+📝 BacioneJS is the easiest JavaScript IDE in it
 
 💋 BacioneJS is the most thumb-friendly JavaScript IDE in its class.  
 - No third-party libraries · server · internet  
