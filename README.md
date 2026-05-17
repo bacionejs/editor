@@ -14,3 +14,28 @@
  </details>
 
 <img width="1200" height="804" alt="buttons" src="https://github.com/user-attachments/assets/f29bd5a0-859f-43b6-be5a-42cbdd841ece" />
+
+
+**Run** Runs or stops the game which contains the cursor.  
+**Save** Saves games AND editor to a timestamped file.  
+**Zoom** Toggles font size.  
+**Help** Help is this screen.  
+**Paste** Inserts the contents of the Paste buffer.  
+**Copy** Begins or extends the selection of text and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. To exit this mode, press enter.  
+**Cut** Click Copy and Backspace.  
+**Find** Find word under cursor.  
+**Rename** Click Copy, type new name and swipe on Paste to replace all.  
+**Close** To close or toggle something, click or swipe it again.  
+**Backspace** Deletes character or selection.  
+**Enter** Inserts a newline or cancels selection. Retains prior indentation.  
+**Arrows** Moves cursor or extends selection.  
+**Characters** Inserts a character or replaces selection.  
+**Capslock** Shows shift characters. Alternatively, you can swipe on alphanumeric keys.  
+**Undo** Restore up to 50 changes.  
+**Comment** Toggles comments and puts the line in the Paste buffer.  
+**Complete** Completes a word.  
+**Longpress** Repeats key.  
+**Validation** Syntax errors turn the Run button red.  
+**Debugging** Runtime errors display a message and places the cursor at the error.  
+**Fullscreen** Swipe on Zoom button.  
+**Themes** Swipe on Help button.
