@@ -18,8 +18,8 @@
 **Rename** Click Copy, type new word and swipe on Paste to replace all.  
 **Longpress** Repeats key.  
 **Capslock** Shows shift characters. Alternatively, you can swipe on alphanumeric keys.  
-**Validation** Syntax errors turn the Run button red.  
 **Debugging** Runtime errors display a message and places the cursor at the error.  
+**Validation** Syntax errors turn the Run button red.  
 **Fullscreen** Swipe on Zoom button.  
 **Themes** Swipe on Find button.  
 **Save** Saves games AND editor to a timestamped file.  
