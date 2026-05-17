@@ -17,6 +17,7 @@
 **Run** Runs or stops the game which contains the cursor.  
 **Rename** Click Copy, type new word and swipe on Paste to replace all.  
 **Longpress** Repeats key.  
+**Capslock** Shows shift characters. Alternatively, you can swipe on alphanumeric keys.  
 **Validation** Syntax errors turn the Run button red.  
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Fullscreen** Swipe on Zoom button.  
@@ -31,7 +32,6 @@
 **Enter** Inserts a newline or cancels selection. Retains prior indentation.  
 **Arrows** Moves cursor or extends selection.  
 **Characters** Inserts a character or replaces selection.  
-**Capslock** Shows shift characters. Alternatively, you can **swipe** on alphanumeric keys.  
 **Undo** Restores changes.  
 **Comment** Toggles comments and puts the line in the Paste buffer.  
 **Complete** Completes a word.  
