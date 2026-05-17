@@ -13,7 +13,7 @@
 
  </details>
 
-<img width="245" height="502" alt="Screenshot_2026-05-17-16-32-20-481_com android chrome-edit" src="https://github.com/user-attachments/assets/457655bd-de97-4634-80fa-e03f6f1114bf" />
+<img width="245" height="499" alt="Screenshot_2026-05-17-16-37-29-929_com android chrome-edit" src="https://github.com/user-attachments/assets/4c0fe309-f440-4970-9a3c-075deb17d870" />
 
 **Run** Runs or stops the game which contains the cursor.  
 **Save** Saves games AND editor to a timestamped file.  
