@@ -5,12 +5,6 @@
 
 
 
-- custom **thumb-friendly** keyboard
-- run, save, cut, copy, paste, undo, redo, rename
-- auto-select, auto-complete, auto-indent, auto-comment
-- debugging, validation, highlighting, themes, zoom, fullscreen
-- no third-party libraries, no server, no internet
-- game 🎮 included
 
 
 
@@ -18,12 +12,12 @@
 
 | Feature | Details |
 |---|---|
-| ⌨️ Custom keyboard | thumb-friendly layout designed for fast mobile input |
+| ⌨️ Custom keyboard | **thumb-friendly** custom keyboard |
 | ⚙️ Core actions | run · save · cut · copy · paste · undo · redo · rename |
 | ✨ Smart editing | auto-select · auto-complete · auto-indent · auto-comment |
 | 🧠 Dev tools | debugging · validation · highlighting · themes · zoom · fullscreen |
 | 🌐 Zero dependencies | no third-party libraries · no server · no internet |
-| 🎮 Bonus mode | built-in mini game included for breaks and dopamine resets |
+| 🎮 Games | examples to get you started |
 
 
 
