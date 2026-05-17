@@ -20,7 +20,7 @@
 **Validation** Syntax errors turn the Run button red.  
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Fullscreen** Swipe on Zoom button.  
-**Themes** Swipe on Find button.
+**Themes** Swipe on Find button.  
 **Save** Saves games AND editor to a timestamped file.  
 **Zoom** Toggles font size.  
 **Paste** Inserts the contents of the Paste buffer.  
