@@ -1,7 +1,8 @@
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://repository-images.githubusercontent.com/788276995/040a885f-c9e7-431b-bd4f-27a9069971b6" width="100%" /></a>
 
 
-📝 BacioneJS is the most thumb-friendly JavaScript IDE in its class. Only 150 lines of code 🪶
+📝 BacioneJS is the most thumb-friendly JavaScript IDE in its class.  
+🪶 Only 150 lines of code  
 
 <img width="1200" height="586" alt="Screenshot_2026-05-17-17-34-05-320_com android chrome-edit" src="https://github.com/user-attachments/assets/8327346d-0154-4f2c-a8bb-edf6968382a4" />
 
