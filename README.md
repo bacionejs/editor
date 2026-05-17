@@ -1,5 +1,6 @@
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://repository-images.githubusercontent.com/788276995/040a885f-c9e7-431b-bd4f-27a9069971b6" width="100%" /></a>
 
+
 📝 BacioneJS is the easiest JavaScript IDE in its class. Only 150 lines of code 🪶
 
 
@@ -35,3 +36,4 @@
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Fullscreen** Swipe on Zoom button.  
 **Themes** Swipe on Find button.
+
