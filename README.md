@@ -2,6 +2,8 @@
 
 📝 BacioneJS is the easiest JavaScript IDE in its class. Only 150 lines of code 🪶
 
+[](https://bacionejs.github.io/editor/buttons.jpg)
+
 <details><summary>Features</summary>
 
 - custom thumb-friendly keyboard
