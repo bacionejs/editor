@@ -10,7 +10,7 @@
 
 
 
-| Feature | Details |
+| Feature | |
 |---|---|
 | ⌨️ Custom | **thumb-friendly** keyboard |
 | ⚙️ Core | run · save · cut · copy · paste · undo · redo · rename |
