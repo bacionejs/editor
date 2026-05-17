@@ -1,4 +1,5 @@
-<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://repository-images.githubusercontent.com/788276995/040a885f-c9e7-431b-bd4f-27a9069971b6" width="100%" /></a>
+<img width="662" height="1326" alt="Screenshot_2026-05-17-22-52-34-293_com android chrome-edit" src="https://github.com/user-attachments/assets/587a9bf0-26fa-4cef-a628-2f32afed191f" />
+
 
 
 📝 BacioneJS is the most thumb-friendly JavaScript IDE in its class.  
