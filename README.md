@@ -12,11 +12,11 @@
 
 | Feature | Details |
 |---|---|
-| ⌨️ Custom keyboard | custom **thumb-friendly** keyboard |
-| ⚙️ Core actions | run · save · cut · copy · paste · undo · redo · rename |
-| ✨ Smart editing auto: | select · complete · indent · comment |
-| 🧠 Dev tools | debugging · validation · highlighting · themes · zoom · fullscreen |
-| 🌐 Zero dependencies no: | third-party libraries · server · internet |
+| ⌨️ Keyboard | custom **thumb-friendly** keyboard |
+| ⚙️ Core | run · save · cut · copy · paste · undo · redo · rename |
+| ✨ Auto | select · complete · indent · comment |
+| 🧠 Dev | debugging · themes · zoom · fullscreen |
+| 🌐 No: | third-party libraries · server · internet |
 | 🎮 Games | examples to get you started |
 
 
