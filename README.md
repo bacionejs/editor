@@ -16,7 +16,7 @@
 | ⚙️ Core | run · save · cut · copy · paste · undo · redo · rename |
 | ✨ Auto | select · complete · indent · comment |
 | 🧠 Dev | debugging · themes · zoom · fullscreen |
-| 🌐 No: | third-party libraries · server · internet |
+| 🌐 No | third-party libraries · server · internet |
 | 🎮 Games | examples to get you started |
 
 
