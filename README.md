@@ -6,7 +6,7 @@
 
 
 - custom **thumb-friendly** keyboard
-- run, rename, save, cut, copy, paste, undo, redo
+- run, save, cut, copy, paste, undo, redo, rename
 - auto-select, auto-complete, auto-indent, auto-comment
 - debugging, validation, highlighting, themes, zoom, fullscreen
 - no third-party libraries, no server, no internet
