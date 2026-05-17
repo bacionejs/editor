@@ -14,9 +14,9 @@
 |---|---|
 | ⌨️ Custom keyboard | custom **thumb-friendly** keyboard |
 | ⚙️ Core actions | run · save · cut · copy · paste · undo · redo · rename |
-| ✨ Smart editing | auto-select · auto-complete · auto-indent · auto-comment |
+| ✨ Smart editing auto: | select · complete · indent · comment |
 | 🧠 Dev tools | debugging · validation · highlighting · themes · zoom · fullscreen |
-| 🌐 Zero dependencies | no third-party libraries · no server · no internet |
+| 🌐 Zero dependencies no: | third-party libraries · server · internet |
 | 🎮 Games | examples to get you started |
 
 
@@ -24,14 +24,7 @@
 
 
 
-| Feature | Details |
-|---|---|
-| ⌨️ Custom keyboard | <small>custom thumb-friendly keyboard</small> |
-| ⚙️ Core actions | <small>run · save · cut · copy · paste · undo · redo · rename</small> |
-| ✨ Smart editing | <small>auto-select · auto-complete · auto-indent · auto-comment</small> |
-| 🧠 Dev tools | <small>debugging · validation · highlighting · themes · zoom · fullscreen</small> |
-| 🌐 Zero dependencies | <small>no third-party libraries · no server · no internet</small> |
-| 🎮 Games | <small>examples to get you started</small> |
+
 
 
 
