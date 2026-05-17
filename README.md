@@ -2,23 +2,22 @@
 
 📝 BacioneJS is the easiest JavaScript IDE in its class. Only 150 lines of code 🪶
 
-<details><summary>Features</summary>
+
 
 - custom thumb-friendly keyboard
 - run, rename, save, cut, copy, paste, undo, redo
 - auto-select, auto-complete, auto-indent, auto-comment
 - debugging, validation, highlighting, themes, zoom, fullscreen
 - no third-party libraries, no server, no internet
-- games 🎮 and guide 📚 included
+- game 🎮 included
 
- </details>
+ 
 
 <img width="245" height="499" alt="Screenshot_2026-05-17-16-37-29-929_com android chrome-edit" src="https://github.com/user-attachments/assets/4c0fe309-f440-4970-9a3c-075deb17d870" />
 
 **Run** Runs or stops the game which contains the cursor.  
 **Save** Saves games AND editor to a timestamped file.  
 **Zoom** Toggles font size.  
-**Help** Help is this screen.  
 **Paste** Inserts the contents of the Paste buffer.  
 **Copy** Begins or extends the selection of text and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. To exit this mode, press enter.  
 **Cut** Click Copy and Backspace.  
@@ -37,4 +36,4 @@
 **Validation** Syntax errors turn the Run button red.  
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Fullscreen** Swipe on Zoom button.  
-**Themes** Swipe on Help button.
+**Themes** Swipe on Find button.
