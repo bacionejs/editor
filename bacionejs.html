@@ -55,7 +55,7 @@ let keys=[
 {r:1,c:2, f:[left],            d:"M1 5 h8 M5 1 l-4 4 l4 4"},
 {r:1,c:3, f:[right],           d:"M1 5 h8 M5 1 l4 4 l-4 4"},
 {r:1,c:4, f:[copy],            d:"M3 8 h-2 v-8 h6 v2 h2 v8 h-6 v-8 h6"},
-{r:1,c:5, f:[paste,replace],   d:"M3 1 h-2 v9 h8 v-9 h-2 v1 h-4 v-1 h1 v-1 h2 v2"},
+{r:1,c:5, f:[paste,replace],   d:"M3 1 h-2 v9 h8 v-9 h-2 v1 h-4 v-1 h1 v-1 h2 v1 h1"},
 {r:1,c:6, f:[undo],            d:"M10 5 Q5 0  0 7 M0  2 v5 h5"},
 {r:1,c:7, f:[redo],            d:"M0  5 Q5 0 10 7 M10 2 v5 h-5"},
 {r:1,c:8, f:[comment],         d:"M6 1 l-6 8 m4 0 l6 -8"},
@@ -73,7 +73,7 @@ let keys=[
 {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
 
-new ResizeObserver(()=>{let s=Math.min((innerHeight-innerWidth)/8,innerWidth/10);keyboard.style.width=s*10;keys.map(k=>k.f?k.e.firstChild.style.width="50%":k.e.style.fontSize=s/2)}).observe(document.body)
+new ResizeObserver(()=>{let s=Math.max((innerHeight-innerWidth)/8,innerWidth/10);keyboard.style.width=s*10;keys.map(k=>k.f?k.e.firstChild.style.width="50%":k.e.style.fontSize=s/2)}).observe(document.body)
 keys.clicked = (ev) => { let el = document.elementFromPoint(ev.clientX, ev.clientY); return el?.closest('div')?.ref; };
 let keyboard=element("div","","keyboard");keyboard.oncontextmenu=()=>false;
 for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref = k; k.f?(e.appendChild(svg(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
