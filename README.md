@@ -33,7 +33,6 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 **Comment** Toggles comments and puts the line in the Paste buffer.  
 **Complete** Completes a word.  
 
-<img alt="Screenshot_2026-05-17-17-34-05-320_com android chrome-edit" src="https://github.com/user-attachments/assets/abfdd8e3-0dc3-4454-abc5-55a54320d057" />
 
 
-<img width="1200" height="586" alt="Screenshot_2026-05-17-17-34-05-320_com android chrome-edit" src="https://github.com/user-attachments/assets/8327346d-0154-4f2c-a8bb-edf6968382a4" />
+<img alt="Screenshot_2026-05-17-17-34-05-320_com android chrome-edit" src="https://github.com/user-attachments/assets/8327346d-0154-4f2c-a8bb-edf6968382a4" />
