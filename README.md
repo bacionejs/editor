@@ -1,7 +1,7 @@
 <table>
   <tr>
     <td>
-      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/a53bff18-f867-4724-b8e1-8ed755fff0da" width="180" /></a>
+      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/e741f74b-8e50-4a35-9eeb-303cdda75a68" width="180" /></a>
     </td>
     <td>
       <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/e29a0549-409c-488d-b637-158829b5f95f" width="180" /></a>
