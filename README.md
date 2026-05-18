@@ -5,7 +5,7 @@
       <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/587a9bf0-26fa-4cef-a628-2f32afed191f" width="180" /></a>
     </td>
     <td>
-      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="  https://github.com/user-attachments/assets/e29a0549-409c-488d-b637-158829b5f95f  " width="180" /></a>
+      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/e29a0549-409c-488d-b637-158829b5f95f" width="180" /></a>
     </td>
     
   </tr>
