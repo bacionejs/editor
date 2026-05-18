@@ -73,7 +73,7 @@ let keys=[
 {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
 
-new ResizeObserver(()=>{let s=Math.max((innerHeight-innerWidth)/8,innerWidth/10);keyboard.style.width=s*10;keys.map(k=>k.f?k.e.firstChild.style.width="50%":k.e.style.fontSize=s/2)}).observe(document.body)
+new ResizeObserver(()=>{let s=Math.min((innerHeight-innerWidth)/8,innerWidth/10);keyboard.style.width=s*10;keys.map(k=>k.f?k.e.firstChild.style.width="50%":k.e.style.fontSize=s/2)}).observe(document.body)
 keys.clicked = (ev) => { let el = document.elementFromPoint(ev.clientX, ev.clientY); return el?.closest('div')?.ref; };
 let keyboard=element("div","","keyboard");keyboard.oncontextmenu=()=>false;
 for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref = k; k.f?(e.appendChild(svg(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
