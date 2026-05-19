@@ -1,3 +1,5 @@
+BacioneJS is the most thumb-friendly JavaScript IDE in its class
+
 <table>
   <tr>
     <td>
@@ -9,9 +11,7 @@
   </tr>
 </table>
 
-BacioneJS is the most thumb-friendly JavaScript IDE in its class
-
-<img alt="Screenshot_2026-05-17-17-34-05-320_com android chrome-edit" src="https://github.com/user-attachments/assets/8327346d-0154-4f2c-a8bb-edf6968382a4" />
+<img width=50% alt="Screenshot_2026-05-17-17-34-05-320_com android chrome-edit" src="https://github.com/user-attachments/assets/8327346d-0154-4f2c-a8bb-edf6968382a4" />
 
 **Run** Runs or stops the game which contains the cursor.  
 **Rename** Click Copy, type new word and swipe on Paste to replace all.  
