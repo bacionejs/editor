@@ -1,8 +1,7 @@
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width'><script>onload=()=>{ide();function ide(){
-document.title="💋 BacioneJS";//github.com/bacionejs/editor  
+if((navigator.maxTouchPoints||0)<2){alert("Designed for touch screens")} document.title="💋 BacioneJS";//github.com/bacionejs/editor  
 onerror=((d,f)=>(m,_,l,c)=>{d||(d=element("dialog"),d.setAttribute("closedby","any"));d.textContent=m;d.show();(f=document.querySelector("iframe"))&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus())})()
-if((navigator.maxTouchPoints||0)<2){alert("Designed for touch screens")}
-style(); theme(); pretty(); let PRETTY=element("div","","text"),T=createtextarea(),KEYS=createkeys(); fetch("gameprograms.js").then(r=>r.text()).then(c=>{init(c)})
+style(); theme(); pretty(); let PRETTY=element("div","","text"),T=createtextarea(),KEYS=createkeys(); if(typeof GAMEPROGRAMS==="function"){init(GAMEPROGRAMS())}else{fetch("gameprograms.js").then(r=>r.text()).then(c=>{init(c)})}
 
 function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus();theme();}
 function element(tag,p,c="",o){let e=(p||document.body).appendChild(document.createElement(tag));if(c)e.className=c;if(o)Object.assign(e,o);return e;}
