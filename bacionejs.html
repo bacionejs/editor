@@ -69,26 +69,17 @@ let keys=[
 {r:6,c:0, d:["a","A"]},  {r:6,c:1, d:["s","S"]}, {r:6,c:2, d:["d","D"]}, {r:6,c:3, d:["f","F"]}, {r:6,c:4, d:["g","G"]}, {r:6,c:5, d:["h","H"]}, {r:6,c:6, d:["j","J"]}, {r:6,c:7, d:["k","K"]}, {r:6,c:8, d:["l","L"]},
 {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
-
 new ResizeObserver(()=>{let s=Math.min((innerHeight-innerWidth)/8,innerWidth/10);keyboard.style.width=s*10;keys.map(k=>k.f?k.e.firstChild.style.width="50%":k.e.style.fontSize=s/2)}).observe(document.body)
-keys.clicked = (ev) => { let el = document.elementFromPoint(ev.clientX, ev.clientY); return el?.closest('div')?.ref; };
+clicked = (ev) => document.elementFromPoint(ev.clientX, ev.clientY)?.ref;
 let keyboard=element("div","","keyboard");keyboard.oncontextmenu=()=>false;
 for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref = k; k.f?(e.appendChild(svg(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
-let repeattimeout=500,repeatinterval=100,timeout=[]; timeout.clear=()=>{while(timeout.length&&clearTimeout(timeout.pop()));}; keyboard.onpointercancel=()=>timeout.clear();
-
-keyboard.onpointerdown=ev=>{
-  ev.preventDefault();let k=keys.clicked(ev);keys.prev=k; if(keys.prev==undefined)return;
-  timeout.push(setTimeout(()=>{timeout.push(setInterval(()=>{if(k.f){k.f[0]();}else{T.I(k.e.textContent);}},repeatinterval));},repeattimeout));
-}
-
-keyboard.onpointerup=ev=>{
-  timeout.clear(); let k=keys.clicked(ev),p=keys.prev,t,f,c,s; if(!p)return; t=k==p?k:p; s=k!=p;
-  if(t.f)(f=t.f[s?1:0])&&f(); else(c=s?t.d[1]:t.e.textContent)!=null&&T.I(c);
-  p.e.style.background=theme.click; setTimeout(()=>p.e.style.background=theme.background,200);
-}
+let rt=500,ri=100,t=[]; t.clear=()=>{while(t.length&&clearTimeout(t.pop()));}; keyboard.onpointercancel=()=>t.clear();
+let tp=p=>{p.e.style.background=theme.click; setTimeout(()=>p.e.style.background=theme.background,200)}
+keyboard.onpointerdown=e=>{e.preventDefault();let k=clicked(e);keys.prev=k;t.push(setTimeout(()=>{t.push(setInterval(()=>{if(k.f)k.f[0]();else T.I(k.e.textContent)},ri));},rt));}
+keyboard.onpointerup=e=>{t.clear();let k=clicked(e),p=keys.prev,c=k==p?k:p,s=k!=p; c.f?(c.f[s?1:0]||c.f[0])():T.I(s?c.d[1]:c.e.textContent); tp(p);}
 
 return keys;
-}//createkeys
+}
 
 function theme(){
 let i=0,a=[
@@ -110,8 +101,8 @@ function style(){element("style").textContent=`
 *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red} html{overscroll-behavior:none}
 .text{position:fixed;inset:0;padding:10rem 2rem 100vh 2rem;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent}
 .keyboard{background:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;display:grid;bottom:0;right:0;grid-template-columns:repeat(10,1fr)}
-.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;border-radius:20%;margin:2;}
-iframe{position:fixed;width:100vw;aspect-ratio:1} dialog{background:yellow;color:red}
+.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;border:2px solid transparent;background-clip:padding-box !important;}
+iframe{position:fixed;width:100vw;aspect-ratio:1} dialog{background:yellow;color:red} svg,path{pointer-events:none}
 `;}
 }
 
