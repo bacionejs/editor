@@ -1,5 +1,4 @@
-<meta charset='UTF-8'><meta name='viewport' content='width=device-width'>
-<script>onload=()=>{ide();function ide(){
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width'><script>onload=()=>{ide();function ide(){
 document.title="💋 BacioneJS";//github.com/bacionejs/editor  
 onerror=((d,f)=>(m,_,l,c)=>{d||(d=element("dialog"),d.setAttribute("closedby","any"));d.textContent=m;d.show();(f=document.querySelector("iframe"))&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus())})()
 if((navigator.maxTouchPoints||0)<2){alert("Designed for touch screens")}
@@ -27,7 +26,7 @@ function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.las
 function pair(v,i,s){let p={ "(": ")", "{": "}", "[": "]", '"': '"' };if(i==undefined)return v in p;let b=p[v],c=1;while(c>0&&++i<s.length)c+=s[i]==v?1:s[i]==b?-1:0;return i;}
 function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;T.S=start;T.E=end;return s.slice(start,end);}
 function line(s,i){(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);}
-function filecontent(){return "<meta charset='UTF-8'><meta name='viewport' content='width=device-width'>\n<\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n"}
+function filecontent(){return "<meta charset='UTF-8'><meta name='viewport' content='width=device-width'><\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n"}
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S};d==null?(h[i]?.v!=s.v&&h.splice(++i,Infinity,s),h.length>50&&(h.shift(),--i)):(i=Math.max(0,Math.min(h.length-1,i+d)),h[i]&&(T.V=h[i].v,T.S=T.E=h[i].s))};restore()}
 function undo(){restore(-1);}function redo(){restore(1);}
 function zoom(init=false){if(!init)zoom.big^=1;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"0.5rem":"1.0rem");}
