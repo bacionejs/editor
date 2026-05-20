@@ -74,19 +74,15 @@ new ResizeObserver(()=>{let s=Math.min((innerHeight-innerWidth)/8,innerWidth/10)
 keys.clicked = (ev) => { let el = document.elementFromPoint(ev.clientX, ev.clientY); return el?.closest('div')?.ref; };
 let keyboard=element("div","","keyboard");keyboard.oncontextmenu=()=>false;
 for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref = k; k.f?(e.appendChild(svg(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
-
-keyboard.timeout=[];
-function clear(t){while(t.length&&clearTimeout(t.pop()));}
-let repeattimeout=500,repeatinterval=100;
-keyboard.onpointercancel=()=>clear(keyboard.timeout)
+let repeattimeout=500,repeatinterval=100,timeout=[]; timeout.clear=()=>{while(timeout.length&&clearTimeout(timeout.pop()));}; keyboard.onpointercancel=()=>timeout.clear();
 
 keyboard.onpointerdown=ev=>{
   ev.preventDefault();let k=keys.clicked(ev);keys.prev=k; if(keys.prev==undefined)return;
-  keyboard.timeout.push(setTimeout(()=>{keyboard.timeout.push(setInterval(()=>{if(k.f){k.f[0]();}else{T.I(k.e.textContent);}},repeatinterval));},repeattimeout));
+  timeout.push(setTimeout(()=>{timeout.push(setInterval(()=>{if(k.f){k.f[0]();}else{T.I(k.e.textContent);}},repeatinterval));},repeattimeout));
 }
 
 keyboard.onpointerup=ev=>{
-  clear(keyboard.timeout); let k=keys.clicked(ev),p=keys.prev,t,f,c,s; if(!p)return; t=k==p?k:p; s=k!=p;
+  timeout.clear(); let k=keys.clicked(ev),p=keys.prev,t,f,c,s; if(!p)return; t=k==p?k:p; s=k!=p;
   if(t.f)(f=t.f[s?1:0])&&f(); else(c=s?t.d[1]:t.e.textContent)!=null&&T.I(c);
   p.e.style.background=theme.click; setTimeout(()=>p.e.style.background=theme.background,200);
 }
