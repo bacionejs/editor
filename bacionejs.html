@@ -84,6 +84,7 @@ function theme(){
 let i=0,a=[
 ["background"     ,["white"   ,  "#424242"  ]],
 ["color"          ,["black"   ,  "white"    ]],
+["border-color"   ,["silver"   , "black"    ]],
 ["click"          ,["blue"    ,  "gray"     ]],
 ["caret"          ,["blue"    ,  "pink"     ]],
 ["back"           ,["white"   ,  "#15161B"  ]],
@@ -92,7 +93,7 @@ let i=0,a=[
 ["pairs"          ,["purple"  ,  "#96ecff"  ]],
 ];
 theme=()=>{
-  i%=a[0][1].length; a.map(([k,v])=>theme[k]=v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,2).forEach(([k])=>s[k]=theme[k]));
+  i%=a[0][1].length; a.map(([k,v])=>theme[k]=v[i]); i++; KEYS.map(({e:{style:s}})=>a.slice(0,3).forEach(([k])=>s[k]=theme[k]));
   T.style.caretColor=theme.caret; Object.assign(PRETTY.style,{background:theme.back,color:theme.fore}); pretty.init(); pretty(); zoom(1);
 }}
 
@@ -100,7 +101,7 @@ function style(){element("style").textContent=`
 *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2} ::selection{background:yellow;color:red} html{overscroll-behavior:none}
 .text{position:fixed;inset:0;padding:10rem 2rem 100vh 2rem;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent}
 .keyboard{background:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;display:grid;bottom:0;right:0;grid-template-columns:repeat(10,1fr)}
-.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;border:2px solid transparent;background-clip:padding-box !important;}
+.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;border:1px solid;}
 iframe{position:fixed;width:100vw;aspect-ratio:1} dialog{background:yellow;color:red} svg,path{pointer-events:none}
 `;}
 }
