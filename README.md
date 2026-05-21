@@ -36,4 +36,5 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 **Characters** Inserts a character or replaces selection.  
 
 
-
+> [!NOTE]
+> To use the IDE in serverless mode, open https://bacionejs.github.io/editor/bacionejs.html and press the Save button to download the monolith.
