@@ -17,13 +17,12 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 **Undo** Restores changes.  
 **Comment** Toggles comments and puts the line in the Paste buffer.  
 **Complete** Completes a word.  
-**Rename** Click Copy, type new word and swipe on Paste to replace all.  
-**Longpress** Repeats key.  
-**Capslock** Shows shift characters. Alternatively, you can swipe on alphanumeric keys.  
+**Rename** Click Copy, type new word and hold Paste to replace all.  
+**Capslock** Shows shift characters. Alternatively, you can hold alphanumeric keys.  
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Validation** Syntax errors turn the Run button red.  
-**Fullscreen** Swipe on Zoom button.  
-**Themes** Swipe on Find button.  
+**Fullscreen** Hold Zoom button.  
+**Themes** Hold Find button.  
 **Save** Saves games AND editor to a timestamped file.  
 **Zoom** Toggles font size.  
 **Paste** Inserts the contents of the Paste buffer.  
