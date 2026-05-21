@@ -13,7 +13,7 @@ function enter(){let {S,E,V}=T;T.S!=E?T.S=E:T.I("\n"+V.slice(V.lastIndexOf("\n",
 function backspace(){let {S,E,V}=T;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1;}
 function arrow(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;else T.P=V.slice(S,T.E=i)}}function left(){arrow(-1)}function right(){arrow(1)} 
 function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+"bacionejs.html"}).click();}
-function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
+function comment(){let {V,S}=T,s=V.lastIndexOf("\n",S-1)+1,e=V.indexOf("\n",S)+1;T.P=V.slice(s,e);T.P.startsWith("//")?T.I("",s,s+2):T.I("//",s,s);T.S=T.E=T.V.indexOf("\n",s)+1;}
 function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);}
 function run(){let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus();if(!g||g.name=="Library")return;f=element("iframe");setTimeout(()=>f.contentWindow.eval(T.V+g.name+"()"),50);T.blur()}
 function complete(){let{V,S}=T,w=V.slice(0,S).match(/\w+$/)?.[0];w&&T.I(V.match("\\b"+w+"\\w*")[0].slice(w.length))}
