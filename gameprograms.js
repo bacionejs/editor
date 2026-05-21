@@ -7,7 +7,7 @@
 
 
 
-function bike(){
+function bike(){let z="xxxx";
 let {random:rnd,sin,cos,atan,atan2,min,PI,abs,ceil}=Math,L=Library(),{X,W,H}=L;
 let SHAKE=L.Shake(X),HISTORY=L.History(X),BIKE=Bike(),TREES=Trees(),scene=[SHAKE,Sky(),Mountains(),Ground(),TREES,BIKE,HISTORY];
 let SPEED=W/300,OFFSET=0,height,angle; {let freq=1/100,amp=40,tilt=.5; height=x=>sin((x+OFFSET)*freq)*amp+(H*.7)+x*tilt,angle=x=>atan(amp*freq*cos((x+OFFSET)*freq)+tilt);}

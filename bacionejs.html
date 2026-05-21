@@ -16,12 +16,12 @@ function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(ne
 function comment(){ let s=T.V.lastIndexOf("\n",T.S-1)+1,e=T.V.indexOf("\n",T.S)+1,t=T.V.slice(s,e); t.startsWith("//")?T.I("",s,s+2):(T.P=t,T.I("//",s,s)); T.S=T.E=T.V.indexOf("\n",s)+1; }
 function replace(){let g=currentgame();if(!g||!T.P||!T.R)return;T.V=T.V.slice(0,g.ftop)+g.body.split(T.P).join(T.R)+T.V.slice(g.fend);}
 function run(){let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus();if(!g||g.name=="Library")return;f=element("iframe");setTimeout(()=>f.contentWindow.eval(T.V+g.name+"()"),50);T.blur()}
-function complete(){let w,{V,S}=T;(w=(V.slice(0,S).match(/\w+$/)||[])[0])&&T.I(((V.match(RegExp("\\b"+w+"\\w*"))||[])[0]||"").slice(w.length))}
+function complete(){let{V,S}=T,w=V.slice(0,S).match(/\w+$/)?.[0];w&&T.I(V.match("\\b"+w+"\\w*")[0].slice(w.length))}
 function find(){let{V,S,E}=T,w=S===E?word(V,S):V.slice(S,E);if(w){let n=V.indexOf(w,E);~n||(n=V.indexOf(w,0));~n&&(T.S=n,T.E=n+w.length)}}
-function currentgame(){let {V,S}=T,m,r=/\b(\w+)\s*\(.*?\)\s*\{/g;for(;m=r.exec(V);){let i=m.index,b=i+m[0].length,e=pair("{",b,V);if(i>S)break;if(S<=e)return{name:m[1],ftop:b,fend:e,body:V.slice(b,e)}}}
+function currentgame(){let{V,S}=T,r=/\b(\w+)\s*\(.*?\)\s*\{/g,m,b,e;while((m=r.exec(V))&&m.index<S)if(S<(e=pair("{",b=m.index+m[0].length,V)))return{name:m[1],ftop:b,fend:e,body:V.slice(b,e)}}
 function copy(){let {V,E}=T,v=V[E];T.R="";/\w/.test(v)?word(V,E):v=="\n"?line(V,E):pair(v)?block(v,E,V):T.E++;T.P=T.V.slice(T.S,T.E);}
 function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
-function pair(v,i,s){let p={ "(": ")", "{": "}", "[": "]", '"': '"' };if(i==undefined)return v in p;let b=p[v],c=1;while(c>0&&++i<s.length)c+=s[i]==v?1:s[i]==b?-1:0;return i;}
+function pair(v,i,s){let p={"(":")","{":"}","[":"]",'"':'"'};if(i==undefined) return v in p;for(let c=1;++i<s.length&&(v=='"'?s[i]!=v:(c+=s[i]==v?1:s[i]==p[v]?-1:0)););return i;}
 function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;T.S=start;T.E=end;return s.slice(start,end);}
 function line(s,i){(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);}
 function filecontent(){return "<meta charset='UTF-8'><meta name='viewport' content='width=device-width'><\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n"}
