@@ -37,4 +37,4 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 
 
 > [!NOTE]
-> To use the IDE in serverless mode, open https://bacionejs.github.io/editor/bacionejs.html and press the Save button to download the monolith.
+> To download, open https://bacionejs.github.io/editor/bacionejs.html and press Save.
