@@ -71,11 +71,11 @@ let keys=[
 {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
 new ResizeObserver(()=>{let s=Math.min((innerHeight-innerWidth)/8,innerWidth/10);keyboard.style.width=s*10;keys.map(k=>k.f?k.e.firstChild.style.width="50%":k.e.style.fontSize=s/2)}).observe(document.body)
-let keyboard=element("div","","keyboard"),prev,rt=500,ri=100,t=[];t.clear=()=>{while(t.length&&clearTimeout(t.pop()));};keyboard.onpointercancel=()=>t.clear();keyboard.oncontextmenu=()=>false;
-let tp=p=>{p.e.style.background=theme.click;setTimeout(()=>p.e.style.background=theme.background,200)},clicked=e=>document.elementFromPoint(e.clientX,e.clientY)?.ref;
+let keyboard=element("div","","keyboard"),lp,t,tp=p=>{p.e.style.background=theme.click;setTimeout(()=>p.e.style.background=theme.background,200)};
+keyboard.onpointercancel=()=>{clearTimeout(t);lp=0;};keyboard.oncontextmenu=()=>false;
 for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref=k;k.f?(e.appendChild(svg(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
-keyboard.onpointerdown=e=>{e.preventDefault();if(!e.target.ref)return;let k=clicked(e);prev=k;t.push(setTimeout(()=>t.push(setInterval(()=>k.f?k.f[0]():T.I(k.e.textContent),ri)),rt))}
-keyboard.onpointerup=e=>{t.clear();if(!e.target.ref)return;let k=clicked(e);let c=k==prev?k:prev,s=k!=prev;c.f?(c.f[s?1:0]||c.f[0])():T.I(s?c.d[1]:c.e.textContent);tp(prev)}
+keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;lp=0;t=setTimeout(()=>{lp=1;k.f?(k.f[1]||k.f[0])():T.I(k.d[1])},500)}
+keyboard.onpointerup=({target:{ref:k}={}})=>{if(lp)return;clearTimeout(t);if(!k)return;k.f?k.f[0]():T.I(k.e.textContent);tp(k)}
 return keys;
 }
 
