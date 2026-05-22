@@ -29,7 +29,7 @@ function undo(){restore(-1);}function redo(){restore(1);}
 function zoom(){zoom.big^=1;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"1.0rem":"0.5rem");}
 function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<svg viewBox="-1 -1 12 12"><path d="${d}" fill="none" stroke="currentColor"/></svg>`}).firstChild}
 function lint(){let v=0;try{eval(T.V)}catch(e){v=1}let s=(lint.e??=KEYS.find(k=>k.name=="run").e.style);lint.c??=s.background;s.background=v?"red":lint.c;}
-function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; c={};for(let [v,k] of color())c[v]=`<span class=${k}>${v}</span>`; pretty=()=>PRETTY.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty()}
+function pretty(){let c={},m=/[a-z]+\b|[(){}[\]]|</g; for(let [v,k] of color())c[v]=`<span class=${k}>${v}</span>`; pretty=()=>PRETTY.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty()}
 function* color(){for(let v of "(){}[]")yield [v,"pairs"];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,"keywords"]}}}
 function find(){let {V,S,E}=T;if(S==E&&/\w/.test(V[E])){T.F=word(V,E);T.R="";}else if(S!=E&&T.R){T.setRangeText(T.R,S,E,"end");pretty();}else{let n=V.indexOf(T.F,E);~n||(n=V.indexOf(T.F));if(~n){T.S=n;T.E=n+T.F.length;}}}
 
