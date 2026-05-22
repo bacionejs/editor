@@ -1,10 +1,10 @@
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width'><script>onload=()=>{ide();function ide(){
 if((navigator.maxTouchPoints||0)<2){alert("Designed for touch screens")} document.title=" BacioneJS";//github.com/bacionejs/editor  
 onerror=((d,f)=>(m,_,l,c)=>{d||(d=element("dialog"),d.setAttribute("closedby","any"));d.textContent=m;d.show();(f=document.querySelector("iframe"))&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus())})()
-style(); pretty(); let PRETTY=element("div","","text pretty"),T=createtextarea(),KEYS=createkeys(); 
+style(); let PRETTY=element("div","","text pretty"),T=createtextarea(),KEYS=createkeys(); 
 typeof GAMEPROGRAMS=="function"?init(GAMEPROGRAMS()):fetch("gameprograms.js").then(r=>r.text()).then(init).catch(()=>init("function yourgame(){\n\n}"))
 
-function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus(); pretty.init(); pretty(); zoom(1);}
+function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus(); pretty(); zoom();}
 function element(tag,p,c="",o){let e=(p||document.body).appendChild(document.createElement(tag));if(c)e.className=c;if(o)Object.assign(e,o);return e;}
 function paste(){T.I(T.P);}
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"");}
@@ -26,10 +26,10 @@ function line(s,i){(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) :
 function filecontent(){return "<meta charset='UTF-8'><meta name='viewport' content='width=device-width'><\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n"}
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S};d==null?(h[i]?.v!=s.v&&h.splice(++i,Infinity,s),h.length>50&&(h.shift(),--i)):(i=Math.max(0,Math.min(h.length-1,i+d)),h[i]&&(T.V=h[i].v,T.S=T.E=h[i].s))};restore()}
 function undo(){restore(-1);}function redo(){restore(1);}
-function zoom(init=false){if(!init)zoom.big^=1;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"0.5rem":"1.0rem");}
+function zoom(){zoom.big^=1;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"1.0rem":"0.5rem");}
 function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<svg viewBox="-1 -1 12 12"><path d="${d}" fill="none" stroke="currentColor"/></svg>`}).firstChild}
 function lint(){let v=0;try{eval(T.V)}catch(e){v=1}let s=(lint.e??=KEYS.find(k=>k.name=="run").e.style);lint.c??=s.background;s.background=v?"red":lint.c;}
-function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; pretty=()=>PRETTY.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty.init=()=>{c={};for(let [v,k] of color())c[v]=`<span class=${k}>${v}</span>`;}}
+function pretty(){let c,m=/[a-z]+\b|[(){}[\]]|</g; c={};for(let [v,k] of color())c[v]=`<span class=${k}>${v}</span>`; pretty=()=>PRETTY.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty()}
 function* color(){for(let v of "(){}[]")yield [v,"pairs"];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,"keywords"]}}}
 function find(){let {V,S,E}=T;if(S==E&&/\w/.test(V[E])){T.F=word(V,E);T.R="";}else if(S!=E&&T.R){T.setRangeText(T.R,S,E,"end");pretty();}else{let n=V.indexOf(T.F,E);~n||(n=V.indexOf(T.F));if(~n){T.S=n;T.E=n+T.F.length;}}}
 
