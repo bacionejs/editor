@@ -31,7 +31,7 @@ function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<
 function lint(){let v=0;try{eval(T.V)}catch(e){v=1}let s=(lint.e??=KEYS.find(k=>k.name=="run").e.style);lint.c??=s.background;s.background=v?"red":lint.c;}
 function pretty(){let c={},m=/[a-z]+\b|[(){}[\]]|</g; for(let [v,k] of color())c[v]=`<span class=${k}>${v}</span>`; pretty=()=>PRETTY.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty()}
 function* color(){for(let v of "(){}[]")yield [v,"pairs"];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,"keywords"]}}}
-function find(){let {V,S,E}=T;if(S==E&&/\w/.test(V[E])){T.F=word(V,E);T.R="";}else if(S!=E&&T.R){T.setRangeText(T.R,S,E,"end");pretty();}else{let n=V.indexOf(T.F,E);~n||(n=V.indexOf(T.F));if(~n){T.S=n;T.E=n+T.F.length;}}}
+function find(){let {V,S,E}=T;if(S==E&&/\w/.test(V[E])){T.F=word(V,E);T.R="";}else if(S!=E&&T.R){T.setRangeText(T.R,S,E,"end");pretty();}else{let i=V.indexOf(T.F,E);if(~i){T.S=i;T.E=i+T.F.length;}}}
 
 function style(){element("style").textContent=`
 *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2}
