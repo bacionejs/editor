@@ -3,34 +3,29 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 <table>
   <tr>
     <td>
-      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/e741f74b-8e50-4a35-9eeb-303cdda75a68" /></a>
+      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/50a0d74c-41b0-4875-8d44-e0999e405f59" /></a>
     </td>
     <td>
-      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/e29a0549-409c-488d-b637-158829b5f95f" /></a>
+      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/12a9604c-d4db-4503-8e19-b78b6f74e80c" /></a>
     </td>
   </tr>
 </table>
 
-<img src="https://github.com/user-attachments/assets/8327346d-0154-4f2c-a8bb-edf6968382a4" />
+<img src="https://github.com/user-attachments/assets/7c6638e4-7ffe-4e7e-ad58-ed2cadfc8cd7" />
 
+---
 **Run** Runs or stops the game which contains the cursor.  
-**Undo** Restores changes.  
 **Comment** Toggles comments and puts the line in the Paste buffer.  
 **Complete** Completes a word.  
-**Rename** Click Copy, type new word and hold Paste to replace all.  
+**Find** Finds word under cursor.  
+**Rename** Click Find, type new word, click Find repeatedly to replace or enter to skip.  
 **Capslock** Shows shift characters. Alternatively, you can hold alphanumeric keys.  
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Validation** Syntax errors turn the Run button red.  
-**Fullscreen** Hold Zoom button.  
-**Themes** Hold Find button.  
 **Save** Saves games AND editor to a timestamped file.  
-**Zoom** Toggles font size.  
-**Paste** Inserts the contents of the Paste buffer.  
 **Copy** Begins or extends the selection of text and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. To exit this mode, press enter.  
 **Cut** Click Copy and Backspace.  
-**Find** Finds word under cursor.  
-**Backspace** Deletes character or selection.  
-**Enter** Inserts a newline or cancels selection. Retains prior indentation.  
+**Enter** Inserts a newline or cancels selection.  
 **Arrows** Moves cursor or extends selection.  
 **Characters** Inserts a character or replaces selection.  
 
