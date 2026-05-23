@@ -16,7 +16,8 @@ let {random:rnd,sin,cos,atan2,min,PI,hypot}=M,{X,W,H}=L;
 let SHAKE=L.Shake(X),SCORE=L.Score(X),SND=L.Sound(),PARTICLES=L.Particles(X,false),joy=L.Joystick();
 let P, R, B, scene;
 
-let getSpeed = L.Difficulty({ start: 50, end: 100, be: 80, at: 1000 });
+let baseSpeed = W * 0.15; 
+let getSpeed = L.Difficulty({ start: baseSpeed, end: baseSpeed * 2, be: baseSpeed * 1.6, at: 1000 });
 
 (init=()=>{
   let prev=0; P=Player(); R=Rocks(); B=Bullets();
@@ -30,19 +31,22 @@ let getSpeed = L.Difficulty({ start: 50, end: 100, be: 80, at: 1000 });
 })();
 
 function Player(){
-  let x=W/2, y=H/2, hp=3, r=30, a=0, t=0;
+  let x=W/2, y=H/2, hp=3, r=W/40, a=0, t=0; 
+  let maxShipSpeed = W * 0.5; 
   
   let path=L.shape([[0,-9],[1,-6,1,-4,2,-1],[2,0,3,0,3,1],[3,0,3,-1,3,-2],[4,-2,4,-2,5,-2],[5,-1,5,1,5,2],[5,2,6,2,6,2],[7,1,8,0,9,-1],[9,1,8,3,8,5],[6,6,5,8,3,9],[3,8,3,7,3,6],[3,6,2,5,2,5],[2,5,2,6,2,6],[1,6,1,6,0,6]]);
   return {get hp(){return hp}, get x(){return x}, get y(){return y}, get r(){return r}, hit:()=>(hp--,SHAKE.set(),PARTICLES.add(x,y)),
     update(dt){
       let d=hypot(joy.dx,joy.dy);
       if(d>10){
-        a=atan2(joy.dy,joy.dx); let speed=min(d*3,300);
+        a=atan2(joy.dy,joy.dx); let speed=min(d * 3, maxShipSpeed);
         x+=cos(a)*speed*dt; y+=sin(a)*speed*dt;
         if(x<-r)x=W+r; if(x>W+r)x=-r; if(y<-r)y=H+r; if(y>H+r)y=-r;
-        t+=dt; if(t>.15){B.add(x,y,a,600);SND.rocket();t=0;}
+        t+=dt; if(t>.15){B.add(x,y,a,W*0.9);SND.rocket();t=0;} 
       }
-      X.save();X.translate(x,y);X.rotate(a + PI/2);X.scale(2,2);
+      X.save();X.translate(x,y);X.rotate(a + PI/2);
+      let scaleFactor = (r * 2) / 18;
+      X.scale(scaleFactor, scaleFactor);
       X.strokeStyle=`hsl(${hp*40},100%,50%)`;X.lineWidth=1;
       X.stroke(path);X.restore();
     }
@@ -51,8 +55,10 @@ function Player(){
 
 function Rocks(){
   let A=[];
-  let spawn=(x,y,s,r=40)=>{
-    let a=rnd()*PI*2, rot=rnd()*PI*2, rotSpeed=(rnd()-0.5)*(50/r);
+  let maxRockRadius = W / 20; 
+  
+  let spawn=(x,y,s,r=maxRockRadius)=>{
+    let a=rnd()*PI*2, rot=rnd()*PI*2, rotSpeed=(rnd()-0.5)*(W*0.1/r);
     let path=new Path2D(), steps=8;
     for(let i=0;i<steps;i++){
       let ang=i*(PI*2/steps), dist=r*(0.7+rnd()*0.3);
@@ -60,12 +66,11 @@ function Rocks(){
       if(i==0)path.moveTo(px,py); else path.lineTo(px,py);
     }
     path.closePath();
-    A.push({x,y,v:cos(a)*s,w:sin(a)*s,r,hp:r>20?2:1,path,rot,rotSpeed})
+    A.push({x,y,v:cos(a)*s,w:sin(a)*s,r,hp:r>(maxRockRadius * 0.6)?2:1,path,rot,rotSpeed})
   };
   let fill=()=>{
     let currentScore = SCORE.score || 0;
     let speed = getSpeed(currentScore);
-    
     for(let i=0;i<5;i++) spawn(rnd()*W,rnd()*(H*.3),speed);
   };
   return {A, reset:()=>{A.length=0;fill()}, update(dt){
@@ -78,7 +83,7 @@ function Rocks(){
     }
   }, split(i){
     let k=A[i]; SND.explosion();PARTICLES.add(k.x,k.y);SCORE.add(10); k.hp--;
-    if(k.hp<=0){let {x,y,v,w,r}=k; A.splice(i,1); if(r>20){spawn(x,y,hypot(v,w)*1.3,r/2);spawn(x,y,hypot(v,w)*1.3,r/2)}}
+    if(k.hp<=0){let {x,y,v,w,r}=k; A.splice(i,1); if(r>(maxRockRadius * 0.6)){spawn(x,y,hypot(v,w)*1.3,r/2);spawn(x,y,hypot(v,w)*1.3,r/2)}}
   }}
 }
 
@@ -96,6 +101,7 @@ function Bullets(){
   }}
 }
 }
+
 
 
 
