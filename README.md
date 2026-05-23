@@ -31,7 +31,5 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 
 
 > [!NOTE]
-> To **download**, open https://bacionejs.github.io/editor/bacionejs.html and press Save.
-
-> [!NOTE]
-> To change the **theme**, edit bacionejs.html 🎨
+> 1. To **download**, open https://bacionejs.github.io/editor/bacionejs.html and press Save.
+> 1. To change the **theme**, edit bacionejs.html 🎨
