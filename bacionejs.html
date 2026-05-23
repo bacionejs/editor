@@ -1,4 +1,5 @@
-<meta charset='UTF-8'><meta name='viewport' content='width=device-width'><script>onload=()=>{ide();function ide(){
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width'><script>onload=()=>{ide();
+function ide(){
 if((navigator.maxTouchPoints||0)<2){alert("Designed for touch screens")} document.title=" BacioneJS";//github.com/bacionejs/editor  
 onerror=((d,f)=>(m,_,l,c)=>{d||(d=element("dialog"),d.setAttribute("closedby","any"));d.textContent=m;d.show();(f=document.querySelector("iframe"))&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus())})()
 style(); let PRETTY=element("div","","text pretty"),T=createtextarea(),KEYS=createkeys(); 
@@ -17,13 +18,8 @@ function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(ne
 function comment(){let {V,S}=T,s=V.lastIndexOf("\n",S-1)+1,e=V.indexOf("\n",S)+1;T.P=V.slice(s,e);T.P.startsWith("//")?T.I("",s,s+2):T.I("//",s,s);T.S=T.E=T.V.indexOf("\n",s)+1;}
 function run(){let f=document.querySelector("iframe"),g=currentgame();if(f)return f.remove(),T.focus();if(!g||g.name=="Library")return;f=element("iframe");setTimeout(()=>f.contentWindow.eval(T.V+g.name+"()"),50);T.blur()}
 function complete(){let{V,S}=T,w=V.slice(0,S).match(/\w+$/)?.[0];w&&T.I(V.match("\\b"+w+"\\w*")[0].slice(w.length))}
-function copy(){let {V,E}=T,v=V[E];/\w/.test(v)?word(V,E):v=="\n"?line(V,E):pair(v)?block(v,E,V):T.E++;T.P=T.V.slice(T.S,T.E);}
 function currentgame(){let{V,S}=T,r=/\b(\w+)\s*\(.*?\)\s*\{/g,m,b,e;while((m=r.exec(V))&&m.index<S)if(S<(e=pair("{",b=m.index+m[0].length,V)))return{name:m[1],ftop:b,fend:e,body:V.slice(b,e)}}
-function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
-function pair(v,i,s){let p={"(":")","{":"}","[":"]",'"':'"'};if(i==undefined) return v in p;for(let c=1;++i<s.length&&(v=='"'?s[i]!=v:(c+=s[i]==v?1:s[i]==p[v]?-1:0)););return i;}
-function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;T.S=start;T.E=end;return s.slice(start,end);}
-function line(s,i){(s[i-1]=="\n"||i==0) ? (T.S++, T.E=s.indexOf("\n\n",i+1)+2) : (T.E++, i=T.S, T.S=s.lastIndexOf("\n",i-1)+1);}
-function filecontent(){return "<meta charset='UTF-8'><meta name='viewport' content='width=device-width'><\script>onload=()=>{ide();"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"}\n\n}<\/script>\n"}
+function filecontent(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S};d==null?(h[i]?.v!=s.v&&h.splice(++i,Infinity,s),h.length>50&&(h.shift(),--i)):(i=Math.max(0,Math.min(h.length-1,i+d)),h[i]&&(T.V=h[i].v,T.S=T.E=h[i].s))};restore()}
 function undo(){restore(-1);}function redo(){restore(1);}
 function zoom(){zoom.big^=1;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"1.0rem":"0.5rem");}
@@ -32,6 +28,11 @@ function lint(){let v=0;try{eval(T.V)}catch(e){v=1}let s=(lint.e??=KEYS.find(k=>
 function pretty(){let c={},m=/[a-z]+\b|[(){}[\]]|</g; for(let [v,k] of color())c[v]=`<span class=${k}>${v}</span>`; pretty=()=>PRETTY.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty()}
 function* color(){for(let v of "(){}[]")yield [v,"pairs"];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,"keywords"]}}}
 function find(){let {V,S,E}=T;if(S==E&&/\w/.test(V[E])){T.F=word(V,E);T.R="";}else if(S!=E&&T.R){T.setRangeText(T.R,S,E,"end");pretty();}else{let i=V.indexOf(T.F,E);if(~i){T.S=i;T.E=i+T.F.length;}}}
+function pair(v,i,s){let p={"(":")","{":"}","[":"]",'"':'"'};if(i==undefined) return v in p;for(let c=1;++i<s.length&&(v=='"'?s[i]!=v:(c+=s[i]==v?1:s[i]==p[v]?-1:0)););return i;}
+function block(v,i,s){let b=pair(v,i,s);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
+function word(s,i){let w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;if(T.S==T.E)T.S=start;T.E=end;return s.slice(start,end);}
+function line(s,i){if(s[i-1]+s[i]=="\n\n"||!i)T.S++,T.E=s.indexOf("\n\n",i+1)+2;else if(T.S!=T.E)T.E=s.indexOf("\n",T.E)+1;else T.E++,T.S=s.lastIndexOf("\n",i-1)+1;}
+function copy(){let {V,E}=T;let v=V[E];(E==V.length)?(T.S=0,T.E=V.length):v=="\n"||(T.S!=T.E&&T.V[T.E-1]=="\n")?line(V,E):/\w/.test(v)?word(V,E):pair(v)?block(v,E,V):T.E++;T.P=T.V.slice(T.S,T.E);}
 
 function style(){element("style").textContent=`
 *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2}
@@ -89,6 +90,5 @@ keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;l
 keyboard.onpointerup=({target:{ref:k}={}})=>{if(lp)return;clearTimeout(t);if(!k)return;k.f?k.f[0]():T.I(k.e.textContent);tp(k)}
 return keys;
 }
-}
 
-}</script>
+}}</script>
