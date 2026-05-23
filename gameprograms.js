@@ -1,27 +1,15 @@
-
-
-
-
-
-
-
-
-
-
-
-
 function asteroids(){
 let M=Math,L=Library();
 let {random:rnd,sin,cos,atan2,min,PI,hypot}=M,{X,W,H}=L;
 let SHAKE=L.Shake(X),SCORE=L.Score(X),SND=L.Sound(),PARTICLES=L.Particles(X,false),joy=L.Joystick();
-let P, R, B, scene;
+let P, R, B, U, scene;
 
 let baseSpeed = W * 0.15; 
 let getSpeed = L.Difficulty({ start: baseSpeed, end: baseSpeed * 2, be: baseSpeed * 1.6, at: 1000 });
 
 (init=()=>{
-  let prev=0; P=Player(); R=Rocks(); B=Bullets();
-  scene=[SHAKE,R,B,P,PARTICLES,SCORE]; scene.forEach(o=>o.reset?.());
+  let prev=0; P=Player(); R=Rocks(); B=Bullets(); U=Ufo();
+  scene=[SHAKE,R,B,U,P,PARTICLES,SCORE]; scene.forEach(o=>o.reset?.());
   (loop=curr=>{
     if(P.hp<0)return init();
     let dt=min(.1,(curr-prev)/1000)||0;prev=curr;
@@ -42,7 +30,8 @@ function Player(){
         a=atan2(joy.dy,joy.dx); let speed=min(d * 3, maxShipSpeed);
         x+=cos(a)*speed*dt; y+=sin(a)*speed*dt;
         if(x<-r)x=W+r; if(x>W+r)x=-r; if(y<-r)y=H+r; if(y>H+r)y=-r;
-        t+=dt; if(t>.15){B.add(x,y,a,W*0.9);SND.rocket();t=0;} 
+//         t+=dt; if(t>.15){B.add(x,y,a,W*0.9,true);SND.rocket();t=0;} 
+        t+=dt; if(t>.15){B.add(x,y,a,W*0.9,true);t=0;} 
       }
       X.save();X.translate(x,y);X.rotate(a + PI/2);
       let scaleFactor = (r * 2) / 18;
@@ -51,6 +40,63 @@ function Player(){
       X.stroke(path);X.restore();
     }
   }
+}
+
+function Ufo(){
+  let active=false, x=0, y=0, vx=0, r=W/50, spawnTimer=5, shootTimer=0, angleTime=0;
+  let soundTimer = 0;
+  
+  let path = L.shape( [[0,-1],[3,-3,3,-2,0,-5],[3,-3,7,-1,10,0],[7,1,4,3,0,4]] );
+
+  let spawn = () => {
+    active = true;
+    x = rnd() > 0.5 ? -r : W + r;
+    y = rnd() * (H * 0.6) + (H * 0.2);
+    vx = (x < 0 ? 1 : -1) * (W * 0.2);
+    shootTimer = 1;
+    angleTime = 0;
+    soundTimer = 0;
+  };
+
+  return {
+    get active() { return active; }, get x() { return x; }, get y() { return y; }, get r() { return r; },
+    reset() { active = false; spawnTimer = 5; },
+    destroy() { active = false; spawnTimer = 7 + rnd() * 5; SND.explosion(); PARTICLES.add(x, y); },
+    update(dt) {
+      if (!active) {
+        spawnTimer -= dt;
+        if (spawnTimer <= 0) spawn();
+        return;
+      }
+
+      x += vx * dt;
+      angleTime += dt * 4;
+      y += sin(angleTime) * (W * 0.1) * dt;
+
+      soundTimer -= dt;
+      if (soundTimer <= 0) {
+        SND.ufo();
+        soundTimer = 0.12;
+      }
+
+      if ((vx > 0 && x > W + r) || (vx < 0 && x < -r)) { active = false; spawnTimer = 5 + rnd() * 5; }
+
+      shootTimer -= dt;
+      if (shootTimer <= 0) {
+        let aimAngle = atan2(P.y - y, P.x - x);
+        B.add(x, y, aimAngle, W * 0.45, false);
+        shootTimer = 1.5 + rnd() * 1;
+      }
+
+      X.save(); X.translate(x, y);
+      let scaleFactor = (r * 2) / 20; X.scale(scaleFactor, scaleFactor);
+      X.lineWidth = 1.5;
+      X.strokeStyle = "#00ffff"; X.stroke(path);
+      X.restore();
+
+      if (hypot(x - P.x, y - P.y) < r + P.r) { P.hit(); this.destroy(); }
+    }
+  };
 }
 
 function Rocks(){
@@ -79,7 +125,10 @@ function Rocks(){
       let k=A[i]; k.x+=k.v*dt; k.y+=k.w*dt; k.rot+=k.rotSpeed*dt;
       if(k.x<-k.r)k.x=W+k.r; if(k.x>W+k.r)k.x=-k.r; if(k.y<-k.r)k.y=H+k.r; if(k.y>H+k.r)k.y=-k.r;
       X.save();X.translate(k.x,k.y);X.rotate(k.rot);X.strokeStyle="white";X.lineWidth=2;X.stroke(k.path);X.restore();
-      if(hypot(k.x-P.x,k.y-P.y)<k.r+P.r){P.hit();SND.explosion();PARTICLES.add(k.x,k.y);A.splice(i,1)}
+      
+      if(hypot(k.x-P.x,k.y-P.y)<k.r+P.r){P.hit();SND.explosion();PARTICLES.add(k.x,k.y);A.splice(i,1);continue;}
+      
+      if(U.active && hypot(k.x-U.x, k.y-U.y) < k.r + U.r) { this.split(i); }
     }
   }, split(i){
     let k=A[i]; SND.explosion();PARTICLES.add(k.x,k.y);SCORE.add(10); k.hp--;
@@ -87,32 +136,33 @@ function Rocks(){
   }}
 }
 
+
 function Bullets(){
   let A=[];
-  return {A, reset:()=>A.length=0, add:(x,y,a,s)=>A.push({x,y,v:cos(a)*s,w:sin(a)*s,lt:1.2}), update(dt){
+  return {A, reset:()=>A.length=0, add:(x,y,a,s,fromPlayer)=>A.push({x,y,v:cos(a)*s,w:sin(a)*s,lt:1.2,fromPlayer}), update(dt){
     for(let i=A.length-1;i>=0;i--){
       let b=A[i]; b.x+=b.v*dt; b.y+=b.w*dt; b.lt-=dt;
-      X.fillStyle="lime"; X.fillRect(b.x-2,b.y-2,4,4);
+      
+      X.fillStyle = b.fromPlayer ? "lime" : "fuchsia"; 
+      X.fillRect(b.x-2,b.y-2,4,4);
+      
       if(b.lt<0){A.splice(i,1);continue}
-      for(let j=R.A.length-1;j>=0;j--){
-        let r=R.A[j]; if(hypot(b.x-r.x,b.y-r.y)<r.r){R.split(j);A.splice(i,1);break}
+      
+      if(b.fromPlayer) {
+        if(U.active && hypot(b.x-U.x, b.y-U.y) < U.r) { SCORE.add(50); U.destroy(); A.splice(i,1); break; }
+        
+        let hitRock = false;
+        for(let j=R.A.length-1;j>=0;j--){
+          let r=R.A[j]; if(hypot(b.x-r.x,b.y-r.y)<r.r){R.split(j); hitRock=true; break;}
+        }
+        if(hitRock) { A.splice(i,1); continue; }
+      } else {
+        if(hypot(b.x-P.x, b.y-P.y) < P.r) { P.hit(); SND.explosion(); A.splice(i,1); continue; }
       }
     }
   }}
 }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 function Library(){
 function element(tag){return document.body.appendChild(document.createElement(tag));}
@@ -129,7 +179,17 @@ function Shake(X){let s=0;return{set:()=>s=40,update:(dt)=>s&&(s=.02**dt*s|0,X.t
 function Sound(){let b=new AudioContext(); [.2,1].forEach((v,i)=>(b[i+1]=b.createBuffer(1,b.sampleRate*v,b.sampleRate)).getChannelData(0).forEach((_,i,a)=>a[i]=rnd()*2-1))
 return {
   rocket:()=>{let s=b.createBufferSource();s.buffer=b[1];s.connect(b.destination);s.start()},
-  explosion:()=>{let s=b.createBufferSource(),g=b.createGain(),f=b.createBiquadFilter();s.buffer=b[2];g.gain.value=8;f.type="lowpass";f.frequency.value=300;g.gain.linearRampToValueAtTime(0,b.currentTime+1);s.connect(f).connect(g).connect(b.destination);s.start()}
+  explosion:()=>{let s=b.createBufferSource(),g=b.createGain(),f=b.createBiquadFilter();s.buffer=b[2];g.gain.value=8;f.type="lowpass";f.frequency.value=300;g.gain.linearRampToValueAtTime(0,b.currentTime+1);s.connect(f).connect(g).connect(b.destination);s.start()},
+  ufo:()=>{
+    let osc=b.createOscillator(), g=b.createGain();
+    osc.type="sawtooth"; 
+    osc.frequency.setValueAtTime(600, b.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(150, b.currentTime + 0.12);
+    g.gain.setValueAtTime(1, b.currentTime);
+    g.gain.linearRampToValueAtTime(0, b.currentTime + 0.12);
+    osc.connect(g).connect(b.destination);
+    osc.start(); osc.stop(b.currentTime + 0.12);
+  }
 }}
 function Particles(X, gravity = true){let A=[];
 return {add(x,y){for(let i=60;i--;){let a=rnd()*7,s=rnd()*4+1;A.push({x,y,v:cos(a)*s,w:sin(a)*s,l:1})}}, update(dt){
@@ -138,14 +198,4 @@ return {add(x,y){for(let i=60;i--;){let a=rnd()*7,s=rnd()*4+1;A.push({x,y,v:cos(
 function Joystick(){let o={dx:0,dy:0,sx:0,sy:0};addEventListener("pointerdown",e=>{o.sx=e.clientX;o.sy=e.clientY;o.dx=0;o.dy=0});addEventListener("pointermove",e=>{e.buttons>0&&(o.dx=e.clientX-o.sx,o.dy=e.clientY-o.sy)});addEventListener("pointerup",()=>(o.dx=0,o.dy=0));return o}
 return {X,W,H,shape,Score,Difficulty,Shake,Sound,Particles,Joystick}
 }
-
-
-
-
-
-
-
-
-
-
 
