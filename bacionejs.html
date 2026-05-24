@@ -17,10 +17,7 @@ function arrow(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;el
 function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+"bacionejs.html"}).click();}
 function comment(){let {V,S}=T,s=V.lastIndexOf("\n",S-1)+1,e=V.indexOf("\n",S)+1;T.P=V.slice(s,e);T.P.startsWith("//")?T.I("",s,s+2):T.I("//",s,s);T.S=T.E=T.V.indexOf("\n",s)+1;}
 function run(){let g=currentgame(),f=iframe();if(!g||!f)return;setTimeout(()=>f.contentWindow.eval(T.V+g.name+"()"),50);T.blur();}
-
-
 function iframe(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f;}
-
 function complete(){let{V,S}=T,w=V.slice(0,S).match(/\w+$/)?.[0];w&&T.I(V.match("\\b"+w+"\\w*")[0].slice(w.length))}
 function currentgame(){let{V,S}=T,r=/\b(\w+)\s*\(.*?\)\s*\{/g,m,b,e;while((m=r.exec(V))&&m.index<S)if(S<(e=pair("{",b=m.index+m[0].length,V)))return{name:m[1],ftop:b,fend:e,body:V.slice(b,e)}}
 function filecontent(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
