@@ -3,10 +3,10 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 <table>
   <tr>
     <td>
-      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/50a0d74c-41b0-4875-8d44-e0999e405f59" /></a>
+      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/82f95740-bee8-4c91-8921-3f2c1bec7c64" /></a>
     </td>
     <td>
-      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/12a9604c-d4db-4503-8e19-b78b6f74e80c" /></a>
+      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/fa85fca1-3e5b-4b42-ab3c-80cfb8b301c8" /></a>
     </td>
   </tr>
 </table>
