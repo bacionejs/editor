@@ -1,8 +1,8 @@
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width'><script>onload=()=>{ide();
 function ide(){
-if((navigator.maxTouchPoints||0)<2){alert("Designed for touch screens")} document.title=" BacioneJS";//github.com/bacionejs/editor  
-onerror=((d,f)=>(m,_,l,c)=>{d||(d=element("dialog"),d.setAttribute("closedby","any"));d.textContent=m;d.show();(f=document.querySelector("iframe"))&&(f.remove(),T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus())})()
-style(); let PRETTY=element("div","","text pretty"),T=createtextarea(),KEYS=createkeys(); 
+if((navigator.maxTouchPoints||0)<2){alert("Designed for touch screens")} document.title=" BacioneJS";
+onerror=((d)=>(m,_,l,c)=>{d||(d=element("dialog"),d.setAttribute("closedby","any"));d.textContent=m;d.show();iframe();T.S=T.E=T.V.split("\n",l-1).join("\n").length+c,T.focus()})()
+style(); let PRETTY=element("div","","text pretty"),T=createtextarea(),KEYS=createkeys(),close=element("div","","close",{textContent:"❌",onclick:iframe,hidden:true});
 typeof GAMEPROGRAMS=="function"?init(GAMEPROGRAMS()):fetch("gameprograms.js").then(r=>r.text()).then(init).catch(()=>init("function yourgame(){\n\n}"))
 
 function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus(); pretty(); zoom();}
@@ -17,7 +17,10 @@ function arrow(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;el
 function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+"bacionejs.html"}).click();}
 function comment(){let {V,S}=T,s=V.lastIndexOf("\n",S-1)+1,e=V.indexOf("\n",S)+1;T.P=V.slice(s,e);T.P.startsWith("//")?T.I("",s,s+2):T.I("//",s,s);T.S=T.E=T.V.indexOf("\n",s)+1;}
 function run(){let g=currentgame(),f=iframe();if(!g||!f)return;setTimeout(()=>f.contentWindow.eval(T.V+g.name+"()"),50);T.blur();}
-function iframe(){let f=document.querySelector("iframe");if(f){f.remove();T.focus();return}f=element("iframe");f.style.height=document.querySelector(".keyboard").getBoundingClientRect().top;return f;}
+
+
+function iframe(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f;}
+
 function complete(){let{V,S}=T,w=V.slice(0,S).match(/\w+$/)?.[0];w&&T.I(V.match("\\b"+w+"\\w*")[0].slice(w.length))}
 function currentgame(){let{V,S}=T,r=/\b(\w+)\s*\(.*?\)\s*\{/g,m,b,e;while((m=r.exec(V))&&m.index<S)if(S<(e=pair("{",b=m.index+m[0].length,V)))return{name:m[1],ftop:b,fend:e,body:V.slice(b,e)}}
 function filecontent(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
@@ -37,12 +40,12 @@ function copy(){let {V,E}=T;let v=V[E];(E==V.length)?(T.S=0,T.E=V.length):v=="\n
 
 function style(){element("style").textContent=`
 *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2}
-iframe{position:fixed;width:100vw;} dialog{background:yellow;color:red} svg,path{pointer-events:none} ::selection{background:yellow;color:red} html{overscroll-behavior:none}
+iframe{position:fixed;width:100vw;height:100vh} dialog{background:yellow;color:red} svg,path{pointer-events:none} ::selection{background:yellow;color:red} html{overscroll-behavior:none}
 .text{position:fixed;inset:0;padding:10rem 2rem 100vh 2rem;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent;caret-color:pink}
 .keyboard{background:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;display:grid;bottom:0;right:0;grid-template-columns:repeat(10,1fr)}
 .keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;border:1px solid;}
-/* change theme colors here 🎨 */
-.keys{background:#424242;color:white;border-color:black;} .keywords{color:#B3EAB7} .pairs{color:#96ecff} .pretty{background:#15161B;color:white;}}
+.keys{background:#424242;color:white;border-color:black;} .keywords{color:#B3EAB7} .pairs{color:#96ecff} .pretty{background:#15161B;color:white;}
+.close{position:fixed;top:0;right:0;z-index:1;font-size:24px;}
 `;}
 
 function createtextarea(){
