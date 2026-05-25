@@ -14,7 +14,7 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 <img src="https://github.com/user-attachments/assets/7c6638e4-7ffe-4e7e-ad58-ed2cadfc8cd7" />
 
 ---
-**Run** Runs or stops the game which contains the cursor.  
+**Run** Runs the game which contains the cursor.  
 **Comment** Toggles comments and puts the line in the Paste buffer.  
 **Complete** Completes a word.  
 **Find** Finds word under cursor.  
