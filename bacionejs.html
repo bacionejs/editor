@@ -36,13 +36,12 @@ function copy(){let {V,E}=T;let v=V[E];(E==V.length)?(T.S=0,T.E=V.length):v=="\n
 function iframe(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f;}
 
 function style(){element("style").textContent=`
-*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2}
+*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2}  .close{position:fixed;top:0;right:0;z-index:1;font-size:24px;}
 iframe{position:fixed;width:100vw;height:100vh} dialog{background:yellow;color:red} svg,path{pointer-events:none} ::selection{background:yellow;color:red} html{overscroll-behavior:none}
 .text{position:fixed;inset:0;padding:10rem 2rem 100vh 2rem;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent;caret-color:pink}
-.keyboard{background:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;display:grid;bottom:0;right:0;grid-template-columns:repeat(10,1fr)}
-.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;border:1px solid;}
-.keys{background:#424242;color:white;border-color:black;} .keywords{color:#B3EAB7} .pairs{color:#96ecff} .pretty{background:#15161B;color:white;}
-.close{position:fixed;top:0;right:0;z-index:1;font-size:24px;}
+.keyboard{width:min(10cm,100%);container-type:inline-size;background:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;bottom:0;right:0;display:grid;grid-template-columns:repeat(10,1fr);}
+.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;font-size:5cqi} .keys>svg{width:1em;height:1em}
+/*🎨theme*/ .keywords{color:#B3EAB7;} .pairs{color:#96ecff;} .pretty{background:#15161B;color:white;} .keys{border:1px solid black;background:#424242;color:white;}
 `;}
 
 function createtextarea(){
@@ -82,13 +81,11 @@ let keys=[
 {r:6,c:0, d:["a","A"]},  {r:6,c:1, d:["s","S"]}, {r:6,c:2, d:["d","D"]}, {r:6,c:3, d:["f","F"]}, {r:6,c:4, d:["g","G"]}, {r:6,c:5, d:["h","H"]}, {r:6,c:6, d:["j","J"]}, {r:6,c:7, d:["k","K"]}, {r:6,c:8, d:["l","L"]},
 {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
-new ResizeObserver(()=>{let s=Math.min((innerHeight-innerWidth)/8,innerWidth/10);keyboard.style.width=s*10;keys.map(k=>k.f?k.e.firstChild.style.width="50%":k.e.style.fontSize=s/2)}).observe(document.body)
-let keyboard=element("div","","keyboard"),lp,t;
-let tp=p=>{let s=p.e.style;tp.c??=s.background;s.background="gray";setTimeout(()=>s.background=tp.c,200)}
+let lp,t,keyboard=element("div","","keyboard"),tp=p=>{let s=p.e.style;tp.c??=s.background;s.background="gray";setTimeout(()=>s.background=tp.c,200)}
 keyboard.onpointercancel=()=>{clearTimeout(t);lp=0;};keyboard.oncontextmenu=()=>false;
-for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref=k;k.f?(e.appendChild(svg(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
 keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;lp=0;t=setTimeout(()=>{lp=1;k.f?(k.f[1]||k.f[0])():T.I(k.d[1])},500)}
 keyboard.onpointerup=({target:{ref:k}={}})=>{if(lp)return;clearTimeout(t);if(!k)return;k.f?k.f[0]():T.I(k.e.textContent);tp(k)}
+for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref=k;k.f?(e.appendChild(svg(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1;}
 return keys;
 }
 
