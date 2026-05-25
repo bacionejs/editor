@@ -36,12 +36,12 @@ function copy(){let {V,E}=T;let v=V[E];(E==V.length)?(T.S=0,T.E=V.length):v=="\n
 function iframe(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f;}
 
 function style(){element("style").textContent=`
-*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2}  .close{position:fixed;top:0;right:0;z-index:1;font-size:24px;}
-iframe{position:fixed;width:100vw;height:100vh} dialog{background:yellow;color:red} svg,path{pointer-events:none} ::selection{background:yellow;color:red} html{overscroll-behavior:none}
-.text{position:fixed;inset:0;padding:10rem 2rem 100vh 2rem;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent;caret-color:pink}
+*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2}  
+.close{position:fixed;top:0;right:0;z-index:1;font-size:24px} iframe{position:fixed;width:100vw;height:100vh} svg,path{pointer-events:none} dialog,::selection{background:yellow;color:red} html{overscroll-behavior:none}
+.text{position:fixed;inset:0;padding:10rem 2rem 100vh;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent;caret-color:pink}
 .keyboard{width:min(10cm,100%);container-type:inline-size;background:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;bottom:0;right:0;display:grid;grid-template-columns:repeat(10,1fr);}
-.keys{display:flex;justify-content:center;align-items:center;line-height:1;aspect-ratio:1;font-size:5cqi} .keys>svg{width:1em;height:1em}
-/*🎨theme*/ .keywords{color:#B3EAB7;} .pairs{color:#96ecff;} .pretty{background:#15161B;color:white;} .keys{border:1px solid black;background:#424242;color:white;}
+.keys{display:grid;place-items:center;aspect-ratio:1;font-size:5cqi;} .keys>svg{width:1em;}
+/*🎨theme*/ .keywords{color:#B3EAB7;} .pairs{color:#96ecff;} .pretty{background:#15161B;color:white;} .keys{border:1px solid black;background:#424242;color:white;} .text{caret-color:pink}
 `;}
 
 function createtextarea(){
