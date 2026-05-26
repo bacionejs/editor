@@ -2,7 +2,7 @@
 function ide(){
 if((navigator.maxTouchPoints||0)<2){alert("Designed for touch screens")} document.title=" BacioneJS";//https://github.com/bacionejs/editor
 onerror=(m,_,l,c)=>{onerror.d??=element("dialog","","",{closedBy:"any"});onerror.d.textContent=m;onerror.d.show();iframe();T.S=T.E=T.V.split("\n",l-1).join("\n").length+c;T.focus()}
-let PRETTY=element("div","","text pretty"),T=createtextarea(),KEYS=createkeys(),close=element("div","","close",{textContent:"❌",onclick:iframe,hidden:true});
+let PRETTY=element("div","","text pretty"),T=createtextarea(),close=element("div","","close",{textContent:"❌",onclick:iframe,hidden:true});
 style(); typeof GAMEPROGRAMS=="function"?init(GAMEPROGRAMS()):fetch("gameprograms.js").then(r=>r.text()).then(init).catch(()=>init("function yourgame(){\n\n}"))
 
 function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus(); pretty(); zoom()}
@@ -48,7 +48,7 @@ Object.defineProperties(T,{V:{get:()=>T.value,set:v=>(T.value=v,pretty(),lint())
 return T;
 }
 
-function createkeys(){
+{
 let keys=[
 {r:0,c:5, f:[fullscreen], d:"M1 4 v-3 h3 m3 0 h3 v3 m0 3 v3 h-3 m-3 0 h-3 v-3"},
 {r:0,c:6, f:[find],       d:"M0 10 l4 -4 M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6"},
@@ -80,7 +80,6 @@ keyboard.onpointercancel=()=>{clearTimeout(t);lp=0};keyboard.oncontextmenu=()=>f
 keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;lp=0;t=setTimeout(()=>{lp=1;k.f?(k.f[1]||k.f[0])():T.I(k.d[1])},500)}
 keyboard.onpointerup=({target:{ref:k}={}})=>{if(lp)return;clearTimeout(t);if(!k)return;k.f?k.f[0]():T.I(k.e.textContent);tp(k)}
 for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref=k;k.f?(e.appendChild(svg(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1}
-return keys;
 }
 
 }}</script>
