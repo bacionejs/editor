@@ -15,21 +15,20 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 
 ---
 **Run** Runs the game which contains the cursor.  
-**Comment** Toggles comments and puts the line in the Paste buffer.  
-**Complete** Completes a word.  
-**Find** Finds word under cursor.  
-**Rename** Click Find, type new word, click Find repeatedly to replace or enter to skip.  
-**Capslock** Shows shift characters. Alternatively, you can hold alphanumeric keys.  
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Validation** Syntax errors turn the Run button red.  
-**Save** Saves games AND editor to a timestamped file.  
-**Copy** Begins or extends the selection of text and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. To exit this mode, press enter.  
+**Copy** Begins or extends the selection of text and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. To exit this mode, click enter.  
 **Cut** Click Copy and Backspace.  
 **Enter** Inserts a newline or cancels selection.  
 **Arrows** Moves cursor or extends selection.  
 **Characters** Inserts a character or replaces selection.  
-
+**Comment** Toggles comments and puts the line in the Paste buffer.  
+**Complete** Completes a word.  
+**Find** Finds word under cursor.  
+**Capslock** Shows shift characters. Alternatively, you can hold alphanumeric keys.  
+**Save** Saves games and editor to a timestamped file.  
+**Rename** Click Find, type new word, click Find repeatedly to replace or enter to skip.  
 
 > [!NOTE]
-> 1. To **download**, open https://bacionejs.github.io/editor/bacionejs.html and press Save.
+> 1. To **download**, open https://bacionejs.github.io/editor/bacionejs.html and click Save.
 > 1. To change the **theme**, edit bacionejs.html 🎨
