@@ -5,38 +5,27 @@ onerror=(m,_,l,c)=>{onerror.d??=element("dialog","","",{closedBy:"any"});onerror
 let PRETTY=element("div","","text pretty"),T=createtextarea(),close=element("div","","close",{textContent:"❌",onclick:iframe,hidden:true});
 style(); typeof GAMEPROGRAMS=="function"?init(GAMEPROGRAMS()):fetch("gameprograms.js").then(r=>r.text()).then(init).catch(()=>init("function yourgame(){\n\n}"))
 
-function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus(); pretty(); zoom()}
+function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus(); pretty()}
 function element(tag,p,c="",o){let e=(p||document.body).appendChild(document.createElement(tag));if(c)e.className=c;if(o)Object.assign(e,o);return e}
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"")}
-function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
-function enter(){let {S,E,V}=T;S-E?T.S=E:T.I("\n"+V.slice(V.lastIndexOf("\n",S-1)+1,S).match(/^\s*/))}
-function backspace(){let {S,E,V}=T;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1}
-function arrow(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;else T.P=V.slice(S,T.E=i)}}function left(){arrow(-1)}function right(){arrow(1)} 
-function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+"bacionejs.html"}).click()}
-function comment(){let {V,S}=T,s=V.lastIndexOf("\n",S-1)+1,e=V.indexOf("\n",S)+1;T.P=V.slice(s,e);T.P.startsWith("//")?T.I("",s,s+2):T.I("//",s,s);T.S=T.E=T.V.indexOf("\n",s)+1}
-function complete(){let{V,S}=T,w=V.slice(0,S).match(/\w+$/)?.[0];w&&T.I(V.match("\\b"+w+"\\w*")[0].slice(w.length))}
 function currentgame(){let{V,S}=T,r=/\b(\w+)\s*\(.*?\)\s*\{/g,m,b,e;while((m=r.exec(V))&&m.index<S)if(S<(e=pair("{",b=m.index+m[0].length)))return{name:m[1],ftop:b,fend:e,body:V.slice(b,e)}}
 function filecontent(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S};d==null?(h[i]?.v!=s.v&&h.splice(++i,Infinity,s),h.length>50&&(h.shift(),--i)):(i=Math.max(0,Math.min(h.length-1,i+d)),h[i]&&(T.V=h[i].v,T.S=T.E=h[i].s))};restore()}
-function paste(){T.I(T.P)} function undo(){restore(-1)} function redo(){restore(1)}
-function zoom(){zoom.big^=1;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"1.0rem":"0.5rem")}
+function arrow(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;else T.P=V.slice(S,T.E=i)}}
 function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<svg viewBox="-1 -1 12 12"><path d="${d}" fill="none" stroke="currentColor"/></svg>`}).firstChild}
 function pretty(){let c={},m=/[a-z]+\b|[(){}[\]]|</g; for(let [v,k] of color())c[v]=`<span class=${k}>${v}</span>`; pretty=()=>PRETTY.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty()}
 function* color(){for(let v of "(){}[]")yield [v,"pairs"];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,"keywords"]}}}
-function copy(){let {V,S,E}=T;let v=V[E];(E==V.length)?(T.S=0,T.E=V.length):v=="\n"||(S!=E&&V[E-1]=="\n")?line(E):/\w/.test(v)?word(E):pair(v)?block(v,E):T.E++;T.P=V.slice(T.S,T.E)}
 function pair(v,i){let s=T.V,p={"(":")","{":"}","[":"]",'"':'"'};if(i==undefined) return v in p;for(let c=1;++i<s.length&&(v=='"'?s[i]!=v:(c+=s[i]==v?1:s[i]==p[v]?-1:0)););return i}
 function block(v,i){let s=T.V,b=pair(v,i);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
 function word(i){let s=T.V,w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;if(T.S==T.E)T.S=start;T.E=end;return s.slice(start,end)}
 function line(i){let s=T.V;if(s[i-1]+s[i]=="\n\n"||!i)T.S++,T.E=s.indexOf("\n\n",i+1)+2;else if(T.S!=T.E)T.E=s.indexOf("\n",T.E)+1;else T.E++,T.S=s.lastIndexOf("\n",i-1)+1}
-function run(){let g=currentgame(),f=iframe();if(!g||!f)return;setTimeout(()=>f.contentWindow.eval(T.V+g.name+"()"),50);T.blur()}
 function iframe(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f}
-function find(){let{V,S,E,F,R}=T,i;if(S==E&&/\w/.test(V[E]))T.F=word(E),T.R="";else if(S!=E&&R)T.setRangeText(R,S,E,"end"),pretty();else~(i=V.slice(E).search(RegExp(`\\b${F}\\b`)))&&(T.S=E+i,T.E=T.S+F.length)}
 function lint(){let v=0;try{eval(T.V)}catch(e){v=1}lint.c??=T.style.caretColor;T.style.caretColor=v?"red":lint.c}
 
 function style(){element("style").textContent=`
 *{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2}  
 .close{position:fixed;top:0;right:0;z-index:1;font-size:24px} iframe{position:fixed;width:100vw;height:100vh} svg,path{pointer-events:none} dialog,::selection{background:yellow;color:red} html{overscroll-behavior:none}
-.text{position:fixed;inset:0;padding:10rem 2rem 100vh;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent}
+.text{position:fixed;inset:0;padding:10rem 2rem 100vh;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent;font-size:1rem}
 .keyboard{width:min(10cm,100%);container-type:inline-size;background:rgb(100 110 120/20%);border:1px solid black;border-radius:5% 0 0 0;touch-action:none;user-select:none;position:fixed;bottom:0;right:0;display:grid;grid-template-columns:repeat(10,1fr)}
 .keys{display:grid;place-items:center;aspect-ratio:1;font-size:4cqi} .keys>svg{width:4cqi}
 /*🎨theme*/ .keywords{color:#B3EAB7} .pairs{color:#96ecff} .pretty{background:#15161B;color:white} .keys{border:1px solid black;background:#424242;color:white} .text{caret-color:white}
@@ -50,22 +39,22 @@ return T;
 
 {
 let keys=[
-{r:0,c:5, f:[fullscreen], d:"M1 4 v-3 h3 m3 0 h3 v3 m0 3 v3 h-3 m-3 0 h-3 v-3"},
-{r:0,c:6, f:[find],       d:"M0 10 l4 -4 M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6"},
-{r:0,c:7, f:[zoom],       d:"M1 10 l4 -10 l4 10 M3 5 h4 m0 0 l-2 5"},
-{r:0,c:9, f:[run],        d:"M0 0 l10 5 l-10 5 z"},
-{r:1,c:2, f:[left],       d:"M1 5 h8 M5 1 l-4 4 l4 4"},
-{r:1,c:3, f:[right],      d:"M1 5 h8 M5 1 l4 4 l-4 4"},
-{r:1,c:4, f:[copy],       d:"M3 8 h-2 v-8 h6 v2 h2 v8 h-6 v-8 h6"},
-{r:1,c:5, f:[paste],      d:"M3 1 h-2 v9 h8 v-9 h-2 v1 h-4 v-1 h1 v-1 h2 v1 h1"},
-{r:1,c:6, f:[undo],       d:"M10 5 Q5 0  0 7 M0  2 v5 h5"},
-{r:1,c:7, f:[redo],       d:"M0  5 Q5 0 10 7 M10 2 v5 h-5"},
-{r:1,c:8, f:[comment],    d:"M6 1 l-6 8 m4 0 l6 -8"},
-{r:7,c:9, f:[enter],      d:"M10 0 v10 h-10 z"},
-{r:6,c:9, f:[capslock],   d:"M0 10 v-6 l5 -4 l5 4 v6 z"},
-{r:0,c:8, f:[save],       d:"M0 0 v6 l5 5 l5 -5 v-6 z"},
-{r:7,c:8, f:[backspace],  d:"M10 0 v10 h-6 l-4 -5 l4 -5 z"},
-{r:1,c:9, f:[complete],   d:"M0 0 h6 l4 5 l-4 5 h-6 z"},
+{r:0,c:5, d:"M1 4 v-3 h3 m3 0 h3 v3 m0 3 v3 h-3 m-3 0 h-3 v-3",  f:function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}},
+{r:0,c:6, d:"M0 10 l4 -4 M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6",   f:function find(){let{V,S,E,F,R}=T,i;if(S==E&&/\w/.test(V[E]))T.F=word(E),T.R="";else if(S!=E&&R)T.setRangeText(R,S,E,"end"),pretty();else~(i=V.slice(E).search(RegExp(`\\b${F}\\b`)))&&(T.S=E+i,T.E=T.S+F.length)}},
+{r:0,c:7, d:"M1 10 l4 -10 l4 10 M3 5 h4 m0 0 l-2 5",             f:function zoom(){zoom.big^=1;T.style.fontSize=PRETTY.style.fontSize=(zoom.big?"0.5rem":"1.0rem")}},
+{r:0,c:9, d:"M0 0 l10 5 l-10 5 z",                               f:function run(){let g=currentgame(),f=iframe();if(!g||!f)return;setTimeout(()=>f.contentWindow.eval(T.V+g.name+"()"),50);T.blur()}},
+{r:1,c:2, d:"M1 5 h8 M5 1 l-4 4 l4 4",                           f:function left(){arrow(-1)}},
+{r:1,c:3, d:"M1 5 h8 M5 1 l4 4 l-4 4",                           f:function right(){arrow(1)}},
+{r:1,c:4, d:"M3 8 h-2 v-8 h6 v2 h2 v8 h-6 v-8 h6",               f:function copy(){let {V,S,E}=T;let v=V[E];(E==V.length)?(T.S=0,T.E=V.length):v=="\n"||(S!=E&&V[E-1]=="\n")?line(E):/\w/.test(v)?word(E):pair(v)?block(v,E):T.E++;T.P=V.slice(T.S,T.E)}},
+{r:1,c:5, d:"M3 1 h-2 v9 h8 v-9 h-2 v1 h-4 v-1 h1 v-1 h2 v1 h1", f:function paste(){T.I(T.P)}},
+{r:1,c:6, d:"M10 5 Q5 0  0 7 M0  2 v5 h5",                       f:function undo(){restore(-1)}},
+{r:1,c:7, d:"M0  5 Q5 0 10 7 M10 2 v5 h-5",                      f:function redo(){restore(1)}},
+{r:1,c:8, d:"M6 1 l-6 8 m4 0 l6 -8",                             f:function comment(){let {V,S}=T,s=V.lastIndexOf("\n",S-1)+1,e=V.indexOf("\n",S)+1;T.P=V.slice(s,e);T.P.startsWith("//")?T.I("",s,s+2):T.I("//",s,s);T.S=T.E=T.V.indexOf("\n",s)+1}},
+{r:7,c:9, d:"M10 0 v10 h-10 z",                                  f:function enter(){let {S,E,V}=T;S-E?T.S=E:T.I("\n"+V.slice(V.lastIndexOf("\n",S-1)+1,S).match(/^\s*/))}},
+{r:6,c:9, d:"M0 10 v-6 l5 -4 l5 4 v6 z",                         f:function capslock(){keys.forEach(k=>k.f||(k.e.textContent=k.d[k.d.indexOf(k.e.textContent)^1]))}},
+{r:0,c:8, d:"M0 0 v6 l5 5 l5 -5 v-6 z",                          f:function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(new File([filecontent()],"")),download:timestamp()+"bacionejs.html"}).click()}},
+{r:7,c:8, d:"M10 0 v10 h-6 l-4 -5 l4 -5 z",                      f:function backspace(){let {S,E,V}=T;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1}},
+{r:1,c:9, d:"M0 0 h6 l4 5 l-4 5 h-6 z",                          f:function complete(){let{V,S}=T,w=V.slice(0,S).match(/\w+$/)?.[0];w&&T.I(V.match("\\b"+w+"\\w*")[0].slice(w.length))}},
 {r:7,c:7, d:[" "," "]},  {r:1,c:0, d:["?","?"]}, {r:1,c:1, d:['"','"']},
 {r:2,c:0, d:["(","("]},  {r:2,c:1, d:[")",")"]}, {r:2,c:2, d:["{","{"]}, {r:2,c:3, d:["}","}"]}, {r:2,c:4, d:["[","["]}, {r:2,c:5, d:["]","]"]}, {r:2,c:6, d:[",",","]}, {r:2,c:7, d:[";",";"]}, {r:2,c:8, d:[".","."]}, {r:2,c:9, d:[":",":"]},
 {r:3,c:0, d:["&","&"]},  {r:3,c:1, d:["|","|"]}, {r:3,c:2, d:["+","+"]}, {r:3,c:3, d:["-","-"]}, {r:3,c:4, d:["=","="]}, {r:3,c:5, d:["!","!"]}, {r:3,c:6, d:["<","<"]}, {r:3,c:7, d:[">",">"]}, {r:3,c:8, d:["*","*"]}, {r:3,c:9, d:["/","/"]},
@@ -75,11 +64,10 @@ let keys=[
 {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
 let lp,t,keyboard=element("div","","keyboard"),tp=p=>{let s=p.e.style;tp.c??=s.background;s.background="gray";setTimeout(()=>s.background=tp.c,200)}
-function capslock(){keys.forEach(k => k.f || (k.e.textContent = k.d[k.d.indexOf(k.e.textContent) ^ 1]))}
 keyboard.onpointercancel=()=>{clearTimeout(t);lp=0};keyboard.oncontextmenu=()=>false;
-keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;lp=0;t=setTimeout(()=>{lp=1;k.f?(k.f[1]||k.f[0])():T.I(k.d[1])},500)}
-keyboard.onpointerup=({target:{ref:k}={}})=>{if(lp)return;clearTimeout(t);if(!k)return;k.f?k.f[0]():T.I(k.e.textContent);tp(k)}
-for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref=k;k.f?(e.appendChild(svg(k.d)),k.name=k.f[0].name):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1}
+keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;lp=0;t=setTimeout(()=>{lp=1;k.f?k.f():T.I(k.d[1])},500)}
+keyboard.onpointerup=({target:{ref:k}={}})=>{if(lp)return;clearTimeout(t);if(!k)return;k.f?k.f():T.I(k.e.textContent);tp(k)}
+for(let k of keys){let e=k.e=element("div",keyboard,"keys");e.ref=k;k.f?(e.appendChild(svg(k.d))):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1}
 }
 
 }}</script>
