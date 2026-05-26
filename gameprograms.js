@@ -146,7 +146,3 @@ function Joystick(){let o={dx:0,dy:0,sx:0,sy:0};
 
 return {X,W,H,shape,Score,Difficulty,Shake,Sound,Particles,Joystick}
 }
-
-// uncomment light theme 🎨
-//if(!parent.document.getElementById("theme")){parent.document.body.insertAdjacentHTML("beforeend",`<style id="theme">.keywords{color:teal}.pairs{color:purple}.keys,.pretty{background:white;color:black}.keys{border:1px solid silver}.text{caret-color:black}</style>`);}
-
