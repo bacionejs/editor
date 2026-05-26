@@ -88,6 +88,21 @@ return {A,reset:()=>A.length=0,add:(x,y,a,s,fP)=>A.push({x,y,v:cos(a)*s,w:sin(a)
 }
 
 function Library(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function element(tag){return document.body.appendChild(document.createElement(tag))}
 element("style").textContent="*{margin:0;padding:0}canvas{touch-action:none}body{overflow:hidden}";oncontextmenu=_=>false;
 let {random:rnd,sin,cos}=Math,X=element("canvas").getContext("2d",{alpha:!1}),W=innerWidth,H=innerHeight;
@@ -146,4 +161,7 @@ function Joystick(){let o={dx:0,dy:0,sx:0,sy:0};
 
 return {X,W,H,shape,Score,Difficulty,Shake,Sound,Particles,Joystick}
 }
+
+// uncomment this for light theme 🎨
+// if(!parent.document.getElementById("theme")){parent.document.body.insertAdjacentHTML("beforeend",`<style id="theme">.keywords{color:teal}.pairs{color:purple}.keys,.pretty{background:#fff;color:#000}.keys{border:1px solid silver}.text{caret-color:#000}</style>`);}
 
