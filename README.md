@@ -16,7 +16,7 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 ---
 **Run** Runs the game which contains the cursor.  
 **Debugging** Runtime errors display a message and places the cursor at the error.  
-**Validation** Syntax errors turn the Run button red.  
+**Validation** Syntax errors turn the cursor red.  
 **Copy** Begins or extends the selection of text and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. To exit this mode, tap Enter.  
 **Cut** Tap Copy and Backspace.  
 **Enter** Inserts a newline or cancels selection.  
