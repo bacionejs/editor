@@ -30,5 +30,5 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 **Rename** Tap Find, type new word, tap Find repeatedly to replace or Enter to skip.  
 
 > [!NOTE]
-> 1. To **download**, open https://bacionejs.github.io/editor/bacionejs.html and tap Save.
-> 1. To change the **theme**, edit bacionejs.html 🎨
+> To **download**, open https://bacionejs.github.io/editor/bacionejs.html and tap Save.
+
