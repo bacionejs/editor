@@ -23,7 +23,7 @@ function iframe(){let f=document.querySelector("iframe");f?(f.remove(),T.focus()
 function lint(){let v=0;try{eval(T.V)}catch(e){v=1}lint.c??=T.style.caretColor;T.style.caretColor=v?"red":lint.c}
 
 let T=element("textarea","text",{R:"",P:"",inputMode:"none",spellcheck:false,oncut:()=>0, onpaste:e=>(e.preventDefault(),T.I(e.clipboardData.getData("text"))),onscroll:()=>{PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft},
-I(v,s=T.S,e=T.E){restore();v!=undefined&&(T.R+=v);T.setRangeText((v==undefined?T.R:v),s,e,"end");restore();pretty();lint()}});
+I(v,s=T.S,e=T.E){restore();if(v!=null)T.R+=v;T.setRangeText(v??T.R,s,e,"end");restore();pretty();lint()}});
 Object.defineProperties(T,{V:{get:()=>T.value,set:v=>(T.value=v,pretty(),lint())},S:{get:()=>T.selectionStart,set:v=>T.selectionStart=v},E:{get:()=>T.selectionEnd,set:v=>T.selectionEnd=v}});
 
 let keys=[
