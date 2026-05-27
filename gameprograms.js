@@ -13,7 +13,7 @@ let move=(o,dt)=>{o.x+=o.v*dt;o.y+=o.w*dt};
   scene.forEach(o=>o.reset?.());
   (loop=curr=>{
     if(P.hp<0)return init();
-    let dt=min(.1,(curr-prev)/1e3)||0;prev=curr;X.fillStyle="black";X.fillRect(0,0,W,H);
+    let dt=min(.1,(curr-prev)/1000)||0;prev=curr;X.fillStyle="black";X.fillRect(0,0,W,H);
     X.save();scene.forEach(o=>o.update(dt));X.restore();requestAnimationFrame(loop);
   })(0)
 })();
