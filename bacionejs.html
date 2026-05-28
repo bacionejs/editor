@@ -15,12 +15,12 @@ function arrow(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;el
 function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<svg viewBox="-1 -1 12 12"><path d="${d}" fill="none" stroke="currentColor"/></svg>`}).firstChild}
 function pretty(){let c={},m=/[a-z]+\b|[(){}[\]]|</g; for(let [v,k] of color())c[v]=`<span class=${k}>${v}</span>`; pretty=()=>PRETTY.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty()}
 function* color(){for(let v of "(){}[]")yield [v,"pairs"];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,"keywords"]}}}
-function pair(v,i){let s=T.V,p={"(":")","{":"}","[":"]",'"':'"'};if(i==undefined) return v in p;for(let c=1;++i<s.length&&(v=='"'?s[i]!=v:(c+=s[i]==v?1:s[i]==p[v]?-1:0)););return i}
-function block(v,i){let s=T.V,b=pair(v,i);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
-function word(i){let s=T.V,w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;if(T.S==T.E)T.S=start;T.E=end;return s.slice(start,end)}
-function line(i){let s=T.V;if(s[i-1]+s[i]=="\n\n"||!i)T.S++,T.E=s.indexOf("\n\n",i+1)+2;else if(T.S!=T.E)T.E=s.indexOf("\n",T.E)+1;else T.E++,T.S=s.lastIndexOf("\n",i-1)+1}
 function iframe(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f}
 function lint(){let v=0;try{eval(T.V)}catch(e){v=1}lint.c??=T.style.caretColor;T.style.caretColor=v?"red":lint.c}
+function word(i){let s=T.V,w=/\w/,start=i,end=i;while(start>0&&w.test(s[start-1]))start--;while(end<s.length&&w.test(s[end]))end++;if(T.S==T.E)T.S=start;T.E=end;return s.slice(start,end)}
+function line(i){let s=T.V;if(s[i-1]+s[i]=="\n\n"||!i)T.S++,T.E=s.indexOf("\n\n",i+1)+2;else if(T.S!=T.E)T.E=s.indexOf("\n",T.E)+1;else T.E++,T.S=s.lastIndexOf("\n",i-1)+1}
+function block(v,i){let s=T.V,b=pair(v,i);s.slice(i,b).includes("\n") ? (T.S=s.lastIndexOf("\n",i)+1, T.E=s.indexOf("\n",b)+1) : T.E=b+1; }
+function pair(v,i){let s=T.V,p={"(":")","{":"}","[":"]",'"':'"'};if(i==undefined) return v in p;for(let c=1;++i<s.length&&(v=='"'?s[i]!=v:(c+=s[i]==v?1:s[i]==p[v]?-1:0)););return i}
 
 let T=element("textarea","text",{R:"",P:"",inputMode:"none",spellcheck:false,oncut:()=>0, onpaste:e=>(e.preventDefault(),T.I(e.clipboardData.getData("text"))),onscroll:()=>{PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft},
 I(v,s=T.S,e=T.E){restore();if(v!=null)T.R+=v;T.setRangeText(v??T.R,s,e,"end");restore();pretty();lint()}});
@@ -33,7 +33,7 @@ let keys=[
 {r:0,c:9, d:"M0 0 l10 5 l-10 5 z",                               f:function run(){let g=currentgame(),f=iframe();if(!g||!f)return;setTimeout(()=>f.contentWindow.eval(T.V+g.name+"()"),50);T.blur()}},
 {r:1,c:2, d:"M1 5 h8 M5 1 l-4 4 l4 4",                           f:function left(){arrow(-1)}},
 {r:1,c:3, d:"M1 5 h8 M5 1 l4 4 l-4 4",                           f:function right(){arrow(1)}},
-{r:1,c:4, d:"M3 8 h-2 v-8 h6 v2 h2 v8 h-6 v-8 h6",               f:function copy(){let {V,S,E}=T;let v=V[E];v=="\n"||(S!=E&&V[E-1]=="\n")?line(E):/\w/.test(v)?word(E):pair(v)?block(v,E):T.E++;T.P=V.slice(T.S,T.E)}},
+{r:1,c:4, d:"M3 8 h-2 v-8 h6 v2 h2 v8 h-6 v-8 h6",               f:function copy(){let {V,S,E}=T,v=V[E];v=="\n"||(S!=E&&V[E-1]=="\n")?line(E):/\w/.test(v)?word(E):pair(v)?block(v,E):T.E++;T.P=V.slice(T.S,T.E)}},
 {r:1,c:5, d:"M3 1 h-2 v9 h8 v-9 h-2 v1 h-4 v-1 h1 v-1 h2 v1 h1", f:function paste(){T.I(T.P)}},
 {r:1,c:6, d:"M10 5 Q5 0  0 7 M0  2 v5 h5",                       f:function undo(){restore(-1)}},
 {r:1,c:7, d:"M0  5 Q5 0 10 7 M10 2 v5 h-5",                      f:function redo(){restore(1)}},
