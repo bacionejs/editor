@@ -20,7 +20,7 @@ function lint(){let v=0;try{eval(T.V)}catch(e){v=1}lint.c??=T.style.caretColor;T
 function word(){let{V,S,E}=T,w=/\w/;while(S&&w.test(V[S-1]))S--;while(E<V.length&&w.test(V[E]))E++;T.S==T.E&&(T.S=S);T.E=E;return V.slice(S,E)}
 function line(){let{V,S,E}=T;if(V[E-1]+V[E]=="\n\n"||!E)T.S++,T.E=V.indexOf("\n\n",E+1)+2;else if(S!=E)T.E=V.indexOf("\n",E)+1;else T.E++,T.S=V.lastIndexOf("\n",E-1)+1}
 function block(){let{V,E}=T,b=pair(V[E],E);V.slice(E,b).includes("\n")?(T.S=V.lastIndexOf("\n",E)+1,T.E=V.indexOf("\n",b)+1):T.E=b+1}
-function pair(v,i){let {V}=T,p={"(":")","{":"}","[":"]",'"':'"'};if(i==undefined) return v in p;for(let c=1;++i<V.length&&(v=='"'?V[i]!=v:(c+=V[i]==v?1:V[i]==p[v]?-1:0)););return i}
+function pair(p1,i){let {V}=T,p={"(":")","{":"}","[":"]",'"':'"'},p2=p[p1];if(i==undefined) return p1 in p;for(let c=1;++i<V.length&&(p1=='"'?V[i]!=p1:(c+=V[i]==p1?1:V[i]==p2?-1:0)););return i}
 
 let T=element("textarea","text",{R:"",P:"",inputMode:"none",spellcheck:false,oncut:()=>0, onpaste:e=>(e.preventDefault(),T.I(e.clipboardData.getData("text"))),onscroll:()=>{PRETTY.scrollTop=T.scrollTop;PRETTY.scrollLeft=T.scrollLeft},
 I(v,s=T.S,e=T.E){restore();if(v!=null)T.R+=v;T.setRangeText(v??T.R,s,e,"end");restore();pretty();lint()}});
