@@ -1,3 +1,4 @@
+
 BacioneJS is the most thumb-friendly JavaScript IDE in its class
 
 <table>
@@ -36,5 +37,4 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 
 🔥 full-featured IDE that fits on a 3x5 card 😁🤯🕵️
 
-<img width="640" alt="Screenshot_2026-05-28-15-09-00-297_com android chrome-edit" src="https://github.com/user-attachments/assets/3476ba11-1042-4b9f-84c3-bb52b563d2fe" />
-
+<img width="640" src="https://github.com/user-attachments/assets/c0007085-9c7f-40e1-9032-be7c27fb3d49" />
