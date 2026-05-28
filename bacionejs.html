@@ -9,13 +9,13 @@ function init(s){T.value=s;T.S=T.E=T.V.indexOf("{")+1;T.focus(); pretty()}
 function element(tag,c="",o){let e=((o&&o instanceof Element)?o:document.body).appendChild(document.createElement(tag));if(c)e.className=c;if(o&&o.constructor===Object)Object.assign(e,o);return e}
 function timestamp(){let time=new Date();return "FullYear Month Date Hours Minutes Seconds".split(" ").reduce((s,i)=>s+((time["get"+i]()+(i=="Month")).toString().padStart(2,"0")),"")}
 function currentgame(){let{V,S}=T,r=/\b(\w+)\s*\(.*?\)\s*\{/g,m,b,e;while((m=r.exec(V))&&m.index<S)if(S<(e=pair("{",b=m.index+m[0].length)))return{name:m[1],ftop:b,fend:e,body:V.slice(b,e)}}
+function iframe(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f}
 function filecontent(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
 function restore(){let h=[],i=-1;restore=d=>{let s={v:T.V,s:T.S};d==null?(h[i]?.v!=s.v&&h.splice(++i,Infinity,s),h.length>50&&(h.shift(),--i)):(i=Math.max(0,Math.min(h.length-1,i+d)),h[i]&&(T.V=h[i].v,T.S=T.E=h[i].s))};restore()}
 function arrow(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;else T.P=V.slice(S,T.E=i)}}
 function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<svg viewBox="-1 -1 12 12"><path d="${d}" fill="none" stroke="currentColor"/></svg>`}).firstChild}
 function pretty(){let c={},m=/[a-z]+\b|[(){}[\]]|</g; for(let [v,k] of color())c[v]=`<span class=${k}>${v}</span>`; pretty=()=>PRETTY.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x); pretty()}
 function* color(){for(let v of "(){}[]")yield [v,"pairs"];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,"keywords"]}}}
-function iframe(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f}
 function lint(){let v=0;try{eval(T.V)}catch(e){v=1}lint.c??=T.style.caretColor;T.style.caretColor=v?"red":lint.c}
 function word(){let{V,S,E}=T,w=/\w/;while(S&&w.test(V[S-1]))S--;while(E<V.length&&w.test(V[E]))E++;T.S==T.E&&(T.S=S);T.E=E;return V.slice(S,E)}
 function line(){let{V,S,E}=T;if(V[E-1]+V[E]=="\n\n"||!E)T.S++,T.E=V.indexOf("\n\n",E+1)+2;else if(S!=E)T.E=V.indexOf("\n",E)+1;else T.E++,T.S=V.lastIndexOf("\n",E-1)+1}
