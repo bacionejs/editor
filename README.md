@@ -32,3 +32,8 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 > [!NOTE]
 > To **download**, open https://bacionejs.github.io/editor/bacionejs.html and press Save.
 
+---
+
+🔥 full-featured IDE that fits on a 3x5 card 😁🤯🕵️
+
+<img width="640" alt="e5" src="https://github.com/user-attachments/assets/852a2345-1c6a-4b51-82d1-1906d3cce0ee" />
