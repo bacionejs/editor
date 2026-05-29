@@ -21,7 +21,6 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 **Validation** Syntax errors turn the cursor red.  
 **Copy** Begins or extends the selection of text and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. To exit this mode, press Enter.  
 **Cut** Press Copy and Backspace.  
-**Enter** Inserts a newline or cancels selection.  
 **Arrows** Moves cursor or extends selection.  
 **Comment** Toggles comments and puts the line in the Paste buffer.  
 **Capslock** Shows shift characters. Alternatively, you can hold alphanumeric keys.  
