@@ -1,5 +1,5 @@
 
-BacioneJS is the most thumb-friendly JavaScript IDE in its class
+BacioneJS is the most thumb-friendly JavaScript IDE
 
 <table>
   <tr>
