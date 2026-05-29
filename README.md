@@ -4,7 +4,7 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 <table>
   <tr>
     <td>
-      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/82f95740-bee8-4c91-8921-3f2c1bec7c64" /></a>
+      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/cb19d02e-a7ba-4c0d-b322-8976608ac983" /></a>
     </td>
     <td>
       <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/fa85fca1-3e5b-4b42-ab3c-80cfb8b301c8" /></a>
@@ -12,7 +12,8 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
   </tr>
 </table>
 
-<img src="https://github.com/user-attachments/assets/7c6638e4-7ffe-4e7e-ad58-ed2cadfc8cd7" />
+<img src="https://github.com/user-attachments/assets/fe08511b-b450-411a-b676-4ba6ccbd95b3" />
+
 
 ---
 **Run** Runs the game which contains the cursor.  
@@ -37,4 +38,5 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 
 🔥 full-featured IDE that fits on a 3x5 card 😁🤯🕵️
 
-<img width="640" src="https://github.com/user-attachments/assets/c0007085-9c7f-40e1-9032-be7c27fb3d49" />
+<img width="640" src="https://github.com/user-attachments/assets/20c910d3-75fb-4bd4-a07a-d0dadd12d003" />
+
