@@ -23,12 +23,9 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 **Cut** Press Copy and Backspace.  
 **Enter** Inserts a newline or cancels selection.  
 **Arrows** Moves cursor or extends selection.  
-**Characters** Inserts a character or replaces selection.  
 **Comment** Toggles comments and puts the line in the Paste buffer.  
-**Complete** Completes a word.  
-**Find** Finds word under the cursor.  
 **Capslock** Shows shift characters. Alternatively, you can hold alphanumeric keys.  
-**Save** Saves games and editor to a timestamped file.  
+**Find** Finds the word under the cursor.  
 **Rename** Press Find, type new word, press Find repeatedly to replace or Enter to skip.  
 
 > [!NOTE]
