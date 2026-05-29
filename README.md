@@ -26,13 +26,4 @@ BacioneJS is the most thumb-friendly JavaScript IDE in its class
 **Capslock** Shows shift characters. Alternatively, you can hold alphanumeric keys.  
 **Find** Finds the word under the cursor.  
 **Rename** Press Find, type new word, press Find repeatedly to replace or Enter to skip.  
-
-> [!NOTE]
-> To **download**, open https://bacionejs.github.io/editor/bacionejs.html and press Save.
-
----
-
-🔥 full-featured IDE that fits on a 3x5 card 😁🤯🕵️
-
-<img width="640" src="https://github.com/user-attachments/assets/20c910d3-75fb-4bd4-a07a-d0dadd12d003" />
-
+**Download** Open https://bacionejs.github.io/editor/bacionejs.html and press Save.
