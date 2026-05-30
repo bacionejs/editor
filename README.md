@@ -12,18 +12,30 @@ BacioneJS is the most thumb-friendly JavaScript IDE
   </tr>
 </table>
 
+---
+
+Function Keys
+
 <img src="https://github.com/user-attachments/assets/fe08511b-b450-411a-b676-4ba6ccbd95b3" />
 
-
 ---
-**Run** Runs the game which contains the cursor.  
+
+Additional Functions
+
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Validation** Syntax errors turn the cursor red.  
-**Copy** Begins or extends the selection of text and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. To exit this mode, press Enter.  
 **Cut** Press Copy and Backspace.  
+**Rename** Press Find, type new word, press Find repeatedly to replace or Enter to skip.  
+**Hold** alphanumeric keys as an alternative to capslock.  
+
+---
+
+**Run** Runs the game which contains the cursor.  
+**Copy** Begins or extends the selection of text and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. To exit this mode, press Enter.  
 **Arrows** Moves cursor or extends selection.  
 **Comment** Toggles comments and puts the line in the Paste buffer.  
-**Capslock** Shows shift characters. Alternatively, you can hold alphanumeric keys.  
 **Find** Finds the word under the cursor.  
-**Rename** Press Find, type new word, press Find repeatedly to replace or Enter to skip.  
-**Download** Open https://bacionejs.github.io/editor/bacionejs.html and press Save.
+
+---
+
+**Download** Open https://bacionejs.github.io/editor/bacionejs.html and press Save.  
