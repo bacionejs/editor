@@ -1,5 +1,5 @@
 
-BacioneJS is the most thumb-friendly JavaScript IDE
+💋BacioneJS is 👍thumb-friendly
 
 <table>
   <tr>
@@ -14,13 +14,9 @@ BacioneJS is the most thumb-friendly JavaScript IDE
 
 ---
 
-Function Keys
-
 <img src="https://github.com/user-attachments/assets/fe08511b-b450-411a-b676-4ba6ccbd95b3" />
 
 ---
-
-Additional Functions
 
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Validation** Syntax errors turn the cursor red.  
