@@ -1,5 +1,4 @@
 
-💋BacioneJS is 👍thumb-friendly
 
 <table>
   <tr>
