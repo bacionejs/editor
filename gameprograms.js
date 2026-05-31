@@ -1,3 +1,13 @@
+
+
+
+
+
+
+
+
+
+
 function asteroids(){
 let L=Library(),{random:rnd,sin,cos,atan2,min,PI,hypot}=Math,{X,W,H}=L,SHAKE=L.Shake(X),SCORE=L.Score(X);
 let bonus,P,R,B,U,scene,SND=L.Sound(),PARTICLES=L.Particles(X,false),joy=L.Joystick();
@@ -47,21 +57,22 @@ return {get active(){return active},get x(){return x},get y(){return y},get r(){
 
 function Rocks(){
 let A=[],max=W/20;
-let spawn=(x,y,s,r=max)=>{
-  let a=rnd()*PI*2,rot=rnd()*PI*2,rotSpeed=(rnd()-.5)*(W*.1/r),path=new Path2D(),steps=8;
+let boom=o=>(SND.explosion(),PARTICLES.add(o.x,o.y));
+let spawn=(x,y,s,r=max,split=1)=>{
+  let a=rnd()*PI*2,rot=rnd()*PI*2,path=new Path2D(),steps=8;
   for(let i=0;i<steps;i++){
     let ang=i*(PI*2/steps),dist=r*(.7+rnd()*.3),px=cos(ang)*dist,py=sin(ang)*dist;
     if(i==0)path.moveTo(px,py);else path.lineTo(px,py);
   }
-  path.closePath();A.push({x,y,v:cos(a)*s,w:sin(a)*s,r,hp:r>(max*.6)?2:1,path,rot,rotSpeed});
+  path.closePath();A.push({x,y,vx:cos(a)*s,vy:sin(a)*s,r,split,path,rot,rotSpeed:(rnd()-.5)*(W*.1/r)});
 };
 let fill=()=>{let speed=getSpeed(SCORE.score||0);for(let i=0;i<5;i++)spawn(rnd()*W,rnd()*H,speed)};
-return {A,reset:()=>{A.length=0;fill()},split(i){let k=A[i];SND.explosion();PARTICLES.add(k.x,k.y);addScore(10);k.hp--;if(k.hp<=0){let {x,y,v,w,r}=k;A.splice(i,1);if(r>(max*.6)){spawn(x,y,hypot(v,w)*1.3,r/2);spawn(x,y,hypot(v,w)*1.3,r/2)}}},update(dt){
+return {A,reset:()=>{A.length=0;fill()},split(i){let k=A[i],{x,y,vx,vy,r,split}=k;boom(k);addScore(10);A.splice(i,1);if(split){let s=hypot(vx,vy)*1.3;spawn(x,y,s,r/2,0);spawn(x,y,s,r/2,0)}},update(dt){
   if(!A.length)fill();
   for(let i=A.length-1;i>=0;i--){
-    let k=A[i];move(k,dt);k.rot+=k.rotSpeed*dt;wrap(k);
+    let k=A[i];k.x+=k.vx*dt;k.y+=k.vy*dt;k.rot+=k.rotSpeed*dt;wrap(k);
     X.save();X.translate(k.x,k.y);X.rotate(k.rot);X.strokeStyle="white";X.stroke(k.path);X.restore();
-    if(collides(k,P)){P.hit();SND.explosion();PARTICLES.add(k.x,k.y);A.splice(i,1);continue}
+    if(collides(k,P)){P.hit();boom(k);A.splice(i,1);continue}
     if(U.active&&collides(k,U))this.split(i);
   }
 }}}
@@ -146,3 +157,12 @@ function Joystick(){let o={dx:0,dy:0,sx:0,sy:0};
 
 return {X,W,H,shape,Score,Difficulty,Shake,Sound,Particles,Joystick}
 }
+
+
+
+
+
+
+
+
+

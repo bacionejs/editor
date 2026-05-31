@@ -9,15 +9,15 @@ Object.defineProperties(T,{V:{get:()=>T.value,set:v=>(T.value=v,pretty())},S:{ge
 let keys=[
 {r:0,c:5, d:"M0 10 l4 -4 M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6",   f:function find(){let{V,S,E,F,R,I}=T,i;if(S==E&&/\w/.test(V[E]))T.F=word(E),T.R="";else if(S!=E&&R)I();else~(i=V.slice(E).search(RegExp(`\\b${F}\\b`)))&&(T.S=E+i,T.E=T.S+F.length)}},
 {r:0,c:6, d:"M1 4 v-3 h3 m3 0 h3 v3 m0 3 v3 h-3 m-3 0 h-3 v-3",  f:function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}},
-{r:0,c:7, d:"M1 10 l4 -10 l4 10 M3 5 h4 m0 0 l-2 5",             f:function zoom(){zoom.big^=1;T.style.fontSize=P.style.fontSize=(zoom.big?"0.5rem":"1.0rem")}},
-{r:0,c:9, d:"M0 0 l10 5 l-10 5 z",                               f:function run(){frame().contentWindow.eval(T.V+T.V.matchAll(/\b(\w+)\(\)(\{)/gd).find(v=>T.S<pair("{",v.indices[2][1]))[1]+"()")}},
-{r:6,c:9, d:"M0 10 v-6 l5 -4 l5 4 v6 z",                         f:function capslock(){keys.forEach(k=>k.f||(k.e.textContent=k.d[k.d.indexOf(k.e.textContent)^1]))}},
+{r:0,c:7, d:"M1 10 l4 -10 l4 10 M3 5 h4 m0 0 l-2 5",             f:function zoom(){T.style.fontSize=P.style.fontSize=((zoom.big^=1)?"0.5rem":"")}},
+{r:0,c:9, d:"M0 0 l10 5 l-10 5 z",                               f:function run(){frame().contentWindow.eval(T.V+T.V.matchAll(/\b(\w+)\(\)(\{)/gd).find(v=>T.S<end("{",v.indices[2][1]))[1]+"()")}},
+{r:6,c:9, d:"M0 10 v-6 l5 -4 l5 4 v6 z",                         f:function capslock(){keys.forEach(({e,f,e:{textContent:t},d:[t1,t2]})=>!f&&(e.textContent=t==t1?t2:t1))}},
 {r:0,c:8, d:"M0 0 v6 l5 5 l5 -5 v-6 z",                          f:function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(new File([file()],"")),download:Date.now()+"bacionejs.html"}).click()}},
 {r:7,c:8, d:"M10 0 v10 h-6 l-4 -5 l4 -5 z",                      f:function backspace(){let {S,E,V}=T;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1}},
 {r:1,c:9, d:"M0 0 h6 l4 5 l-4 5 h-6 z",                          f:function complete(){let{V,S}=T,w=V.slice(0,S).match(/\w+$/)?.[0];w&&T.I((V.slice(0,S-w.length)+V.slice(S)).match("\\b"+w+"\\w*")[0].slice(w.length))}},
 {r:1,c:2, d:"M1 5 h8 M5 1 l-4 4 l4 4",                           f:function left(){arrow(-1)}},
 {r:1,c:3, d:"M1 5 h8 M5 1 l4 4 l-4 4",                           f:function right(){arrow(1)}},
-{r:1,c:4, d:"M3 8 h-2 v-8 h6 v2 h2 v8 h-6 v-8 h6",               f:function copy(){let {V,S,E}=T,v=V[E];v=="\n"||(S!=E&&V[E-1]=="\n")?line():/\w/.test(v)?word():pair(v)?block():T.E++;T.P=V.slice(T.S,T.E)}},
+{r:1,c:4, d:"M3 8 h-2 v-8 h6 v2 h2 v8 h-6 v-8 h6",               f:function copy(){para()||line()||word()||pair()||T.E++;T.P=T.V.slice(T.S,T.E)}},
 {r:1,c:5, d:"M3 1 h-2 v9 h8 v-9 h-2 v1 h-4 v-1 h1 v-1 h2 v1 h1", f:function paste(){T.I(T.P)}},
 {r:1,c:6, d:"M10 5 Q5 0  0 7 M0  2 v5 h5",                       f:function undo(){restore(-1)}},
 {r:1,c:7, d:"M0  5 Q5 0 10 7 M10 2 v5 h-5",                      f:function redo(){restore(1)}},
@@ -51,10 +51,11 @@ function arrow(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;el
 function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<svg viewBox="-1 -1 12 12"><path d="${d}" fill="none" stroke="currentColor"/></svg>`}).firstChild}
 function pretty(){let c={},m=/[a-z]+\b|[(){}[\]]|</g; for(let [v,k] of color())c[v]=`<x class=${k}>${v}</x>`; pretty=()=>{P.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x);T.lint()}}
 function* color(){for(let v of "(){}[]")yield [v,"pairs"];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,"keywords"]}}}
-function word(){let{V,S,E}=T,w=/\w/;while(S&&w.test(V[S-1]))S--;while(E<V.length&&w.test(V[E]))E++;T.S==T.E&&(T.S=S);T.E=E;return V.slice(S,E)}
-function line(){let{V,S,E}=T;if(V[E-1]+V[E]=="\n\n"||!E)T.S++,T.E=V.indexOf("\n\n",E+1)+2;else if(S!=E)T.E=V.indexOf("\n",E)+1;else T.E++,T.S=V.lastIndexOf("\n",E-1)+1}
-function block(){let{V,E}=T,b=pair(V[E],E);V.slice(E,b).includes("\n")?(T.S=V.lastIndexOf("\n",E)+1,T.E=V.indexOf("\n",b)+1):T.E=b+1}
-function pair(p1,i){let {V}=T,p={"(":")","{":"}","[":"]",'"':'"'},p2=p[p1];if(i==undefined) return p1 in p;for(let c=1;++i<V.length&&(p1=='"'?V[i]!=p1:(c+=V[i]==p1?1:V[i]==p2?-1:0)););return i}
+function word(){let{V,S,E}=T,w=/\w/;if(!(w.test(V[E])))return;while(S&&w.test(V[S-1]))S--;while(E<V.length&&w.test(V[E]))E++;T.S==T.E&&(T.S=S);T.E=E;return V.slice(S,E)}
+function line(){let{V,S,E}=T;if(!(V[E]=="\n"||(S!=E&&V[E-1]=="\n")))return;if(S==E)T.S=V.lastIndexOf("\n",E-1)+1;else T.E=V.indexOf("\n",E+1);T.E++;return 1}
+function para(){let{V,E}=T;if(!(V[E]=="\n"&&V[E-1]=="\n"))return;T.E=V.indexOf("\n\n",E)+1;return 1}
+function pair(){let{V,E}=T;if(!('({["'.includes(V[E])))return;let b=end(V[E],E);V.slice(E,b).includes("\n")?(T.S=V.lastIndexOf("\n",E)+1,T.E=V.indexOf("\n",b)+1):T.E=b+1;return 1}
+function end(p1,i){let {V}=T,p2={"(":")","{":"}","[":"]",'"':'"'}[p1];for(let c=1;++i<V.length&&(p1=='"'?V[i]!=p1:(c+=V[i]==p1?1:V[i]==p2?-1:0)););return i}
 function init(s){T.I(s);T.S=T.E=T.V.indexOf("{")+1;T.focus(); pretty()} typeof GAMEPROGRAMS=="function"?init(GAMEPROGRAMS()):fetch("gameprograms.js").then(r=>r.text()).then(init).catch(()=>init("function yourgame(){\n\n}"))
 
 }}</script>
