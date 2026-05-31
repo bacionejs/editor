@@ -21,8 +21,8 @@ let keys=[
 {r:0,c:8, d:"M0 0 v6 l5 5 l5 -5 v-6 z",                          f:function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(new File([file()],"")),download:Date.now()+"bacionejs.html"}).click()}},
 {r:7,c:8, d:"M10 0 v10 h-6 l-4 -5 l4 -5 z",                      f:function backspace(){let {S,E,V}=T;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1}},
 {r:1,c:9, d:"M0 0 h6 l4 5 l-4 5 h-6 z",                          f:function complete(){let{V,S}=T,w=V.slice(0,S).match(/\w+$/)?.[0];w&&T.I((V.slice(0,S-w.length)+V.slice(S)).match("\\b"+w+"\\w*")[0].slice(w.length))}},
-{r:1,c:2, d:"M1 5 h8 M5 1 l-4 4 l4 4",                           f:function left(){arrow(-1)}},
-{r:1,c:3, d:"M1 5 h8 M5 1 l4 4 l-4 4",                           f:function right(){arrow(1)}},
+{r:1,c:2, d:"M1 5 h8 M5 1 l-4 4 l4 4",                           f:function left(d=-1){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;else T.P=V.slice(S,T.E=i)}}},
+{r:1,c:3, d:"M1 5 h8 M5 1 l4 4 l-4 4",                           f:function right(d=1){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;else T.P=V.slice(S,T.E=i)}}},
 {r:1,c:4, d:"M3 8 h-2 v-8 h6 v2 h2 v8 h-6 v-8 h6",               f:function copy(){para()||line()||word()||pair()||T.E++;T.P=T.V.slice(T.S,T.E)}},
 {r:1,c:5, d:"M3 1 h-2 v9 h8 v-9 h-2 v1 h-4 v-1 h1 v-1 h2 v1 h1", f:function paste(){T.I(T.P)}},
 {r:1,c:6, d:"M10 5 Q5 0  0 7 M0  2 v5 h5",                       f:function undo(){history(-1)}},
@@ -45,7 +45,6 @@ function element(tag,c="",o){let e=((o&&o instanceof Element)?o:document.body).a
 function frame(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f}
 function file(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
 function history(){let h=[],i=-1;history=(d,x)=>d?h[i+d]&&(T.V=(x=h[i+=d]).v,T.S=T.E=x.s):h[i]?.v!=T.V&&h.splice(++i,1/0,{v:T.V,s:T.S})}
-function arrow(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;else T.P=V.slice(S,T.E=i)}}
 function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<svg viewBox="-1 -1 12 12"><path d="${d}" fill="none" stroke="currentColor"/></svg>`}).firstChild}
 function pretty(){let c={},m=/[a-z]+\b|[(){}[\]]|</g; for(let [v,k] of color())c[v]=`<x class=${k}>${v}</x>`; pretty=()=>{P.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x)}}
 function* color(){for(let v of "(){}[]")yield [v,"pairs"];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,"keywords"]}}}
