@@ -2,10 +2,16 @@
 function ide(){
 if((navigator.maxTouchPoints||0)<2){alert("Designed for touch screens")} document.title="💋 BacioneJS";//https://github.com/bacionejs/editor
 onerror=(m,_,l,c)=>{T.style.caretColor="red";onerror.d??=element("dialog","",{closedBy:"any"});onerror.d.textContent=m;onerror.d.show();frame();T.S=T.E=T.V.split("\n",l-1).join("\n").length+c;T.focus()}
+element("style").textContent=`*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2} 
+.close{position:fixed;top:0;right:0;z-index:1;font-size:24px} iframe{position:fixed;width:100vw;height:100vh} svg,path{pointer-events:none} dialog,::selection{background:yellow;color:red} html{overscroll-behavior:none}
+.text{position:fixed;inset:0;padding:10rem 2rem 100vh;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent;font-size:1rem}
+.keyboard{width:min(10cm,100%);container-type:inline-size;background:rgb(100 110 120/20%);border:1px solid black;border-radius:5%;touch-action:none;user-select:none;position:fixed;bottom:0;right:0;display:grid;grid-template-columns:repeat(10,1fr)}
+.keys{display:grid;place-items:center;aspect-ratio:1;font-size:4cqi} .keys>svg{width:4cqi}
+/*🎨theme*/ .keywords{color:#B3EAB7} .pairs{color:#96ecff} .pretty{background:#15161B;color:white} .keys{border:1px solid black;background:#424242;color:white} .text{caret-color:white} .keys:active{background:gray;}`
 let P=element("div","text pretty"),close=element("div","close",{textContent:"❌",onclick:frame,hidden:true});
-let T=element("textarea","text",{R:"",P:"",inputMode:"none",spellcheck:false,oncut:()=>0, onpaste:e=>(e.preventDefault(),T.I(e.clipboardData.getData("text"))),onscroll:()=>{P.scrollTop=T.scrollTop;P.scrollLeft=T.scrollLeft},
-I(v,s=T.S,e=T.E){if(v!=null)T.R+=v;T.setRangeText(v??T.R,s,e,"end");T.update()}, update(){pretty();history(); T.style.caretColor=(()=>{try{eval(T.V)}catch{return "red"}})()||""} });
-Object.defineProperties(T,{V:{get:()=>T.value,set:v=>(T.value=v,T.update())},S:{get:()=>T.selectionStart,set:v=>T.selectionStart=v},E:{get:()=>T.selectionEnd,set:v=>T.selectionEnd=v}});
+let T=Object.defineProperties(element("textarea","text",{R:"",P:"",inputMode:"none",spellcheck:0,oncut:()=>0,onpaste:e=>(e.preventDefault(),T.I(e.clipboardData.getData("text"))),onscroll:()=>P.scrollTop=T.scrollTop,
+I(v,s=T.S,e=T.E){v!=null&&(T.R+=v);T.setRangeText(v??T.R,s,e,"end");T.update()},update(){pretty();history();T.style.caretColor=(()=>{try{eval(T.V)}catch{return"red"}})()||""}}),
+{V:{get:()=>T.value,set:v=>(T.value=v,T.update())},S:{get:()=>T.selectionStart,set:v=>T.selectionStart=v},E:{get:()=>T.selectionEnd,set:v=>T.selectionEnd=v}});
 let keys=[
 {r:0,c:5, d:"M0 10 l4 -4 M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6",   f:function find(){let{V,S,E,F,R,I}=T,i;if(S==E&&/\w/.test(V[E]))T.F=word(E),T.R="";else if(S!=E&&R)I();else~(i=V.slice(E).search(RegExp(`\\b${F}\\b`)))&&(T.S=E+i,T.E=T.S+F.length)}},
 {r:0,c:6, d:"M1 4 v-3 h3 m3 0 h3 v3 m0 3 v3 h-3 m-3 0 h-3 v-3",  f:function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}},
@@ -35,14 +41,6 @@ let hold,timeout,keyboard=element("div","keyboard"); for(let k of keys){let e=k.
 keyboard.onpointercancel=()=>{clearTimeout(timeout);hold=0};keyboard.oncontextmenu=()=>false;
 keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;hold=0;timeout=setTimeout(()=>{hold=1;k.f?k.f():T.I(k.d[1])},500)}
 keyboard.onpointerup=({target:{ref:k}={}})=>{if(hold)return;clearTimeout(timeout);if(!k)return;k.f?k.f():T.I(k.e.textContent)}
-
-element("style").textContent=`*{font-family:monospace;margin:0;padding:0;box-sizing:border-box;scrollbar-width:none;border:none;outline:none;line-height:1.2} 
-.close{position:fixed;top:0;right:0;z-index:1;font-size:24px} iframe{position:fixed;width:100vw;height:100vh} svg,path{pointer-events:none} dialog,::selection{background:yellow;color:red} html{overscroll-behavior:none}
-.text{position:fixed;inset:0;padding:10rem 2rem 100vh;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent;font-size:1rem}
-.keyboard{width:min(10cm,100%);container-type:inline-size;background:rgb(100 110 120/20%);border:1px solid black;border-radius:5%;touch-action:none;user-select:none;position:fixed;bottom:0;right:0;display:grid;grid-template-columns:repeat(10,1fr)}
-.keys{display:grid;place-items:center;aspect-ratio:1;font-size:4cqi} .keys>svg{width:4cqi}
-/*🎨theme*/ .keywords{color:#B3EAB7} .pairs{color:#96ecff} .pretty{background:#15161B;color:white} .keys{border:1px solid black;background:#424242;color:white} .text{caret-color:white} .keys:active{background:gray;}`
-
 function element(tag,c="",o){let e=((o&&o instanceof Element)?o:document.body).appendChild(document.createElement(tag));if(c)e.className=c;if(o&&o.constructor===Object)Object.assign(e,o);return e}
 function frame(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f}
 function file(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
