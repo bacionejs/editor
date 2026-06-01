@@ -1,8 +1,6 @@
 
 <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/a57533d1-e9a2-4277-b551-038527e0f16f" /></a>
 
----
-
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Validation** Syntax errors turn the cursor red.  
 **Cut** Press Copy and Backspace.  
@@ -13,7 +11,4 @@
 **Arrows** Moves cursor or extends selection.  
 **Comment** Toggles comments and puts the line in the Paste buffer.  
 **Find** Finds the word under the cursor.  
-
----
-
 **Download** Open https://bacionejs.github.io/editor/bacionejs.html and press Save.  
