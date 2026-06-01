@@ -1,15 +1,5 @@
 
-
-<table>
-  <tr>
-    <td>
-      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/cb19d02e-a7ba-4c0d-b322-8976608ac983" /></a>
-    </td>
-    <td>
-      <a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/fa85fca1-3e5b-4b42-ab3c-80cfb8b301c8" /></a>
-    </td>
-  </tr>
-</table>
+<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/e7284826-c789-4541-8d0f-2384d34449e8" /></a>
 
 ---
 
