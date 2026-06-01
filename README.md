@@ -1,5 +1,5 @@
 
-<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/82793a80-db9a-46e1-bdb3-6758e6ea5b6a" /></a>
+<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/a57533d1-e9a2-4277-b551-038527e0f16f" /></a>
 
 ---
 
