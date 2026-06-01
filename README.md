@@ -1,5 +1,5 @@
 
-<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/a57533d1-e9a2-4277-b551-038527e0f16f" /></a>
+<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/86f64724-83f1-4ae8-8097-38f4726c8771" /></a>
 
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Validation** Syntax errors turn the cursor red.  
