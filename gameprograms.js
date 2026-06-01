@@ -1,13 +1,5 @@
 
 
-
-
-
-
-
-
-
-
 function asteroids(){
 let L=Library(),{random:rnd,sin,cos,atan2,min,PI,hypot}=Math,{X,W,H}=L,SHAKE=L.Shake(X),SCORE=L.Score(X);
 let bonus,P,R,B,U,scene,SND=L.Sound(),PARTICLES=L.Particles(X,false),joy=L.Joystick();
@@ -157,12 +149,5 @@ function Joystick(){let o={dx:0,dy:0,sx:0,sy:0};
 
 return {X,W,H,shape,Score,Difficulty,Shake,Sound,Particles,Joystick}
 }
-
-
-
-
-
-
-
 
 
