@@ -9,7 +9,7 @@ element("style").textContent=`*{font-family:monospace;margin:0;padding:0;box-siz
 .keys{display:grid;place-items:center;aspect-ratio:1;font-size:4cqi} .keys>svg{width:4cqi}
 /*🎨theme*/ .keywords{color:#B3EAB7} .pairs{color:#96ecff} .pretty{background:#15161B;color:white} .keys{border:1px solid black;background:#424242;color:white} .text{caret-color:white} .keys:active{background:gray;}`
 let P=element("div","text pretty"),close=element("div","close",{textContent:"❌",onclick:frame,hidden:true});
-let T=Object.defineProperties(element("textarea","text",{R:"",P:"",inputMode:"none",spellcheck:0,oncut:()=>0,onpaste:e=>(e.preventDefault(),T.I(e.clipboardData.getData("text"))),onscroll:()=>P.scrollTop=T.scrollTop,
+let T=Object.defineProperties(element("textarea","text",{R:"",P:"",inputMode:"none",spellcheck:0,oncut:()=>0,onpaste:e=>(e.preventDefault(),T.I(e.clipboardData.getData("text"))),onscroll:()=>{P.scrollTop=T.scrollTop;P.scrollLeft=T.scrollLeft},
 I(v,s=T.S,e=T.E){v!=null&&(T.R+=v);T.setRangeText(v??T.R,s,e,"end");T.update()},update(){pretty();history();T.style.caretColor=(()=>{try{eval(T.V)}catch{return"red"}})()||""}}),
 {V:{get:()=>T.value,set:v=>(T.value=v,T.update())},S:{get:()=>T.selectionStart,set:v=>T.selectionStart=v},E:{get:()=>T.selectionEnd,set:v=>T.selectionEnd=v}});
 let keys=[
