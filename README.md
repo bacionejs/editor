@@ -12,3 +12,5 @@
 **Comment** Toggles comments and puts the line in the Paste buffer.  
 **Find** Finds the word under the cursor.  
 **Download** Open https://bacionejs.github.io/editor/bacionejs.html and press Save.  
+> [!TIP]
+> To create your own game, simply create a new function at the top of the editor.
