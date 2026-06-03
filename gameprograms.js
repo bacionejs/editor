@@ -12,7 +12,7 @@ let move=(o,dt)=>{o.x+=o.v*dt;o.y+=o.w*dt};
 (init=()=>{
   let prev=0;P=Player();R=Rocks();B=Bullets();U=Ufo();scene=[SCORE,SHAKE,R,B,U,P,PARTICLES];
   bonus=500;
-//   L.Debug.add(P, U);
+//  L.Debug.add(P, U);
   scene.forEach(o=>o.reset?.());
   (loop=curr=>{
     if(P.hp<0)return init();
