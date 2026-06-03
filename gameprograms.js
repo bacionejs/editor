@@ -29,7 +29,7 @@ return {get hp(){return hp},set hp(v){hp=v},get x(){return x},set x(v){x=v},get 
   if(d>10){
     a=atan2(joy.dy,joy.dx);let speed=min(d*3,max);x+=cos(a)*speed*dt;y+=sin(a)*speed*dt;
     wrap(this);
-    t+=dt;if(t>.15){B.add(x,y,a,W*.9,!0);t=0}
+    t+=dt;if(t>.15){B.add(x,y,a,W*.9,true);t=0}
   }
   X.save();X.translate(x,y);X.rotate(a+PI/2);let sf=(r*2)/20;X.scale(sf,sf);
   X.strokeStyle=`hsl(${hp*40},100%,50%)`;X.lineWidth=1/sf;X.stroke(path);X.restore();
@@ -37,7 +37,7 @@ return {get hp(){return hp},set hp(v){hp=v},get x(){return x},set x(v){x=v},get 
 
 function Ufo(){
 let active=false,x=0,y=0,vx=0,r=W/50,st=5,sht=0,at=0,snd=0,path=L.shape([[0,-3],[7,-2,10,0,0,-5],[10,0,0,-5,10,0],[0,3,10,0,0,3]]);
-let spawn=()=>{active=!0;x=rnd()>.5?-r:W+r;y=rnd()*(H*.6)+(H*.2);vx=(x<0?1:-1)*(W*.2);sht=1;at=0;snd=0};
+let spawn=()=>{active=true;x=rnd()>.5?-r:W+r;y=rnd()*(H*.6)+(H*.2);vx=(x<0?1:-1)*(W*.2);sht=1;at=0;snd=0};
 return {get active(){return active},get x(){return x},get y(){return y},get r(){return r},reset(){active=false;st=5},destroy(){active=false;st=7+rnd()*5;SND.explosion();PARTICLES.add(x,y)},update(dt){
   if(!active){st-=dt;if(st<=0)spawn();return}
   x+=vx*dt;at+=dt*4;y+=sin(at)*(W*.1)*dt;snd-=dt;if(snd<=0){SND.ufo();snd=.12}
@@ -80,7 +80,7 @@ return {A,reset:()=>A.length=0,add:(x,y,a,s,fP)=>A.push({x,y,v:cos(a)*s,w:sin(a)
       if(U.active&&collides(b,U)){addScore(200);U.destroy();A.splice(i,1);continue}
       let hit=false;
       for(let j=R.A.length-1;j>=0;j--){
-        if(collides(b,R.A[j])){R.split(j);hit=!0;break}
+        if(collides(b,R.A[j])){R.split(j);hit=true;break}
       }
       if(hit){A.splice(i,1);continue}
     }else{
