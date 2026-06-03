@@ -12,6 +12,7 @@ let move=(o,dt)=>{o.x+=o.v*dt;o.y+=o.w*dt};
 (init=()=>{
   let prev=0;P=Player();R=Rocks();B=Bullets();U=Ufo();scene=[SCORE,SHAKE,R,B,U,P,PARTICLES];
   bonus=500;
+//   L.Debug.add(P, U);
   scene.forEach(o=>o.reset?.());
   (loop=curr=>{
     if(P.hp<0)return init();
@@ -96,9 +97,10 @@ element("style").textContent="*{margin:0;padding:0}canvas{touch-action:none}body
 let {random:rnd,sin,cos}=Math,X=element("canvas").getContext("2d",{alpha:!1}),W=innerWidth,H=innerHeight;
 {let c=X.canvas,s=c.style,d=devicePixelRatio;c.width=W*d;c.height=H*d;s.width=W+"px";s.height=H+"px";X.setTransform(d,0,0,d,0,0)}
 function shape(a){let p=new Path2D();for(let m of [1,-1]){p.moveTo(m*a[0][0],a[0][1]);for(let i=1;i<a.length;i++)p.bezierCurveTo(m*a[i][0],a[i][1],m*a[i][2],a[i][3],m*a[i][4],a[i][5])}return p}
-function Score(X){let A=[],s=W/40;return{get score(){return A[0]},add(v){A[0]+=v},reset(){A.unshift(0)},update(){X.fillStyle="white";X.font=`${s}px monospace`;["Score",...A].forEach((v,i)=>X.fillText(v,W*.05,i*s*1.2+H*.1))}}}
 function Difficulty(p){let s=p.start,e=p.end,a=p.at,b=p.be;return function(x){return e-(e-s)*((e-b)/(e-s))**(x/a)}}
 function Shake(X){let s=0;return{set:()=>s=40,update:(dt)=>s&&(s=.02**dt*s|0,X.translate((rnd()-.5)*s,(rnd()-.5)*s))}}
+function Score(X){let A=[];return{get score(){return A[0]},add(v){A[0]+=v},reset(){A.unshift(0)},update(){X.fillStyle="white";["Score",...A,...Debug.get()].forEach((v,i)=>X.fillText(v,20,i*parseInt(X.font)*1.3+30));}}}
+let Debug=(()=>{let A=[];return{add:(...o)=>A.push(...o),get(){return A.flatMap(o=>Object.entries(o)?.flatMap(([k,v])=>v?.toFixed?.()?.concat(":"+k)||[]));}};})();
 
 function Sound(){
 let b=new AudioContext();
@@ -147,7 +149,7 @@ function Joystick(){let o={dx:0,dy:0,sx:0,sy:0};
   addEventListener("pointerup",()=>(o.dx=0,o.dy=0));return o
 }
 
-return {X,W,H,shape,Score,Difficulty,Shake,Sound,Particles,Joystick}
+return {X,W,H,shape,Score,Difficulty,Shake,Sound,Particles,Joystick,Debug}
 }
 
 
