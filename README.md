@@ -10,7 +10,7 @@
 **Find** Finds the word under the cursor.  
 **Rename** Press Find, type new word, press Find repeatedly to replace or Enter to skip.  
 **Comment** Toggles comments and puts the line in the Paste buffer.  
-**Hold** alphanumeric keys as an alternative to capslock.  
+**Hold** Hold alphanumeric keys as an alternative to capslock. Hold function keys to repeat.  
 **Download** Open https://bacionejs.github.io/editor/bacionejs.html and press Save.  
 > [!TIP]
 > To create your own game, simply create a new function at the top of the editor.
