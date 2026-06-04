@@ -14,3 +14,5 @@
 **Download** Open https://bacionejs.github.io/editor/bacionejs.html and press Save.  
 > [!TIP]
 > To create your own game, simply create a new function at the top of the editor.
+for my readme
+> To use the joystick in the sample game, hold with your thumb in a comfortable place like the lower right, and slide, don't lift.
