@@ -37,10 +37,10 @@ let keys=[
 {r:6,c:0, d:["a","A"]},  {r:6,c:1, d:["s","S"]}, {r:6,c:2, d:["d","D"]}, {r:6,c:3, d:["f","F"]}, {r:6,c:4, d:["g","G"]}, {r:6,c:5, d:["h","H"]}, {r:6,c:6, d:["j","J"]}, {r:6,c:7, d:["k","K"]}, {r:6,c:8, d:["l","L"]},
 {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
-let hold,timeout,interval,keyboard=element("div","keyboard"); for(let k of keys){let e=k.e=element("div","keys",keyboard);e.ref=k;k.f?(e.appendChild(svg(k.d))):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1}
-keyboard.onpointercancel=()=>{clearTimeout(timeout);clearInterval(interval);hold=0};keyboard.oncontextmenu=()=>false;
-keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;hold=0;timeout=setTimeout(()=>{hold=1;k.f?(k.f(),interval=setInterval(k.f,100)):T.I(k.d[1])},500)}
-keyboard.onpointerup=({target:{ref:k}={}})=>{clearInterval(interval);if(hold)return;clearTimeout(timeout);if(!k)return;k.f?k.f():T.I(k.e.textContent)}
+let time=[],keyboard=element("div","keyboard"); time.clear=()=>{while(time.length)clearTimeout(time.pop());}; keyboard.oncontextmenu=()=>false;
+for(let k of keys){let e=k.e=element("div","keys",keyboard);e.ref=k;k.f?(e.appendChild(svg(k.d))):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1}
+keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;time.on=false;time.push(setTimeout(()=>{time.on=true;k.f?(time.push(setInterval(k.f,100))):T.I(k.d[1])},500))}
+keyboard.onpointerup=({target:{ref:k}={}})=>{time.clear();if(time.on||!k)return;k.f?k.f():T.I(k.e.textContent)}
 function element(tag,c="",p,o){let e=(p||document.body).appendChild(document.createElement(tag));if(c)e.className=c;if(o)Object.assign(e,o);return e}
 function frame(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f}
 function file(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
