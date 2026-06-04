@@ -27,7 +27,7 @@ let keys=[
 {r:1,c:5, d:"M3 1 h-2 v9 h8 v-9 h-2 v1 h-4 v-1 h1 v-1 h2 v1 h1", f:function paste(){T.I(T.P)}},
 {r:1,c:6, d:"M10 5 Q5 0  0 7 M0  2 v5 h5",                       f:function undo(){history(-1)}},
 {r:1,c:7, d:"M0  5 Q5 0 10 7 M10 2 v5 h-5",                      f:function redo(){history(1)}},
-{r:1,c:8, d:"M6 1 l-6 8 m4 0 l6 -8",                             f:function comment(){let {V,S}=T,s=V.lastIndexOf("\n",S-1)+1,e=V.indexOf("\n",S)+1;T.P=V.slice(s,e);T.P.startsWith("//")?T.I("",s,s+2):T.I("//",s,s);T.S=T.E=T.V.indexOf("\n",s)+1}},
+{r:1,c:8, d:"M6 1 l-6 8 m4 0 l6 -8",                             f:function comment(){let{V,S}=T,s=V.lastIndexOf("\n",S-1)+1,e=V.indexOf("\n",S)+1;T.P=V.slice(s,e);T.I(T.P.replace(/^\x2f*/,x=>x?"":"//"),s,e)}},
 {r:7,c:9, d:"M10 0 v10 h-10 z",                                  f:function enter(){let {S,E,V}=T;S-E?T.S=E:T.I("\n"+V.slice(V.lastIndexOf("\n",S-1)+1,S).match(/^\s*/))}},
 {r:7,c:7, d:[" "," "]},  {r:1,c:0, d:["?","?"]}, {r:1,c:1, d:['"','"']},
 {r:2,c:0, d:["(","("]},  {r:2,c:1, d:[")",")"]}, {r:2,c:2, d:["{","{"]}, {r:2,c:3, d:["}","}"]}, {r:2,c:4, d:["[","["]}, {r:2,c:5, d:["]","]"]}, {r:2,c:6, d:[",",","]}, {r:2,c:7, d:[";",";"]}, {r:2,c:8, d:[".","."]}, {r:2,c:9, d:[":",":"]},
