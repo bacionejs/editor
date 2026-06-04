@@ -17,7 +17,7 @@ let keys=[
 {r:0,c:6, d:"M1 4 v-3 h3 m3 0 h3 v3 m0 3 v3 h-3 m-3 0 h-3 v-3",  f:function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}},
 {r:0,c:7, d:"M1 10 l4 -10 l4 10 M3 5 h4 m0 0 l-2 5",             f:function zoom(){T.style.fontSize=P.style.fontSize=((zoom.big^=1)?"0.5rem":"")}},
 {r:0,c:9, d:"M0 0 l10 5 l-10 5 z",                               f:function run(){frame().contentWindow.eval(T.V+T.V.matchAll(/\b(\w+)\(\)(\{)/gd).find(v=>T.S<end("{",v.indices[2][1]))[1]+"()")}},
-{r:6,c:9, d:"M0 10 v-6 l5 -4 l5 4 v6 z",                         f:function capslock(){keys.forEach(({e,f,e:{textContent:t},d:[t1,t2]})=>!f&&(e.textContent=t==t1?t2:t1))}},
+{r:6,c:9, d:"M0 10 v-6 l5 -4 l5 4 v6 z",                         f:function capslock(){keys.forEach(({e,f,e:{textContent:t},d:[t1,t2]})=>!f&&(e.innerHTML=t==t1?t2:t1))}},
 {r:0,c:8, d:"M0 0 v6 l5 5 l5 -5 v-6 z",                          f:function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(new File([file()],"")),download:Date.now()+"bacionejs.html"}).click()}},
 {r:7,c:8, d:"M10 0 v10 h-6 l-4 -5 l4 -5 z",                      f:function backspace(){let {S,E,V}=T;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1}},
 {r:1,c:9, d:"M0 0 h6 l4 5 l-4 5 h-6 z",                          f:function complete(){let{V,S}=T,w=V.slice(0,S).match(/\w+$/)?.[0];w&&T.I((V.slice(0,S-w.length)+V.slice(S)).match("\\b"+w+"\\w*")[0].slice(w.length))}},
@@ -37,7 +37,8 @@ let keys=[
 {r:6,c:0, d:["a","A"]},  {r:6,c:1, d:["s","S"]}, {r:6,c:2, d:["d","D"]}, {r:6,c:3, d:["f","F"]}, {r:6,c:4, d:["g","G"]}, {r:6,c:5, d:["h","H"]}, {r:6,c:6, d:["j","J"]}, {r:6,c:7, d:["k","K"]}, {r:6,c:8, d:["l","L"]},
 {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
-let time=[],keyboard=element("div","keyboard"); keyboard.oncontextmenu=()=>false; for(let k of keys){let e=k.e=element("div","keys",keyboard);e.ref=k;k.f?(e.appendChild(svg(k.d))):e.textContent=k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1}
+let time=[],keyboard=element("div","keyboard"); keyboard.oncontextmenu=()=>false;
+for(let k of keys){let e=k.e=element("div","keys",keyboard);e.ref=k;e.innerHTML=k.f?`<svg viewBox="-1 -1 12 12"><path d="${k.d}" fill=none stroke="currentColor"/></svg>`:k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1}
 keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;time.used=false;time.push(setTimeout(()=>{time.used=true;k.f?(time.push(setInterval(k.f,100))):T.I(k.d[1])},500))}
 keyboard.onpointerup=({target:{ref:k}={}})=>{while(time.length)clearTimeout(time.pop());if(time.used||!k)return;k.f?k.f():T.I(k.e.textContent)}
 function element(tag,c="",p,o){let e=(p||document.body).appendChild(document.createElement(tag));if(c)e.className=c;if(o)Object.assign(e,o);return e}
@@ -45,7 +46,6 @@ function frame(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),
 function file(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
 function history(){let h=[],i=-1;history=(d,x)=>d?h[i+d]&&(T.V=(x=h[i+=d]).v,T.S=T.E=x.s):h[i]?.v!=T.V&&h.splice(++i,1/0,{v:T.V,s:T.S})}
 function move(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;else T.P=V.slice(S,T.E=i)}}
-function svg(d){return Object.assign(document.createElement("div"),{innerHTML:`<svg viewBox="-1 -1 12 12"><path d="${d}" fill="none" stroke="currentColor"/></svg>`}).firstChild}
 function pretty(){let c={},m=/[a-z]+\b|[(){}[\]]|</g; for(let [v,k] of color())c[v]=`<x class=${k}>${v}</x>`; pretty=()=>{P.innerHTML=T.V.replace(m,x=>x=="<"?"&lt;":c[x]||x)}}
 function* color(){for(let v of "(){}[]")yield [v,"pairs"];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,"keywords"]}}}
 function word(){let{V,S,E}=T,w=/\w/;if(!(w.test(V[E])))return;while(S&&w.test(V[S-1]))S--;while(E<V.length&&w.test(V[E]))E++;T.S==T.E&&(T.S=S);T.E=E;return V.slice(S,E)}
