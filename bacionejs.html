@@ -6,6 +6,7 @@ element("style").textContent=`*{font-family:monospace;margin:0;padding:0;box-siz
 .close{position:fixed;top:0;right:0;z-index:1;font-size:24px} iframe{position:fixed;width:100vw;height:100vh} svg,path{pointer-events:none} dialog,::selection{background:yellow;color:red} html{overscroll-behavior:none}
 .text{position:fixed;inset:0;padding:0rem 2rem 100vh;touch-action:pan-x pan-y;overflow:auto;white-space:pre;background:transparent;color:transparent;font-size:1rem}
 .keyboard{width:min(10cm,100%);container-type:inline-size;background:rgb(100 110 120/20%);border:1px solid black;border-radius:5%;touch-action:none;user-select:none;position:fixed;bottom:0;right:0;display:grid;grid-template-columns:repeat(10,1fr)}
+.keyboard::before{content:"💋";position:absolute;top:2cqi;left:2cqi;font-size:6cqi;pointer-events:none}
 .keys{display:grid;place-items:center;aspect-ratio:1;font-size:4cqi} .keys>svg{width:4cqi}
 /*🎨theme*/ .keywords{color:#B3EAB7} .pairs{color:#96ecff} .pretty{background:#15161B;color:white} .keys{border:1px solid black;background:#424242;color:white} .text{caret-color:white} .keys:active{background:gray;}`
 let P=element("div","text pretty"),close=element("div","close","",{textContent:"❌",onclick:frame,hidden:true});
