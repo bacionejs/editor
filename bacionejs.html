@@ -40,7 +40,7 @@ let keys=[
 let time=[],keyboard=element("div","keyboard"); keyboard.oncontextmenu=()=>false;
 for(let k of keys){let e=k.e=element("div","keys",keyboard);e.ref=k;e.innerHTML=k.f?`<svg viewBox="-1 -1 12 12"><path d="${k.d}" fill=none stroke="currentColor"/></svg>`:k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1}
 keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;time.used=false;time.push(setTimeout(()=>{time.used=true;k.f?time.push(setInterval(k.f,100)):T.I(k.d[1])},500))}
-keyboard.onpointerup=({target:{ref:k}={}})=>{while(time.length)clearTimeout(time.pop());if(time.used)return;k.f?k.f():T.I(k.e.textContent)}
+keyboard.onpointerup=({target:{ref:k}={}})=>{while(time.length)clearTimeout(time.pop());if(time.used||!k)return;k.f?k.f():T.I(k.e.textContent)}
 function element(tag,c="",p,o){let e=(p||document.body).appendChild(document.createElement(tag));if(c)e.className=c;if(o)Object.assign(e,o);return e}
 function frame(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f}
 function file(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
