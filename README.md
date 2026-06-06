@@ -11,6 +11,7 @@
 **Rename** Press Find, type new word, press Find repeatedly to replace or Enter to skip.  
 **Comment** Toggles comments and puts the line in the Paste buffer.  
 **Complete** Completes word.  
+**Save** Saves game and editor to a timestamped file.  
 **Hold** Hold alphanumeric keys as an alternative to capslock. Hold function keys to repeat.  
 **Joystick** To use the joystick in the sample game, hold with your thumb in a comfortable place like the lower right, and slide, don't lift.  
 **Download** Open https://bacionejs.github.io/editor/bacionejs.html and press Save.  
