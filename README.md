@@ -1,5 +1,5 @@
 
-<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/1ffc21f7-ba08-4722-a60b-ad2941d6ffc5" /></a>
+<a href="//bacionejs.github.io/editor/bacionejs.html" target="_blank"><img src="https://github.com/user-attachments/assets/38bb6c37-c5a5-4605-ae18-f68c1d0d77ad" /></a>
 
 **Run** Runs the game which contains the cursor.  
 **Debugging** Runtime errors display a message and places the cursor at the error.  
