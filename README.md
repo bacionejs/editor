@@ -8,7 +8,8 @@
 [View source code and download app](https://bacionejs.github.io/bacionejs/viewsource.html?file=https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html)  
 
 ---
-
+<details><summary>Guide</summary>
+  
 **Run** Runs the game which contains the cursor.  
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Validation** Syntax errors turn the cursor red.  
@@ -22,6 +23,10 @@
 **Save** Saves game and editor to a timestamped file.  
 **Hold** Hold alphanumeric keys as an alternative to capslock. Hold function keys to repeat.  
 **Joystick** To use the joystick in the sample game, hold with your thumb in a comfortable place like the lower right, and slide, don't lift.  
+
+</details>
+
+---
 
 > [!TIP]
 > To create your own game, simply create a new function at the top of the editor.
