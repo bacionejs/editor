@@ -22,11 +22,10 @@
 **Complete** Completes word.  
 **Save** Saves game and editor to a timestamped file.  
 **Hold** Hold alphanumeric keys as an alternative to capslock. Hold function keys to repeat.  
-**Joystick** To use the joystick in the sample game, hold with your thumb in a comfortable place like the lower right, and slide, don't lift.  
-
 </details>
 
 ---
 
 > [!TIP]
-> To create your own game, simply create a new function at the top of the editor.
+> 1. To create your own game, simply create a new function at the top of the editor.
+> 1. To use the joystick in the sample game, hold with your thumb in a comfortable place like the lower right, and slide, don't lift.
