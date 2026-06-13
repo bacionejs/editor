@@ -54,5 +54,4 @@ function para(){let{V,E}=T;if(!(V[E]=="\n"&&V[E-1]=="\n"))return;T.E=V.indexOf("
 function pair(){let{V,E}=T;if(!('({["'.includes(V[E])))return;let b=end(V[E],E);V.slice(E,b).includes("\n")?(T.S=V.lastIndexOf("\n",E)+1,T.E=V.indexOf("\n",b)+1):T.E=b+1;return 1}
 function end(p1,i){let {V}=T,p2={"(":")","{":"}","[":"]",'"':'"'}[p1];for(let c=1;++i<V.length&&(p1=='"'?V[i]!=p1:(c+=V[i]==p1?1:V[i]==p2?-1:0)););return i}
 function init(s){T.I(s);T.S=T.E=T.V.indexOf("{")+1;T.focus(); pretty();history(); } typeof GAMEPROGRAMS=="function"?init(GAMEPROGRAMS()):fetch("gameprograms.js").then(r=>r.text()).then(init).catch(()=>init("function yourgame(){\n\n}"))
-
 }}</script>
