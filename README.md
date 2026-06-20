@@ -21,7 +21,7 @@
 **Rename** Press `Find`, type new word, press `Find` repeatedly to replace or `Enter` to skip.  
 **Hold** Hold alphanumeric keys as an alternative to capslock. Hold function keys to repeat.  
 **Debugging**🦋 Runtime errors display a message and places the cursor at the error.  
-**Validation**🚩 Syntax errors turn the cursor red.  
+**Validation**🚩 Syntax errors turn the cursor red while typing.  
 
 </details>
 
