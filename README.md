@@ -9,18 +9,18 @@
 
 ---
 <details><summary>Guide</summary>
-  
-**Run** Runs the game which contains the cursor.  
+
+`Run` Runs the game which contains the cursor.  
+`Copy` Begins or extends the selection of text and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. To exit this mode, press `Enter`.  
+`Find` Finds the word under the cursor.  
+`Comment` Toggles comments and puts the line in the Paste buffer.  
+`Complete` Completes word.  
+`Arrows` Moves cursor or extends selection.  
+`Save` Saves game and editor to a timestamped file.  
 **Debugging** Runtime errors display a message and places the cursor at the error.  
 **Validation** Syntax errors turn the cursor red.  
-**Copy** Begins or extends the selection of text and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. To exit this mode, press Enter.  
-**Cut** Press Copy and Backspace.  
-**Arrows** Moves cursor or extends selection.  
-**Find** Finds the word under the cursor.  
-**Rename** Press Find, type new word, press Find repeatedly to replace or Enter to skip.  
-**Comment** Toggles comments and puts the line in the Paste buffer.  
-**Complete** Completes word.  
-**Save** Saves game and editor to a timestamped file.  
+**Cut** Press `Copy` and `Backspace`.  
+**Rename** Press `Find`, type new word, press `Find` repeatedly to replace or `Enter` to skip.  
 **Hold** Hold alphanumeric keys as an alternative to capslock. Hold function keys to repeat.  
 </details>
 
