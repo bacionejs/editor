@@ -5,7 +5,7 @@
 
 [Try it](https://bacionejs.github.io/editor/bacionejs.html) (includes game)  
 
-[View source code and download app](https://bacionejs.github.io/bacionejs/viewsource.html?file=https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html) (source fits on a 3x5 card) 
+[View source code and download app](https://bacionejs.github.io/bacionejs/viewsource.html?b=1&file=https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html) (source fits on a 3x5 card) 
 
 ---
 
