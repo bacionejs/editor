@@ -8,7 +8,6 @@
 [View source code and download app](https://bacionejs.github.io/bacionejs/viewsource.html?file=https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html) (source fits on a 3x5 card) 
 
 ---
-<details><summary>Guide</summary>
 
 `Run` Runs the game which contains the cursor.  
 `Copy` Begins or extends selection and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs 📝. Press `Enter` to exit this mode.  
@@ -22,8 +21,6 @@
 **Hold** Hold alphanumeric keys as an alternative to capslock. Hold function keys to repeat.  
 **Debugging**🦋 Runtime errors display a message and places the cursor at the error.  
 **Validation**🚩 Syntax errors turn the cursor red while typing.  
-
-</details>
 
 ---
 
