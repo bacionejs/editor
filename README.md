@@ -11,7 +11,7 @@
 <details><summary>Guide</summary>
 
 `Run` Runs the game which contains the cursor.  
-`Copy` Begins or extends selection and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. Press `Enter` to exit this mode.  
+`Copy` Begins or extends selection and puts it in the Paste buffer. Depending on what is to the right, selects: word, line, paragraph or pairs 📝. Press `Enter` to exit this mode.  
 `Find` Finds the word under the cursor.  
 `Comment` Toggles comments and puts the line in the Paste buffer.  
 `Complete` Completes word.  
