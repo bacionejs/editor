@@ -3,7 +3,7 @@
 
 ---
 
-[Try it](https://bacionejs.github.io/editor/bacionejs.html) (includes game 🎮)  
+👉 [Try it](https://bacionejs.github.io/editor/bacionejs.html) (includes game 🎮)  
 
 ---
 
