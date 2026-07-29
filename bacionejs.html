@@ -8,9 +8,9 @@ element("style").textContent=`*{font-family:monospace;margin:0;padding:0;box-siz
 .keyboard{width:min(10cm,100%);container-type:inline-size;background:rgb(100 110 120/20%);border:1px solid black;border-radius:5%;touch-action:none;user-select:none;position:fixed;bottom:0;right:0;display:grid;grid-template-columns:repeat(10,1fr)}
 .keys{display:grid;place-items:center;aspect-ratio:1;font-size:4cqi} .keys>svg{width:4cqi}
 /*🎨theme*/ .keywords{color:#B3EAB7} .pairs{color:#96ecff} .pretty{background:#15161B;color:white} .keys{border:1px solid black;background:#424242;color:white} .text{caret-color:white} .keys:active{background:gray;}`
-let P=element("div","text pretty"),close=element("div","close",document.body,{textContent:"❌",onclick:frame,hidden:true});
+let P=element("div","text pretty"),close=element("div","close",{textContent:"❌",onclick:frame,hidden:true});
 let T=Object.defineProperties(
-  element("textarea","text",document.body,{
+  element("textarea","text",{
     R:"",P:"",inputMode:"none",spellcheck:0,oncut:()=>false,
     onpaste:e=>(e.preventDefault(),T.I(e.clipboardData.getData("text"))),
     onscroll:()=>{P.scrollTop=T.scrollTop;P.scrollLeft=T.scrollLeft},
@@ -44,10 +44,10 @@ let keys=[
   {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
 let time=[],keyboard=element("div","keyboard"); keyboard.oncontextmenu=()=>false;
-for(let k of keys){let e=k.e=element("div","keys",keyboard);e.ref=k;e.innerHTML=k.f?`<svg viewBox="-1 -1 12 12"><path d="${k.d}" fill=none stroke="currentColor"/></svg>`:k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1}
+for(let k of keys){let e=k.e=element("div","keys","",keyboard);e.ref=k;e.innerHTML=k.f?`<svg viewBox="-1 -1 12 12"><path d="${k.d}" fill=none stroke="currentColor"/></svg>`:k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1}
 keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;time.used=false;time.push(setTimeout(()=>{time.used=true;k.f?time.push(setInterval(k.f,100)):T.I(k.d[1])},500))}
 keyboard.onpointerup=({target:{ref:k}={}})=>{while(time.length)clearTimeout(time.pop());if(!k||time.used)return;k.f?k.f():T.I(k.e.textContent)}
-function element(tag,c="",p=document.body,o){let e=p.appendChild(document.createElement(tag));if(c)e.className=c;if(o)Object.assign(e,o);return e}
+function element(tag,c="",o,p=document.body){let e=p.appendChild(document.createElement(tag));if(c)e.className=c;if(o)Object.assign(e,o);return e}
 function frame(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),f=0):f=element("iframe");close.hidden=!f;return f}
 function file(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
 function history(){let h=[],i=-1;history=(d,x)=>d?h[i+d]&&(T.V=(x=h[i+=d]).v,T.S=T.E=x.s):h[i]?.v!=T.V&&h.splice(++i,1/0,{v:T.V,s:T.S})}
