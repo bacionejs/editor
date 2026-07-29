@@ -10,7 +10,7 @@ element("style").textContent=`*{font-family:monospace;margin:0;padding:0;box-siz
 /*🎨theme*/ .keywords{color:#B3EAB7} .pairs{color:#96ecff} .pretty{background:#15161B;color:white} .keys{border:1px solid black;background:#424242;color:white} .text{caret-color:white} .keys:active{background:gray;}`
 let P=element("div","text pretty"),close=element("div","close","",{textContent:"❌",onclick:frame,hidden:true});
 let T=Object.defineProperties(
-  element("textarea","text","",{
+  element("textarea","text",document.body,{
     R:"",P:"",inputMode:"none",spellcheck:0,oncut:()=>false,
     onpaste:e=>(e.preventDefault(),T.I(e.clipboardData.getData("text"))),
     onscroll:()=>{P.scrollTop=T.scrollTop;P.scrollLeft=T.scrollLeft},
