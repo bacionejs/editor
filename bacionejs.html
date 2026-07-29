@@ -43,7 +43,7 @@ let keys=[
   {r:6,c:0, d:["a","A"]},  {r:6,c:1, d:["s","S"]}, {r:6,c:2, d:["d","D"]}, {r:6,c:3, d:["f","F"]}, {r:6,c:4, d:["g","G"]}, {r:6,c:5, d:["h","H"]}, {r:6,c:6, d:["j","J"]}, {r:6,c:7, d:["k","K"]}, {r:6,c:8, d:["l","L"]},
   {r:7,c:0, d:["z","Z"]},  {r:7,c:1, d:["x","X"]}, {r:7,c:2, d:["c","C"]}, {r:7,c:3, d:["v","V"]}, {r:7,c:4, d:["b","B"]}, {r:7,c:5, d:["n","N"]}, {r:7,c:6, d:["m","M"]},
 ];
-let time=[],keyboard=element("div","keyboard"); keyboard.oncontextmenu=()=>false;
+let time=[],keyboard=element("div","keyboard");keyboard.oncontextmenu=()=>false;
 for(let k of keys){let e=k.e=element("div","keys","",keyboard);e.ref=k;e.innerHTML=k.f?`<svg viewBox="-1 -1 12 12"><path d="${k.d}" fill=none stroke="currentColor"/></svg>`:k.d[0];e.style.gridColumn=k.c+1;e.style.gridRow=k.r+1}
 keyboard.onpointerdown=e=>{e.preventDefault();let k=e.target?.ref;if(!k)return;time.used=false;time.push(setTimeout(()=>{time.used=true;k.f?time.push(setInterval(k.f,100)):T.I(k.d[1])},500))}
 keyboard.onpointerup=({target:{ref:k}={}})=>{while(time.length)clearTimeout(time.pop());if(!k||time.used)return;k.f?k.f():T.I(k.e.textContent)}
@@ -52,12 +52,13 @@ function frame(){let f=document.querySelector("iframe");f?(f.remove(),T.focus(),
 function file(){return document.documentElement.outerHTML.split("\n")[0]+"\n"+ide+"\n\nfunction GAMEPROGRAMS(){return "+JSON.stringify(T.V)+"\n\n}}<\/script>\n"}
 function history(){let h=[],i=-1;history=(d,x)=>d?h[i+d]&&(T.V=(x=h[i+=d]).v,T.S=T.E=x.s):h[i]?.v!=T.V&&h.splice(++i,1/0,{v:T.V,s:T.S})}
 function move(d){let {S,E,V}=T,i=E+d;if(i>=0&&i<=V.length){if(S==E)T.S=T.E=i;else T.P=V.slice(S,T.E=i)}}
-function pretty(){let c={},m=/[a-z]+\b|[(){}[\]]|</g; for(let [v,k] of color())c[v]=`<x class=${k}>${v}</x>`; pretty=()=>{P.innerHTML=T.V.replace(m,x=>x=="<"?"&\lt;":c[x]||x)}}
+function pretty(){let c={},m=/[a-z]+\b|[(){}[\]]|</g;for(let [v,k] of color())c[v]=`<x class=${k}>${v}</x>`;pretty=()=>{P.innerHTML=T.V.replace(m,x=>x=="<"?"&\lt;":c[x]||x)}}
 function* color(){for(let v of "(){}[]")yield [v,"pairs"];for(let w of new Set(T.V.match(/[a-z]+\b/g)||[])){try{eval("let "+w)}catch{yield [w,"keywords"]}}}
 function word(){let{V,S,E}=T,w=/\w/;if(!(w.test(V[E])))return;while(S&&w.test(V[S-1]))S--;while(E<V.length&&w.test(V[E]))E++;T.S==T.E&&(T.S=S);T.E=E;return V.slice(S,E)}
 function line(){let{V,S,E}=T;if(!(V[E]=="\n"||(S!=E&&V[E-1]=="\n")))return;if(S==E)T.S=V.lastIndexOf("\n",E-1)+1;else T.E=V.indexOf("\n",E+1);T.E++;return 1}
 function para(){let{V,E}=T;if(!(V[E]=="\n"&&V[E-1]=="\n"))return;T.E=V.indexOf("\n\n",E)+1;return 1}
 function pair(){let{V,E}=T;if(!('({["'.includes(V[E])))return;let b=end(V[E],E);V.slice(E,b).includes("\n")?(T.S=V.lastIndexOf("\n",E)+1,T.E=V.indexOf("\n",b)+1):T.E=b+1;return 1}
 function end(p1,i){let {V}=T,p2={"(":")","{":"}","[":"]",'"':'"'}[p1];for(let c=1;++i<V.length&&(p1=='"'?V[i]!=p1:(c+=V[i]==p1?1:V[i]==p2?-1:0)););return i}
-function init(s){T.I(s);T.S=T.E=T.V.indexOf("{")+1;T.focus(); pretty();history(); } typeof GAMEPROGRAMS=="function"?init(GAMEPROGRAMS()):fetch("gameprograms.js").then(r=>r.text()).then(init).catch(()=>init("function yourgame(){\n\n}"))
+function init(s){T.I(s);T.S=T.E=T.V.indexOf("{")+1;T.focus();pretty();history();}
+typeof GAMEPROGRAMS=="function"?init(GAMEPROGRAMS()):fetch("gameprograms.js").then(r=>r.text()).then(init).catch(()=>init("function yourgame(){\n\n}"))
 }}</script>
