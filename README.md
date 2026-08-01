@@ -14,8 +14,8 @@ Entire app source code fits on a 3x5 card 🤯
 ---
 
 - `Run` Runs the game which contains the cursor.  
-- `Copy` Begins or extends selection and puts it in the `Paste` buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. Press `Enter` to exit this mode. **Cut** by pressing `Copy` and `Backspace`.  
-- `Find` Finds the word under the cursor. **Rename** variables by pressing `Find`, type new word, then press `Find` repeatedly to replace or `Enter` to skip.  
+- `Copy` Begins or extends selection and puts it in the `Paste` buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. Press `Enter` to exit this mode. Also, you can **Cut** text by pressing `Copy` and then `Backspace`.  
+- `Find` Finds the word under the cursor. Also, you can **Rename** variables by pressing `Find`, type new word, then press `Find` repeatedly to replace or `Enter` to skip.  
 - `Comment` Toggles comments and puts the line in the `Paste` buffer.  
 - `Complete` Completes word.  
 - `Arrows` Moves cursor or extends selection.  
