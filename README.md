@@ -14,7 +14,7 @@ No server or third-party library.
 
 ---
 
-- `Run` Runs the game which contains the cursor. To create your own game, simply create a new function at the top of the editor.  
+- `Run` Runs the game which contains the cursor. To create your own game, simply create a new function.  
 - `Copy` Begins or extends selection and puts it in the `Paste` buffer. Depending on what is to the right, selects: word, line, paragraph or pairs. Press `Enter` to exit this mode. Also, you can **Cut** text by pressing `Copy` and then `Backspace`.  
 - `Find` Finds the word under the cursor. Also, you can **Rename** variables by pressing `Find`, typing a new word, and then pressing `Find` repeatedly to replace or `Enter` to skip.  
 - `Comment` Toggles comments and puts the line in the `Paste` buffer.  
