@@ -1,6 +1,6 @@
 
 
-function asteroids(){
+function samplegame(){
 let L=Library(),{random:rnd,sin,cos,atan2,min,PI,hypot}=Math,{X,W,H}=L,SHAKE=L.Shake(X),SCORE=L.Score(X);
 let bonus,P,R,B,U,scene,SND=L.Sound(),PARTICLES=L.Particles(X,false),joy=L.Joystick();
 let getSpeed=L.Difficulty({start:W*.1,end:W*.2,be:W*.16,at:2000});
