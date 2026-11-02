@@ -21,7 +21,7 @@ let keys=[
   {r:0,c:5, d:"M0 10 l4 -4 M6 1 a3 3 0 1 0 0 6 a3 3 0 1 0 0 -6",   f:function find(){let{V,S,E,F,R,I}=T,i;if(S==E&&/\w/.test(V[E]))T.F=word(E),T.R="";else if(S!=E&&R)I();else~(i=V.slice(E).search(RegExp(`\\b${F}\\b`)))&&(T.S=E+i,T.E=T.S+F.length)}},
   {r:0,c:6, d:"M1 4 v-3 h3 m3 0 h3 v3 m0 3 v3 h-3 m-3 0 h-3 v-3",  f:function fullscreen(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}},
   {r:0,c:7, d:"M1 10 l4 -10 l4 10 M3 5 h4 m0 0 l-2 5",             f:function zoom(){T.style.fontSize=P.style.fontSize=((zoom.big^=1)?"0.5rem":"")}},
-  {r:0,c:9, d:"M0 0 l10 5 l-10 5 z",                               f:function run(){frame().contentWindow.eval(T.V+T.V.matchAll(/\b(\w+)\(\)(\{)/gd).find(v=>T.S<end("{",v.indices[2][1]))[1]+"()")}},
+  {r:0,c:9, d:"M0 0 l10 5 l-10 5 z",                               f:function run(){let w=frame().contentWindow;w.onerror=onerror;w.eval(T.V+T.V.matchAll(/\b(\w+)\(\)(\{)/gd).find(v=>T.S<end("{",v.indices[2][1]))[1]+"()")}},
   {r:6,c:9, d:"M0 10 v-6 l5 -4 l5 4 v6 z",                         f:function capslock(){keys.forEach(({e,f,e:{textContent:t},d:[t1,t2]})=>!f&&(e.innerHTML=t==t1?t2:t1))}},
   {r:0,c:8, d:"M0 0 v6 l5 5 l5 -5 v-6 z",                          f:function save(){Object.assign(save.a??=element("a"),{href:URL.createObjectURL(new File([file()],"")),download:Date.now()+"bacionejs.html"}).click()}},
   {r:7,c:8, d:"M10 0 v10 h-6 l-4 -5 l4 -5 z",                      f:function backspace(){let {S,E,V}=T;if(S==E)return S>0&&T.I("",S-1);T.I("");if(/\n/.test(V.slice(S,E)))T.S=T.E=T.V.indexOf("\n",S)+1}},
