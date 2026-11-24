@@ -10,7 +10,7 @@ To use the joystick in the sample game, hold with your thumb in a comfortable pl
 
 ---
 
-The entire editor application source-code fits on a 3x5 card  
+The source-code fits on a 3x5 card (sample game excluded) 
 No server or third-party library.  
 
 <a href="https://bacionejs.github.io/bacionejs/viewsource.html?b=1&file=https://raw.githubusercontent.com/bacionejs/editor/main/bacionejs.html" target="_blank"><img width="200" src="https://github.com/user-attachments/assets/34429ad8-5fce-4865-9537-c9473eb1c554" /></a>
