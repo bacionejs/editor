@@ -6,9 +6,9 @@
 
 ---
 
+To use the joystick in the sample game, hold with your thumb in a comfortable place like the lower right, and slide, don't lift.  
+
 [Try it][samplegame] (includes sample game 🎮)  
-<br>
-To use the joystick in the sample game, hold with your thumb in a comfortable place like the lower right, and slide, don't lift.
 
 ---
 
