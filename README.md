@@ -1,5 +1,6 @@
-<img src="https://github.com/user-attachments/assets/caec5ab6-6c89-4188-b611-c3e9210144c5" />
 
+
+<img width="80%" alt="code, game, legend" src="https://github.com/user-attachments/assets/ffee1c65-92c2-4aba-8e20-ae0c5a2a55ed" />
 
 
 ---
